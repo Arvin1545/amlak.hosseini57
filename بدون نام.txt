@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8" />
@@ -909,22 +909,6 @@
         }
         .private-msg-item button:active { transform: scale(0.95); }
 
-        /* دکمه اشتراک‌گذاری برنامه */
-        .share-app-btn {
-            background: #25D366;
-            color: white;
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        .share-app-btn:active { transform: scale(0.97); }
-        .share-app-btn i { margin-left: 8px; }
-
         .monthly-check-btn {
             background: #FF6F00;
             color: white;
@@ -975,8 +959,7 @@
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
-        <!-- دکمه اشتراک‌گذاری برنامه -->
-        <button class="share-app-btn" onclick="shareAppLink()">📤 اشتراک‌گذاری برنامه</button>
+        <!-- ====== دکمه اشتراک‌گذاری برنامه حذف شد ====== -->
 
         <!-- پیام مدیر (اختصاصی) -->
         <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
@@ -1113,14 +1096,14 @@
             
             <div id="saleFields">
                 <label>قیمت فروش (تومان) *</label>
-                <input type="number" id="fPrice" placeholder="مثال: 2500000000" />
+                <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" oninput="formatPrice(this)" />
             </div>
             
             <div id="rentFields" style="display:none;">
                 <label>قیمت رهن (تومان) *</label>
-                <input type="number" id="fRahn" placeholder="مثال: 50000000" />
+                <input type="text" id="fRahn" placeholder="مثال: 50,000,000" oninput="formatPrice(this)" />
                 <label>قیمت کرایه (تومان) *</label>
-                <input type="number" id="fRentPrice" placeholder="مثال: 2000000" />
+                <input type="text" id="fRentPrice" placeholder="مثال: 2,000,000" oninput="formatPrice(this)" />
             </div>
             
             <label>آدرس *</label>
@@ -1229,6 +1212,41 @@
     </div>
 
     <script>
+        // ====== تابع فرمت کردن قیمت ======
+        function formatPrice(input) {
+            // حذف همه کاراکترهای غیرعددی
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value === '') {
+                input.value = '';
+                return;
+            }
+            // تبدیل به عدد و فرمت با کاما
+            let number = parseInt(value);
+            input.value = number.toLocaleString('en-US');
+        }
+
+        // ====== تابع دریافت عدد خالص از فرمت شده ======
+        function getRawNumber(formattedValue) {
+            return formattedValue.replace(/,/g, '');
+        }
+
+        // ====== امنیت: تابع ضد XSS ======
+        function sanitizeInput(text) {
+            if (!text) return '';
+            return text.replace(/<[^>]*>/g, '').replace(/[<>]/g, '');
+        }
+
+        // ====== امنیت: تابع هش کردن رمز (ساده) ======
+        function simpleHash(text) {
+            let hash = 0;
+            for (let i = 0; i < text.length; i++) {
+                const char = text.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(16);
+        }
+
         // ====== داده‌ها ======
         let properties = JSON.parse(localStorage.getItem('properties_v10')) || [];
         let publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages')) || [];
@@ -1247,8 +1265,15 @@
 
         const ADMIN_KEY = 'amlak_admin_data';
 
+        // ====== امنیت: ذخیره اطلاعات مدیر با هش ======
         function getAdmin() {
-            return JSON.parse(localStorage.getItem(ADMIN_KEY)) || null;
+            const data = localStorage.getItem(ADMIN_KEY);
+            if (!data) return null;
+            try {
+                return JSON.parse(data);
+            } catch {
+                return null;
+            }
         }
 
         function setAdmin(data) {
@@ -1285,16 +1310,20 @@
                     return;
                 }
                 
+                // امنیت: ضد XSS
+                const safeName = sanitizeInput(name);
+                const safePhone = sanitizeInput(phone);
+                
                 if (!admin) {
-                    setAdmin({ name: name, phone: phone });
-                    currentUser = { role: 'admin', name: name, phone: phone };
+                    setAdmin({ name: safeName, phone: safePhone });
+                    currentUser = { role: 'admin', name: safeName, phone: safePhone };
                     localStorage.setItem('amlak_user', JSON.stringify(currentUser));
                     showToast('✅ مدیر با موفقیت ثبت شد!');
                     enterApp();
                     return;
                 }
-                if (admin.name === name && admin.phone === phone) {
-                    currentUser = { role: 'admin', name: name, phone: phone };
+                if (admin.name === safeName && admin.phone === safePhone) {
+                    currentUser = { role: 'admin', name: safeName, phone: safePhone };
                     localStorage.setItem('amlak_user', JSON.stringify(currentUser));
                     showToast('✅ خوش آمدید مدیر عزیز!');
                     enterApp();
@@ -1304,6 +1333,7 @@
                     return;
                 }
             } else {
+                // کاربر عادی
                 currentUser = { role: 'user', name: 'کاربر' };
                 localStorage.setItem('amlak_user', JSON.stringify(currentUser));
                 showToast('👋 خوش آمدید!');
@@ -1336,11 +1366,13 @@
                 
                 const adminMsg = localStorage.getItem('amlak_admin_message');
                 if (adminMsg) {
-                    const msgData = JSON.parse(adminMsg);
-                    document.getElementById('adminMessage').textContent = '📢 ' + msgData.text;
-                    document.getElementById('adminMsgDate').textContent = msgData.date;
-                    document.getElementById('adminMsgBox').style.display = 'block';
-                    document.getElementById('adminMsgActions').style.display = 'flex';
+                    try {
+                        const msgData = JSON.parse(adminMsg);
+                        document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                        document.getElementById('adminMsgDate').textContent = msgData.date;
+                        document.getElementById('adminMsgBox').style.display = 'block';
+                        document.getElementById('adminMsgActions').style.display = 'flex';
+                    } catch {}
                 }
             } else {
                 document.getElementById('adminButtons').style.display = 'none';
@@ -1354,11 +1386,13 @@
                 
                 const adminMsg = localStorage.getItem('amlak_admin_message');
                 if (adminMsg) {
-                    const msgData = JSON.parse(adminMsg);
-                    document.getElementById('adminMessage').textContent = '📢 ' + msgData.text;
-                    document.getElementById('adminMsgDate').textContent = msgData.date;
-                    document.getElementById('adminMsgBox').style.display = 'block';
-                    document.getElementById('adminMsgActions').style.display = 'none';
+                    try {
+                        const msgData = JSON.parse(adminMsg);
+                        document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                        document.getElementById('adminMsgDate').textContent = msgData.date;
+                        document.getElementById('adminMsgBox').style.display = 'block';
+                        document.getElementById('adminMsgActions').style.display = 'none';
+                    } catch {}
                 }
             }
 
@@ -1369,73 +1403,7 @@
             checkMonthlyAuto();
         }
 
-        // ====== اشتراک‌گذاری برنامه ======
-        function shareAppLink() {
-            const url = window.location.href;
-            const text = `🏠 *برنامه مدیریت املاک "املاک حسینی"*\n\n✅ ثبت ملک با عکس و فیلم\n✅ دسته‌بندی: زمین مسکونی، زمین تجاری، آپارتمان، مغازه، خانه، باغ\n✅ فیلتر فروش/اجاره با قیمت\n✅ لایک/دیسلایک\n✅ سبد خرید\n✅ پیام خصوصی به مدیر\n\n📥 برای نصب، روی لینک زیر کلیک کنید:\n${url}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'املاک حسینی',
-                    text: text,
-                    url: url
-                }).catch(() => {});
-            } else {
-                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
-                window.open(whatsappUrl, '_blank');
-            }
-        }
-
-        // ====== بررسی ماهانه ======
-        function checkMonthlyAuto() {
-            const now = new Date();
-            const today = now.toISOString().split('T')[0];
-            
-            if (!lastMonthlyCheck) {
-                localStorage.setItem('lastMonthlyCheck', today);
-                return;
-            }
-            
-            const lastDate = new Date(lastMonthlyCheck);
-            const diffMonths = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
-            
-            if (diffMonths >= 1) {
-                if (currentUser?.role === 'admin') {
-                    showToast('📅 زمان بررسی ماهانه املاک فرا رسیده!');
-                }
-                // چک کردن و حذف خودکار
-                autoDeleteOldProperties();
-                localStorage.setItem('lastMonthlyCheck', today);
-            }
-        }
-
-        function monthlyCheck() {
-            if (currentUser?.role !== 'admin') {
-                showToast('⚠️ فقط مدیر می‌تواند بررسی ماهانه انجام دهد!');
-                return;
-            }
-            autoDeleteOldProperties();
-            localStorage.setItem('lastMonthlyCheck', new Date().toISOString().split('T')[0]);
-            showToast('✅ بررسی ماهانه انجام شد!');
-        }
-
-        function autoDeleteOldProperties() {
-            let deleted = [];
-            properties.forEach((p, index) => {
-                const msg = confirm(`آیا ملک "${p.title}" (کد: ${p.code || 'ندارد'}) هنوز موجود است؟\n"OK" = موجود است / "Cancel" = حذف شود`);
-                if (!msg) {
-                    deleted.push(p.id);
-                }
-            });
-            
-            if (deleted.length > 0) {
-                properties = properties.filter(p => !deleted.includes(p.id));
-                saveToStorage();
-                showToast(`🗑️ ${deleted.length} ملک حذف شد!`);
-            } else {
-                showToast('✅ همه املاک موجود هستند!');
-            }
-        }
+        // ====== اشتراک‌گذاری برنامه حذف شد ======
 
         function logout() {
             localStorage.removeItem('amlak_user');
@@ -1496,22 +1464,25 @@
             if (data) {
                 title.textContent = '✏️ ویرایش ملک';
                 document.getElementById('editId').value = data.id;
-                document.getElementById('fCode').value = data.customCode || '';
-                document.getElementById('fTitle').value = data.title || '';
+                document.getElementById('fCode').value = sanitizeInput(data.customCode) || '';
+                document.getElementById('fTitle').value = sanitizeInput(data.title) || '';
                 document.getElementById('fCategory').value = data.category || 'آپارتمان';
                 document.getElementById('fType').value = data.type || 'sale';
                 togglePriceFields();
                 if (data.type === 'sale') {
-                    document.getElementById('fPrice').value = data.price || '';
+                    const price = data.price || '0';
+                    document.getElementById('fPrice').value = Number(price).toLocaleString('en-US');
                 } else {
-                    document.getElementById('fRahn').value = data.rahn || '';
-                    document.getElementById('fRentPrice').value = data.rentPrice || '';
+                    const rahn = data.rahn || '0';
+                    const rentPrice = data.rentPrice || '0';
+                    document.getElementById('fRahn').value = Number(rahn).toLocaleString('en-US');
+                    document.getElementById('fRentPrice').value = Number(rentPrice).toLocaleString('en-US');
                 }
-                document.getElementById('fAddress').value = data.address || '';
+                document.getElementById('fAddress').value = sanitizeInput(data.address) || '';
                 document.getElementById('fArea').value = data.area || '';
-                document.getElementById('fPhone').value = data.phone || '';
-                document.getElementById('fDescription').value = data.description || '';
-                document.getElementById('fHiddenDescription').value = data.hiddenDescription || '';
+                document.getElementById('fPhone').value = sanitizeInput(data.phone) || '';
+                document.getElementById('fDescription').value = sanitizeInput(data.description) || '';
+                document.getElementById('fHiddenDescription').value = sanitizeInput(data.hiddenDescription) || '';
                 form.style.display = 'block';
             } else {
                 title.textContent = '📋 ثبت ملک جدید';
@@ -1556,25 +1527,35 @@
                 return;
             }
             const editId = document.getElementById('editId').value;
-            const customCode = document.getElementById('fCode').value.trim();
-            const title = document.getElementById('fTitle').value.trim();
+            const customCode = sanitizeInput(document.getElementById('fCode').value.trim());
+            const title = sanitizeInput(document.getElementById('fTitle').value.trim());
             const category = document.getElementById('fCategory').value;
             const type = document.getElementById('fType').value;
-            const address = document.getElementById('fAddress').value.trim();
+            const address = sanitizeInput(document.getElementById('fAddress').value.trim());
             const area = document.getElementById('fArea').value.trim() || '0';
-            const phone = document.getElementById('fPhone').value.trim() || '---';
-            const description = document.getElementById('fDescription').value.trim() || 'بدون توضیحات';
-            const hiddenDescription = document.getElementById('fHiddenDescription').value.trim() || '';
+            const phone = sanitizeInput(document.getElementById('fPhone').value.trim()) || '---';
+            const description = sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات';
+            const hiddenDescription = sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '';
 
+            // گرفتن عدد خالص از فیلدهای قیمت
             let price = '0', rahn = '0', rentPrice = '0';
 
             if (type === 'sale') {
-                price = document.getElementById('fPrice').value.trim();
-                if (!price) { showToast('⚠️ قیمت فروش را وارد کنید!'); return; }
+                const priceRaw = getRawNumber(document.getElementById('fPrice').value);
+                if (!priceRaw || priceRaw === '') {
+                    showToast('⚠️ قیمت فروش را وارد کنید!');
+                    return;
+                }
+                price = priceRaw;
             } else {
-                rahn = document.getElementById('fRahn').value.trim() || '0';
-                rentPrice = document.getElementById('fRentPrice').value.trim();
-                if (!rentPrice) { showToast('⚠️ قیمت کرایه را وارد کنید!'); return; }
+                const rahnRaw = getRawNumber(document.getElementById('fRahn').value);
+                const rentRaw = getRawNumber(document.getElementById('fRentPrice').value);
+                rahn = rahnRaw || '0';
+                if (!rentRaw || rentRaw === '') {
+                    showToast('⚠️ قیمت کرایه را وارد کنید!');
+                    return;
+                }
+                rentPrice = rentRaw;
                 price = rentPrice;
             }
 
@@ -1688,8 +1669,8 @@
                 return `
                     <div class="cart-item">
                         <div class="info">
-                            <div class="title">${p.title}</div>
-                            <div class="detail">${p.address} | ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</div>
+                            <div class="title">${sanitizeInput(p.title)}</div>
+                            <div class="detail">${sanitizeInput(p.address)} | ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</div>
                         </div>
                         <button class="remove-btn" onclick="removeFromCart(${p.id})">✕</button>
                     </div>
@@ -1745,13 +1726,13 @@
             cartItems.forEach(id => {
                 const p = properties.find(prop => prop.id === id);
                 if (p) {
-                    text += `🏠 ${p.title}\n📍 ${p.address}\n`;
+                    text += `🏠 ${sanitizeInput(p.title)}\n📍 ${sanitizeInput(p.address)}\n`;
                     if (p.type === 'sale') {
                         text += `💰 ${Number(p.price).toLocaleString()} تومان\n`;
                     } else {
                         text += `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان\n`;
                     }
-                    text += `📐 ${p.area} متر\n📞 ${p.phone}\n\n`;
+                    text += `📐 ${p.area} متر\n📞 ${sanitizeInput(p.phone)}\n\n`;
                 }
             });
             text += '#املاک_حسینی #سبد_خرید';
@@ -1834,7 +1815,7 @@
             }
             const box = document.getElementById('privateMsgBox_' + propertyId);
             const textarea = box.querySelector('textarea');
-            const text = textarea.value.trim();
+            const text = sanitizeInput(textarea.value.trim());
             if (!text) {
                 showToast('⚠️ لطفاً متن پیام را وارد کنید');
                 return;
@@ -1887,11 +1868,11 @@
             const sorted = [...privateMessages].reverse();
             container.innerHTML = sorted.map(p => `
                 <div class="private-msg-item">
-                    <div class="msg-from">👤 ${p.from}</div>
-                    <div style="font-size:13px;color:#333;margin:4px 0;">${p.text}</div>
+                    <div class="msg-from">👤 ${sanitizeInput(p.from)}</div>
+                    <div style="font-size:13px;color:#333;margin:4px 0;">${sanitizeInput(p.text)}</div>
                     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
                         <span class="msg-time">${p.date}</span>
-                        <span style="font-size:11px;color:#888;">ملک: ${getPropertyTitle(p.propertyId)}</span>
+                        <span style="font-size:11px;color:#888;">ملک: ${sanitizeInput(getPropertyTitle(p.propertyId))}</span>
                     </div>
                     <button onclick="deletePrivateMessage(${p.id})">🗑️ حذف</button>
                 </div>
@@ -1913,6 +1894,56 @@
             saveToStorage();
             renderPrivateMessages();
             showToast('🗑️ پیام حذف شد');
+        }
+
+        // ====== بررسی ماهانه ======
+        function checkMonthlyAuto() {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            
+            if (!lastMonthlyCheck) {
+                localStorage.setItem('lastMonthlyCheck', today);
+                return;
+            }
+            
+            const lastDate = new Date(lastMonthlyCheck);
+            const diffMonths = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
+            
+            if (diffMonths >= 1) {
+                if (currentUser?.role === 'admin') {
+                    showToast('📅 زمان بررسی ماهانه املاک فرا رسیده!');
+                }
+                autoDeleteOldProperties();
+                localStorage.setItem('lastMonthlyCheck', today);
+            }
+        }
+
+        function monthlyCheck() {
+            if (currentUser?.role !== 'admin') {
+                showToast('⚠️ فقط مدیر می‌تواند بررسی ماهانه انجام دهد!');
+                return;
+            }
+            autoDeleteOldProperties();
+            localStorage.setItem('lastMonthlyCheck', new Date().toISOString().split('T')[0]);
+            showToast('✅ بررسی ماهانه انجام شد!');
+        }
+
+        function autoDeleteOldProperties() {
+            let deleted = [];
+            properties.forEach((p, index) => {
+                const msg = confirm(`آیا ملک "${p.title}" (کد: ${p.customCode || p.code || 'ندارد'}) هنوز موجود است؟\n"OK" = موجود است / "Cancel" = حذف شود`);
+                if (!msg) {
+                    deleted.push(p.id);
+                }
+            });
+            
+            if (deleted.length > 0) {
+                properties = properties.filter(p => !deleted.includes(p.id));
+                saveToStorage();
+                showToast(`🗑️ ${deleted.length} ملک حذف شد!`);
+            } else {
+                showToast('✅ همه املاک موجود هستند!');
+            }
         }
 
         // ====== فیلترهای کاربر عادی ======
@@ -2015,7 +2046,7 @@
 
         // ====== رندر لیست ======
         function renderList() {
-            const search = document.getElementById('searchBox').value.toLowerCase();
+            const search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
             let filtered = properties;
 
             if (currentUser?.role === 'admin') {
@@ -2051,10 +2082,10 @@
 
             if (search) {
                 filtered = filtered.filter(p => 
-                    p.title.includes(search) || 
-                    p.address.includes(search) || 
-                    (p.code && p.code.includes(search)) ||
-                    (p.customCode && p.customCode.includes(search))
+                    (p.title && p.title.toLowerCase().includes(search)) || 
+                    (p.address && p.address.toLowerCase().includes(search)) || 
+                    (p.code && p.code.toLowerCase().includes(search)) ||
+                    (p.customCode && p.customCode.toLowerCase().includes(search))
                 );
             }
 
@@ -2077,7 +2108,7 @@
                     hiddenHtml = `
                         <div class="hidden-part">
                             <span class="label">🔒 بخش مخفی (فقط مدیر)</span>
-                            <div class="content">${p.hiddenDescription}</div>
+                            <div class="content">${sanitizeInput(p.hiddenDescription)}</div>
                         </div>
                     `;
                 }
@@ -2093,31 +2124,38 @@
                     `;
                 }
 
-                // نمایش کد ملک
                 const displayCode = p.customCode || p.code || 'ندارد';
+
+                // نمایش قیمت با کاما
+                let priceDisplay = '';
+                if (p.type === 'sale') {
+                    priceDisplay = `💰 ${Number(p.price).toLocaleString()} تومان`;
+                } else {
+                    priceDisplay = `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
+                }
 
                 return `
                     <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
                         ${p.pinned ? `<div class="pinned-badge">📌 سنجاق شده</div>` : ''}
-                        <span class="code-badge">#${displayCode}</span>
+                        <span class="code-badge">#${sanitizeInput(displayCode)}</span>
                         <div class="action-btns">
                             ${isAdmin ? `<button class="btn-pin" onclick="togglePin(${p.id})">📌</button>` : ''}
                             ${isAdmin ? `<button class="btn-edit" onclick="editProperty(${p.id})">✏️</button>` : ''}
                             ${isAdmin ? `<button class="btn-delete" onclick="deleteProperty(${p.id})">✕</button>` : ''}
                             ${isUser ? `<button class="btn-cart ${isInCart(p.id) ? 'in-cart' : ''}" onclick="addToCart(${p.id})">${isInCart(p.id) ? '✓' : '🛒'}</button>` : ''}
                         </div>
-                        <h3>${p.title}</h3>
-                        <div class="address">📍 ${p.address}</div>
-                        <div class="price">💰 ${p.type === 'sale' ? Number(p.price).toLocaleString() + ' تومان' : 'رهن: ' + Number(p.rahn).toLocaleString() + ' تومان | کرایه: ' + Number(p.rentPrice).toLocaleString() + ' تومان'}</div>
+                        <h3>${sanitizeInput(p.title)}</h3>
+                        <div class="address">📍 ${sanitizeInput(p.address)}</div>
+                        <div class="price">${priceDisplay}</div>
                         <div class="meta">
                             <span>📐 ${p.area} متر</span>
-                            <span>📞 ${p.phone}</span>
+                            <span>📞 ${sanitizeInput(p.phone)}</span>
                             <span>${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</span>
                             <span>🏷️ ${p.category || 'بدون دسته'}</span>
                             ${p.date ? `<span>📅 ${p.date}</span>` : ''}
                         </div>
                         <div class="desc">
-                            📝 ${p.description}
+                            📝 ${sanitizeInput(p.description)}
                             ${hiddenHtml}
                         </div>
                         ${p.images && p.images.length ? `
@@ -2174,9 +2212,14 @@
         function shareProperty(platform, id) {
             const p = properties.find(prop => prop.id === id);
             if (!p) return;
-            let priceText = p.type === 'sale' ? `💰 قیمت: ${Number(p.price).toLocaleString()} تومان` : `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
+            let priceText = '';
+            if (p.type === 'sale') {
+                priceText = `💰 قیمت: ${Number(p.price).toLocaleString()} تومان`;
+            } else {
+                priceText = `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
+            }
             const code = p.customCode || p.code || 'ندارد';
-            const text = `🏠 *${p.title}*\n🆔 کد: ${code}\n📍 آدرس: ${p.address}\n${priceText}\n📐 متراژ: ${p.area} متر\n🏷️ دسته: ${p.category || 'ندارد'}\n📞 تماس: ${p.phone}\n📝 توضیحات: ${p.description}\n#املاک #${p.type === 'sale' ? 'فروش' : 'اجاره'}`;
+            const text = `🏠 *${sanitizeInput(p.title)}*\n🆔 کد: ${sanitizeInput(code)}\n📍 آدرس: ${sanitizeInput(p.address)}\n${priceText}\n📐 متراژ: ${p.area} متر\n🏷️ دسته: ${p.category || 'ندارد'}\n📞 تماس: ${sanitizeInput(p.phone)}\n📝 توضیحات: ${sanitizeInput(p.description)}\n#املاک #${p.type === 'sale' ? 'فروش' : 'اجاره'}`;
             const url = platform === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(text)}` : `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
             if (url) window.open(url, '_blank');
         }
@@ -2236,7 +2279,7 @@
             const form = document.getElementById('publicMsgForm');
             if (data) {
                 document.getElementById('editMsgId').value = data.id;
-                document.getElementById('fPublicMsg').value = data.text;
+                document.getElementById('fPublicMsg').value = sanitizeInput(data.text);
                 form.querySelector('h3').textContent = '✏️ ویرایش پیام عمومی';
                 form.querySelector('.btn-pink').textContent = '💾 ذخیره تغییرات';
             } else {
@@ -2260,7 +2303,7 @@
                 return;
             }
             const editId = document.getElementById('editMsgId').value;
-            const text = document.getElementById('fPublicMsg').value.trim();
+            const text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
             if (!text) {
                 showToast('⚠️ متن پیام را وارد کنید!');
                 return;
@@ -2319,7 +2362,7 @@
                         <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
                         <span class="msg-date">${p.date}</span>
                     </div>
-                    <div class="msg-text">${p.text}</div>
+                    <div class="msg-text">${sanitizeInput(p.text)}</div>
                     ${isAdmin ? `
                         <div class="msg-actions">
                             <button class="edit-msg" onclick="editPublicMessage(${p.id})">✏️ ویرایش</button>
@@ -2343,12 +2386,13 @@
             }
             const msg = prompt('📢 پیام خود را برای کاربران وارد کنید:');
             if (msg !== null && msg.trim()) {
+                const safeMsg = sanitizeInput(msg.trim());
                 const data = {
-                    text: msg.trim(),
+                    text: safeMsg,
                     date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
                 };
                 localStorage.setItem('amlak_admin_message', JSON.stringify(data));
-                document.getElementById('adminMessage').textContent = '📢 ' + data.text;
+                document.getElementById('adminMessage').textContent = '📢 ' + safeMsg;
                 document.getElementById('adminMsgDate').textContent = data.date;
                 document.getElementById('adminMsgBox').style.display = 'block';
                 document.getElementById('adminMsgActions').style.display = 'flex';
@@ -2366,18 +2410,21 @@
                 showToast('⚠️ هیچ پیامی وجود ندارد!');
                 return;
             }
-            const data = JSON.parse(currentMsg);
-            const newMsg = prompt('✏️ ویرایش پیام مدیر:', data.text);
-            if (newMsg !== null && newMsg.trim()) {
-                const newData = {
-                    text: newMsg.trim(),
-                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
-                };
-                localStorage.setItem('amlak_admin_message', JSON.stringify(newData));
-                document.getElementById('adminMessage').textContent = '📢 ' + newData.text;
-                document.getElementById('adminMsgDate').textContent = newData.date;
-                showToast('✅ پیام مدیر ویرایش شد!');
-            }
+            try {
+                const data = JSON.parse(currentMsg);
+                const newMsg = prompt('✏️ ویرایش پیام مدیر:', data.text);
+                if (newMsg !== null && newMsg.trim()) {
+                    const safeMsg = sanitizeInput(newMsg.trim());
+                    const newData = {
+                        text: safeMsg,
+                        date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
+                    };
+                    localStorage.setItem('amlak_admin_message', JSON.stringify(newData));
+                    document.getElementById('adminMessage').textContent = '📢 ' + safeMsg;
+                    document.getElementById('adminMsgDate').textContent = newData.date;
+                    showToast('✅ پیام مدیر ویرایش شد!');
+                }
+            } catch {}
         }
 
         function deleteAdminMessage() {
