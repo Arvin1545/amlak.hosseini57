@@ -1173,7 +1173,7 @@
 </head>
 <body>
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
     </div>
@@ -1469,23 +1469,17 @@
 
     <script>
         // ============================================================
-        // ====== تنظیمات Supabase ======
+        // ====== تنظیمات ======
         // ============================================================
-        const supabaseUrl = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
-        const supabaseKey = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
+        const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
+        const ADMIN_CREDENTIALS = { '1276923260': '26742674' };
 
         // ============================================================
         // ====== اتصال به Supabase ======
         // ============================================================
         const { createClient } = supabase;
-        const supabaseClient = createClient(supabaseUrl, supabaseKey);
-
-        // ============================================================
-        // ====== اطلاعات مدیران ======
-        // ============================================================
-        const ADMIN_CREDENTIALS = {
-            '1276923260': '26742674'
-        };
+        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentUser = null;
         let isAdmin = false;
@@ -1497,12 +1491,13 @@
         // ============================================================
         // ====== توابع کمکی ======
         // ============================================================
-        function showLoading() {
-            document.getElementById('loadingOverlay').classList.remove('hidden');
-        }
-
-        function hideLoading() {
-            document.getElementById('loadingOverlay').classList.add('hidden');
+        function showLoading(show) {
+            const el = document.getElementById('loadingOverlay');
+            if (show) {
+                el.classList.remove('hidden');
+            } else {
+                el.classList.add('hidden');
+            }
         }
 
         function showToast(msg) {
@@ -1577,95 +1572,142 @@
         async function enterApp() {
             document.getElementById('loginOverlay').classList.add('hidden');
             document.getElementById('mainApp').style.display = 'block';
-            showLoading();
 
+            // نمایش اطلاعات کاربر
+            if (isAdmin) {
+                document.getElementById('welcomeUser').textContent = '👋 خوش آمدید مدیر عزیز!';
+                document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
+                document.getElementById('editProfileBtn').style.display = 'inline-block';
+            } else {
+                document.getElementById('welcomeUser').textContent = '👋 خوش آمدید!';
+                document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
+                document.getElementById('editProfileBtn').style.display = 'none';
+            }
+
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('privateMsgViewer').style.display = 'none';
+            document.getElementById('editProfileForm').style.display = 'none';
+
+            if (isAdmin) {
+                document.getElementById('adminButtons').style.display = 'flex';
+                document.getElementById('adminBackup').style.display = 'flex';
+                document.getElementById('guideBox').style.display = 'block';
+                document.getElementById('userRoleBadge').textContent = '👑 مدیر';
+                document.getElementById('userRoleBadge').style.background = '#FFD700';
+                document.getElementById('userFilterSection').style.display = 'none';
+                document.getElementById('adminFilterSort').style.display = 'flex';
+                document.getElementById('filterTabs').style.display = 'flex';
+
+                const adminMsg = localStorage.getItem('amlak_admin_message');
+                if (adminMsg) {
+                    try {
+                        const msgData = JSON.parse(adminMsg);
+                        document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                        document.getElementById('adminMsgDate').textContent = msgData.date;
+                        document.getElementById('adminMsgBox').style.display = 'block';
+                        document.getElementById('adminMsgActions').style.display = 'flex';
+                    } catch {}
+                }
+            } else {
+                document.getElementById('adminButtons').style.display = 'none';
+                document.getElementById('adminBackup').style.display = 'none';
+                document.getElementById('guideBox').style.display = 'none';
+                document.getElementById('userRoleBadge').textContent = '👤 کاربر';
+                document.getElementById('userRoleBadge').style.background = '#4CAF50';
+                document.getElementById('userFilterSection').style.display = 'block';
+                document.getElementById('adminFilterSort').style.display = 'none';
+                document.getElementById('filterTabs').style.display = 'none';
+
+                const adminMsg = localStorage.getItem('amlak_admin_message');
+                if (adminMsg) {
+                    try {
+                        const msgData = JSON.parse(adminMsg);
+                        document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                        document.getElementById('adminMsgDate').textContent = msgData.date;
+                        document.getElementById('adminMsgBox').style.display = 'block';
+                        document.getElementById('adminMsgActions').style.display = 'none';
+                    } catch {}
+                }
+            }
+
+            updateCartBadge();
+            await loadProperties();
+            renderList();
+            renderPublicMessages();
+            checkMonthlyAuto();
+        }
+
+        // ============================================================
+        // ====== بارگذاری داده‌ها از سرور ======
+        // ============================================================
+        async function loadProperties() {
             try {
-                // دریافت املاک
                 const { data, error } = await supabaseClient
                     .from('properties')
                     .select('*')
                     .order('id', { ascending: false });
 
+                if (!error && data) {
+                    properties = data;
+                    localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                } else {
+                    // اگر خطا بود از داده محلی استفاده کن
+                    const localData = localStorage.getItem('amlak_properties');
+                    if (localData) {
+                        properties = JSON.parse(localData);
+                    }
+                }
+            } catch (e) {
+                // اگر نت وصل نبود از داده محلی استفاده کن
+                const localData = localStorage.getItem('amlak_properties');
+                if (localData) {
+                    properties = JSON.parse(localData);
+                }
+            }
+            updateStats();
+        }
+
+        // ============================================================
+        // ====== ذخیره داده‌ها در سرور و محلی ======
+        // ============================================================
+        async function saveToServer(data) {
+            try {
+                const { error } = await supabaseClient
+                    .from('properties')
+                    .insert([data]);
                 if (error) throw error;
-                properties = data || [];
+                return true;
+            } catch (e) {
+                console.error('خطا در ذخیره در سرور:', e);
+                return false;
+            }
+        }
 
-                // دریافت پیام‌های عمومی
-                publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages')) || [];
+        async function updateOnServer(id, data) {
+            try {
+                const { error } = await supabaseClient
+                    .from('properties')
+                    .update(data)
+                    .eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (e) {
+                console.error('خطا در بروزرسانی سرور:', e);
+                return false;
+            }
+        }
 
-                // دریافت پیام‌های خصوصی (فقط مدیر)
-                if (isAdmin) {
-                    privateMessages = JSON.parse(localStorage.getItem('amlak_private_messages')) || [];
-                }
-
-                hideLoading();
-
-                // نمایش اطلاعات کاربر
-                if (isAdmin) {
-                    document.getElementById('welcomeUser').textContent = '👋 خوش آمدید مدیر عزیز!';
-                    document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
-                    document.getElementById('editProfileBtn').style.display = 'inline-block';
-                } else {
-                    document.getElementById('welcomeUser').textContent = '👋 خوش آمدید!';
-                    document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
-                    document.getElementById('editProfileBtn').style.display = 'none';
-                }
-
-                document.getElementById('publicMsgForm').style.display = 'none';
-                document.getElementById('privateMsgViewer').style.display = 'none';
-                document.getElementById('editProfileForm').style.display = 'none';
-
-                if (isAdmin) {
-                    document.getElementById('adminButtons').style.display = 'flex';
-                    document.getElementById('adminBackup').style.display = 'flex';
-                    document.getElementById('guideBox').style.display = 'block';
-                    document.getElementById('userRoleBadge').textContent = '👑 مدیر';
-                    document.getElementById('userRoleBadge').style.background = '#FFD700';
-                    document.getElementById('userFilterSection').style.display = 'none';
-                    document.getElementById('adminFilterSort').style.display = 'flex';
-                    document.getElementById('filterTabs').style.display = 'flex';
-
-                    const adminMsg = localStorage.getItem('amlak_admin_message');
-                    if (adminMsg) {
-                        try {
-                            const msgData = JSON.parse(adminMsg);
-                            document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
-                            document.getElementById('adminMsgDate').textContent = msgData.date;
-                            document.getElementById('adminMsgBox').style.display = 'block';
-                            document.getElementById('adminMsgActions').style.display = 'flex';
-                        } catch {}
-                    }
-                } else {
-                    document.getElementById('adminButtons').style.display = 'none';
-                    document.getElementById('adminBackup').style.display = 'none';
-                    document.getElementById('guideBox').style.display = 'none';
-                    document.getElementById('userRoleBadge').textContent = '👤 کاربر';
-                    document.getElementById('userRoleBadge').style.background = '#4CAF50';
-                    document.getElementById('userFilterSection').style.display = 'block';
-                    document.getElementById('adminFilterSort').style.display = 'none';
-                    document.getElementById('filterTabs').style.display = 'none';
-
-                    const adminMsg = localStorage.getItem('amlak_admin_message');
-                    if (adminMsg) {
-                        try {
-                            const msgData = JSON.parse(adminMsg);
-                            document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
-                            document.getElementById('adminMsgDate').textContent = msgData.date;
-                            document.getElementById('adminMsgBox').style.display = 'block';
-                            document.getElementById('adminMsgActions').style.display = 'none';
-                        } catch {}
-                    }
-                }
-
-                updateCartBadge();
-                updateStats();
-                renderList();
-                renderPublicMessages();
-                checkMonthlyAuto();
-
-            } catch (error) {
-                hideLoading();
-                showToast('❌ خطا در اتصال به سرور!');
-                console.error(error);
+        async function deleteFromServer(id) {
+            try {
+                const { error } = await supabaseClient
+                    .from('properties')
+                    .delete()
+                    .eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (e) {
+                console.error('خطا در حذف از سرور:', e);
+                return false;
             }
         }
 
@@ -1877,26 +1919,36 @@
             };
 
             try {
-                showLoading();
-                let result;
+                showLoading(true);
+                let success = false;
                 if (editId) {
-                    const { error } = await supabaseClient
-                        .from('properties')
-                        .update(propertyData)
-                        .eq('id', editId);
-                    if (error) throw error;
-                    showToast('✅ ملک ویرایش شد!');
+                    success = await updateOnServer(editId, propertyData);
+                    if (success) {
+                        const index = properties.findIndex(p => p.id == editId);
+                        if (index !== -1) {
+                            properties[index] = { ...properties[index], ...propertyData };
+                        }
+                        showToast('✅ ملک ویرایش شد!');
+                    }
                 } else {
-                    const { error } = await supabaseClient
-                        .from('properties')
-                        .insert([propertyData]);
-                    if (error) throw error;
-                    showToast('✅ ملک با موفقیت ثبت شد!');
+                    const result = await saveToServer(propertyData);
+                    if (result) {
+                        propertyData.id = Date.now();
+                        properties.unshift(propertyData);
+                        showToast('✅ ملک با موفقیت ثبت شد!');
+                    }
                 }
+
+                if (success) {
+                    localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                }
+
                 hideLoading();
                 clearForm();
                 document.getElementById('propertyForm').style.display = 'none';
-                await enterApp();
+                updateStats();
+                renderList();
+
             } catch (error) {
                 hideLoading();
                 showToast('❌ خطا در ذخیره‌سازی!');
@@ -1915,15 +1967,16 @@
             if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
 
             try {
-                showLoading();
-                const { error } = await supabaseClient
-                    .from('properties')
-                    .delete()
-                    .eq('id', id);
-                if (error) throw error;
-                showToast('🗑️ ملک حذف شد');
+                showLoading(true);
+                const success = await deleteFromServer(id);
+                if (success) {
+                    properties = properties.filter(p => p.id !== id);
+                    localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                    showToast('🗑️ ملک حذف شد');
+                    updateStats();
+                    renderList();
+                }
                 hideLoading();
-                await enterApp();
             } catch (error) {
                 hideLoading();
                 showToast('❌ خطا در حذف!');
@@ -1941,24 +1994,28 @@
             }
 
             try {
-                showLoading();
-                // ابتدا همه املاک را unpin کنید
+                showLoading(true);
+                // ابتدا همه را unpin کن
                 for (const p of properties) {
                     if (p.pinned) {
-                        await supabaseClient
-                            .from('properties')
-                            .update({ pinned: false })
-                            .eq('id', p.id);
+                        await updateOnServer(p.id, { pinned: false });
                     }
                 }
-                // سپس ملک مورد نظر را pin کنید
-                await supabaseClient
-                    .from('properties')
-                    .update({ pinned: true })
-                    .eq('id', id);
+                // سپس ملک مورد نظر را pin کن
+                await updateOnServer(id, { pinned: true });
+
+                // به‌روزرسانی لیست محلی
+                for (const p of properties) {
+                    p.pinned = false;
+                }
+                const target = properties.find(p => p.id === id);
+                if (target) target.pinned = true;
+                localStorage.setItem('amlak_properties', JSON.stringify(properties));
+
                 showToast('📌 ملک سنجاق شد!');
                 hideLoading();
-                await enterApp();
+                renderList();
+
             } catch (error) {
                 hideLoading();
                 showToast('❌ خطا!');
@@ -1999,11 +2056,11 @@
                     showToast('👎 دیسلایک شد!');
                 }
 
-                await supabaseClient
-                    .from('properties')
-                    .update({ likes, dislikes })
-                    .eq('id', id);
-                await enterApp();
+                await updateOnServer(id, { likes, dislikes });
+                p.likes = likes;
+                p.dislikes = dislikes;
+                localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                renderList();
 
             } catch (error) {
                 showToast('❌ خطا!');
@@ -2012,7 +2069,7 @@
         }
 
         // ============================================================
-        // ====== پیام‌های عمومی ======
+        // ====== پیام‌های عمومی (محلی) ======
         // ============================================================
         function showPublicMsgForm(data) {
             if (!isAdmin) {
@@ -2168,7 +2225,7 @@
         }
 
         // ============================================================
-        // ====== پیام‌های خصوصی ======
+        // ====== پیام‌های خصوصی (محلی) ======
         // ============================================================
         function viewPrivateMessages() {
             if (!isAdmin) {
@@ -2306,17 +2363,17 @@
                 );
                 if (!msg) {
                     try {
-                        await supabaseClient
-                            .from('properties')
-                            .delete()
-                            .eq('id', p.id);
+                        await deleteFromServer(p.id);
                         deleted++;
                     } catch (e) { console.error(e); }
                 }
             }
             if (deleted > 0) {
+                properties = properties.filter(p => !deleted.includes(p.id));
+                localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 showToast(`🗑️ ${deleted} ملک حذف شد!`);
-                await enterApp();
+                updateStats();
+                renderList();
             } else {
                 showToast('✅ همه املاک موجود هستند!');
             }
@@ -2850,20 +2907,15 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.properties && Array.isArray(data.properties)) {
-                        showLoading();
+                        showLoading(true);
                         // حذف همه املاک قبلی
                         for (const p of properties) {
-                            await supabaseClient
-                                .from('properties')
-                                .delete()
-                                .eq('id', p.id);
+                            await deleteFromServer(p.id);
                         }
                         // افزودن املاک جدید
                         for (const prop of data.properties) {
                             const { id, ...propData } = prop;
-                            await supabaseClient
-                                .from('properties')
-                                .insert([propData]);
+                            await saveToServer(propData);
                         }
 
                         if (data.publicMessages) {
@@ -2878,7 +2930,9 @@
 
                         hideLoading();
                         showToast('📂 داده‌ها بازیابی شدند!');
-                        await enterApp();
+                        await loadProperties();
+                        renderList();
+                        renderPublicMessages();
                     } else {
                         showToast('❌ فایل معتبر نیست!');
                     }
@@ -2990,6 +3044,5 @@
         updateFilterInfo();
         updateCartBadge();
     </script>
-
 </body>
-                </html>
+    </html>
