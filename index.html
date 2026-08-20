@@ -1,0 +1,3005 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>🏠 املاک حسینی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+        }
+        body {
+            background: #f0f2f5;
+            padding: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+        .header {
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            color: white;
+            padding: 18px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+        }
+        .header h1 {
+            font-size: 24px;
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 12px;
+        }
+        .stats {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .stats div {
+            flex: 1;
+            min-width: 60px;
+            background: white;
+            padding: 10px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+        .stats span {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1565C0;
+        }
+        .stats label {
+            font-size: 10px;
+            color: #666;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .btn-group .btn {
+            flex: 1;
+            min-width: 70px;
+            padding: 10px 6px;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            color: white;
+            text-align: center;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn-primary {
+            background: #1565C0;
+        }
+        .btn-success {
+            background: #2E7D32;
+        }
+        .btn-warning {
+            background: #E65100;
+        }
+        .btn-danger {
+            background: #C62828;
+        }
+        .btn-secondary {
+            background: #616161;
+        }
+        .btn-purple {
+            background: #6A1B9A;
+        }
+        .btn-teal {
+            background: #00695C;
+        }
+        .btn-pink {
+            background: #C2185B;
+        }
+        .btn-gold {
+            background: #FF8F00;
+        }
+        .form {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            display: none;
+            margin-bottom: 14px;
+        }
+        .form h3 {
+            color: #1565C0;
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .form label {
+            font-size: 12px;
+            color: #555;
+            display: block;
+            margin-bottom: 3px;
+        }
+        .form input,
+        .form select,
+        .form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .form input:focus,
+        .form select:focus,
+        .form textarea:focus {
+            border-color: #1565C0;
+            outline: none;
+        }
+        .form textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        .form .btn {
+            width: 100%;
+            margin-top: 4px;
+            padding: 12px;
+            font-size: 14px;
+        }
+        .filter-sort {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .filter-sort select,
+        .filter-sort input {
+            flex: 1;
+            min-width: 80px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-tabs button {
+            flex: 1;
+            min-width: 50px;
+            padding: 8px 4px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-tabs button.active {
+            border-color: #1565C0;
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        .property-card {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-right: 5px solid #1565C0;
+            position: relative;
+        }
+        .property-card.sale {
+            border-right-color: #E65100;
+        }
+        .property-card.rent {
+            border-right-color: #C62828;
+        }
+        .property-card.pinned {
+            border: 3px solid #FFD700;
+            background: #FFFDE7;
+        }
+        .property-card .pinned-badge {
+            position: absolute;
+            top: -5px;
+            right: 50%;
+            transform: translateX(50%);
+            background: #FFD700;
+            color: #333;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .property-card .code-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: #1565C0;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .property-card .action-btns {
+            position: absolute;
+            top: 8px;
+            left: 80px;
+            display: flex;
+            gap: 4px;
+        }
+        .property-card .action-btns button {
+            border: none;
+            border-radius: 50%;
+            width: 26px;
+            height: 26px;
+            font-size: 12px;
+            cursor: pointer;
+            color: white;
+        }
+        .property-card .btn-edit {
+            background: #FFA000;
+        }
+        .property-card .btn-delete {
+            background: #C62828;
+        }
+        .property-card .btn-pin {
+            background: #FFD700;
+            color: #333;
+        }
+        .property-card .btn-cart {
+            background: #FF8F00;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .property-card .btn-cart.in-cart {
+            background: #2E7D32;
+        }
+        .property-card h3 {
+            color: #1565C0;
+            margin: 4px 0;
+            font-size: 16px;
+        }
+        .property-card .address {
+            color: #666;
+            font-size: 12px;
+        }
+        .property-card .price {
+            color: #2E7D32;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .property-card .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: #555;
+        }
+        .property-card .desc {
+            background: #f5f5f5;
+            padding: 6px;
+            border-radius: 8px;
+            margin-top: 6px;
+            font-size: 12px;
+            color: #333;
+        }
+        .property-card .desc .hidden-part {
+            background: #fff3cd;
+            border: 1px dashed #ffc107;
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: block;
+            margin-top: 4px;
+        }
+        .property-card .desc .hidden-part .label {
+            font-size: 10px;
+            color: #856404;
+            background: #ffeaa7;
+            padding: 0 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 2px;
+        }
+        .property-card .desc .hidden-part .content {
+            color: #333;
+        }
+        .property-card .media-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 6px;
+        }
+        .property-card .media-gallery img,
+        .property-card .media-gallery video {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+        }
+        .property-card .media-gallery video {
+            background: #000;
+        }
+        .property-card .share-btns {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .property-card .share-btns button {
+            flex: 1;
+            padding: 6px;
+            border: none;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+        .share-whatsapp {
+            background: #25D366;
+        }
+        .share-telegram {
+            background: #0088CC;
+        }
+        .like-section {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+        .like-section button {
+            border: none;
+            background: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 4px 12px;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+        .like-section button:hover {
+            background: #f0f0f0;
+        }
+        .like-section .like-btn {
+            color: #4CAF50;
+        }
+        .like-section .dislike-btn {
+            color: #f44336;
+        }
+        .like-section .count {
+            font-size: 14px;
+            color: #555;
+        }
+        .empty {
+            text-align: center;
+            color: #999;
+            padding: 30px 0;
+        }
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            display: none;
+            z-index: 999;
+            max-width: 90%;
+            text-align: center;
+        }
+        .file-input-wrapper {
+            background: #f5f5f5;
+            padding: 8px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px dashed #bbb;
+        }
+        .file-input-wrapper input {
+            margin-bottom: 2px;
+        }
+        .file-input-wrapper small {
+            font-size: 10px;
+            color: #888;
+        }
+        .chart-container {
+            background: white;
+            padding: 16px;
+            border-radius: 16px;
+            margin: 12px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        .chart-container canvas {
+            max-width: 100%;
+            max-height: 200px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 95%;
+            max-height: 90%;
+            overflow: auto;
+            width: 500px;
+        }
+        .modal-content img,
+        .modal-content video {
+            max-width: 100%;
+            border-radius: 12px;
+        }
+        .modal-close {
+            display: block;
+            margin: 10px auto 0;
+            padding: 10px 30px;
+            background: #C62828;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .backup-section {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .backup-section .btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 8px;
+            font-size: 11px;
+        }
+        .hidden {
+            display: none;
+        }
+        .welcome-box {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-align: center;
+            border-right: 5px solid #2E7D32;
+        }
+        .welcome-box h3 {
+            color: #1B5E20;
+        }
+        .welcome-box p {
+            color: #333;
+            font-size: 13px;
+        }
+        .admin-msg-box {
+            background: #FFF3E0;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border-right: 5px solid #E65100;
+        }
+        .admin-msg-box p {
+            font-size: 13px;
+            color: #333;
+        }
+        .admin-msg-box small {
+            color: #888;
+            font-size: 11px;
+        }
+        .admin-msg-box .msg-actions {
+            margin-top: 6px;
+            display: flex;
+            gap: 6px;
+        }
+        .admin-msg-box .msg-actions button {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            color: white;
+        }
+        .admin-msg-box .msg-actions .del-msg {
+            background: #C62828;
+        }
+        .admin-msg-box .msg-actions .edit-msg {
+            background: #FFA000;
+        }
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        .login-overlay.hidden {
+            display: none;
+        }
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .login-box h2 {
+            color: #1565C0;
+            margin-bottom: 8px;
+        }
+        .login-box p {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+        .login-box input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .login-box input:focus {
+            border-color: #1565C0;
+            outline: none;
+        }
+        .login-box .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            background: #1565C0;
+            margin-top: 10px;
+        }
+        .login-box .btn:active {
+            transform: scale(0.97);
+        }
+        .login-box .btn-success {
+            background: #2E7D32;
+            margin-top: 6px;
+        }
+        .login-hint {
+            font-size: 12px;
+            color: #888;
+            margin-top: 10px;
+            padding: 8px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .admin-badge {
+            display: inline-block;
+            background: #FFD700;
+            color: #333;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background: #C62828;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        .logout-btn:active {
+            transform: scale(0.95);
+        }
+        .guide-box {
+            background: #FFF8E1;
+            border: 2px solid #FFB300;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        .guide-box h4 {
+            color: #E65100;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .guide-box ul {
+            list-style: none;
+            padding: 0;
+            font-size: 12px;
+            color: #333;
+        }
+        .guide-box ul li {
+            padding: 4px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-box ul li:last-child {
+            border-bottom: none;
+        }
+        .guide-box .badge-icon {
+            display: inline-block;
+            background: #1565C0;
+            color: white;
+            padding: 0 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+        .guide-box .badge-icon.green {
+            background: #2E7D32;
+        }
+        .guide-box .badge-icon.orange {
+            background: #E65100;
+        }
+        .guide-box .badge-icon.red {
+            background: #C62828;
+        }
+        .guide-box .badge-icon.gold {
+            background: #FFD700;
+            color: #333;
+        }
+        .guide-box .badge-icon.purple {
+            background: #6A1B9A;
+        }
+        .guide-box .badge-icon.pink {
+            background: #C2185B;
+        }
+        .public-msg-card {
+            background: #E3F2FD;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-right: 5px solid #1565C0;
+        }
+        .public-msg-card .msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .public-msg-card .msg-header .msg-date {
+            font-size: 11px;
+            color: #888;
+        }
+        .public-msg-card .msg-text {
+            font-size: 14px;
+            color: #333;
+            margin-top: 4px;
+        }
+        .public-msg-card .msg-actions {
+            margin-top: 6px;
+            display: flex;
+            gap: 6px;
+        }
+        .public-msg-card .msg-actions button {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            color: white;
+        }
+        .public-msg-card .msg-actions .del-msg {
+            background: #C62828;
+        }
+        .public-msg-card .msg-actions .edit-msg {
+            background: #FFA000;
+        }
+        .public-msg-card .like-section-msg {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+        .public-msg-card .like-section-msg button {
+            border: none;
+            background: none;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+        .public-msg-card .like-section-msg button:hover {
+            background: #f0f0f0;
+        }
+        .public-msg-card .like-section-msg .like-btn {
+            color: #4CAF50;
+        }
+        .public-msg-card .like-section-msg .dislike-btn {
+            color: #f44336;
+        }
+        .public-msg-card .like-section-msg .count {
+            font-size: 13px;
+            color: #555;
+        }
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .category-grid .cat-btn {
+            padding: 14px 8px;
+            border: 3px solid #e0e0e0;
+            border-radius: 16px;
+            background: white;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+        }
+        .category-grid .cat-btn:active {
+            transform: scale(0.95);
+        }
+        .category-grid .cat-btn.active {
+            border-color: #1565C0;
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        .category-grid .cat-btn .icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .type-grid .type-btn {
+            padding: 14px;
+            border: 3px solid #e0e0e0;
+            border-radius: 16px;
+            background: white;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+        }
+        .type-grid .type-btn:active {
+            transform: scale(0.95);
+        }
+        .type-grid .type-btn.active {
+            border-color: #1565C0;
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        .type-grid .type-btn.sale {
+            border-color: #E65100;
+        }
+        .type-grid .type-btn.sale.active {
+            background: #FFF3E0;
+            border-color: #E65100;
+            color: #E65100;
+        }
+        .type-grid .type-btn.rent {
+            border-color: #C62828;
+        }
+        .type-grid .type-btn.rent.active {
+            background: #FFEBEE;
+            border-color: #C62828;
+            color: #C62828;
+        }
+        .selection-info {
+            background: #FFF8E1;
+            padding: 10px 14px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            text-align: center;
+            border-right: 4px solid #FFB300;
+            font-size: 13px;
+            color: #333;
+        }
+        .selection-info strong {
+            color: #1565C0;
+        }
+        .clear-filter-btn {
+            background: #C62828;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-right: 8px;
+        }
+        .clear-filter-btn:active {
+            transform: scale(0.95);
+        }
+        .price-filter-box {
+            background: #E8EAF6;
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-right: 4px solid #3F51B5;
+        }
+        .price-filter-box label {
+            font-size: 12px;
+            color: #555;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .price-filter-box input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .price-filter-box input:focus {
+            border-color: #3F51B5;
+            outline: none;
+        }
+        .price-filter-box .btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            background: #3F51B5;
+        }
+        .price-filter-box .btn:active {
+            transform: scale(0.97);
+        }
+        .price-filter-box .btn-clear {
+            background: #C62828;
+            margin-top: 6px;
+        }
+        .price-filter-box .price-info {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .cart-badge {
+            background: #FF8F00;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 6px;
+        }
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            padding: 20px;
+        }
+        .cart-modal.active {
+            display: flex;
+        }
+        .cart-content {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        .cart-content h3 {
+            color: #1565C0;
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .cart-content h3 button {
+            background: #C62828;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        .cart-item .info {
+            flex: 1;
+        }
+        .cart-item .info .title {
+            font-weight: bold;
+            color: #1565C0;
+            font-size: 14px;
+        }
+        .cart-item .info .detail {
+            font-size: 12px;
+            color: #666;
+        }
+        .cart-item .remove-btn {
+            background: #C62828;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .cart-empty {
+            text-align: center;
+            color: #999;
+            padding: 30px 0;
+        }
+        .cart-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .cart-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+        .cart-actions .clear-cart {
+            background: #C62828;
+        }
+        .cart-actions .share-cart {
+            background: #25D366;
+        }
+        .private-msg-btn {
+            background: #6A1B9A;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 6px;
+        }
+        .private-msg-btn:active {
+            transform: scale(0.95);
+        }
+        .private-msg-box {
+            background: #F3E5F5;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 6px;
+            border-right: 4px solid #6A1B9A;
+            display: none;
+        }
+        .private-msg-box textarea {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 12px;
+            resize: vertical;
+            min-height: 50px;
+        }
+        .private-msg-box textarea:focus {
+            border-color: #6A1B9A;
+            outline: none;
+        }
+        .private-msg-box .send-btn {
+            background: #6A1B9A;
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        .private-msg-box .send-btn:active {
+            transform: scale(0.95);
+        }
+        .private-msg-item {
+            background: #EDE7F6;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+            font-size: 12px;
+            border-right: 3px solid #6A1B9A;
+        }
+        .private-msg-item .msg-from {
+            font-weight: bold;
+            color: #4A148C;
+        }
+        .private-msg-item .msg-time {
+            font-size: 10px;
+            color: #888;
+        }
+        .private-msg-item button {
+            background: #C62828;
+            color: white;
+            border: none;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            cursor: pointer;
+            margin-top: 2px;
+        }
+        .private-msg-item button:active {
+            transform: scale(0.95);
+        }
+        .monthly-check-btn {
+            background: #FF6F00;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+        .monthly-check-btn:active {
+            transform: scale(0.97);
+        }
+        .edit-profile-btn {
+            background: #FF6F00;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-right: 6px;
+        }
+        .edit-profile-btn:active {
+            transform: scale(0.95);
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .loading-overlay.hidden {
+            display: none;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 6px solid #e0e0e0;
+            border-top: 6px solid #1565C0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .loading-text {
+            color: #1565C0;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* استایل دکمه ثبت و ورود */
+        .btn {
+            cursor: pointer;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .login-box .btn-success {
+            background: #2E7D32;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">⏳ در حال اتصال به سرور...</div>
+    </div>
+
+    <!-- ====== صفحه ورود ====== -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>🏠 املاک حسینی</h2>
+            <p>ورود به سیستم</p>
+
+            <input type="text" id="loginUsername" placeholder="نام کاربری" />
+            <input type="password" id="loginPassword" placeholder="رمز عبور" />
+
+            <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
+            <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
+
+            <div class="login-hint" id="loginHint">مدیران: نام کاربری و رمز عبور را وارد کنید</div>
+        </div>
+    </div>
+
+    <!-- ====== بخش اصلی ====== -->
+    <div id="mainApp" style="display:none;">
+        <div class="header">
+            <h1>🏠 املاک حسینی</h1>
+            <p id="welcomeUser">خوش آمدید</p>
+        </div>
+
+        <div class="welcome-box" id="welcomeBox">
+            <h3>👋 به املاک حسینی خوش آمدید</h3>
+            <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
+        </div>
+
+        <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
+            <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
+            <small id="adminMsgDate"></small>
+            <div class="msg-actions" id="adminMsgActions" style="display:none;">
+                <button class="edit-msg" onclick="editAdminMessage()">✏️ ویرایش</button>
+                <button class="del-msg" onclick="deleteAdminMessage()">🗑️ حذف</button>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+            <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
+            <div>
+                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;margin-right:6px;" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
+                <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش پروفایل</button>
+                <button class="logout-btn" onclick="logout()">🚪 خروج</button>
+            </div>
+        </div>
+
+        <!-- ====== فرم ویرایش پروفایل ====== -->
+        <div class="form" id="editProfileForm">
+            <h3>✏️ ویرایش اطلاعات مدیر</h3>
+            <label>نام کاربری جدید</label>
+            <input type="text" id="editName" placeholder="نام کاربری جدید" />
+            <label>شماره موبایل جدید</label>
+            <input type="text" id="editPhone" placeholder="شماره موبایل جدید" />
+            <button class="btn btn-success" onclick="saveProfileChanges()">💾 ذخیره تغییرات</button>
+            <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
+        </div>
+
+        <!-- ====== دفترچه راهنمای مدیر ====== -->
+        <div class="guide-box" id="guideBox" style="display:none;">
+            <h4>📖 دفترچه راهنمای مدیر</h4>
+            <ul>
+                <li><span class="badge-icon">➕</span> افزودن ملک جدید با عکس و فیلم</li>
+                <li><span class="badge-icon green">✏️</span> ویرایش اطلاعات ملک</li>
+                <li><span class="badge-icon red">✕</span> حذف ملک</li>
+                <li><span class="badge-icon gold">📌</span> سنجاق کردن یک ملک در بالای لیست</li>
+                <li><span class="badge-icon purple">📊</span> مشاهده نمودار آماری فروش/اجاره</li>
+                <li><span class="badge-icon orange">📄</span> خروجی گزارش (PDF/Excel)</li>
+                <li><span class="badge-icon">💾</span> پشتیبان‌گیری و بازیابی اطلاعات</li>
+                <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی به همه کاربران (غیر ملک)</li>
+                <li><span class="badge-icon">🔍</span> جستجو، فیلتر دسته و قیمت، مرتب‌سازی</li>
+                <li><span class="badge-icon purple">🔒</span> پنهان کردن بخش‌هایی از توضیحات ملک (فقط مدیر ببیند)</li>
+                <li><span class="badge-icon">💬</span> دریافت پیام خصوصی از کاربران</li>
+                <li><span class="badge-icon orange">📅</span> بررسی ماهانه املاک (هر ۱ ماه)</li>
+            </ul>
+        </div>
+
+        <!-- ====== جدول انتخاب برای کاربران عادی ====== -->
+        <div id="userFilterSection">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <span style="font-size:14px;font-weight:bold;color:#1565C0;">🔍 فیلتر املاک</span>
+                <button class="clear-filter-btn" onclick="clearUserFilters()">🗑️ پاک کردن فیلتر</button>
+            </div>
+            <div class="selection-info" id="filterInfo">
+                <span>یک دسته‌بندی و نوع را انتخاب کنید</span>
+            </div>
+
+            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">دسته‌بندی ملک:</label>
+            <div class="category-grid" id="categoryGrid">
+                <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)"><span class="icon">🏡</span> زمین مسکونی</button>
+                <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)"><span class="icon">🏢</span> زمین تجاری</button>
+                <button class="cat-btn" data-cat="آپارتمان" onclick="selectCategory(this)"><span class="icon">🏢</span> آپارتمان</button>
+                <button class="cat-btn" data-cat="مغازه" onclick="selectCategory(this)"><span class="icon">🛍️</span> مغازه</button>
+                <button class="cat-btn" data-cat="خانه" onclick="selectCategory(this)"><span class="icon">🏠</span> خانه</button>
+                <button class="cat-btn" data-cat="باغ" onclick="selectCategory(this)"><span class="icon">🌳</span> باغ</button>
+                <button class="cat-btn" data-cat="all" onclick="selectCategory(this)"><span class="icon">📋</span> همه</button>
+            </div>
+
+            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">نوع معامله:</label>
+            <div class="type-grid" id="typeGrid">
+                <button class="type-btn sale" data-type="sale" onclick="selectType(this)">💰 فروش</button>
+                <button class="type-btn rent" data-type="rent" onclick="selectType(this)">🔑 اجاره</button>
+                <button class="type-btn" data-type="all" onclick="selectType(this)" style="border-color:#1565C0;">📋 همه</button>
+            </div>
+
+            <div class="price-filter-box" id="priceFilterBox">
+                <div class="price-info" id="priceFilterInfo">💰 محدوده قیمت مورد نظر خود را وارد کنید</div>
+                <div id="salePriceFilter">
+                    <label>حداکثر قیمت (تومان)</label>
+                    <input type="number" id="userMaxPrice" placeholder="مثال: 500000000" />
+                </div>
+                <div id="rentPriceFilter" style="display:none;">
+                    <label>حداکثر رهن (تومان)</label>
+                    <input type="number" id="userMaxRahn" placeholder="مثال: 30000000" />
+                    <label>حداکثر کرایه (تومان)</label>
+                    <input type="number" id="userMaxRent" placeholder="مثال: 1500000" />
+                </div>
+                <button class="btn" onclick="applyUserPriceFilter()">✅ اعمال فیلتر قیمت</button>
+                <button class="btn btn-clear" onclick="clearUserPriceFilter()">🗑️ حذف فیلتر قیمت</button>
+            </div>
+        </div>
+
+        <div class="stats" id="statsContainer">
+            <div><span id="totalCount">0</span><label>کل</label></div>
+            <div><span id="saleCount">0</span><label>فروش</label></div>
+            <div><span id="rentCount">0</span><label>اجاره</label></div>
+            <div><span id="avgPrice">0</span><label>میانگین قیمت</label></div>
+        </div>
+
+        <!-- دکمه‌های مدیریت (فقط برای مدیر) -->
+        <div class="btn-group" id="adminButtons" style="display:none;">
+            <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن ملک</button>
+            <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام عمومی</button>
+            <button class="btn btn-purple" onclick="toggleChart()">📊 نمودار</button>
+            <button class="btn btn-teal" onclick="exportExcel()">📊 Excel</button>
+            <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
+            <button class="btn btn-secondary" onclick="viewPrivateMessages()">💬 پیام‌های کاربران</button>
+            <button class="btn btn-warning" onclick="monthlyCheck()">📅 بررسی ماهانه</button>
+        </div>
+
+        <div class="backup-section" id="adminBackup" style="display:none;">
+            <button class="btn btn-secondary" onclick="backupData()">💾 پشتیبان</button>
+            <button class="btn btn-warning" onclick="document.getElementById('restoreInput').click()">📂 بازیابی</button>
+            <input type="file" id="restoreInput" accept=".json" class="hidden" onchange="restoreData(event)" />
+        </div>
+
+        <!-- فرم ثبت ملک -->
+        <div class="form" id="propertyForm">
+            <h3 id="formTitle">📋 ثبت ملک جدید</h3>
+            <input type="hidden" id="editId" value="" />
+
+            <label>عنوان ملک *</label>
+            <input type="text" id="fTitle" placeholder="مثال: آپارتمان لوکس" />
+
+            <label>کد ملک (اختیاری)</label>
+            <input type="text" id="fCode" placeholder="مثال: MLK-001" />
+
+            <label>دسته‌بندی ملک *</label>
+            <select id="fCategory">
+                <option value="زمین مسکونی">🏡 زمین مسکونی</option>
+                <option value="زمین تجاری">🏢 زمین تجاری</option>
+                <option value="آپارتمان">🏢 آپارتمان</option>
+                <option value="مغازه">🛍️ مغازه</option>
+                <option value="خانه">🏠 خانه</option>
+                <option value="باغ">🌳 باغ</option>
+            </select>
+
+            <label>نوع معامله *</label>
+            <select id="fType" onchange="togglePriceFields()">
+                <option value="sale">💰 فروش</option>
+                <option value="rent">🔑 اجاره</option>
+            </select>
+
+            <div id="saleFields">
+                <label>قیمت فروش (تومان) *</label>
+                <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" oninput="formatPrice(this)" />
+            </div>
+
+            <div id="rentFields" style="display:none;">
+                <label>قیمت رهن (تومان) *</label>
+                <input type="text" id="fRahn" placeholder="مثال: 50,000,000" oninput="formatPrice(this)" />
+                <label>قیمت کرایه (تومان) *</label>
+                <input type="text" id="fRentPrice" placeholder="مثال: 2,000,000" oninput="formatPrice(this)" />
+            </div>
+
+            <label>آدرس *</label>
+            <input type="text" id="fAddress" placeholder="آدرس کامل" />
+
+            <label>متراژ (متر مربع)</label>
+            <input type="number" id="fArea" placeholder="مثال: 120" />
+
+            <label>شماره تماس</label>
+            <input type="text" id="fPhone" placeholder="مثال: 09123456789" />
+
+            <label>توضیحات عمومی (قابل مشاهده برای همه)</label>
+            <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
+
+            <label>🔒 بخش مخفی (فقط مدیر می‌بیند)</label>
+            <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:#6A1B9A;"></textarea>
+            <small style="color:#6A1B9A;font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است و کاربران عادی آن را نمی‌بینند.</small>
+
+            <div class="file-input-wrapper">
+                <label>📸 عکس (حداکثر ۲۰ عدد)</label>
+                <input type="file" id="fImages" accept="image/*" multiple />
+                <small>با Ctrl یا Shift چندتا انتخاب کن (حداکثر ۲۰ عدد)</small>
+            </div>
+            <div class="file-input-wrapper">
+                <label>🎬 فیلم (یک عدد)</label>
+                <input type="file" id="fVideo" accept="video/*" />
+            </div>
+
+            <button class="btn btn-success" onclick="saveProperty()">💾 ذخیره</button>
+            <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
+        </div>
+
+        <!-- فرم پیام عمومی -->
+        <div class="form" id="publicMsgForm">
+            <h3>📢 ارسال پیام عمومی</h3>
+            <input type="hidden" id="editMsgId" value="" />
+            <label>متن پیام *</label>
+            <textarea id="fPublicMsg" placeholder="متن پیام خود را وارد کنید..." style="min-height:80px;"></textarea>
+            <button class="btn btn-pink" onclick="savePublicMessage()">📤 ارسال پیام</button>
+            <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
+        </div>
+
+        <!-- فرم مشاهده پیام‌های خصوصی (فقط مدیر) -->
+        <div class="form" id="privateMsgViewer" style="display:none;">
+            <h3>💬 پیام‌های خصوصی کاربران</h3>
+            <div id="privateMsgList"></div>
+            <button class="btn btn-secondary" onclick="closePrivateMsgViewer()">❌ بستن</button>
+        </div>
+
+        <div class="filter-sort" id="adminFilterSort">
+            <select id="categoryFilter" onchange="renderList()">
+                <option value="all">همه دسته‌ها</option>
+                <option value="زمین مسکونی">زمین مسکونی</option>
+                <option value="زمین تجاری">زمین تجاری</option>
+                <option value="آپارتمان">آپارتمان</option>
+                <option value="مغازه">مغازه</option>
+                <option value="خانه">خانه</option>
+                <option value="باغ">باغ</option>
+            </select>
+            <select id="sortBy" onchange="renderList()">
+                <option value="newest">جدیدترین</option>
+                <option value="oldest">قدیمی‌ترین</option>
+                <option value="price_high">گران‌ترین</option>
+                <option value="price_low">ارزان‌ترین</option>
+            </select>
+            <input type="number" id="minPrice" placeholder="حداقل قیمت" oninput="renderList()" style="min-width:80px;" />
+            <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" style="min-width:80px;" />
+        </div>
+
+        <div class="chart-container" id="chartContainer" style="display:none;">
+            <h4 style="text-align:center;color:#1565C0;">📊 آمار املاک</h4>
+            <canvas id="chartCanvas"></canvas>
+            <div style="text-align:center;margin-top:8px;font-size:12px;color:#666;">
+                <span style="color:#E65100;">🟧 فروش: <span id="chartSaleCount">0</span></span> &nbsp;|&nbsp;
+                <span style="color:#C62828;">🟥 اجاره: <span id="chartRentCount">0</span></span>
+            </div>
+        </div>
+
+        <!-- بخش پیام‌های عمومی -->
+        <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
+
+        <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
+
+        <div class="filter-tabs" id="filterTabs">
+            <button class="active" onclick="setFilter('all', this)">همه</button>
+            <button onclick="setFilter('sale', this)">💰 فروش</button>
+            <button onclick="setFilter('rent', this)">🔑 اجاره</button>
+        </div>
+
+        <div id="propertyList"></div>
+
+        <!-- مودال سبد خرید -->
+        <div class="cart-modal" id="cartModal">
+            <div class="cart-content">
+                <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
+                <div id="cartList"></div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
+            <div class="modal-content" id="modalContent"></div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+    </div>
+
+    <script>
+        // ============================================================
+        // ====== تنظیمات Supabase (با آدرس و کلید شما) ======
+        // ============================================================
+        const supabaseUrl = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
+        const supabaseKey = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
+
+        // ============================================================
+        // ====== اتصال به Supabase ======
+        // ============================================================
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // ============================================================
+        // ====== اطلاعات مدیران ======
+        // ============================================================
+        const ADMIN_CREDENTIALS = {
+            '1276923260': '26742674'
+        };
+
+        let currentUser = null;
+        let isAdmin = false;
+        let properties = [];
+        let publicMessages = [];
+        let privateMessages = [];
+        let cartItems = JSON.parse(localStorage.getItem('amlak_cart')) || [];
+
+        // ============================================================
+        // ====== توابع کمکی ======
+        // ============================================================
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.add('hidden');
+        }
+
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.style.display = 'block';
+            clearTimeout(t._hide);
+            t._hide = setTimeout(() => t.style.display = 'none', 3000);
+        }
+
+        function sanitizeInput(text) {
+            if (!text) return '';
+            return text.replace(/<[^>]*>/g, '').replace(/[<>]/g, '');
+        }
+
+        function formatPrice(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            if (value === '') { input.value = ''; return; }
+            let number = parseInt(value);
+            input.value = number.toLocaleString('en-US');
+        }
+
+        function getRawNumber(formattedValue) {
+            return formattedValue.replace(/,/g, '');
+        }
+
+        // ============================================================
+        // ====== توابع ورود و خروج ======
+        // ============================================================
+        function loginAdmin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!username || !password) {
+                showToast('⚠️ لطفاً نام کاربری و رمز عبور را وارد کنید');
+                return;
+            }
+
+            if (ADMIN_CREDENTIALS[username] && ADMIN_CREDENTIALS[username] === password) {
+                isAdmin = true;
+                currentUser = { username };
+                localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+                showToast('✅ خوش آمدید مدیر عزیز!');
+                enterApp();
+            } else {
+                showToast('❌ نام کاربری یا رمز عبور اشتباه است');
+            }
+        }
+
+        function loginUser() {
+            isAdmin = false;
+            currentUser = { username: 'کاربر' };
+            localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+            showToast('👋 خوش آمدید!');
+            enterApp();
+        }
+
+        function logout() {
+            localStorage.removeItem('amlak_user');
+            currentUser = null;
+            isAdmin = false;
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginOverlay').classList.remove('hidden');
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            showToast('🚪 خروج موفق');
+        }
+
+        // ============================================================
+        // ====== ورود به برنامه ======
+        // ============================================================
+        async function enterApp() {
+            document.getElementById('loginOverlay').classList.add('hidden');
+            document.getElementById('mainApp').style.display = 'block';
+            showLoading();
+
+            try {
+                // دریافت املاک
+                const { data, error } = await supabaseClient
+                    .from('properties')
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) throw error;
+                properties = data || [];
+
+                // دریافت پیام‌های عمومی
+                publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages')) || [];
+
+                // دریافت پیام‌های خصوصی (فقط مدیر)
+                if (isAdmin) {
+                    privateMessages = JSON.parse(localStorage.getItem('amlak_private_messages')) || [];
+                }
+
+                hideLoading();
+
+                // نمایش اطلاعات کاربر
+                if (isAdmin) {
+                    document.getElementById('welcomeUser').textContent = '👋 خوش آمدید مدیر عزیز!';
+                    document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
+                    document.getElementById('editProfileBtn').style.display = 'inline-block';
+                } else {
+                    document.getElementById('welcomeUser').textContent = '👋 خوش آمدید!';
+                    document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
+                    document.getElementById('editProfileBtn').style.display = 'none';
+                }
+
+                document.getElementById('publicMsgForm').style.display = 'none';
+                document.getElementById('privateMsgViewer').style.display = 'none';
+                document.getElementById('editProfileForm').style.display = 'none';
+
+                if (isAdmin) {
+                    document.getElementById('adminButtons').style.display = 'flex';
+                    document.getElementById('adminBackup').style.display = 'flex';
+                    document.getElementById('guideBox').style.display = 'block';
+                    document.getElementById('userRoleBadge').textContent = '👑 مدیر';
+                    document.getElementById('userRoleBadge').style.background = '#FFD700';
+                    document.getElementById('userFilterSection').style.display = 'none';
+                    document.getElementById('adminFilterSort').style.display = 'flex';
+                    document.getElementById('filterTabs').style.display = 'flex';
+
+                    const adminMsg = localStorage.getItem('amlak_admin_message');
+                    if (adminMsg) {
+                        try {
+                            const msgData = JSON.parse(adminMsg);
+                            document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                            document.getElementById('adminMsgDate').textContent = msgData.date;
+                            document.getElementById('adminMsgBox').style.display = 'block';
+                            document.getElementById('adminMsgActions').style.display = 'flex';
+                        } catch {}
+                    }
+                } else {
+                    document.getElementById('adminButtons').style.display = 'none';
+                    document.getElementById('adminBackup').style.display = 'none';
+                    document.getElementById('guideBox').style.display = 'none';
+                    document.getElementById('userRoleBadge').textContent = '👤 کاربر';
+                    document.getElementById('userRoleBadge').style.background = '#4CAF50';
+                    document.getElementById('userFilterSection').style.display = 'block';
+                    document.getElementById('adminFilterSort').style.display = 'none';
+                    document.getElementById('filterTabs').style.display = 'none';
+
+                    const adminMsg = localStorage.getItem('amlak_admin_message');
+                    if (adminMsg) {
+                        try {
+                            const msgData = JSON.parse(adminMsg);
+                            document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                            document.getElementById('adminMsgDate').textContent = msgData.date;
+                            document.getElementById('adminMsgBox').style.display = 'block';
+                            document.getElementById('adminMsgActions').style.display = 'none';
+                        } catch {}
+                    }
+                }
+
+                updateCartBadge();
+                updateStats();
+                renderList();
+                renderPublicMessages();
+                checkMonthlyAuto();
+
+            } catch (error) {
+                hideLoading();
+                showToast('❌ خطا در اتصال به سرور!');
+                console.error(error);
+            }
+        }
+
+        // ============================================================
+        // ====== ویرایش پروفایل ======
+        // ============================================================
+        function showEditProfile() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            document.getElementById('editProfileForm').style.display = 'block';
+            document.getElementById('propertyForm').style.display = 'none';
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('privateMsgViewer').style.display = 'none';
+            document.getElementById('chartContainer').style.display = 'none';
+        }
+
+        function hideEditProfile() {
+            document.getElementById('editProfileForm').style.display = 'none';
+        }
+
+        function saveProfileChanges() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            const newName = sanitizeInput(document.getElementById('editName').value.trim());
+            const newPhone = sanitizeInput(document.getElementById('editPhone').value.trim());
+
+            if (!newName || !newPhone) {
+                showToast('⚠️ نام و شماره موبایل الزامی است!');
+                return;
+            }
+
+            localStorage.setItem('amlak_admin_profile', JSON.stringify({ name: newName, phone: newPhone }));
+            showToast('✅ اطلاعات مدیر با موفقیت به‌روزرسانی شد!');
+            hideEditProfile();
+        }
+
+        // ============================================================
+        // ====== توابع قیمت ======
+        // ============================================================
+        function togglePriceFields() {
+            const type = document.getElementById('fType').value;
+            if (type === 'sale') {
+                document.getElementById('saleFields').style.display = 'block';
+                document.getElementById('rentFields').style.display = 'none';
+            } else {
+                document.getElementById('saleFields').style.display = 'none';
+                document.getElementById('rentFields').style.display = 'block';
+            }
+        }
+
+        // ============================================================
+        // ====== آمار ======
+        // ============================================================
+        function updateStats() {
+            const total = properties.length;
+            const sale = properties.filter(p => p.type === 'sale').length;
+            const rent = properties.filter(p => p.type === 'rent').length;
+            const prices = properties.map(p => Number(p.price) || 0);
+            const avg = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
+
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('saleCount').textContent = sale;
+            document.getElementById('rentCount').textContent = rent;
+            document.getElementById('avgPrice').textContent = avg.toLocaleString();
+            document.getElementById('chartSaleCount').textContent = sale;
+            document.getElementById('chartRentCount').textContent = rent;
+        }
+
+        // ============================================================
+        // ====== فرم ملک ======
+        // ============================================================
+        function toggleForm(data) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!');
+                return;
+            }
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('privateMsgViewer').style.display = 'none';
+            document.getElementById('editProfileForm').style.display = 'none';
+            const form = document.getElementById('propertyForm');
+            const title = document.getElementById('formTitle');
+            if (data) {
+                title.textContent = '✏️ ویرایش ملک';
+                document.getElementById('editId').value = data.id;
+                document.getElementById('fCode').value = sanitizeInput(data.customCode) || '';
+                document.getElementById('fTitle').value = sanitizeInput(data.title) || '';
+                document.getElementById('fCategory').value = data.category || 'آپارتمان';
+                document.getElementById('fType').value = data.type || 'sale';
+                togglePriceFields();
+                if (data.type === 'sale') {
+                    document.getElementById('fPrice').value = Number(data.price).toLocaleString('en-US');
+                } else {
+                    document.getElementById('fRahn').value = Number(data.rahn).toLocaleString('en-US');
+                    document.getElementById('fRentPrice').value = Number(data.rentPrice).toLocaleString('en-US');
+                }
+                document.getElementById('fAddress').value = sanitizeInput(data.address) || '';
+                document.getElementById('fArea').value = data.area || '';
+                document.getElementById('fPhone').value = sanitizeInput(data.phone) || '';
+                document.getElementById('fDescription').value = sanitizeInput(data.description) || '';
+                document.getElementById('fHiddenDescription').value = sanitizeInput(data.hiddenDescription) || '';
+                form.style.display = 'block';
+            } else {
+                title.textContent = '📋 ثبت ملک جدید';
+                document.getElementById('editId').value = '';
+                clearForm();
+                form.style.display = form.style.display === 'block' ? 'none' : 'block';
+                if (form.style.display === 'block') {
+                    togglePriceFields();
+                }
+            }
+            document.getElementById('chartContainer').style.display = 'none';
+        }
+
+        function clearForm() {
+            document.getElementById('fCode').value = '';
+            document.getElementById('fTitle').value = '';
+            document.getElementById('fCategory').value = 'آپارتمان';
+            document.getElementById('fType').value = 'sale';
+            document.getElementById('fPrice').value = '';
+            document.getElementById('fRahn').value = '';
+            document.getElementById('fRentPrice').value = '';
+            document.getElementById('fAddress').value = '';
+            document.getElementById('fArea').value = '';
+            document.getElementById('fPhone').value = '';
+            document.getElementById('fDescription').value = '';
+            document.getElementById('fHiddenDescription').value = '';
+            document.getElementById('fImages').value = '';
+            document.getElementById('fVideo').value = '';
+            togglePriceFields();
+        }
+
+        function generateCode() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const count = properties.length + 1;
+            return `MLK-${year}-${String(count).padStart(3, '0')}`;
+        }
+
+        // ============================================================
+        // ====== ذخیره ملک ======
+        // ============================================================
+        async function saveProperty() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!');
+                return;
+            }
+
+            const editId = document.getElementById('editId').value;
+            const customCode = sanitizeInput(document.getElementById('fCode').value.trim());
+            const title = sanitizeInput(document.getElementById('fTitle').value.trim());
+            const category = document.getElementById('fCategory').value;
+            const type = document.getElementById('fType').value;
+            const address = sanitizeInput(document.getElementById('fAddress').value.trim());
+            const area = document.getElementById('fArea').value.trim() || '0';
+            const phone = sanitizeInput(document.getElementById('fPhone').value.trim()) || '---';
+            const description = sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات';
+            const hiddenDescription = sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '';
+
+            let price = '0',
+                rahn = '0',
+                rentPrice = '0';
+
+            if (type === 'sale') {
+                const priceRaw = getRawNumber(document.getElementById('fPrice').value);
+                if (!priceRaw || priceRaw === '') {
+                    showToast('⚠️ قیمت فروش را وارد کنید!');
+                    return;
+                }
+                price = priceRaw;
+            } else {
+                const rahnRaw = getRawNumber(document.getElementById('fRahn').value);
+                const rentRaw = getRawNumber(document.getElementById('fRentPrice').value);
+                rahn = rahnRaw || '0';
+                if (!rentRaw || rentRaw === '') {
+                    showToast('⚠️ قیمت کرایه را وارد کنید!');
+                    return;
+                }
+                rentPrice = rentRaw;
+                price = rentPrice;
+            }
+
+            if (!title || !address) {
+                showToast('⚠️ عنوان و آدرس الزامی است!');
+                return;
+            }
+
+            const propertyData = {
+                customCode: customCode || generateCode(),
+                title,
+                category,
+                type,
+                price,
+                rahn,
+                rentPrice,
+                address,
+                area,
+                phone,
+                description,
+                hiddenDescription,
+                date: new Date().toLocaleDateString('fa-IR'),
+                likes: 0,
+                dislikes: 0,
+                pinned: false,
+                lastCheck: new Date().toISOString().split('T')[0]
+            };
+
+            try {
+                showLoading();
+                let result;
+                if (editId) {
+                    const { error } = await supabaseClient
+                        .from('properties')
+                        .update(propertyData)
+                        .eq('id', editId);
+                    if (error) throw error;
+                    showToast('✅ ملک ویرایش شد!');
+                } else {
+                    const { error } = await supabaseClient
+                        .from('properties')
+                        .insert([propertyData]);
+                    if (error) throw error;
+                    showToast('✅ ملک با موفقیت ثبت شد!');
+                }
+                hideLoading();
+                clearForm();
+                document.getElementById('propertyForm').style.display = 'none';
+                await enterApp();
+            } catch (error) {
+                hideLoading();
+                showToast('❌ خطا در ذخیره‌سازی!');
+                console.error(error);
+            }
+        }
+
+        // ============================================================
+        // ====== حذف ملک ======
+        // ============================================================
+        async function deleteProperty(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند حذف کند!');
+                return;
+            }
+            if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
+
+            try {
+                showLoading();
+                const { error } = await supabaseClient
+                    .from('properties')
+                    .delete()
+                    .eq('id', id);
+                if (error) throw error;
+                showToast('🗑️ ملک حذف شد');
+                hideLoading();
+                await enterApp();
+            } catch (error) {
+                hideLoading();
+                showToast('❌ خطا در حذف!');
+                console.error(error);
+            }
+        }
+
+        // ============================================================
+        // ====== سنجاق کردن ======
+        // ============================================================
+        async function togglePin(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند سنجاق کند!');
+                return;
+            }
+
+            try {
+                showLoading();
+                // ابتدا همه املاک را unpin کنید
+                for (const p of properties) {
+                    if (p.pinned) {
+                        await supabaseClient
+                            .from('properties')
+                            .update({ pinned: false })
+                            .eq('id', p.id);
+                    }
+                }
+                // سپس ملک مورد نظر را pin کنید
+                await supabaseClient
+                    .from('properties')
+                    .update({ pinned: true })
+                    .eq('id', id);
+                showToast('📌 ملک سنجاق شد!');
+                hideLoading();
+                await enterApp();
+            } catch (error) {
+                hideLoading();
+                showToast('❌ خطا!');
+                console.error(error);
+            }
+        }
+
+        // ============================================================
+        // ====== لایک/دیسلایک ======
+        // ============================================================
+        async function likeProperty(id, type) {
+            if (isAdmin) {
+                showToast('⚠️ مدیر نمی‌تواند لایک یا دیسلایک کند!');
+                return;
+            }
+
+            const key = 'amlak_like_prop_' + id + '_' + (currentUser?.username || 'user');
+            const userLike = localStorage.getItem(key);
+
+            try {
+                const p = properties.find(item => item.id === id);
+                if (!p) return;
+
+                let likes = p.likes || 0;
+                let dislikes = p.dislikes || 0;
+
+                if (type === 'like') {
+                    if (userLike === 'like') { showToast('شما قبلاً این ملک را لایک کرده‌اید'); return; }
+                    if (userLike === 'dislike') dislikes--;
+                    likes++;
+                    localStorage.setItem(key, 'like');
+                    showToast('❤️ لایک شد!');
+                } else {
+                    if (userLike === 'dislike') { showToast('شما قبلاً این ملک را دیسلایک کرده‌اید'); return; }
+                    if (userLike === 'like') likes--;
+                    dislikes++;
+                    localStorage.setItem(key, 'dislike');
+                    showToast('👎 دیسلایک شد!');
+                }
+
+                await supabaseClient
+                    .from('properties')
+                    .update({ likes, dislikes })
+                    .eq('id', id);
+                await enterApp();
+
+            } catch (error) {
+                showToast('❌ خطا!');
+                console.error(error);
+            }
+        }
+
+        // ============================================================
+        // ====== پیام‌های عمومی ======
+        // ============================================================
+        function showPublicMsgForm(data) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!');
+                return;
+            }
+            document.getElementById('propertyForm').style.display = 'none';
+            document.getElementById('chartContainer').style.display = 'none';
+            document.getElementById('privateMsgViewer').style.display = 'none';
+            document.getElementById('editProfileForm').style.display = 'none';
+            const form = document.getElementById('publicMsgForm');
+            if (data) {
+                document.getElementById('editMsgId').value = data.id;
+                document.getElementById('fPublicMsg').value = sanitizeInput(data.text);
+                form.querySelector('h3').textContent = '✏️ ویرایش پیام عمومی';
+                form.querySelector('.btn-pink').textContent = '💾 ذخیره تغییرات';
+            } else {
+                document.getElementById('editMsgId').value = '';
+                document.getElementById('fPublicMsg').value = '';
+                form.querySelector('h3').textContent = '📢 ارسال پیام عمومی';
+                form.querySelector('.btn-pink').textContent = '📤 ارسال پیام';
+            }
+            form.style.display = 'block';
+        }
+
+        function hidePublicMsgForm() {
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('fPublicMsg').value = '';
+            document.getElementById('editMsgId').value = '';
+        }
+
+        function savePublicMessage() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!');
+                return;
+            }
+            const editId = document.getElementById('editMsgId').value;
+            const text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
+
+            if (!text) {
+                showToast('⚠️ متن پیام را وارد کنید!');
+                return;
+            }
+
+            publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages')) || [];
+
+            if (editId) {
+                const index = publicMessages.findIndex(p => p.id == editId);
+                if (index !== -1) {
+                    publicMessages[index].text = text;
+                    showToast('✅ پیام ویرایش شد!');
+                }
+            } else {
+                publicMessages.push({
+                    id: Date.now(),
+                    text: text,
+                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
+                    likes: 0,
+                    dislikes: 0
+                });
+                showToast('✅ پیام عمومی ارسال شد!');
+            }
+
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            hidePublicMsgForm();
+            renderPublicMessages();
+        }
+
+        function deletePublicMessage(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند حذف کند!');
+                return;
+            }
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            publicMessages = publicMessages.filter(p => p.id !== id);
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            renderPublicMessages();
+            showToast('🗑️ پیام حذف شد');
+        }
+
+        function editPublicMessage(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            const data = publicMessages.find(p => p.id === id);
+            if (data) showPublicMsgForm(data);
+        }
+
+        function renderPublicMessages() {
+            const container = document.getElementById('publicMessagesContainer');
+            if (!publicMessages.length) {
+                container.innerHTML = '';
+                return;
+            }
+            const isAdmin = isAdmin;
+            container.innerHTML = publicMessages.map(p => `
+                    <div class="public-msg-card">
+                        <div class="msg-header">
+                            <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
+                            <span class="msg-date">${p.date}</span>
+                        </div>
+                        <div class="msg-text">${sanitizeInput(p.text)}</div>
+                        ${isAdmin ? `
+                            <div class="msg-actions">
+                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')">✏️ ویرایش</button>
+                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')">🗑️ حذف</button>
+                            </div>
+                        ` : ''}
+                        <div class="like-section-msg">
+                            <button class="like-btn" onclick="likePublicMessage('${p.id}', 'like')">❤️</button>
+                            <span class="count">${p.likes || 0}</span>
+                            <button class="dislike-btn" onclick="likePublicMessage('${p.id}', 'dislike')">👎</button>
+                            <span class="count">${p.dislikes || 0}</span>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function likePublicMessage(id, type) {
+            if (isAdmin) {
+                showToast('⚠️ مدیر نمی‌تواند لایک یا دیسلایک کند!');
+                return;
+            }
+
+            const key = 'amlak_like_msg_' + id + '_' + (currentUser?.username || 'user');
+            const userLike = localStorage.getItem(key);
+
+            const p = publicMessages.find(item => item.id == id);
+            if (!p) return;
+
+            let likes = p.likes || 0;
+            let dislikes = p.dislikes || 0;
+
+            if (type === 'like') {
+                if (userLike === 'like') { showToast('شما قبلاً این پیام را لایک کرده‌اید'); return; }
+                if (userLike === 'dislike') dislikes--;
+                likes++;
+                localStorage.setItem(key, 'like');
+                showToast('❤️ لایک شد!');
+            } else {
+                if (userLike === 'dislike') { showToast('شما قبلاً این پیام را دیسلایک کرده‌اید'); return; }
+                if (userLike === 'like') likes--;
+                dislikes++;
+                localStorage.setItem(key, 'dislike');
+                showToast('👎 دیسلایک شد!');
+            }
+
+            p.likes = likes;
+            p.dislikes = dislikes;
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            renderPublicMessages();
+        }
+
+        // ============================================================
+        // ====== پیام‌های خصوصی ======
+        // ============================================================
+        function viewPrivateMessages() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند پیام‌ها را ببیند!');
+                return;
+            }
+            document.getElementById('privateMsgViewer').style.display = 'block';
+            document.getElementById('propertyForm').style.display = 'none';
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('chartContainer').style.display = 'none';
+            document.getElementById('editProfileForm').style.display = 'none';
+            renderPrivateMessages();
+        }
+
+        function closePrivateMsgViewer() {
+            document.getElementById('privateMsgViewer').style.display = 'none';
+        }
+
+        function renderPrivateMessages() {
+            const container = document.getElementById('privateMsgList');
+            privateMessages = JSON.parse(localStorage.getItem('amlak_private_messages')) || [];
+            if (!privateMessages.length) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی از کاربران دریافت نشده است</div>';
+                return;
+            }
+            const sorted = [...privateMessages].reverse();
+            container.innerHTML = sorted.map(p => `
+                    <div class="private-msg-item">
+                        <div class="msg-from">👤 ${sanitizeInput(p.from)}</div>
+                        <div style="font-size:13px;color:#333;margin:4px 0;">${sanitizeInput(p.text)}</div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                            <span class="msg-time">${p.date}</span>
+                            <span style="font-size:11px;color:#888;">ملک: ${sanitizeInput(getPropertyTitle(p.propertyId))}</span>
+                        </div>
+                        <button onclick="deletePrivateMessage('${p.id}')">🗑️ حذف</button>
+                    </div>
+                `).join('');
+        }
+
+        function getPropertyTitle(id) {
+            const p = properties.find(prop => prop.id === id);
+            return p ? p.title : 'نامشخص';
+        }
+
+        function deletePrivateMessage(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند حذف کند!');
+                return;
+            }
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            privateMessages = privateMessages.filter(p => p.id !== id);
+            localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
+            renderPrivateMessages();
+            showToast('🗑️ پیام حذف شد');
+        }
+
+        function togglePrivateMsg(id) {
+            const box = document.getElementById('privateMsgBox_' + id);
+            box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
+        }
+
+        function sendPrivateMessage(propertyId) {
+            if (isAdmin) {
+                showToast('⚠️ مدیر نمی‌تواند به خودش پیام بفرستد!');
+                return;
+            }
+
+            const box = document.getElementById('privateMsgBox_' + propertyId);
+            const textarea = box.querySelector('textarea');
+            const text = sanitizeInput(textarea.value.trim());
+
+            if (!text) {
+                showToast('⚠️ لطفاً متن پیام را وارد کنید');
+                return;
+            }
+
+            privateMessages = JSON.parse(localStorage.getItem('amlak_private_messages')) || [];
+            privateMessages.push({
+                id: Date.now(),
+                propertyId: propertyId,
+                from: currentUser?.username || 'کاربر',
+                to: 'مدیر',
+                text: text,
+                date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
+                read: false
+            });
+
+            textarea.value = '';
+            box.style.display = 'none';
+            localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
+            showToast('✅ پیام شما به مدیر ارسال شد!');
+        }
+
+        // ============================================================
+        // ====== بررسی ماهانه ======
+        // ============================================================
+        function checkMonthlyAuto() {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const lastMonthlyCheck = localStorage.getItem('lastMonthlyCheck');
+
+            if (!lastMonthlyCheck) {
+                localStorage.setItem('lastMonthlyCheck', today);
+                return;
+            }
+
+            const lastDate = new Date(lastMonthlyCheck);
+            const diffMonths = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
+
+            if (diffMonths >= 1) {
+                if (isAdmin) {
+                    showToast('📅 زمان بررسی ماهانه املاک فرا رسیده!');
+                }
+                autoDeleteOldProperties();
+                localStorage.setItem('lastMonthlyCheck', today);
+            }
+        }
+
+        async function monthlyCheck() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند بررسی ماهانه انجام دهد!');
+                return;
+            }
+            await autoDeleteOldProperties();
+            localStorage.setItem('lastMonthlyCheck', new Date().toISOString().split('T')[0]);
+            showToast('✅ بررسی ماهانه انجام شد!');
+        }
+
+        async function autoDeleteOldProperties() {
+            let deleted = 0;
+            for (const p of properties) {
+                const msg = confirm(
+                    `آیا ملک "${p.title}" (کد: ${p.customCode || p.code || 'ندارد'}) هنوز موجود است؟\n"OK" = موجود است / "Cancel" = حذف شود`
+                );
+                if (!msg) {
+                    try {
+                        await supabaseClient
+                            .from('properties')
+                            .delete()
+                            .eq('id', p.id);
+                        deleted++;
+                    } catch (e) { console.error(e); }
+                }
+            }
+            if (deleted > 0) {
+                showToast(`🗑️ ${deleted} ملک حذف شد!`);
+                await enterApp();
+            } else {
+                showToast('✅ همه املاک موجود هستند!');
+            }
+        }
+
+        // ============================================================
+        // ====== فیلترهای کاربر عادی ======
+        // ============================================================
+        let userCategoryFilter = 'all';
+        let userTypeFilter = 'all';
+        let userMaxPrice = 0;
+        let userMaxRahn = 0;
+        let userMaxRent = 0;
+        let userPriceFilterActive = false;
+
+        function selectCategory(btn) {
+            document.querySelectorAll('.category-grid .cat-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            userCategoryFilter = btn.dataset.cat;
+            updateFilterInfo();
+            renderList();
+        }
+
+        function selectType(btn) {
+            document.querySelectorAll('.type-grid .type-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            userTypeFilter = btn.dataset.type;
+
+            if (userTypeFilter === 'sale') {
+                document.getElementById('salePriceFilter').style.display = 'block';
+                document.getElementById('rentPriceFilter').style.display = 'none';
+                document.getElementById('priceFilterInfo').textContent = '💰 حداکثر قیمت فروش مورد نظر خود را وارد کنید';
+            } else if (userTypeFilter === 'rent') {
+                document.getElementById('salePriceFilter').style.display = 'none';
+                document.getElementById('rentPriceFilter').style.display = 'block';
+                document.getElementById('priceFilterInfo').textContent = '🔑 حداکثر رهن و کرایه مورد نظر خود را وارد کنید';
+            } else {
+                document.getElementById('salePriceFilter').style.display = 'block';
+                document.getElementById('rentPriceFilter').style.display = 'none';
+                document.getElementById('priceFilterInfo').textContent = '💰 محدوده قیمت مورد نظر خود را وارد کنید';
+            }
+            updateFilterInfo();
+            renderList();
+        }
+
+        function updateFilterInfo() {
+            const info = document.getElementById('filterInfo');
+            const cat = userCategoryFilter === 'all' ? 'همه' : userCategoryFilter;
+            const type = userTypeFilter === 'all' ? 'همه' : (userTypeFilter === 'sale' ? 'فروش' : 'اجاره');
+            let priceText = '';
+            if (userPriceFilterActive) {
+                if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
+                    priceText = ` | حداکثر قیمت: ${Number(userMaxPrice).toLocaleString()} تومان`;
+                } else if (userTypeFilter === 'rent') {
+                    priceText =
+                        ` | حداکثر رهن: ${Number(userMaxRahn).toLocaleString()} | کرایه: ${Number(userMaxRent).toLocaleString()}`;
+                }
+            }
+            info.innerHTML = `<strong>دسته:</strong> ${cat} | <strong>نوع:</strong> ${type}${priceText}`;
+        }
+
+        function clearUserFilters() {
+            document.querySelectorAll('.category-grid .cat-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.type-grid .type-btn').forEach(b => b.classList.remove('active'));
+            userCategoryFilter = 'all';
+            userTypeFilter = 'all';
+            clearUserPriceFilter();
+            updateFilterInfo();
+            renderList();
+        }
+
+        function applyUserPriceFilter() {
+            if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
+                const maxPrice = document.getElementById('userMaxPrice').value.trim();
+                if (!maxPrice) { showToast('⚠️ لطفاً حداکثر قیمت را وارد کنید'); return; }
+                userMaxPrice = Number(maxPrice);
+                userMaxRahn = 0;
+                userMaxRent = 0;
+            } else if (userTypeFilter === 'rent') {
+                const maxRahn = document.getElementById('userMaxRahn').value.trim();
+                const maxRent = document.getElementById('userMaxRent').value.trim();
+                if (!maxRahn && !maxRent) { showToast('⚠️ لطفاً حداقل یکی از فیلدهای رهن یا کرایه را وارد کنید'); return; }
+                userMaxRahn = Number(maxRahn) || Infinity;
+                userMaxRent = Number(maxRent) || Infinity;
+                userMaxPrice = 0;
+            }
+            userPriceFilterActive = true;
+            updateFilterInfo();
+            renderList();
+            showToast('✅ فیلتر قیمت اعمال شد!');
+        }
+
+        function clearUserPriceFilter() {
+            userMaxPrice = 0;
+            userMaxRahn = 0;
+            userMaxRent = 0;
+            userPriceFilterActive = false;
+            document.getElementById('userMaxPrice').value = '';
+            document.getElementById('userMaxRahn').value = '';
+            document.getElementById('userMaxRent').value = '';
+            updateFilterInfo();
+            renderList();
+            showToast('🗑️ فیلتر قیمت حذف شد');
+        }
+
+        function setFilter(filter, btn) {
+            if (!isAdmin) return;
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderList();
+        }
+
+        let currentFilter = 'all';
+
+        // ============================================================
+        // ====== رندر لیست ======
+        // ============================================================
+        function renderList() {
+            const search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
+            let filtered = [...properties];
+
+            if (isAdmin) {
+                const categoryFilter = document.getElementById('categoryFilter').value;
+                const sortBy = document.getElementById('sortBy').value;
+                const minPrice = Number(document.getElementById('minPrice').value) || 0;
+                const maxPrice = Number(document.getElementById('maxPrice').value) || Infinity;
+
+                if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
+                if (categoryFilter !== 'all') filtered = filtered.filter(p => p.category === categoryFilter);
+                filtered = filtered.filter(p => {
+                    const price = Number(p.price) || 0;
+                    return price >= minPrice && price <= maxPrice;
+                });
+                switch (sortBy) {
+                    case 'newest':
+                        filtered.sort((a, b) => b.id - a.id);
+                        break;
+                    case 'oldest':
+                        filtered.sort((a, b) => a.id - b.id);
+                        break;
+                    case 'price_high':
+                        filtered.sort((a, b) => Number(b.price) - Number(a.price));
+                        break;
+                    case 'price_low':
+                        filtered.sort((a, b) => Number(a.price) - Number(b.price));
+                        break;
+                }
+            } else {
+                if (userCategoryFilter !== 'all') filtered = filtered.filter(p => p.category === userCategoryFilter);
+                if (userTypeFilter !== 'all') filtered = filtered.filter(p => p.type === userTypeFilter);
+                if (userPriceFilterActive) {
+                    if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
+                        filtered = filtered.filter(p => p.type !== 'sale' || Number(p.price) <= userMaxPrice);
+                    } else if (userTypeFilter === 'rent') {
+                        filtered = filtered.filter(p => p.type !== 'rent' || (Number(p.rahn) <= userMaxRahn && Number(p
+                            .rentPrice) <= userMaxRent));
+                    }
+                }
+                filtered.sort((a, b) => b.id - a.id);
+            }
+
+            if (search) {
+                filtered = filtered.filter(p =>
+                    (p.title && p.title.toLowerCase().includes(search)) ||
+                    (p.address && p.address.toLowerCase().includes(search)) ||
+                    (p.code && p.code.toLowerCase().includes(search)) ||
+                    (p.customCode && p.customCode.toLowerCase().includes(search))
+                );
+            }
+
+            const pinned = filtered.filter(p => p.pinned);
+            const notPinned = filtered.filter(p => !p.pinned);
+            filtered = [...pinned, ...notPinned];
+
+            const container = document.getElementById('propertyList');
+            if (!filtered.length) {
+                container.innerHTML = `<div class="empty">🏠 هیچ ملکی یافت نشد</div>`;
+                return;
+            }
+
+            const isAdmin = isAdmin;
+            const isUser = !isAdmin;
+
+            container.innerHTML = filtered.map(p => {
+                let hiddenHtml = '';
+                if (isAdmin && p.hiddenDescription) {
+                    hiddenHtml = `
+                            <div class="hidden-part">
+                                <span class="label">🔒 بخش مخفی (فقط مدیر)</span>
+                                <div class="content">${sanitizeInput(p.hiddenDescription)}</div>
+                            </div>
+                        `;
+                }
+
+                let privateMsgHtml = '';
+                if (isUser) {
+                    privateMsgHtml = `
+                            <button class="private-msg-btn" onclick="togglePrivateMsg('${p.id}')">💬 ارسال پیام به مدیر</button>
+                            <div class="private-msg-box" id="privateMsgBox_${p.id}">
+                                <textarea placeholder="پیام خود را برای مدیر بنویسید..."></textarea>
+                                <button class="send-btn" onclick="sendPrivateMessage('${p.id}')">📤 ارسال</button>
+                            </div>
+                        `;
+                }
+
+                const displayCode = p.customCode || p.code || 'ندارد';
+
+                let priceDisplay = '';
+                if (p.type === 'sale') {
+                    priceDisplay = `💰 ${Number(p.price).toLocaleString()} تومان`;
+                } else {
+                    priceDisplay =
+                        `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
+                }
+
+                return `
+                        <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
+                            ${p.pinned ? `<div class="pinned-badge">📌 سنجاق شده</div>` : ''}
+                            <span class="code-badge">#${sanitizeInput(displayCode)}</span>
+                            <div class="action-btns">
+                                ${isAdmin ? `<button class="btn-pin" onclick="togglePin('${p.id}')">📌</button>` : ''}
+                                ${isAdmin ? `<button class="btn-edit" onclick="editProperty('${p.id}')">✏️</button>` : ''}
+                                ${isAdmin ? `<button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>` : ''}
+                                ${isUser ? `<button class="btn-cart ${isInCart(p.id) ? 'in-cart' : ''}" onclick="addToCart('${p.id}')">${isInCart(p.id) ? '✓' : '🛒'}</button>` : ''}
+                            </div>
+                            <h3>${sanitizeInput(p.title)}</h3>
+                            <div class="address">📍 ${sanitizeInput(p.address)}</div>
+                            <div class="price">${priceDisplay}</div>
+                            <div class="meta">
+                                <span>📐 ${p.area} متر</span>
+                                <span>📞 ${sanitizeInput(p.phone)}</span>
+                                <span>${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</span>
+                                <span>🏷️ ${p.category || 'بدون دسته'}</span>
+                                ${p.date ? `<span>📅 ${p.date}</span>` : ''}
+                            </div>
+                            <div class="desc">
+                                📝 ${sanitizeInput(p.description)}
+                                ${hiddenHtml}
+                            </div>
+                            <div class="like-section">
+                                <button class="like-btn" onclick="likeProperty('${p.id}', 'like')">❤️</button>
+                                <span class="count">${p.likes || 0}</span>
+                                <button class="dislike-btn" onclick="likeProperty('${p.id}', 'dislike')">👎</button>
+                                <span class="count">${p.dislikes || 0}</span>
+                            </div>
+                            <div class="share-btns">
+                                <button class="share-whatsapp" onclick="shareProperty('whatsapp', '${p.id}')">📱 واتساپ</button>
+                                <button class="share-telegram" onclick="shareProperty('telegram', '${p.id}')">✈️ تلگرام</button>
+                            </div>
+                            ${privateMsgHtml}
+                        </div>
+                    `;
+            }).join('');
+
+            updateStats();
+            if (document.getElementById('chartContainer').style.display !== 'none') drawChart();
+        }
+
+        function editProperty(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            const data = properties.find(p => p.id === id);
+            if (data) toggleForm(data);
+        }
+
+        // ============================================================
+        // ====== سبد خرید ======
+        // ============================================================
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('active');
+            if (document.getElementById('cartModal').classList.contains('active')) renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartList');
+            if (!cartItems.length) {
+                container.innerHTML = `<div class="cart-empty">🛒 سبد خرید شما خالی است</div>`;
+                return;
+            }
+            container.innerHTML = cartItems.map(id => {
+                const p = properties.find(prop => prop.id === id);
+                if (!p) return '';
+                return `
+                        <div class="cart-item">
+                            <div class="info">
+                                <div class="title">${sanitizeInput(p.title)}</div>
+                                <div class="detail">${sanitizeInput(p.address)} | ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</div>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart('${p.id}')">✕</button>
+                        </div>
+                    `;
+            }).join('');
+            container.innerHTML += `
+                    <div class="cart-actions">
+                        <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن سبد</button>
+                        <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
+                    </div>
+                `;
+        }
+
+        function addToCart(id) {
+            if (isAdmin) {
+                showToast('⚠️ مدیر نمی‌تواند سبد خرید داشته باشد!');
+                return;
+            }
+            if (cartItems.includes(id)) {
+                showToast('⚠️ این ملک قبلاً در سبد خرید است!');
+                return;
+            }
+            cartItems.push(id);
+            localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
+            showToast('✅ ملک به سبد خرید اضافه شد!');
+            updateCartBadge();
+        }
+
+        function removeFromCart(id) {
+            cartItems = cartItems.filter(item => item !== id);
+            localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
+            renderCart();
+            updateCartBadge();
+            showToast('🗑️ ملک از سبد خرید حذف شد');
+        }
+
+        function clearCart() {
+            if (!cartItems.length) return;
+            if (!confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) return;
+            cartItems = [];
+            localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
+            renderCart();
+            updateCartBadge();
+            showToast('🗑️ سبد خرید خالی شد');
+        }
+
+        function shareCart() {
+            if (!cartItems.length) {
+                showToast('⚠️ سبد خرید شما خالی است!');
+                return;
+            }
+            let text = '🛒 *لیست املاک مورد علاقه من*\n\n';
+            cartItems.forEach(id => {
+                const p = properties.find(prop => prop.id === id);
+                if (p) {
+                    text += `🏠 ${sanitizeInput(p.title)}\n📍 ${sanitizeInput(p.address)}\n`;
+                    if (p.type === 'sale') {
+                        text += `💰 ${Number(p.price).toLocaleString()} تومان\n`;
+                    } else {
+                        text +=
+                            `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان\n`;
+                    }
+                    text += `📐 ${p.area} متر\n📞 ${sanitizeInput(p.phone)}\n\n`;
+                }
+            });
+            text += '#املاک_حسینی #سبد_خرید';
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function updateCartBadge() {
+            document.getElementById('cartCount').textContent = cartItems.length;
+        }
+
+        function isInCart(id) {
+            return cartItems.includes(id);
+        }
+
+        // ============================================================
+        // ====== اشتراک‌گذاری ملک ======
+        // ============================================================
+        function shareProperty(platform, id) {
+            const p = properties.find(prop => prop.id === id);
+            if (!p) return;
+            let priceText = '';
+            if (p.type === 'sale') {
+                priceText = `💰 قیمت: ${Number(p.price).toLocaleString()} تومان`;
+            } else {
+                priceText =
+                    `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
+            }
+            const code = p.customCode || p.code || 'ندارد';
+            const text =
+                `🏠 *${sanitizeInput(p.title)}*\n🆔 کد: ${sanitizeInput(code)}\n📍 آدرس: ${sanitizeInput(p.address)}\n${priceText}\n📐 متراژ: ${p.area} متر\n🏷️ دسته: ${p.category || 'ندارد'}\n📞 تماس: ${sanitizeInput(p.phone)}\n📝 توضیحات: ${sanitizeInput(p.description)}\n#املاک #${p.type === 'sale' ? 'فروش' : 'اجاره'}`;
+            const url = platform === 'whatsapp' ? `https://wa.me/?text=${encodeURIComponent(text)}` :
+                `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+            if (url) window.open(url, '_blank');
+        }
+
+        // ============================================================
+        // ====== نمودار ======
+        // ============================================================
+        function toggleChart() {
+            const container = document.getElementById('chartContainer');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            if (container.style.display === 'block') drawChart();
+            document.getElementById('propertyForm').style.display = 'none';
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('privateMsgViewer').style.display = 'none';
+            document.getElementById('editProfileForm').style.display = 'none';
+        }
+
+        function drawChart() {
+            const canvas = document.getElementById('chartCanvas');
+            const ctx = canvas.getContext('2d');
+            const sale = properties.filter(p => p.type === 'sale').length;
+            const rent = properties.filter(p => p.type === 'rent').length;
+            const total = sale + rent || 1;
+
+            canvas.width = 300;
+            canvas.height = 200;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const cx = 100,
+                cy = 100,
+                r = 70;
+            const angles = [(sale / total) * 2 * Math.PI, (rent / total) * 2 * Math.PI];
+            const colors = ['#E65100', '#C62828'];
+            let start = -Math.PI / 2;
+            angles.forEach((a, i) => {
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, start + a);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                start += a;
+            });
+
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Tahoma';
+            ctx.fillText('🟧 فروش: ' + sale, 10, 180);
+            ctx.fillText('🟥 اجاره: ' + rent, 10, 195);
+            ctx.fillStyle = '#1565C0';
+            ctx.font = '14px Tahoma';
+            ctx.fillText('کل: ' + total, 10, 20);
+        }
+
+        // ============================================================
+        // ====== خروجی PDF و Excel ======
+        // ============================================================
+        function exportPDF() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!');
+                return;
+            }
+            if (!properties.length) {
+                showToast('⚠️ هیچ ملکی برای خروجی وجود ندارد!');
+                return;
+            }
+            let text = '=== گزارش املاک ===\n';
+            text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
+            text += 'تعداد کل: ' + properties.length + '\n';
+            text += 'فروش: ' + properties.filter(p => p.type === 'sale').length + '\n';
+            text += 'اجاره: ' + properties.filter(p => p.type === 'rent').length + '\n\n--- لیست املاک ---\n\n';
+            properties.forEach((p, i) => {
+                text += (i + 1) + '. ' + p.title + '\n';
+                text += '   کد: ' + (p.customCode || p.code || 'ندارد') + '\n';
+                text += '   دسته: ' + p.category + '\n';
+                text += '   نوع: ' + (p.type === 'sale' ? 'فروش' : 'اجاره') + '\n';
+                if (p.type === 'sale') text += '   قیمت فروش: ' + Number(p.price).toLocaleString() + ' تومان\n';
+                else {
+                    text += '   رهن: ' + Number(p.rahn).toLocaleString() + ' تومان\n';
+                    text += '   کرایه: ' + Number(p.rentPrice).toLocaleString() + ' تومان\n';
+                }
+                text += '   آدرس: ' + p.address + '\n';
+                text += '   متراژ: ' + p.area + ' متر\n';
+                text += '   تماس: ' + p.phone + '\n';
+                text += '   توضیحات: ' + p.description + '\n';
+                if (p.hiddenDescription) text += '   🔒 بخش مخفی: ' + p.hiddenDescription + '\n';
+                text += '   لایک: ' + (p.likes || 0) + '\n';
+                text += '   دیسلایک: ' + (p.dislikes || 0) + '\n';
+                text += '   --------------------\n';
+            });
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'گزارش_املاک_' + new Date().toISOString().slice(0, 10) + '.txt';
+            link.click();
+            showToast('📄 گزارش دانلود شد!');
+        }
+
+        function exportExcel() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!');
+                return;
+            }
+            if (!properties.length) {
+                showToast('⚠️ هیچ ملکی برای خروجی وجود ندارد!');
+                return;
+            }
+            let csv =
+                'کد,عنوان,دسته,نوع,قیمت فروش,رهن,کرایه,آدرس,متراژ,تماس,توضیحات,بخش مخفی,تاریخ,لایک,دیسلایک\n';
+            properties.forEach(p => {
+                csv +=
+                    `"${p.customCode || p.code || ''}","${p.title}","${p.category}","${p.type === 'sale' ? 'فروش' : 'اجاره'}","${p.type === 'sale' ? p.price : ''}","${p.type === 'rent' ? p.rahn : ''}","${p.type === 'rent' ? p.rentPrice : ''}","${p.address}","${p.area}","${p.phone}","${p.description}","${p.hiddenDescription || ''}","${p.date || ''}","${p.likes || 0}","${p.dislikes || 0}"\n`;
+            });
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'املاک_' + new Date().toISOString().slice(0, 10) + '.csv';
+            link.click();
+            showToast('📊 فایل Excel دانلود شد!');
+        }
+
+        // ============================================================
+        // ====== پشتیبان ======
+        // ============================================================
+        function backupData() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!');
+                return;
+            }
+            const data = JSON.stringify({ properties, publicMessages, privateMessages, cartItems }, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'amlak_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+            link.click();
+            showToast('💾 پشتیبان گرفته شد!');
+        }
+
+        function restoreData(event) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند بازیابی کند!');
+                return;
+            }
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.properties && Array.isArray(data.properties)) {
+                        showLoading();
+                        // حذف همه املاک قبلی
+                        for (const p of properties) {
+                            await supabaseClient
+                                .from('properties')
+                                .delete()
+                                .eq('id', p.id);
+                        }
+                        // افزودن املاک جدید
+                        for (const prop of data.properties) {
+                            const { id, ...propData } = prop;
+                            await supabaseClient
+                                .from('properties')
+                                .insert([propData]);
+                        }
+
+                        if (data.publicMessages) {
+                            localStorage.setItem('amlak_public_messages', JSON.stringify(data.publicMessages));
+                        }
+                        if (data.privateMessages) {
+                            localStorage.setItem('amlak_private_messages', JSON.stringify(data.privateMessages));
+                        }
+                        if (data.cartItems) {
+                            localStorage.setItem('amlak_cart', JSON.stringify(data.cartItems));
+                        }
+
+                        hideLoading();
+                        showToast('📂 داده‌ها بازیابی شدند!');
+                        await enterApp();
+                    } else {
+                        showToast('❌ فایل معتبر نیست!');
+                    }
+                } catch (err) {
+                    hideLoading();
+                    showToast('❌ خطا در خواندن فایل!');
+                    console.error(err);
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ============================================================
+        // ====== پیام اختصاصی مدیر ======
+        // ============================================================
+        function sendAdminMessage() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند پیام بفرستد!');
+                return;
+            }
+            const msg = prompt('📢 پیام خود را برای کاربران وارد کنید:');
+            if (msg !== null && msg.trim()) {
+                const safeMsg = sanitizeInput(msg.trim());
+                const data = {
+                    text: safeMsg,
+                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
+                };
+                localStorage.setItem('amlak_admin_message', JSON.stringify(data));
+                document.getElementById('adminMessage').textContent = '📢 ' + safeMsg;
+                document.getElementById('adminMsgDate').textContent = data.date;
+                document.getElementById('adminMsgBox').style.display = 'block';
+                document.getElementById('adminMsgActions').style.display = 'flex';
+                showToast('✅ پیام مدیر ارسال شد!');
+            }
+        }
+
+        function editAdminMessage() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            const currentMsg = localStorage.getItem('amlak_admin_message');
+            if (!currentMsg) {
+                showToast('⚠️ هیچ پیامی وجود ندارد!');
+                return;
+            }
+            try {
+                const data = JSON.parse(currentMsg);
+                const newMsg = prompt('✏️ ویرایش پیام مدیر:', data.text);
+                if (newMsg !== null && newMsg.trim()) {
+                    const safeMsg = sanitizeInput(newMsg.trim());
+                    const newData = {
+                        text: safeMsg,
+                        date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
+                    };
+                    localStorage.setItem('amlak_admin_message', JSON.stringify(newData));
+                    document.getElementById('adminMessage').textContent = '📢 ' + safeMsg;
+                    document.getElementById('adminMsgDate').textContent = newData.date;
+                    showToast('✅ پیام مدیر ویرایش شد!');
+                }
+            } catch {}
+        }
+
+        function deleteAdminMessage() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند حذف کند!');
+                return;
+            }
+            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
+            localStorage.removeItem('amlak_admin_message');
+            document.getElementById('adminMsgBox').style.display = 'none';
+            showToast('🗑️ پیام مدیر حذف شد');
+        }
+
+        // ============================================================
+        // ====== نمایش مدیا ======
+        // ============================================================
+        function showMedia(src, type) {
+            const modal = document.getElementById('mediaModal');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = type === 'image' ? `<img src="${src}" style="max-height:80vh;" />` :
+                `<video controls autoplay style="max-height:80vh;max-width:100%;"><source src="${src}" /></video>`;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('mediaModal').classList.remove('active');
+        }
+
+        // ============================================================
+        // ====== شروع برنامه ======
+        // ============================================================
+        const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
+        if (savedUser) {
+            currentUser = savedUser;
+            if (ADMIN_CREDENTIALS[currentUser.username]) {
+                isAdmin = true;
+                enterApp();
+            } else {
+                isAdmin = false;
+                enterApp();
+            }
+        } else {
+            document.getElementById('loginOverlay').classList.remove('hidden');
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+        updateFilterInfo();
+        updateCartBadge();
+    </script>
+
+</body>
+  </html>
