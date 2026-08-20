@@ -1169,17 +1169,6 @@
             font-size: 16px;
             font-weight: bold;
         }
-
-        /* استایل دکمه ثبت و ورود */
-        .btn {
-            cursor: pointer;
-        }
-        .btn:active {
-            transform: scale(0.97);
-        }
-        .login-box .btn-success {
-            background: #2E7D32;
-        }
     </style>
 </head>
 <body>
@@ -1480,7 +1469,7 @@
 
     <script>
         // ============================================================
-        // ====== تنظیمات Supabase (با آدرس و کلید شما) ======
+        // ====== تنظیمات Supabase ======
         // ============================================================
         const supabaseUrl = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const supabaseKey = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
@@ -1488,7 +1477,8 @@
         // ============================================================
         // ====== اتصال به Supabase ======
         // ============================================================
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+        const { createClient } = supabase;
+        const supabaseClient = createClient(supabaseUrl, supabaseKey);
 
         // ============================================================
         // ====== اطلاعات مدیران ======
@@ -3002,4 +2992,4 @@
     </script>
 
 </body>
-  </html>
+                </html>
