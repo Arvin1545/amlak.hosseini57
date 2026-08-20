@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>🏠 املاک حسینی</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <style>
         * {
             margin: 0;
@@ -1469,7 +1471,7 @@
 
     <script>
         // ============================================================
-        // ====== تنظیمات ======
+        // ====== تنظیمات Supabase ======
         // ============================================================
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
@@ -1478,8 +1480,7 @@
         // ============================================================
         // ====== اتصال به Supabase ======
         // ============================================================
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
         let currentUser = null;
         let isAdmin = false;
@@ -1651,18 +1652,12 @@
                     properties = data;
                     localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 } else {
-                    // اگر خطا بود از داده محلی استفاده کن
                     const localData = localStorage.getItem('amlak_properties');
-                    if (localData) {
-                        properties = JSON.parse(localData);
-                    }
+                    if (localData) properties = JSON.parse(localData);
                 }
             } catch (e) {
-                // اگر نت وصل نبود از داده محلی استفاده کن
                 const localData = localStorage.getItem('amlak_properties');
-                if (localData) {
-                    properties = JSON.parse(localData);
-                }
+                if (localData) properties = JSON.parse(localData);
             }
             updateStats();
         }
@@ -1672,9 +1667,7 @@
         // ============================================================
         async function saveToServer(data) {
             try {
-                const { error } = await supabaseClient
-                    .from('properties')
-                    .insert([data]);
+                const { error } = await supabaseClient.from('properties').insert([data]);
                 if (error) throw error;
                 return true;
             } catch (e) {
@@ -1685,10 +1678,7 @@
 
         async function updateOnServer(id, data) {
             try {
-                const { error } = await supabaseClient
-                    .from('properties')
-                    .update(data)
-                    .eq('id', id);
+                const { error } = await supabaseClient.from('properties').update(data).eq('id', id);
                 if (error) throw error;
                 return true;
             } catch (e) {
@@ -1699,10 +1689,7 @@
 
         async function deleteFromServer(id) {
             try {
-                const { error } = await supabaseClient
-                    .from('properties')
-                    .delete()
-                    .eq('id', id);
+                const { error } = await supabaseClient.from('properties').delete().eq('id', id);
                 if (error) throw error;
                 return true;
             } catch (e) {
@@ -1943,14 +1930,14 @@
                     localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 }
 
-                hideLoading();
+                showLoading(false);
                 clearForm();
                 document.getElementById('propertyForm').style.display = 'none';
                 updateStats();
                 renderList();
 
             } catch (error) {
-                hideLoading();
+                showLoading(false);
                 showToast('❌ خطا در ذخیره‌سازی!');
                 console.error(error);
             }
@@ -1976,9 +1963,9 @@
                     updateStats();
                     renderList();
                 }
-                hideLoading();
+                showLoading(false);
             } catch (error) {
-                hideLoading();
+                showLoading(false);
                 showToast('❌ خطا در حذف!');
                 console.error(error);
             }
@@ -2013,11 +2000,11 @@
                 localStorage.setItem('amlak_properties', JSON.stringify(properties));
 
                 showToast('📌 ملک سنجاق شد!');
-                hideLoading();
+                showLoading(false);
                 renderList();
 
             } catch (error) {
-                hideLoading();
+                showLoading(false);
                 showToast('❌ خطا!');
                 console.error(error);
             }
@@ -2928,7 +2915,7 @@
                             localStorage.setItem('amlak_cart', JSON.stringify(data.cartItems));
                         }
 
-                        hideLoading();
+                        showLoading(false);
                         showToast('📂 داده‌ها بازیابی شدند!');
                         await loadProperties();
                         renderList();
@@ -2937,7 +2924,7 @@
                         showToast('❌ فایل معتبر نیست!');
                     }
                 } catch (err) {
-                    hideLoading();
+                    showLoading(false);
                     showToast('❌ خطا در خواندن فایل!');
                     console.error(err);
                 }
@@ -3045,4 +3032,4 @@
         updateCartBadge();
     </script>
 </body>
-    </html>
+                                 </html>
