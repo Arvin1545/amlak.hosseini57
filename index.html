@@ -29,13 +29,8 @@
             margin-bottom: 14px;
             box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
         }
-        .header h1 {
-            font-size: 24px;
-        }
-        .header p {
-            opacity: 0.9;
-            font-size: 12px;
-        }
+        .header h1 { font-size: 24px; }
+        .header p { opacity: 0.9; font-size: 12px; }
         .stats {
             display: flex;
             gap: 6px;
@@ -51,16 +46,13 @@
             text-align: center;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
-        .stats span {
-            display: block;
-            font-size: 18px;
-            font-weight: bold;
-            color: #1565C0;
+        .stats span { display: block; font-size: 18px; font-weight: bold; color: #1565C0; }
+        .stats label { font-size: 10px; color: #666; }
+        .stats .online {
+            background: #E8F5E9;
+            border: 2px solid #2E7D32;
         }
-        .stats label {
-            font-size: 10px;
-            color: #666;
-        }
+        .stats .online span { color: #2E7D32; }
         .btn-group {
             display: flex;
             flex-wrap: wrap;
@@ -80,36 +72,16 @@
             color: white;
             text-align: center;
         }
-        .btn:active {
-            transform: scale(0.97);
-        }
-        .btn-primary {
-            background: #1565C0;
-        }
-        .btn-success {
-            background: #2E7D32;
-        }
-        .btn-warning {
-            background: #E65100;
-        }
-        .btn-danger {
-            background: #C62828;
-        }
-        .btn-secondary {
-            background: #616161;
-        }
-        .btn-purple {
-            background: #6A1B9A;
-        }
-        .btn-teal {
-            background: #00695C;
-        }
-        .btn-pink {
-            background: #C2185B;
-        }
-        .btn-gold {
-            background: #FF8F00;
-        }
+        .btn:active { transform: scale(0.97); }
+        .btn-primary { background: #1565C0; }
+        .btn-success { background: #2E7D32; }
+        .btn-warning { background: #E65100; }
+        .btn-danger { background: #C62828; }
+        .btn-secondary { background: #616161; }
+        .btn-purple { background: #6A1B9A; }
+        .btn-teal { background: #00695C; }
+        .btn-pink { background: #C2185B; }
+        .btn-gold { background: #FF8F00; }
         .form {
             background: white;
             padding: 16px;
@@ -118,21 +90,9 @@
             display: none;
             margin-bottom: 14px;
         }
-        .form h3 {
-            color: #1565C0;
-            margin-bottom: 12px;
-            text-align: center;
-            font-size: 16px;
-        }
-        .form label {
-            font-size: 12px;
-            color: #555;
-            display: block;
-            margin-bottom: 3px;
-        }
-        .form input,
-        .form select,
-        .form textarea {
+        .form h3 { color: #1565C0; margin-bottom: 12px; text-align: center; font-size: 16px; }
+        .form label { font-size: 12px; color: #555; display: block; margin-bottom: 3px; }
+        .form input, .form select, .form textarea {
             width: 100%;
             padding: 10px;
             margin-bottom: 10px;
@@ -141,30 +101,19 @@
             font-size: 13px;
             transition: 0.2s;
         }
-        .form input:focus,
-        .form select:focus,
-        .form textarea:focus {
+        .form input:focus, .form select:focus, .form textarea:focus {
             border-color: #1565C0;
             outline: none;
         }
-        .form textarea {
-            min-height: 60px;
-            resize: vertical;
-        }
-        .form .btn {
-            width: 100%;
-            margin-top: 4px;
-            padding: 12px;
-            font-size: 14px;
-        }
+        .form textarea { min-height: 60px; resize: vertical; }
+        .form .btn { width: 100%; margin-top: 4px; padding: 12px; font-size: 14px; }
         .filter-sort {
             display: flex;
             gap: 6px;
             flex-wrap: wrap;
             margin-bottom: 10px;
         }
-        .filter-sort select,
-        .filter-sort input {
+        .filter-sort select, .filter-sort input {
             flex: 1;
             min-width: 80px;
             padding: 8px;
@@ -204,16 +153,9 @@
             border-right: 5px solid #1565C0;
             position: relative;
         }
-        .property-card.sale {
-            border-right-color: #E65100;
-        }
-        .property-card.rent {
-            border-right-color: #C62828;
-        }
-        .property-card.pinned {
-            border: 3px solid #FFD700;
-            background: #FFFDE7;
-        }
+        .property-card.sale { border-right-color: #E65100; }
+        .property-card.rent { border-right-color: #C62828; }
+        .property-card.pinned { border: 3px solid #FFD700; background: #FFFDE7; }
         .property-card .pinned-badge {
             position: absolute;
             top: -5px;
@@ -253,16 +195,9 @@
             cursor: pointer;
             color: white;
         }
-        .property-card .btn-edit {
-            background: #FFA000;
-        }
-        .property-card .btn-delete {
-            background: #C62828;
-        }
-        .property-card .btn-pin {
-            background: #FFD700;
-            color: #333;
-        }
+        .property-card .btn-edit { background: #FFA000; }
+        .property-card .btn-delete { background: #C62828; }
+        .property-card .btn-pin { background: #FFD700; color: #333; }
         .property-card .btn-cart {
             background: #FF8F00;
             color: white;
@@ -273,23 +208,10 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .property-card .btn-cart.in-cart {
-            background: #2E7D32;
-        }
-        .property-card h3 {
-            color: #1565C0;
-            margin: 4px 0;
-            font-size: 16px;
-        }
-        .property-card .address {
-            color: #666;
-            font-size: 12px;
-        }
-        .property-card .price {
-            color: #2E7D32;
-            font-weight: bold;
-            font-size: 16px;
-        }
+        .property-card .btn-cart.in-cart { background: #2E7D32; }
+        .property-card h3 { color: #1565C0; margin: 4px 0; font-size: 16px; }
+        .property-card .address { color: #666; font-size: 12px; }
+        .property-card .price { color: #2E7D32; font-weight: bold; font-size: 16px; }
         .property-card .meta {
             display: flex;
             flex-wrap: wrap;
@@ -341,9 +263,7 @@
             border: 2px solid #e0e0e0;
             cursor: pointer;
         }
-        .property-card .media-gallery video {
-            background: #000;
-        }
+        .property-card .media-gallery video { background: #000; }
         .property-card .share-btns {
             display: flex;
             gap: 6px;
@@ -360,12 +280,8 @@
             cursor: pointer;
             color: white;
         }
-        .share-whatsapp {
-            background: #25D366;
-        }
-        .share-telegram {
-            background: #0088CC;
-        }
+        .share-whatsapp { background: #25D366; }
+        .share-telegram { background: #0088CC; }
         .like-section {
             display: flex;
             gap: 12px;
@@ -382,19 +298,10 @@
             border-radius: 8px;
             transition: 0.2s;
         }
-        .like-section button:hover {
-            background: #f0f0f0;
-        }
-        .like-section .like-btn {
-            color: #4CAF50;
-        }
-        .like-section .dislike-btn {
-            color: #f44336;
-        }
-        .like-section .count {
-            font-size: 14px;
-            color: #555;
-        }
+        .like-section button:hover { background: #f0f0f0; }
+        .like-section .like-btn { color: #4CAF50; }
+        .like-section .dislike-btn { color: #f44336; }
+        .like-section .count { font-size: 14px; color: #555; }
         .empty {
             text-align: center;
             color: #999;
@@ -430,13 +337,8 @@
             margin-bottom: 10px;
             border: 2px dashed #bbb;
         }
-        .file-input-wrapper input {
-            margin-bottom: 2px;
-        }
-        .file-input-wrapper small {
-            font-size: 10px;
-            color: #888;
-        }
+        .file-input-wrapper input { margin-bottom: 2px; }
+        .file-input-wrapper small { font-size: 10px; color: #888; }
         .chart-container {
             background: white;
             padding: 16px;
@@ -461,9 +363,7 @@
             z-index: 1000;
             padding: 20px;
         }
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
         .modal-content {
             background: white;
             border-radius: 16px;
@@ -473,8 +373,7 @@
             overflow: auto;
             width: 500px;
         }
-        .modal-content img,
-        .modal-content video {
+        .modal-content img, .modal-content video {
             max-width: 100%;
             border-radius: 12px;
         }
@@ -495,15 +394,8 @@
             flex-wrap: wrap;
             margin-bottom: 10px;
         }
-        .backup-section .btn {
-            flex: 1;
-            min-width: 60px;
-            padding: 8px;
-            font-size: 11px;
-        }
-        .hidden {
-            display: none;
-        }
+        .backup-section .btn { flex: 1; min-width: 60px; padding: 8px; font-size: 11px; }
+        .hidden { display: none; }
         .welcome-box {
             background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
             padding: 14px;
@@ -512,13 +404,8 @@
             text-align: center;
             border-right: 5px solid #2E7D32;
         }
-        .welcome-box h3 {
-            color: #1B5E20;
-        }
-        .welcome-box p {
-            color: #333;
-            font-size: 13px;
-        }
+        .welcome-box h3 { color: #1B5E20; }
+        .welcome-box p { color: #333; font-size: 13px; }
         .admin-msg-box {
             background: #FFF3E0;
             padding: 10px;
@@ -526,14 +413,8 @@
             margin-bottom: 12px;
             border-right: 5px solid #E65100;
         }
-        .admin-msg-box p {
-            font-size: 13px;
-            color: #333;
-        }
-        .admin-msg-box small {
-            color: #888;
-            font-size: 11px;
-        }
+        .admin-msg-box p { font-size: 13px; color: #333; }
+        .admin-msg-box small { color: #888; font-size: 11px; }
         .admin-msg-box .msg-actions {
             margin-top: 6px;
             display: flex;
@@ -547,12 +428,8 @@
             cursor: pointer;
             color: white;
         }
-        .admin-msg-box .msg-actions .del-msg {
-            background: #C62828;
-        }
-        .admin-msg-box .msg-actions .edit-msg {
-            background: #FFA000;
-        }
+        .admin-msg-box .msg-actions .del-msg { background: #C62828; }
+        .admin-msg-box .msg-actions .edit-msg { background: #FFA000; }
         .login-overlay {
             position: fixed;
             top: 0;
@@ -566,9 +443,7 @@
             z-index: 2000;
             padding: 20px;
         }
-        .login-overlay.hidden {
-            display: none;
-        }
+        .login-overlay.hidden { display: none; }
         .login-box {
             background: white;
             padding: 30px;
@@ -577,14 +452,31 @@
             width: 100%;
             text-align: center;
         }
-        .login-box h2 {
-            color: #1565C0;
-            margin-bottom: 8px;
+        .login-box h2 { color: #1565C0; margin-bottom: 8px; }
+        .login-box p { color: #666; font-size: 13px; margin-bottom: 16px; }
+        .login-box .role-select {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
         }
-        .login-box p {
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 16px;
+        .login-box .role-select button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .login-box .role-select button.active {
+            border-color: #1565C0;
+            background: #E3F2FD;
+            color: #1565C0;
+        }
+        .login-box .role-select button:active { transform: scale(0.97); }
+        .login-box .login-fields {
+            margin-top: 12px;
         }
         .login-box input {
             width: 100%;
@@ -594,10 +486,7 @@
             border-radius: 10px;
             font-size: 14px;
         }
-        .login-box input:focus {
-            border-color: #1565C0;
-            outline: none;
-        }
+        .login-box input:focus { border-color: #1565C0; outline: none; }
         .login-box .btn {
             width: 100%;
             padding: 12px;
@@ -610,13 +499,8 @@
             background: #1565C0;
             margin-top: 10px;
         }
-        .login-box .btn:active {
-            transform: scale(0.97);
-        }
-        .login-box .btn-success {
-            background: #2E7D32;
-            margin-top: 6px;
-        }
+        .login-box .btn:active { transform: scale(0.97); }
+        .login-box .btn-success { background: #2E7D32; margin-top: 6px; }
         .login-hint {
             font-size: 12px;
             color: #888;
@@ -644,9 +528,7 @@
             cursor: pointer;
             margin-right: 8px;
         }
-        .logout-btn:active {
-            transform: scale(0.95);
-        }
+        .logout-btn:active { transform: scale(0.95); }
         .guide-box {
             background: #FFF8E1;
             border: 2px solid #FFB300;
@@ -674,9 +556,7 @@
             align-items: center;
             gap: 6px;
         }
-        .guide-box ul li:last-child {
-            border-bottom: none;
-        }
+        .guide-box ul li:last-child { border-bottom: none; }
         .guide-box .badge-icon {
             display: inline-block;
             background: #1565C0;
@@ -687,25 +567,12 @@
             min-width: 20px;
             text-align: center;
         }
-        .guide-box .badge-icon.green {
-            background: #2E7D32;
-        }
-        .guide-box .badge-icon.orange {
-            background: #E65100;
-        }
-        .guide-box .badge-icon.red {
-            background: #C62828;
-        }
-        .guide-box .badge-icon.gold {
-            background: #FFD700;
-            color: #333;
-        }
-        .guide-box .badge-icon.purple {
-            background: #6A1B9A;
-        }
-        .guide-box .badge-icon.pink {
-            background: #C2185B;
-        }
+        .guide-box .badge-icon.green { background: #2E7D32; }
+        .guide-box .badge-icon.orange { background: #E65100; }
+        .guide-box .badge-icon.red { background: #C62828; }
+        .guide-box .badge-icon.gold { background: #FFD700; color: #333; }
+        .guide-box .badge-icon.purple { background: #6A1B9A; }
+        .guide-box .badge-icon.pink { background: #C2185B; }
         .public-msg-card {
             background: #E3F2FD;
             padding: 12px;
@@ -740,12 +607,8 @@
             cursor: pointer;
             color: white;
         }
-        .public-msg-card .msg-actions .del-msg {
-            background: #C62828;
-        }
-        .public-msg-card .msg-actions .edit-msg {
-            background: #FFA000;
-        }
+        .public-msg-card .msg-actions .del-msg { background: #C62828; }
+        .public-msg-card .msg-actions .edit-msg { background: #FFA000; }
         .public-msg-card .like-section-msg {
             display: flex;
             gap: 12px;
@@ -762,19 +625,10 @@
             border-radius: 6px;
             transition: 0.2s;
         }
-        .public-msg-card .like-section-msg button:hover {
-            background: #f0f0f0;
-        }
-        .public-msg-card .like-section-msg .like-btn {
-            color: #4CAF50;
-        }
-        .public-msg-card .like-section-msg .dislike-btn {
-            color: #f44336;
-        }
-        .public-msg-card .like-section-msg .count {
-            font-size: 13px;
-            color: #555;
-        }
+        .public-msg-card .like-section-msg button:hover { background: #f0f0f0; }
+        .public-msg-card .like-section-msg .like-btn { color: #4CAF50; }
+        .public-msg-card .like-section-msg .dislike-btn { color: #f44336; }
+        .public-msg-card .like-section-msg .count { font-size: 13px; color: #555; }
         .category-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -793,19 +647,13 @@
             text-align: center;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
-        .category-grid .cat-btn:active {
-            transform: scale(0.95);
-        }
+        .category-grid .cat-btn:active { transform: scale(0.95); }
         .category-grid .cat-btn.active {
             border-color: #1565C0;
             background: #E3F2FD;
             color: #1565C0;
         }
-        .category-grid .cat-btn .icon {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 4px;
-        }
+        .category-grid .cat-btn .icon { font-size: 24px; display: block; margin-bottom: 4px; }
         .type-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -823,30 +671,16 @@
             transition: 0.3s;
             text-align: center;
         }
-        .type-grid .type-btn:active {
-            transform: scale(0.95);
-        }
+        .type-grid .type-btn:active { transform: scale(0.95); }
         .type-grid .type-btn.active {
             border-color: #1565C0;
             background: #E3F2FD;
             color: #1565C0;
         }
-        .type-grid .type-btn.sale {
-            border-color: #E65100;
-        }
-        .type-grid .type-btn.sale.active {
-            background: #FFF3E0;
-            border-color: #E65100;
-            color: #E65100;
-        }
-        .type-grid .type-btn.rent {
-            border-color: #C62828;
-        }
-        .type-grid .type-btn.rent.active {
-            background: #FFEBEE;
-            border-color: #C62828;
-            color: #C62828;
-        }
+        .type-grid .type-btn.sale { border-color: #E65100; }
+        .type-grid .type-btn.sale.active { background: #FFF3E0; border-color: #E65100; color: #E65100; }
+        .type-grid .type-btn.rent { border-color: #C62828; }
+        .type-grid .type-btn.rent.active { background: #FFEBEE; border-color: #C62828; color: #C62828; }
         .selection-info {
             background: #FFF8E1;
             padding: 10px 14px;
@@ -857,9 +691,7 @@
             font-size: 13px;
             color: #333;
         }
-        .selection-info strong {
-            color: #1565C0;
-        }
+        .selection-info strong { color: #1565C0; }
         .clear-filter-btn {
             background: #C62828;
             color: white;
@@ -870,9 +702,7 @@
             cursor: pointer;
             margin-right: 8px;
         }
-        .clear-filter-btn:active {
-            transform: scale(0.95);
-        }
+        .clear-filter-btn:active { transform: scale(0.95); }
         .price-filter-box {
             background: #E8EAF6;
             padding: 14px;
@@ -894,10 +724,7 @@
             font-size: 13px;
             margin-bottom: 8px;
         }
-        .price-filter-box input:focus {
-            border-color: #3F51B5;
-            outline: none;
-        }
+        .price-filter-box input:focus { border-color: #3F51B5; outline: none; }
         .price-filter-box .btn {
             width: 100%;
             padding: 10px;
@@ -909,9 +736,7 @@
             color: white;
             background: #3F51B5;
         }
-        .price-filter-box .btn:active {
-            transform: scale(0.97);
-        }
+        .price-filter-box .btn:active { transform: scale(0.97); }
         .price-filter-box .btn-clear {
             background: #C62828;
             margin-top: 6px;
@@ -944,9 +769,7 @@
             z-index: 1500;
             padding: 20px;
         }
-        .cart-modal.active {
-            display: flex;
-        }
+        .cart-modal.active { display: flex; }
         .cart-content {
             background: white;
             border-radius: 20px;
@@ -980,21 +803,10 @@
             padding: 10px;
             border-bottom: 1px solid #eee;
         }
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-        .cart-item .info {
-            flex: 1;
-        }
-        .cart-item .info .title {
-            font-weight: bold;
-            color: #1565C0;
-            font-size: 14px;
-        }
-        .cart-item .info .detail {
-            font-size: 12px;
-            color: #666;
-        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item .info { flex: 1; }
+        .cart-item .info .title { font-weight: bold; color: #1565C0; font-size: 14px; }
+        .cart-item .info .detail { font-size: 12px; color: #666; }
         .cart-item .remove-btn {
             background: #C62828;
             color: white;
@@ -1025,12 +837,8 @@
             cursor: pointer;
             color: white;
         }
-        .cart-actions .clear-cart {
-            background: #C62828;
-        }
-        .cart-actions .share-cart {
-            background: #25D366;
-        }
+        .cart-actions .clear-cart { background: #C62828; }
+        .cart-actions .share-cart { background: #25D366; }
         .private-msg-btn {
             background: #6A1B9A;
             color: white;
@@ -1041,9 +849,7 @@
             cursor: pointer;
             margin-top: 6px;
         }
-        .private-msg-btn:active {
-            transform: scale(0.95);
-        }
+        .private-msg-btn:active { transform: scale(0.95); }
         .private-msg-box {
             background: #F3E5F5;
             padding: 10px;
@@ -1061,10 +867,7 @@
             resize: vertical;
             min-height: 50px;
         }
-        .private-msg-box textarea:focus {
-            border-color: #6A1B9A;
-            outline: none;
-        }
+        .private-msg-box textarea:focus { border-color: #6A1B9A; outline: none; }
         .private-msg-box .send-btn {
             background: #6A1B9A;
             color: white;
@@ -1075,9 +878,7 @@
             cursor: pointer;
             margin-top: 4px;
         }
-        .private-msg-box .send-btn:active {
-            transform: scale(0.95);
-        }
+        .private-msg-box .send-btn:active { transform: scale(0.95); }
         .private-msg-item {
             background: #EDE7F6;
             padding: 8px 12px;
@@ -1104,9 +905,7 @@
             cursor: pointer;
             margin-top: 2px;
         }
-        .private-msg-item button:active {
-            transform: scale(0.95);
-        }
+        .private-msg-item button:active { transform: scale(0.95); }
         .monthly-check-btn {
             background: #FF6F00;
             color: white;
@@ -1117,9 +916,7 @@
             cursor: pointer;
             margin-bottom: 8px;
         }
-        .monthly-check-btn:active {
-            transform: scale(0.97);
-        }
+        .monthly-check-btn:active { transform: scale(0.97); }
         .edit-profile-btn {
             background: #FF6F00;
             color: white;
@@ -1130,9 +927,7 @@
             cursor: pointer;
             margin-right: 6px;
         }
-        .edit-profile-btn:active {
-            transform: scale(0.95);
-        }
+        .edit-profile-btn:active { transform: scale(0.95); }
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1147,9 +942,7 @@
             flex-direction: column;
             gap: 16px;
         }
-        .loading-overlay.hidden {
-            display: none;
-        }
+        .loading-overlay.hidden { display: none; }
         .spinner {
             width: 48px;
             height: 48px;
@@ -1159,12 +952,8 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         .loading-text {
             color: #1565C0;
@@ -1185,14 +974,18 @@
         <div class="login-box">
             <h2>🏠 املاک حسینی</h2>
             <p>ورود به سیستم</p>
-
-            <input type="text" id="loginUsername" placeholder="نام کاربری" />
-            <input type="password" id="loginPassword" placeholder="رمز عبور" />
-
-            <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
-            <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
-
-            <div class="login-hint" id="loginHint">مدیران: نام کاربری و رمز عبور را وارد کنید</div>
+            <div class="role-select">
+                <button id="roleAdmin" class="active" onclick="selectRole('admin')">👑 مدیر</button>
+                <button id="roleUser" onclick="selectRole('user')">👤 کاربر عادی</button>
+            </div>
+            <div class="login-fields" id="adminFields">
+                <input type="password" id="loginPassword" placeholder="رمز عبور مدیر" />
+                <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
+            </div>
+            <div class="login-fields" id="userFields" style="display:none;">
+                <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
+            </div>
+            <div class="login-hint" id="loginHint">مدیران: رمز عبور را وارد کنید</div>
         </div>
     </div>
 
@@ -1226,13 +1019,10 @@
             </div>
         </div>
 
-        <!-- ====== فرم ویرایش پروفایل ====== -->
         <div class="form" id="editProfileForm">
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
-            <label>نام کاربری جدید</label>
-            <input type="text" id="editName" placeholder="نام کاربری جدید" />
-            <label>شماره موبایل جدید</label>
-            <input type="text" id="editPhone" placeholder="شماره موبایل جدید" />
+            <label>رمز عبور جدید</label>
+            <input type="password" id="editPassword" placeholder="رمز عبور جدید" />
             <button class="btn btn-success" onclick="saveProfileChanges()">💾 ذخیره تغییرات</button>
             <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
         </div>
@@ -1306,6 +1096,7 @@
             <div><span id="saleCount">0</span><label>فروش</label></div>
             <div><span id="rentCount">0</span><label>اجاره</label></div>
             <div><span id="avgPrice">0</span><label>میانگین قیمت</label></div>
+            <div class="online" id="onlineUsers"><span id="onlineCount">0</span><label>👤 آنلاین</label></div>
         </div>
 
         <!-- دکمه‌های مدیریت (فقط برای مدیر) -->
@@ -1329,13 +1120,10 @@
         <div class="form" id="propertyForm">
             <h3 id="formTitle">📋 ثبت ملک جدید</h3>
             <input type="hidden" id="editId" value="" />
-
             <label>عنوان ملک *</label>
             <input type="text" id="fTitle" placeholder="مثال: آپارتمان لوکس" />
-
             <label>کد ملک (اختیاری)</label>
             <input type="text" id="fCode" placeholder="مثال: MLK-001" />
-
             <label>دسته‌بندی ملک *</label>
             <select id="fCategory">
                 <option value="زمین مسکونی">🏡 زمین مسکونی</option>
@@ -1345,41 +1133,32 @@
                 <option value="خانه">🏠 خانه</option>
                 <option value="باغ">🌳 باغ</option>
             </select>
-
             <label>نوع معامله *</label>
             <select id="fType" onchange="togglePriceFields()">
                 <option value="sale">💰 فروش</option>
                 <option value="rent">🔑 اجاره</option>
             </select>
-
             <div id="saleFields">
                 <label>قیمت فروش (تومان) *</label>
                 <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" oninput="formatPrice(this)" />
             </div>
-
             <div id="rentFields" style="display:none;">
                 <label>قیمت رهن (تومان) *</label>
                 <input type="text" id="fRahn" placeholder="مثال: 50,000,000" oninput="formatPrice(this)" />
                 <label>قیمت کرایه (تومان) *</label>
                 <input type="text" id="fRentPrice" placeholder="مثال: 2,000,000" oninput="formatPrice(this)" />
             </div>
-
             <label>آدرس *</label>
             <input type="text" id="fAddress" placeholder="آدرس کامل" />
-
             <label>متراژ (متر مربع)</label>
             <input type="number" id="fArea" placeholder="مثال: 120" />
-
             <label>شماره تماس</label>
             <input type="text" id="fPhone" placeholder="مثال: 09123456789" />
-
             <label>توضیحات عمومی (قابل مشاهده برای همه)</label>
             <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
-
             <label>🔒 بخش مخفی (فقط مدیر می‌بیند)</label>
             <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:#6A1B9A;"></textarea>
             <small style="color:#6A1B9A;font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است و کاربران عادی آن را نمی‌بینند.</small>
-
             <div class="file-input-wrapper">
                 <label>📸 عکس (حداکثر ۲۰ عدد)</label>
                 <input type="file" id="fImages" accept="image/*" multiple />
@@ -1389,7 +1168,6 @@
                 <label>🎬 فیلم (یک عدد)</label>
                 <input type="file" id="fVideo" accept="video/*" />
             </div>
-
             <button class="btn btn-success" onclick="saveProperty()">💾 ذخیره</button>
             <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
         </div>
@@ -1404,7 +1182,6 @@
             <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
         </div>
 
-        <!-- فرم مشاهده پیام‌های خصوصی (فقط مدیر) -->
         <div class="form" id="privateMsgViewer" style="display:none;">
             <h3>💬 پیام‌های خصوصی کاربران</h3>
             <div id="privateMsgList"></div>
@@ -1440,7 +1217,6 @@
             </div>
         </div>
 
-        <!-- بخش پیام‌های عمومی -->
         <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
 
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
@@ -1453,7 +1229,6 @@
 
         <div id="propertyList"></div>
 
-        <!-- مودال سبد خرید -->
         <div class="cart-modal" id="cartModal">
             <div class="cart-content">
                 <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
@@ -1461,7 +1236,6 @@
             </div>
         </div>
 
-        <!-- Modal -->
         <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
             <div class="modal-content" id="modalContent"></div>
         </div>
@@ -1475,30 +1249,63 @@
         // ============================================================
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
-        const ADMIN_CREDENTIALS = { '1276923260': '26742674' };
-
-        // ============================================================
-        // ====== اتصال به Supabase ======
-        // ============================================================
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const MAX_ADMINS = 3;
 
+        // ============================================================
+        // ====== مدیریت مدیران ======
+        // ============================================================
+        function getAdmins() {
+            return JSON.parse(localStorage.getItem('amlak_admins')) || [];
+        }
+
+        function saveAdmins(admins) {
+            localStorage.setItem('amlak_admins', JSON.stringify(admins));
+        }
+
+        function getCurrentAdminId() {
+            return localStorage.getItem('amlak_current_admin_id') || null;
+        }
+
+        function setCurrentAdminId(id) {
+            localStorage.setItem('amlak_current_admin_id', id);
+        }
+
+        function hashPassword(password) {
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                const char = password.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return hash.toString(16);
+        }
+
+        // ============================================================
+        // ====== متغیرها ======
+        // ============================================================
         let currentUser = null;
         let isAdmin = false;
         let properties = [];
         let publicMessages = [];
         let privateMessages = [];
         let cartItems = JSON.parse(localStorage.getItem('amlak_cart')) || [];
+        let onlineUsers = [];
+        let currentFilter = 'all';
+        let userCategoryFilter = 'all';
+        let userTypeFilter = 'all';
+        let userMaxPrice = 0;
+        let userMaxRahn = 0;
+        let userMaxRent = 0;
+        let userPriceFilterActive = false;
 
         // ============================================================
         // ====== توابع کمکی ======
         // ============================================================
         function showLoading(show) {
             const el = document.getElementById('loadingOverlay');
-            if (show) {
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-            }
+            if (show) el.classList.remove('hidden');
+            else el.classList.add('hidden');
         }
 
         function showToast(msg) {
@@ -1526,31 +1333,83 @@
         }
 
         // ============================================================
-        // ====== توابع ورود و خروج ======
+        // ====== مدیریت آنلاین کاربران ======
         // ============================================================
-        function loginAdmin() {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value.trim();
+        function updateOnlineUsers() {
+            if (!isAdmin) return;
+            const userId = getCurrentAdminId();
+            const admins = getAdmins();
+            const allUsers = [...admins, ...JSON.parse(localStorage.getItem('amlak_users') || '[]')];
+            const uniqueUsers = [...new Set(allUsers.map(u => u.id))];
+            document.getElementById('onlineCount').textContent = uniqueUsers.length || 0;
+        }
 
-            if (!username || !password) {
-                showToast('⚠️ لطفاً نام کاربری و رمز عبور را وارد کنید');
-                return;
-            }
-
-            if (ADMIN_CREDENTIALS[username] && ADMIN_CREDENTIALS[username] === password) {
-                isAdmin = true;
-                currentUser = { username };
-                localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-                showToast('✅ خوش آمدید مدیر عزیز!');
-                enterApp();
+        // ============================================================
+        // ====== توابع ورود ======
+        // ============================================================
+        function selectRole(role) {
+            document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
+            if (role === 'admin') {
+                document.getElementById('roleAdmin').classList.add('active');
+                document.getElementById('adminFields').style.display = 'block';
+                document.getElementById('userFields').style.display = 'none';
+                document.getElementById('loginHint').textContent = 'مدیران: رمز عبور را وارد کنید';
             } else {
-                showToast('❌ نام کاربری یا رمز عبور اشتباه است');
+                document.getElementById('roleUser').classList.add('active');
+                document.getElementById('adminFields').style.display = 'none';
+                document.getElementById('userFields').style.display = 'block';
+                document.getElementById('loginHint').textContent = 'کاربران عادی: فقط کلیک کنید';
             }
         }
 
+        function loginAdmin() {
+            const password = document.getElementById('loginPassword').value.trim();
+            if (!password) {
+                showToast('⚠️ رمز عبور را وارد کنید');
+                return;
+            }
+
+            const admins = getAdmins();
+            const hashed = hashPassword(password);
+            const existingAdmin = admins.find(a => a.password === hashed);
+
+            if (existingAdmin) {
+                isAdmin = true;
+                setCurrentAdminId(existingAdmin.id);
+                currentUser = { role: 'admin', id: existingAdmin.id };
+                localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+                showToast('✅ خوش آمدید مدیر عزیز!');
+                enterApp();
+                return;
+            }
+
+            if (admins.length >= MAX_ADMINS) {
+                showToast('❌ تعداد مدیران کامل است!');
+                return;
+            }
+
+            const newAdmin = {
+                id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                password: hashed,
+                created: new Date().toISOString()
+            };
+            admins.push(newAdmin);
+            saveAdmins(admins);
+            isAdmin = true;
+            setCurrentAdminId(newAdmin.id);
+            currentUser = { role: 'admin', id: newAdmin.id };
+            localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+            showToast('✅ مدیر با موفقیت ثبت شد!');
+            enterApp();
+        }
+
         function loginUser() {
+            const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+            const userId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+            users.push({ id: userId, date: new Date().toISOString() });
+            localStorage.setItem('amlak_users', JSON.stringify(users));
             isAdmin = false;
-            currentUser = { username: 'کاربر' };
+            currentUser = { role: 'user', id: userId };
             localStorage.setItem('amlak_user', JSON.stringify(currentUser));
             showToast('👋 خوش آمدید!');
             enterApp();
@@ -1562,9 +1421,51 @@
             isAdmin = false;
             document.getElementById('mainApp').style.display = 'none';
             document.getElementById('loginOverlay').classList.remove('hidden');
-            document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
+            updateOnlineUsers();
             showToast('🚪 خروج موفق');
+        }
+
+        // ============================================================
+        // ====== ویرایش رمز مدیر ======
+        // ============================================================
+        function showEditProfile() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            document.getElementById('editProfileForm').style.display = 'block';
+            document.getElementById('propertyForm').style.display = 'none';
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('privateMsgViewer').style.display = 'none';
+            document.getElementById('chartContainer').style.display = 'none';
+        }
+
+        function hideEditProfile() {
+            document.getElementById('editProfileForm').style.display = 'none';
+            document.getElementById('editPassword').value = '';
+        }
+
+        function saveProfileChanges() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
+                return;
+            }
+            const newPassword = document.getElementById('editPassword').value.trim();
+            if (!newPassword || newPassword.length < 4) {
+                showToast('⚠️ رمز باید حداقل ۴ کاراکتر باشد');
+                return;
+            }
+
+            const admins = getAdmins();
+            const currentId = getCurrentAdminId();
+            const index = admins.findIndex(a => a.id === currentId);
+            if (index !== -1) {
+                admins[index].password = hashPassword(newPassword);
+                saveAdmins(admins);
+                showToast('✅ رمز عبور با موفقیت تغییر کرد!');
+                hideEditProfile();
+            }
         }
 
         // ============================================================
@@ -1574,7 +1475,6 @@
             document.getElementById('loginOverlay').classList.add('hidden');
             document.getElementById('mainApp').style.display = 'block';
 
-            // نمایش اطلاعات کاربر
             if (isAdmin) {
                 document.getElementById('welcomeUser').textContent = '👋 خوش آمدید مدیر عزیز!';
                 document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
@@ -1598,6 +1498,8 @@
                 document.getElementById('userFilterSection').style.display = 'none';
                 document.getElementById('adminFilterSort').style.display = 'flex';
                 document.getElementById('filterTabs').style.display = 'flex';
+                document.getElementById('onlineUsers').style.display = 'block';
+                updateOnlineUsers();
 
                 const adminMsg = localStorage.getItem('amlak_admin_message');
                 if (adminMsg) {
@@ -1618,6 +1520,7 @@
                 document.getElementById('userFilterSection').style.display = 'block';
                 document.getElementById('adminFilterSort').style.display = 'none';
                 document.getElementById('filterTabs').style.display = 'none';
+                document.getElementById('onlineUsers').style.display = 'none';
 
                 const adminMsg = localStorage.getItem('amlak_admin_message');
                 if (adminMsg) {
@@ -1636,6 +1539,10 @@
             renderList();
             renderPublicMessages();
             checkMonthlyAuto();
+            // به‌روزرسانی آنلاین هر ۳۰ ثانیه
+            if (isAdmin) {
+                setInterval(updateOnlineUsers, 30000);
+            }
         }
 
         // ============================================================
@@ -1660,79 +1567,6 @@
                 if (localData) properties = JSON.parse(localData);
             }
             updateStats();
-        }
-
-        // ============================================================
-        // ====== ذخیره داده‌ها در سرور و محلی ======
-        // ============================================================
-        async function saveToServer(data) {
-            try {
-                const { error } = await supabaseClient.from('properties').insert([data]);
-                if (error) throw error;
-                return true;
-            } catch (e) {
-                console.error('خطا در ذخیره در سرور:', e);
-                return false;
-            }
-        }
-
-        async function updateOnServer(id, data) {
-            try {
-                const { error } = await supabaseClient.from('properties').update(data).eq('id', id);
-                if (error) throw error;
-                return true;
-            } catch (e) {
-                console.error('خطا در بروزرسانی سرور:', e);
-                return false;
-            }
-        }
-
-        async function deleteFromServer(id) {
-            try {
-                const { error } = await supabaseClient.from('properties').delete().eq('id', id);
-                if (error) throw error;
-                return true;
-            } catch (e) {
-                console.error('خطا در حذف از سرور:', e);
-                return false;
-            }
-        }
-
-        // ============================================================
-        // ====== ویرایش پروفایل ======
-        // ============================================================
-        function showEditProfile() {
-            if (!isAdmin) {
-                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
-                return;
-            }
-            document.getElementById('editProfileForm').style.display = 'block';
-            document.getElementById('propertyForm').style.display = 'none';
-            document.getElementById('publicMsgForm').style.display = 'none';
-            document.getElementById('privateMsgViewer').style.display = 'none';
-            document.getElementById('chartContainer').style.display = 'none';
-        }
-
-        function hideEditProfile() {
-            document.getElementById('editProfileForm').style.display = 'none';
-        }
-
-        function saveProfileChanges() {
-            if (!isAdmin) {
-                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
-                return;
-            }
-            const newName = sanitizeInput(document.getElementById('editName').value.trim());
-            const newPhone = sanitizeInput(document.getElementById('editPhone').value.trim());
-
-            if (!newName || !newPhone) {
-                showToast('⚠️ نام و شماره موبایل الزامی است!');
-                return;
-            }
-
-            localStorage.setItem('amlak_admin_profile', JSON.stringify({ name: newName, phone: newPhone }));
-            showToast('✅ اطلاعات مدیر با موفقیت به‌روزرسانی شد!');
-            hideEditProfile();
         }
 
         // ============================================================
@@ -1909,20 +1743,27 @@
                 showLoading(true);
                 let success = false;
                 if (editId) {
-                    success = await updateOnServer(editId, propertyData);
-                    if (success) {
+                    const { error } = await supabaseClient
+                        .from('properties')
+                        .update(propertyData)
+                        .eq('id', editId);
+                    if (!error) {
                         const index = properties.findIndex(p => p.id == editId);
                         if (index !== -1) {
                             properties[index] = { ...properties[index], ...propertyData };
                         }
                         showToast('✅ ملک ویرایش شد!');
+                        success = true;
                     }
                 } else {
-                    const result = await saveToServer(propertyData);
-                    if (result) {
-                        propertyData.id = Date.now();
-                        properties.unshift(propertyData);
+                    const { data, error } = await supabaseClient
+                        .from('properties')
+                        .insert([propertyData])
+                        .select();
+                    if (!error && data) {
+                        properties = [...data, ...properties];
                         showToast('✅ ملک با موفقیت ثبت شد!');
+                        success = true;
                     }
                 }
 
@@ -1955,8 +1796,11 @@
 
             try {
                 showLoading(true);
-                const success = await deleteFromServer(id);
-                if (success) {
+                const { error } = await supabaseClient
+                    .from('properties')
+                    .delete()
+                    .eq('id', id);
+                if (!error) {
                     properties = properties.filter(p => p.id !== id);
                     localStorage.setItem('amlak_properties', JSON.stringify(properties));
                     showToast('🗑️ ملک حذف شد');
@@ -1985,11 +1829,17 @@
                 // ابتدا همه را unpin کن
                 for (const p of properties) {
                     if (p.pinned) {
-                        await updateOnServer(p.id, { pinned: false });
+                        await supabaseClient
+                            .from('properties')
+                            .update({ pinned: false })
+                            .eq('id', p.id);
                     }
                 }
                 // سپس ملک مورد نظر را pin کن
-                await updateOnServer(id, { pinned: true });
+                await supabaseClient
+                    .from('properties')
+                    .update({ pinned: true })
+                    .eq('id', id);
 
                 // به‌روزرسانی لیست محلی
                 for (const p of properties) {
@@ -2019,7 +1869,7 @@
                 return;
             }
 
-            const key = 'amlak_like_prop_' + id + '_' + (currentUser?.username || 'user');
+            const key = 'amlak_like_prop_' + id + '_' + (currentUser?.id || 'user');
             const userLike = localStorage.getItem(key);
 
             try {
@@ -2043,7 +1893,10 @@
                     showToast('👎 دیسلایک شد!');
                 }
 
-                await updateOnServer(id, { likes, dislikes });
+                await supabaseClient
+                    .from('properties')
+                    .update({ likes, dislikes })
+                    .eq('id', id);
                 p.likes = likes;
                 p.dislikes = dislikes;
                 localStorage.setItem('amlak_properties', JSON.stringify(properties));
@@ -2182,7 +2035,7 @@
                 return;
             }
 
-            const key = 'amlak_like_msg_' + id + '_' + (currentUser?.username || 'user');
+            const key = 'amlak_like_msg_' + id + '_' + (currentUser?.id || 'user');
             const userLike = localStorage.getItem(key);
 
             const p = publicMessages.find(item => item.id == id);
@@ -2294,7 +2147,7 @@
             privateMessages.push({
                 id: Date.now(),
                 propertyId: propertyId,
-                from: currentUser?.username || 'کاربر',
+                from: 'کاربر',
                 to: 'مدیر',
                 text: text,
                 date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
@@ -2350,7 +2203,10 @@
                 );
                 if (!msg) {
                     try {
-                        await deleteFromServer(p.id);
+                        await supabaseClient
+                            .from('properties')
+                            .delete()
+                            .eq('id', p.id);
                         deleted++;
                     } catch (e) { console.error(e); }
                 }
@@ -2369,13 +2225,6 @@
         // ============================================================
         // ====== فیلترهای کاربر عادی ======
         // ============================================================
-        let userCategoryFilter = 'all';
-        let userTypeFilter = 'all';
-        let userMaxPrice = 0;
-        let userMaxRahn = 0;
-        let userMaxRent = 0;
-        let userPriceFilterActive = false;
-
         function selectCategory(btn) {
             document.querySelectorAll('.category-grid .cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -2473,8 +2322,6 @@
             if (btn) btn.classList.add('active');
             renderList();
         }
-
-        let currentFilter = 'all';
 
         // ============================================================
         // ====== رندر لیست ======
@@ -2897,12 +2744,17 @@
                         showLoading(true);
                         // حذف همه املاک قبلی
                         for (const p of properties) {
-                            await deleteFromServer(p.id);
+                            await supabaseClient
+                                .from('properties')
+                                .delete()
+                                .eq('id', p.id);
                         }
                         // افزودن املاک جدید
                         for (const prop of data.properties) {
                             const { id, ...propData } = prop;
-                            await saveToServer(propData);
+                            await supabaseClient
+                                .from('properties')
+                                .insert([propData]);
                         }
 
                         if (data.publicMessages) {
@@ -3016,15 +2868,23 @@
         const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
         if (savedUser) {
             currentUser = savedUser;
-            if (ADMIN_CREDENTIALS[currentUser.username]) {
-                isAdmin = true;
-                enterApp();
-            } else {
-                isAdmin = false;
-                enterApp();
+            const admins = getAdmins();
+            isAdmin = admins.some(a => a.id === savedUser.id);
+            if (isAdmin) {
+                setCurrentAdminId(savedUser.id);
             }
+            enterApp();
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
+            // اگر تعداد مدیران کامل شده، گزینه مدیر رو مخفی کن
+            const admins = getAdmins();
+            if (admins.length >= MAX_ADMINS) {
+                document.getElementById('roleAdmin').style.display = 'none';
+                document.getElementById('roleUser').classList.add('active');
+                document.getElementById('adminFields').style.display = 'none';
+                document.getElementById('userFields').style.display = 'block';
+                document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. فقط کاربران عادی می‌توانند وارد شوند.';
+            }
         }
 
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
@@ -3032,4 +2892,4 @@
         updateCartBadge();
     </script>
 </body>
-                                 </html>
+                </html>
