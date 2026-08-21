@@ -2104,7 +2104,7 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک ======
+        // ====== ذخیره ملک - نسخه اصلاح شده ======
         // ============================================================
         async function saveProperty() {
             if (!isAdmin) {
@@ -2151,24 +2151,21 @@
                 return;
             }
 
+            // فقط فیلدهایی که در دیتابیس وجود دارند
             const propertyData = {
                 customCode: customCode || generateCode(),
-                title,
-                category,
-                type,
+                title: title,
+                category: category,
+                type: type,
                 price: String(price),
                 rahn: String(rahn),
                 rentPrice: String(rentPrice),
-                address,
+                address: address,
                 area: String(area),
-                phone,
-                description,
-                hiddenDescription,
-                date: new Date().toLocaleDateString('fa-IR'),
-                likes: 0,
-                dislikes: 0,
-                pinned: false,
-                lastCheck: new Date().toISOString().split('T')[0]
+                phone: phone,
+                description: description,
+                hiddenDescription: hiddenDescription,
+                date: new Date().toLocaleDateString('fa-IR')
             };
 
             try {
@@ -2190,7 +2187,7 @@
                         success = true;
                     } else {
                         console.error('Update error:', error);
-                        showToast('❌ خطا در ویرایش!');
+                        showToast('❌ خطا در ویرایش: ' + (error.message || 'خطای ناشناخته'));
                     }
                 } else {
                     const { data, error } = await supabaseClient
@@ -2204,7 +2201,7 @@
                         success = true;
                     } else {
                         console.error('Insert error:', error);
-                        showToast('❌ خطا در ثبت!');
+                        showToast('❌ خطا در ثبت: ' + (error.message || 'خطای ناشناخته'));
                     }
                 }
 
@@ -2260,7 +2257,7 @@
         }
 
         // ============================================================
-        // ====== سنجاق کردن ======
+        // ====== سنجاق کردن - نسخه اصلاح شده ======
         // ============================================================
         async function togglePin(id) {
             if (!isAdmin) {
@@ -2271,6 +2268,7 @@
             try {
                 showLoading(true);
 
+                // اول همه رو از حالت سنجاق خارج کن
                 for (const p of properties) {
                     if (p.pinned) {
                         await supabaseClient
@@ -2280,21 +2278,27 @@
                     }
                 }
 
-                await supabaseClient
+                // بعد ملک مورد نظر رو سنجاق کن
+                const { error } = await supabaseClient
                     .from(TABLE_NAME)
                     .update({ pinned: true })
                     .eq('id', id);
 
-                for (const p of properties) {
-                    p.pinned = false;
+                if (!error) {
+                    // به‌روزرسانی properties محلی
+                    for (const p of properties) {
+                        p.pinned = false;
+                    }
+                    const target = properties.find(p => p.id === id);
+                    if (target) target.pinned = true;
+                    localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                    showToast('📌 ملک سنجاق شد!');
+                    renderList();
+                } else {
+                    showToast('❌ خطا در سنجاق!');
                 }
-                const target = properties.find(p => p.id === id);
-                if (target) target.pinned = true;
-                localStorage.setItem('amlak_properties', JSON.stringify(properties));
 
-                showToast('📌 ملک سنجاق شد!');
                 showLoading(false);
-                renderList();
 
             } catch (error) {
                 showLoading(false);
@@ -2304,7 +2308,7 @@
         }
 
         // ============================================================
-        // ====== لایک/دیسلایک ======
+        // ====== لایک/دیسلایک - نسخه اصلاح شده ======
         // ============================================================
         async function likeProperty(id, type) {
             if (isAdmin) {
@@ -2352,7 +2356,7 @@
 
                 await supabaseClient
                     .from(TABLE_NAME)
-                    .update({ likes, dislikes })
+                    .update({ likes: likes, dislikes: dislikes })
                     .eq('id', id);
 
                 p.likes = likes;
