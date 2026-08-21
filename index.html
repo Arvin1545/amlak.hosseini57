@@ -1239,6 +1239,40 @@
         .admin-msg-edit-area .cancel-msg {
             background: #616161;
         }
+        .admin-select-btn {
+            padding: 12px;
+            border: 2px solid #1565C0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 8px;
+        }
+        .admin-select-btn:hover {
+            background: #E3F2FD;
+        }
+        .admin-select-btn:active {
+            transform: scale(0.98);
+        }
+        .admin-select-btn .admin-name {
+            color: #1565C0;
+        }
+        .admin-select-btn .admin-date {
+            font-size: 11px;
+            color: #888;
+        }
+        .admin-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
@@ -1257,7 +1291,9 @@
                 <button id="roleUser" onclick="selectRole('user')">👤 کاربر عادی</button>
             </div>
             <div class="login-fields" id="adminFields">
-                <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
+                <div id="adminLoginArea">
+                    <button class="btn" onclick="showAdminSelection()">👑 انتخاب مدیر</button>
+                </div>
             </div>
             <div class="login-fields" id="userFields" style="display:none;">
                 <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
@@ -1529,29 +1565,45 @@
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
         const TABLE_NAME = 'estate_properties';
-        const MAX_ADMINS = 3;
 
         // ============================================================
-        // ====== مدیریت مدیران ======
+        // ====== ۳ مدیر ثابت ======
         // ============================================================
+        const FIXED_ADMINS = [
+            { id: 'admin_001', name: 'مدیر اول', date: new Date().toISOString() },
+            { id: 'admin_002', name: 'مدیر دوم', date: new Date().toISOString() },
+            { id: 'admin_003', name: 'مدیر سوم', date: new Date().toISOString() }
+        ];
+
         function getAdmins() {
             try {
-                return JSON.parse(localStorage.getItem('amlak_admins')) || [];
-            } catch {
-                return [];
+                const saved = localStorage.getItem('amlak_fixed_admins');
+                if (saved) {
+                    const admins = JSON.parse(saved);
+                    if (admins.length === 3) return admins;
+                }
+            } catch {}
+            localStorage.setItem('amlak_fixed_admins', JSON.stringify(FIXED_ADMINS));
+            return FIXED_ADMINS;
+        }
+
+        function getCurrentAdmin() {
+            const adminId = localStorage.getItem('amlak_current_admin_id');
+            if (adminId) {
+                const admins = getAdmins();
+                return admins.find(a => a.id === adminId) || null;
             }
+            return null;
         }
 
-        function saveAdmins(admins) {
-            localStorage.setItem('amlak_admins', JSON.stringify(admins));
-        }
-
-        function getCurrentAdminId() {
-            return localStorage.getItem('amlak_current_admin_id') || null;
-        }
-
-        function setCurrentAdminId(id) {
-            localStorage.setItem('amlak_current_admin_id', id);
+        function selectAdmin(index) {
+            const admins = getAdmins();
+            if (index >= 0 && index < admins.length) {
+                const admin = admins[index];
+                localStorage.setItem('amlak_current_admin_id', admin.id);
+                return admin;
+            }
+            return null;
         }
 
         // ============================================================
@@ -1628,21 +1680,13 @@
         // ============================================================
         function selectRole(role) {
             document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
-            const admins = getAdmins();
+
             if (role === 'admin') {
-                if (admins.length >= MAX_ADMINS) {
-                    showToast('⚠️ تعداد مدیران کامل است!');
-                    document.getElementById('roleAdmin').classList.remove('active');
-                    document.getElementById('roleUser').classList.add('active');
-                    document.getElementById('adminFields').style.display = 'none';
-                    document.getElementById('userFields').style.display = 'block';
-                    document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. فقط کاربران عادی می‌توانند وارد شوند.';
-                    return;
-                }
                 document.getElementById('roleAdmin').classList.add('active');
                 document.getElementById('adminFields').style.display = 'block';
                 document.getElementById('userFields').style.display = 'none';
-                document.getElementById('loginHint').textContent = 'مدیران: روی دکمه کلیک کنید';
+                document.getElementById('loginHint').textContent = 'یکی از ۳ مدیر را انتخاب کنید';
+                showAdminSelection();
             } else {
                 document.getElementById('roleUser').classList.add('active');
                 document.getElementById('adminFields').style.display = 'none';
@@ -1651,34 +1695,37 @@
             }
         }
 
-        function loginAdmin() {
+        function showAdminSelection() {
             const admins = getAdmins();
-            if (admins.length >= MAX_ADMINS) {
-                showToast('⚠️ تعداد مدیران کامل است!');
-                return;
+            let html = '<div class="admin-list-container">';
+
+            admins.forEach((admin, index) => {
+                const date = new Date(admin.date);
+                const dateStr = date.toLocaleDateString('fa-IR') + ' ' + date.toLocaleTimeString('fa-IR', { hour: '2-digit',
+                    minute: '2-digit' });
+                html += `
+                        <button class="admin-select-btn" onclick="loginAsAdmin(${index})">
+                            <span class="admin-name">👑 ${admin.name}</span>
+                            <span class="admin-date">${dateStr}</span>
+                        </button>
+                    `;
+            });
+
+            html += '</div>';
+            document.getElementById('adminFields').innerHTML = html;
+        }
+
+        function loginAsAdmin(index) {
+            const admin = selectAdmin(index);
+            if (admin) {
+                isAdmin = true;
+                currentUser = { role: 'admin', id: admin.id, name: admin.name };
+                localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+                showToast(`✅ خوش آمدید ${admin.name}!`);
+                enterApp();
+            } else {
+                showToast('❌ خطا در ورود مدیر!');
             }
-
-            const newAdmin = {
-                id: generateId(),
-                date: new Date().toISOString()
-            };
-            admins.push(newAdmin);
-            saveAdmins(admins);
-            isAdmin = true;
-            setCurrentAdminId(newAdmin.id);
-            currentUser = { role: 'admin', id: newAdmin.id };
-            localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-            showToast('✅ مدیر با موفقیت ثبت شد!');
-
-            if (admins.length >= MAX_ADMINS) {
-                document.getElementById('roleAdmin').style.display = 'none';
-                document.getElementById('roleUser').classList.add('active');
-                document.getElementById('adminFields').style.display = 'none';
-                document.getElementById('userFields').style.display = 'block';
-                document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. فقط کاربران عادی می‌توانند وارد شوند.';
-            }
-
-            enterApp();
         }
 
         function loginUser() {
@@ -1695,10 +1742,22 @@
 
         function logout() {
             localStorage.removeItem('amlak_user');
+            localStorage.removeItem('amlak_current_admin_id');
             currentUser = null;
             isAdmin = false;
             document.getElementById('mainApp').style.display = 'none';
             document.getElementById('loginOverlay').classList.remove('hidden');
+
+            document.getElementById('adminFields').innerHTML = `
+                    <div id="adminLoginArea">
+                        <button class="btn" onclick="showAdminSelection()">👑 انتخاب مدیر</button>
+                    </div>
+                `;
+            document.getElementById('roleAdmin').classList.add('active');
+            document.getElementById('roleUser').classList.remove('active');
+            document.getElementById('userFields').style.display = 'none';
+            document.getElementById('loginHint').textContent = 'مدیران: روی دکمه کلیک کنید';
+
             updateOnlineUsers();
             showToast('🚪 خروج موفق');
         }
@@ -1711,7 +1770,8 @@
                 showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!');
                 return;
             }
-            const currentName = localStorage.getItem('amlak_admin_name') || '';
+            const adminInfo = getCurrentAdmin();
+            const currentName = adminInfo ? adminInfo.name : localStorage.getItem('amlak_admin_name') || '';
             document.getElementById('editAdminName').value = currentName;
             document.getElementById('editProfileForm').style.display = 'block';
             document.getElementById('propertyForm').style.display = 'none';
@@ -1730,20 +1790,38 @@
                 return;
             }
             const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
-            if (name) {
-                localStorage.setItem('amlak_admin_name', name);
-                showToast('✅ اطلاعات مدیر ذخیره شد!');
-            } else {
+            if (!name) {
                 showToast('⚠️ لطفاً نام خود را وارد کنید');
                 return;
             }
-            hideEditProfile();
-            updateWelcomeMessage();
+
+            const admins = getAdmins();
+            const adminInfo = getCurrentAdmin();
+            if (adminInfo) {
+                const index = admins.findIndex(a => a.id === adminInfo.id);
+                if (index !== -1) {
+                    admins[index].name = name;
+                    localStorage.setItem('amlak_fixed_admins', JSON.stringify(admins));
+                    localStorage.setItem('amlak_admin_name', name);
+
+                    if (currentUser) {
+                        currentUser.name = name;
+                        localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+                    }
+
+                    showToast('✅ اطلاعات مدیر ذخیره شد!');
+                    hideEditProfile();
+                    updateWelcomeMessage();
+                    showAdminSelection();
+                }
+            }
         }
 
         function updateWelcomeMessage() {
-            const name = localStorage.getItem('amlak_admin_name') || 'مدیر عزیز';
-            document.getElementById('welcomeUser').textContent = '👋 خوش آمدید ' + name + '!';
+            const adminInfo = getCurrentAdmin();
+            const name = adminInfo ? adminInfo.name : localStorage.getItem('amlak_admin_name') || 'مدیر عزیز';
+            document.getElementById('welcomeUser').textContent = `👋 خوش آمدید ${name}!`;
+            document.getElementById('userRoleBadge').textContent = `👑 ${name}`;
         }
 
         // ============================================================
@@ -1753,20 +1831,22 @@
             document.getElementById('loginOverlay').classList.add('hidden');
             document.getElementById('mainApp').style.display = 'block';
 
-            // بارگذاری داده‌ها
             await loadProperties();
             loadPublicMessages();
             loadPrivateMessages();
             loadCartItems();
 
-            if (isAdmin) {
+            const adminInfo = getCurrentAdmin();
+
+            if (isAdmin && adminInfo) {
+                localStorage.setItem('amlak_admin_name', adminInfo.name);
                 updateWelcomeMessage();
                 document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
                 document.getElementById('editProfileBtn').style.display = 'inline-block';
                 document.getElementById('adminButtons').style.display = 'flex';
                 document.getElementById('adminBackup').style.display = 'flex';
                 document.getElementById('guideBox').style.display = 'block';
-                document.getElementById('userRoleBadge').textContent = '👑 مدیر';
+                document.getElementById('userRoleBadge').textContent = `👑 ${adminInfo.name}`;
                 document.getElementById('userRoleBadge').style.background = '#FFD700';
                 document.getElementById('userFilterSection').style.display = 'none';
                 document.getElementById('adminFilterSort').style.display = 'flex';
@@ -2191,7 +2271,6 @@
             try {
                 showLoading(true);
 
-                // Unpin all
                 for (const p of properties) {
                     if (p.pinned) {
                         await supabaseClient
@@ -2201,7 +2280,6 @@
                     }
                 }
 
-                // Pin selected
                 await supabaseClient
                     .from(TABLE_NAME)
                     .update({ pinned: true })
@@ -3275,7 +3353,6 @@
                     if (data.properties && Array.isArray(data.properties)) {
                         showLoading(true);
 
-                        // Clear existing data
                         for (const p of properties) {
                             await supabaseClient
                                 .from(TABLE_NAME)
@@ -3283,7 +3360,6 @@
                                 .eq('id', p.id);
                         }
 
-                        // Insert restored data
                         for (const prop of data.properties) {
                             const { id, ...propData } = prop;
                             await supabaseClient
@@ -3354,19 +3430,13 @@
             const admins = getAdmins();
             isAdmin = admins.some(a => a.id === savedUser.id);
             if (isAdmin) {
-                setCurrentAdminId(savedUser.id);
+                localStorage.setItem('amlak_current_admin_id', savedUser.id);
             }
             enterApp();
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
-            const admins = getAdmins();
-            if (admins.length >= MAX_ADMINS) {
-                document.getElementById('roleAdmin').style.display = 'none';
-                document.getElementById('roleUser').classList.add('active');
-                document.getElementById('adminFields').style.display = 'none';
-                document.getElementById('userFields').style.display = 'block';
-                document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. فقط کاربران عادی می‌توانند وارد شوند.';
-            }
+            showAdminSelection();
+            document.getElementById('roleAdmin').classList.add('active');
         }
 
         document.addEventListener('keydown', (e) => {
