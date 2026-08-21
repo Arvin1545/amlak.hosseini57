@@ -1469,6 +1469,7 @@
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const TABLE_NAME = 'estate_properties';
         const MAX_ADMINS = 3;
 
         // ============================================================
@@ -1600,7 +1601,6 @@
             localStorage.setItem('amlak_user', JSON.stringify(currentUser));
             showToast('✅ مدیر با موفقیت ثبت شد!');
 
-            // اگر تعداد مدیران کامل شد، گزینه مدیر رو مخفی کن
             if (admins.length >= MAX_ADMINS) {
                 document.getElementById('roleAdmin').style.display = 'none';
                 document.getElementById('roleUser').classList.add('active');
@@ -1745,7 +1745,7 @@
         async function loadProperties() {
             try {
                 const { data, error } = await supabaseClient
-                    .from('properties')
+                    .from(TABLE_NAME)
                     .select('*')
                     .order('id', { ascending: false });
 
@@ -1938,7 +1938,7 @@
                 let success = false;
                 if (editId) {
                     const { error } = await supabaseClient
-                        .from('properties')
+                        .from(TABLE_NAME)
                         .update(propertyData)
                         .eq('id', editId);
                     if (!error) {
@@ -1951,7 +1951,7 @@
                     }
                 } else {
                     const { data, error } = await supabaseClient
-                        .from('properties')
+                        .from(TABLE_NAME)
                         .insert([propertyData])
                         .select();
                     if (!error && data) {
@@ -1991,7 +1991,7 @@
             try {
                 showLoading(true);
                 const { error } = await supabaseClient
-                    .from('properties')
+                    .from(TABLE_NAME)
                     .delete()
                     .eq('id', id);
                 if (!error) {
@@ -2023,13 +2023,13 @@
                 for (const p of properties) {
                     if (p.pinned) {
                         await supabaseClient
-                            .from('properties')
+                            .from(TABLE_NAME)
                             .update({ pinned: false })
                             .eq('id', p.id);
                     }
                 }
                 await supabaseClient
-                    .from('properties')
+                    .from(TABLE_NAME)
                     .update({ pinned: true })
                     .eq('id', id);
 
@@ -2085,7 +2085,7 @@
                 }
 
                 await supabaseClient
-                    .from('properties')
+                    .from(TABLE_NAME)
                     .update({ likes, dislikes })
                     .eq('id', id);
                 p.likes = likes;
@@ -2395,7 +2395,7 @@
                 if (!msg) {
                     try {
                         await supabaseClient
-                            .from('properties')
+                            .from(TABLE_NAME)
                             .delete()
                             .eq('id', p.id);
                         deleted++;
@@ -2935,14 +2935,14 @@
                         showLoading(true);
                         for (const p of properties) {
                             await supabaseClient
-                                .from('properties')
+                                .from(TABLE_NAME)
                                 .delete()
                                 .eq('id', p.id);
                         }
                         for (const prop of data.properties) {
                             const { id, ...propData } = prop;
                             await supabaseClient
-                                .from('properties')
+                                .from(TABLE_NAME)
                                 .insert([propData]);
                         }
 
@@ -3080,4 +3080,4 @@
         updateCartBadge();
     </script>
 </body>
-                                                                                                        </html>
+    </html>
