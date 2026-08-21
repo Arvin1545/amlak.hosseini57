@@ -7,152 +7,272 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ====== ریست و فونت ====== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+            font-family: 'Vazir', 'Tahoma', 'Segoe UI', sans-serif;
         }
+
+        /* ====== اسکرول بار ====== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            border-radius: 10px;
+        }
+
         body {
-            background: #f0f2f5;
+            background: linear-gradient(135deg, #e8edf5 0%, #d5dce6 100%);
             padding: 12px;
             max-width: 500px;
             margin: 0 auto;
             padding-bottom: 80px;
+            min-height: 100vh;
         }
+
+        /* ====== هدر ====== */
         .header {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            background: linear-gradient(135deg, #1a237e, #0D47A1, #1565C0);
             color: white;
-            padding: 18px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: 20px;
             text-align: center;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+            margin-bottom: 16px;
+            box-shadow: 0 8px 32px rgba(21, 101, 192, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            animation: headerGlow 8s ease-in-out infinite;
+        }
+        @keyframes headerGlow {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(10%, 10%);
+            }
         }
         .header h1 {
-            font-size: 24px;
+            font-size: 26px;
+            position: relative;
+            z-index: 1;
+            letter-spacing: 1px;
+        }
+        .header h1 span {
+            color: #FFD700;
         }
         .header p {
             opacity: 0.9;
-            font-size: 12px;
+            font-size: 13px;
+            position: relative;
+            z-index: 1;
+            margin-top: 4px;
         }
+        .header .header-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ====== کارت‌های آمار ====== */
         .stats {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 6px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
+            margin-bottom: 14px;
         }
         .stats div {
-            flex: 1;
-            min-width: 60px;
-            background: white;
-            padding: 10px;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 10px 4px;
+            border-radius: 14px;
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.2s;
+        }
+        .stats div:active {
+            transform: scale(0.95);
         }
         .stats span {
             display: block;
             font-size: 18px;
             font-weight: bold;
-            color: #1565C0;
+            color: #0D47A1;
         }
         .stats label {
-            font-size: 10px;
+            font-size: 9px;
             color: #666;
+            font-weight: 600;
         }
         .stats .online {
-            background: #E8F5E9;
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
             border: 2px solid #2E7D32;
         }
         .stats .online span {
             color: #2E7D32;
         }
+
+        /* ====== دکمه‌ها ====== */
         .btn-group {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 6px;
             margin-bottom: 12px;
         }
         .btn-group .btn {
-            flex: 1;
-            min-width: 70px;
-            padding: 10px 6px;
+            padding: 10px 4px;
             border: none;
-            border-radius: 10px;
-            font-size: 12px;
+            border-radius: 12px;
+            font-size: 11px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s;
             color: white;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
         }
-        .btn:active {
-            transform: scale(0.97);
+        .btn-group .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .btn-group .btn:active::after {
+            opacity: 1;
+        }
+        .btn-group .btn:active {
+            transform: scale(0.95);
         }
         .btn-primary {
-            background: #1565C0;
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
         }
         .btn-success {
-            background: #2E7D32;
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
         }
         .btn-warning {
-            background: #E65100;
+            background: linear-gradient(135deg, #E65100, #BF360C);
         }
         .btn-danger {
-            background: #C62828;
+            background: linear-gradient(135deg, #C62828, #B71C1C);
         }
         .btn-secondary {
-            background: #616161;
+            background: linear-gradient(135deg, #616161, #424242);
         }
         .btn-purple {
-            background: #6A1B9A;
+            background: linear-gradient(135deg, #6A1B9A, #4A148C);
         }
         .btn-teal {
-            background: #00695C;
+            background: linear-gradient(135deg, #00695C, #004D40);
         }
         .btn-pink {
-            background: #C2185B;
+            background: linear-gradient(135deg, #C2185B, #880E4F);
         }
         .btn-gold {
-            background: #FF8F00;
+            background: linear-gradient(135deg, #FF8F00, #E65100);
         }
+        .btn-info {
+            background: linear-gradient(135deg, #00838F, #006064);
+        }
+
+        /* ====== فرم‌ها ====== */
         .form {
-            background: white;
-            padding: 16px;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
             display: none;
             margin-bottom: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .form h3 {
-            color: #1565C0;
-            margin-bottom: 12px;
+            color: #0D47A1;
+            margin-bottom: 14px;
             text-align: center;
-            font-size: 16px;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .form h3::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to left, #1565C0, transparent);
+            max-width: 60px;
+        }
+        .form h3::before {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(to right, #1565C0, transparent);
+            max-width: 60px;
         }
         .form label {
             font-size: 12px;
             color: #555;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        .form label .required {
+            color: #C62828;
         }
         .form input,
         .form select,
         .form textarea {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 11px 14px;
+            margin-bottom: 12px;
+            border: 2px solid #e8ecf1;
+            border-radius: 12px;
             font-size: 13px;
-            transition: 0.2s;
+            transition: all 0.3s;
+            background: #f8f9fa;
         }
         .form input:focus,
         .form select:focus,
         .form textarea:focus {
             border-color: #1565C0;
             outline: none;
+            box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.15);
+            background: white;
         }
         .form textarea {
             min-height: 60px;
@@ -160,56 +280,87 @@
         }
         .form .btn {
             width: 100%;
-            margin-top: 4px;
-            padding: 12px;
-            font-size: 14px;
+            margin-top: 6px;
+            padding: 13px;
+            font-size: 15px;
+            border-radius: 12px;
         }
+
+        /* ====== فیلترها ====== */
         .filter-sort {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
-            flex-wrap: wrap;
             margin-bottom: 10px;
         }
         .filter-sort select,
         .filter-sort input {
-            flex: 1;
-            min-width: 80px;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 9px 12px;
+            border: 2px solid #e8ecf1;
+            border-radius: 12px;
             font-size: 12px;
+            background: white;
+            transition: all 0.3s;
         }
+        .filter-sort select:focus,
+        .filter-sort input:focus {
+            border-color: #1565C0;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.1);
+        }
+
+        /* ====== تب‌های فیلتر ====== */
         .filter-tabs {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 4px;
             margin-bottom: 10px;
-            flex-wrap: wrap;
         }
         .filter-tabs button {
-            flex: 1;
-            min-width: 50px;
-            padding: 8px 4px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 9px 4px;
+            border: 2px solid #e8ecf1;
+            border-radius: 12px;
             background: white;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s;
+            color: #555;
         }
         .filter-tabs button.active {
             border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+            color: #0D47A1;
+            box-shadow: 0 2px 8px rgba(21, 101, 192, 0.2);
         }
+        .filter-tabs button:active {
+            transform: scale(0.95);
+        }
+
+        /* ====== کارت ملک ====== */
         .property-card {
             background: white;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 14px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             border-right: 5px solid #1565C0;
             position: relative;
+            transition: all 0.3s;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .property-card:active {
+            transform: scale(0.99);
         }
         .property-card.sale {
             border-right-color: #E65100;
@@ -219,63 +370,67 @@
         }
         .property-card.pinned {
             border: 3px solid #FFD700;
-            background: #FFFDE7;
+            background: linear-gradient(135deg, #FFFDE7, #FFF8E1);
+            box-shadow: 0 4px 25px rgba(255, 215, 0, 0.3);
         }
         .property-card .pinned-badge {
             position: absolute;
-            top: -5px;
+            top: -8px;
             right: 50%;
             transform: translateX(50%);
-            background: #FFD700;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
             color: #333;
-            padding: 2px 12px;
+            padding: 2px 16px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4);
         }
         .property-card .code-badge {
             position: absolute;
-            top: 8px;
-            left: 8px;
-            background: #1565C0;
+            top: 10px;
+            left: 10px;
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
             color: white;
-            padding: 2px 8px;
+            padding: 3px 12px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: bold;
+            box-shadow: 0 2px 8px rgba(21, 101, 192, 0.3);
         }
         .property-card .action-btns {
             position: absolute;
-            top: 8px;
-            left: 80px;
+            top: 10px;
+            left: 90px;
             display: flex;
             gap: 4px;
         }
         .property-card .action-btns button {
             border: none;
             border-radius: 50%;
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             font-size: 12px;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
         }
         .property-card .action-btns button:active {
-            transform: scale(0.9);
+            transform: scale(0.85);
         }
         .property-card .btn-edit {
-            background: #FFA000;
+            background: linear-gradient(135deg, #FFA000, #FF8F00);
         }
         .property-card .btn-delete {
-            background: #C62828;
+            background: linear-gradient(135deg, #C62828, #B71C1C);
         }
         .property-card .btn-pin {
-            background: #FFD700;
+            background: linear-gradient(135deg, #FFD700, #FFC107);
             color: #333;
         }
         .property-card .btn-cart {
-            background: #FF8F00;
+            background: linear-gradient(135deg, #FF8F00, #E65100);
             color: white;
             border: none;
             border-radius: 50%;
@@ -283,79 +438,100 @@
             height: 28px;
             font-size: 14px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(255, 143, 0, 0.3);
         }
         .property-card .btn-cart.in-cart {
-            background: #2E7D32;
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
         }
         .property-card .btn-cart:active {
-            transform: scale(0.9);
+            transform: scale(0.85);
         }
         .property-card h3 {
-            color: #1565C0;
-            margin: 4px 0;
-            font-size: 16px;
+            color: #0D47A1;
+            margin: 4px 0 6px;
+            font-size: 17px;
+            font-weight: 700;
+            padding-left: 80px;
         }
         .property-card .address {
             color: #666;
             font-size: 12px;
+            margin-bottom: 4px;
+            padding-left: 80px;
         }
         .property-card .price {
             color: #2E7D32;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 17px;
+            padding-left: 80px;
         }
         .property-card .meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 4px;
+            gap: 6px;
+            margin-top: 6px;
             font-size: 11px;
             color: #555;
+            padding-left: 80px;
+        }
+        .property-card .meta span {
+            background: #f0f2f5;
+            padding: 2px 10px;
+            border-radius: 20px;
         }
         .property-card .desc {
-            background: #f5f5f5;
-            padding: 6px;
-            border-radius: 8px;
-            margin-top: 6px;
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-top: 8px;
             font-size: 12px;
             color: #333;
+            border-right: 3px solid #1565C0;
         }
         .property-card .desc .hidden-part {
             background: #fff3cd;
             border: 1px dashed #ffc107;
-            padding: 4px 8px;
-            border-radius: 6px;
+            padding: 6px 10px;
+            border-radius: 8px;
             display: block;
-            margin-top: 4px;
+            margin-top: 6px;
         }
         .property-card .desc .hidden-part .label {
             font-size: 10px;
             color: #856404;
             background: #ffeaa7;
-            padding: 0 6px;
+            padding: 0 8px;
             border-radius: 4px;
             display: inline-block;
             margin-bottom: 2px;
         }
         .property-card .desc .hidden-part .content {
             color: #333;
+            margin-top: 2px;
         }
         .property-card .like-section {
             display: flex;
             gap: 12px;
-            margin-top: 8px;
+            margin-top: 10px;
             align-items: center;
             justify-content: center;
+            padding: 6px;
+            background: #f8f9fa;
+            border-radius: 10px;
         }
         .property-card .like-section button {
             border: none;
             background: none;
             font-size: 20px;
             cursor: pointer;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 8px;
-            transition: 0.2s;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         .property-card .like-section button:hover {
             background: #f0f0f0;
@@ -369,149 +545,44 @@
         .property-card .like-section .count {
             font-size: 14px;
             color: #555;
+            font-weight: bold;
+            min-width: 20px;
         }
         .property-card .share-btns {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
             margin-top: 8px;
-            flex-wrap: wrap;
         }
         .property-card .share-btns button {
-            flex: 1;
             padding: 6px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 11px;
             font-weight: bold;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
         .property-card .share-btns button:active {
             transform: scale(0.95);
         }
         .share-whatsapp {
-            background: #25D366;
+            background: linear-gradient(135deg, #25D366, #128C7E);
         }
         .share-telegram {
-            background: #0088CC;
+            background: linear-gradient(135deg, #0088CC, #005A8C);
         }
-        .empty {
-            text-align: center;
-            color: #999;
-            padding: 30px 0;
-        }
-        .search-box {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 12px;
-            display: none;
-            z-index: 999;
-            max-width: 90%;
-            text-align: center;
-        }
-        .file-input-wrapper {
-            background: #f5f5f5;
-            padding: 8px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 2px dashed #bbb;
-        }
-        .file-input-wrapper input {
-            margin-bottom: 2px;
-        }
-        .file-input-wrapper small {
-            font-size: 10px;
-            color: #888;
-        }
-        .chart-container {
-            background: white;
-            padding: 16px;
-            border-radius: 16px;
-            margin: 12px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        .chart-container canvas {
-            max-width: 100%;
-            max-height: 200px;
-        }
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            max-width: 95%;
-            max-height: 90%;
-            overflow: auto;
-            width: 500px;
-        }
-        .modal-content img,
-        .modal-content video {
-            max-width: 100%;
-            border-radius: 12px;
-        }
-        .modal-close {
-            display: block;
-            margin: 10px auto 0;
-            padding: 10px 30px;
-            background: #C62828;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .backup-section {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        .backup-section .btn {
-            flex: 1;
-            min-width: 60px;
-            padding: 8px;
-            font-size: 11px;
-        }
-        .hidden {
-            display: none;
-        }
+
+        /* ====== باکس خوش‌آمدگویی ====== */
         .welcome-box {
             background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
-            padding: 14px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 16px;
             margin-bottom: 12px;
             text-align: center;
             border-right: 5px solid #2E7D32;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.15);
         }
         .welcome-box h3 {
             color: #1B5E20;
@@ -520,12 +591,15 @@
             color: #333;
             font-size: 13px;
         }
+
+        /* ====== پیام مدیر ====== */
         .admin-msg-box {
-            background: #FFF3E0;
-            padding: 10px;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+            padding: 12px 16px;
+            border-radius: 14px;
             margin-bottom: 12px;
             border-right: 5px solid #E65100;
+            box-shadow: 0 4px 15px rgba(230, 81, 0, 0.15);
         }
         .admin-msg-box p {
             font-size: 13px;
@@ -536,35 +610,38 @@
             font-size: 11px;
         }
         .admin-msg-box .msg-actions {
-            margin-top: 6px;
+            margin-top: 8px;
             display: flex;
             gap: 6px;
         }
         .admin-msg-box .msg-actions button {
-            padding: 4px 10px;
+            padding: 4px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 11px;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: all 0.2s;
+            font-weight: bold;
         }
         .admin-msg-box .msg-actions button:active {
             transform: scale(0.95);
         }
         .admin-msg-box .msg-actions .del-msg {
-            background: #C62828;
+            background: linear-gradient(135deg, #C62828, #B71C1C);
         }
         .admin-msg-box .msg-actions .edit-msg {
-            background: #FFA000;
+            background: linear-gradient(135deg, #FFA000, #FF8F00);
         }
+
+        /* ====== صفحه ورود ====== */
         .login-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(13, 71, 161, 0.8));
             display: flex;
             justify-content: center;
             align-items: center;
@@ -576,160 +653,155 @@
         }
         .login-box {
             background: white;
-            padding: 30px;
-            border-radius: 20px;
+            padding: 30px 28px;
+            border-radius: 24px;
             max-width: 400px;
             width: 100%;
             text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: loginPulse 2s ease-in-out infinite;
+        }
+        @keyframes loginPulse {
+            0%,
+            100% {
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            }
+            50% {
+                box-shadow: 0 20px 80px rgba(21, 101, 192, 0.4);
+            }
         }
         .login-box h2 {
-            color: #1565C0;
-            margin-bottom: 8px;
+            color: #0D47A1;
+            margin-bottom: 4px;
+            font-size: 28px;
         }
-        .login-box p {
+        .login-box h2 span {
+            color: #FFD700;
+        }
+        .login-box .subtitle {
             color: #666;
             font-size: 13px;
             margin-bottom: 16px;
         }
         .login-box .role-select {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 8px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
         .login-box .role-select button {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
+            padding: 12px;
+            border: 2px solid #e8ecf1;
+            border-radius: 12px;
             background: white;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
+            transition: all 0.3s;
+            font-size: 14px;
         }
         .login-box .role-select button.active {
             border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+            color: #0D47A1;
+            box-shadow: 0 2px 12px rgba(21, 101, 192, 0.2);
         }
         .login-box .role-select button:active {
-            transform: scale(0.97);
+            transform: scale(0.95);
         }
         .login-box .btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             color: white;
-            background: #1565C0;
-            margin-top: 10px;
-            transition: 0.2s;
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            margin-top: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(21, 101, 192, 0.3);
         }
         .login-box .btn:active {
             transform: scale(0.97);
         }
         .login-box .btn-success {
-            background: #2E7D32;
-            margin-top: 6px;
+            background: linear-gradient(135deg, #2E7D32, #1B5E20);
+            box-shadow: 0 4px 20px rgba(46, 125, 50, 0.3);
         }
         .login-hint {
             font-size: 12px;
             color: #888;
-            margin-top: 10px;
-            padding: 8px;
-            background: #f5f5f5;
-            border-radius: 8px;
+            margin-top: 12px;
+            padding: 10px;
+            background: #f5f6f8;
+            border-radius: 10px;
         }
-        .admin-badge {
-            display: inline-block;
-            background: #FFD700;
-            color: #333;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .logout-btn {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
+
+        /* ====== انتخاب مدیر ====== */
+        .admin-select-btn {
+            padding: 14px 16px;
+            border: 2px solid #1565C0;
+            border-radius: 12px;
+            background: white;
             cursor: pointer;
-            margin-right: 8px;
-            transition: 0.2s;
-        }
-        .logout-btn:active {
-            transform: scale(0.95);
-        }
-        .guide-box {
-            background: #FFF8E1;
-            border: 2px solid #FFB300;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-        .guide-box h4 {
-            color: #E65100;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
             margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-        .guide-box ul {
-            list-style: none;
-            padding: 0;
-            font-size: 12px;
-            color: #333;
-        }
-        .guide-box ul li {
-            padding: 4px 0;
-            border-bottom: 1px dashed #eee;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .guide-box ul li:last-child {
-            border-bottom: none;
-        }
-        .guide-box .badge-icon {
-            display: inline-block;
-            background: #1565C0;
-            color: white;
-            padding: 0 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            min-width: 20px;
-            text-align: center;
-        }
-        .guide-box .badge-icon.green {
-            background: #2E7D32;
-        }
-        .guide-box .badge-icon.orange {
-            background: #E65100;
-        }
-        .guide-box .badge-icon.red {
-            background: #C62828;
-        }
-        .guide-box .badge-icon.gold {
-            background: #FFD700;
-            color: #333;
-        }
-        .guide-box .badge-icon.purple {
-            background: #6A1B9A;
-        }
-        .guide-box .badge-icon.pink {
-            background: #C2185B;
-        }
-        .public-msg-card {
+        .admin-select-btn:hover {
             background: #E3F2FD;
-            padding: 12px;
-            border-radius: 12px;
+            transform: translateX(-4px);
+        }
+        .admin-select-btn:active {
+            transform: scale(0.98);
+        }
+        .admin-select-btn .admin-name {
+            color: #0D47A1;
+        }
+        .admin-select-btn .admin-date {
+            font-size: 11px;
+            color: #888;
+            font-weight: normal;
+        }
+        .admin-select-btn .admin-icon {
+            font-size: 24px;
+        }
+
+        /* ====== جستجو ====== */
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e8ecf1;
+            border-radius: 14px;
+            font-size: 13px;
+            margin-bottom: 10px;
+            background: white;
+            transition: all 0.3s;
+            padding-right: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: 12px center;
+        }
+        .search-box:focus {
+            border-color: #1565C0;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.1);
+        }
+
+        /* ====== پیام‌های عمومی ====== */
+        .public-msg-card {
+            background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+            padding: 14px 16px;
+            border-radius: 14px;
             margin-bottom: 10px;
             border-right: 5px solid #1565C0;
+            box-shadow: 0 2px 12px rgba(21, 101, 192, 0.1);
         }
         .public-msg-card .msg-header {
             display: flex;
@@ -743,218 +815,34 @@
         .public-msg-card .msg-text {
             font-size: 14px;
             color: #333;
-            margin-top: 4px;
+            margin-top: 6px;
         }
         .public-msg-card .msg-actions {
-            margin-top: 6px;
+            margin-top: 8px;
             display: flex;
             gap: 6px;
         }
         .public-msg-card .msg-actions button {
-            padding: 4px 10px;
+            padding: 4px 14px;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 11px;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: all 0.2s;
+            font-weight: bold;
         }
         .public-msg-card .msg-actions button:active {
             transform: scale(0.95);
         }
         .public-msg-card .msg-actions .del-msg {
-            background: #C62828;
+            background: linear-gradient(135deg, #C62828, #B71C1C);
         }
         .public-msg-card .msg-actions .edit-msg {
-            background: #FFA000;
+            background: linear-gradient(135deg, #FFA000, #FF8F00);
         }
-        .public-msg-card .like-section-msg {
-            display: flex;
-            gap: 12px;
-            margin-top: 6px;
-            align-items: center;
-            justify-content: flex-start;
-        }
-        .public-msg-card .like-section-msg button {
-            border: none;
-            background: none;
-            font-size: 18px;
-            cursor: pointer;
-            padding: 2px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-        }
-        .public-msg-card .like-section-msg button:hover {
-            background: #f0f0f0;
-        }
-        .public-msg-card .like-section-msg .like-btn {
-            color: #4CAF50;
-        }
-        .public-msg-card .like-section-msg .dislike-btn {
-            color: #f44336;
-        }
-        .public-msg-card .like-section-msg .count {
-            font-size: 13px;
-            color: #555;
-        }
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .category-grid .cat-btn {
-            padding: 14px 8px;
-            border: 3px solid #e0e0e0;
-            border-radius: 16px;
-            background: white;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
-        }
-        .category-grid .cat-btn:active {
-            transform: scale(0.95);
-        }
-        .category-grid .cat-btn.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
-        }
-        .category-grid .cat-btn .icon {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .type-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-        .type-grid .type-btn {
-            padding: 14px;
-            border: 3px solid #e0e0e0;
-            border-radius: 16px;
-            background: white;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-        }
-        .type-grid .type-btn:active {
-            transform: scale(0.95);
-        }
-        .type-grid .type-btn.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
-        }
-        .type-grid .type-btn.sale {
-            border-color: #E65100;
-        }
-        .type-grid .type-btn.sale.active {
-            background: #FFF3E0;
-            border-color: #E65100;
-            color: #E65100;
-        }
-        .type-grid .type-btn.rent {
-            border-color: #C62828;
-        }
-        .type-grid .type-btn.rent.active {
-            background: #FFEBEE;
-            border-color: #C62828;
-            color: #C62828;
-        }
-        .selection-info {
-            background: #FFF8E1;
-            padding: 10px 14px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            text-align: center;
-            border-right: 4px solid #FFB300;
-            font-size: 13px;
-            color: #333;
-        }
-        .selection-info strong {
-            color: #1565C0;
-        }
-        .clear-filter-btn {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-right: 8px;
-            transition: 0.2s;
-        }
-        .clear-filter-btn:active {
-            transform: scale(0.95);
-        }
-        .price-filter-box {
-            background: #E8EAF6;
-            padding: 14px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border-right: 4px solid #3F51B5;
-        }
-        .price-filter-box label {
-            font-size: 12px;
-            color: #555;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .price-filter-box input {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-        .price-filter-box input:focus {
-            border-color: #3F51B5;
-            outline: none;
-        }
-        .price-filter-box .btn {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            background: #3F51B5;
-            transition: 0.2s;
-        }
-        .price-filter-box .btn:active {
-            transform: scale(0.97);
-        }
-        .price-filter-box .btn-clear {
-            background: #C62828;
-            margin-top: 6px;
-        }
-        .price-filter-box .price-info {
-            font-size: 12px;
-            color: #666;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .cart-badge {
-            background: #FF8F00;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-right: 6px;
-        }
+
+        /* ====== سبد خرید ====== */
         .cart-modal {
             position: fixed;
             top: 0;
@@ -962,6 +850,7 @@
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             display: none;
             justify-content: center;
             align-items: center;
@@ -973,15 +862,26 @@
         }
         .cart-content {
             background: white;
-            border-radius: 20px;
-            padding: 20px;
+            border-radius: 24px;
+            padding: 24px;
             max-width: 500px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .cart-content h3 {
-            color: #1565C0;
+            color: #0D47A1;
             text-align: center;
             margin-bottom: 16px;
             display: flex;
@@ -989,14 +889,14 @@
             align-items: center;
         }
         .cart-content h3 button {
-            background: #C62828;
+            background: linear-gradient(135deg, #C62828, #B71C1C);
             color: white;
             border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
+            padding: 6px 16px;
+            border-radius: 10px;
             font-size: 12px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
         }
         .cart-content h3 button:active {
             transform: scale(0.95);
@@ -1005,18 +905,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
+            padding: 12px;
             border-bottom: 1px solid #eee;
         }
         .cart-item:last-child {
             border-bottom: none;
         }
-        .cart-item .info {
-            flex: 1;
-        }
         .cart-item .info .title {
             font-weight: bold;
-            color: #1565C0;
+            color: #0D47A1;
             font-size: 14px;
         }
         .cart-item .info .detail {
@@ -1024,163 +921,93 @@
             color: #666;
         }
         .cart-item .remove-btn {
-            background: #C62828;
+            background: linear-gradient(135deg, #C62828, #B71C1C);
             color: white;
             border: none;
             border-radius: 50%;
-            width: 28px;
-            height: 28px;
+            width: 30px;
+            height: 30px;
             font-size: 14px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(198, 40, 40, 0.3);
         }
         .cart-item .remove-btn:active {
-            transform: scale(0.9);
+            transform: scale(0.85);
         }
-        .cart-empty {
-            text-align: center;
-            color: #999;
-            padding: 30px 0;
-        }
-        .cart-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .cart-actions button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-        .cart-actions button:active {
-            transform: scale(0.97);
-        }
-        .cart-actions .clear-cart {
-            background: #C62828;
-        }
-        .cart-actions .share-cart {
-            background: #25D366;
-        }
-        .private-msg-btn {
-            background: #6A1B9A;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-top: 6px;
-            transition: 0.2s;
-        }
-        .private-msg-btn:active {
-            transform: scale(0.95);
-        }
-        .private-msg-box {
-            background: #F3E5F5;
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 6px;
-            border-right: 4px solid #6A1B9A;
+
+        /* ====== مودال مدیا ====== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
             display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
         }
-        .private-msg-box textarea {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 12px;
-            resize: vertical;
-            min-height: 50px;
+        .modal-overlay.active {
+            display: flex;
         }
-        .private-msg-box textarea:focus {
-            border-color: #6A1B9A;
-            outline: none;
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 95%;
+            max-height: 90%;
+            overflow: auto;
+            width: 500px;
+            animation: zoomIn 0.3s ease;
         }
-        .private-msg-box .send-btn {
-            background: #6A1B9A;
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        .modal-content img,
+        .modal-content video {
+            max-width: 100%;
+            border-radius: 12px;
+        }
+
+        /* ====== توست ====== */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #333, #1a1a1a);
             color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 4px;
-            transition: 0.2s;
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 13px;
+            display: none;
+            z-index: 999;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            font-weight: 500;
         }
-        .private-msg-box .send-btn:active {
-            transform: scale(0.95);
-        }
-        .private-msg-item {
-            background: #EDE7F6;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin-top: 6px;
-            font-size: 12px;
-            border-right: 3px solid #6A1B9A;
-        }
-        .private-msg-item .msg-from {
-            font-weight: bold;
-            color: #4A148C;
-        }
-        .private-msg-item .msg-time {
-            font-size: 10px;
-            color: #888;
-        }
-        .private-msg-item button {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-size: 10px;
-            cursor: pointer;
-            margin-top: 2px;
-            transition: 0.2s;
-        }
-        .private-msg-item button:active {
-            transform: scale(0.95);
-        }
-        .monthly-check-btn {
-            background: #FF6F00;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: 0.2s;
-        }
-        .monthly-check-btn:active {
-            transform: scale(0.97);
-        }
-        .edit-profile-btn {
-            background: #FF6F00;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-right: 6px;
-            transition: 0.2s;
-        }
-        .edit-profile-btn:active {
-            transform: scale(0.95);
-        }
+
+        /* ====== بارگذاری ====== */
         .loading-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1192,12 +1019,12 @@
             display: none;
         }
         .spinner {
-            width: 48px;
-            height: 48px;
-            border: 6px solid #e0e0e0;
-            border-top: 6px solid #1565C0;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e8ecf1;
+            border-top: 5px solid #1565C0;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
         @keyframes spin {
             0% {
@@ -1208,84 +1035,94 @@
             }
         }
         .loading-text {
-            color: #1565C0;
-            font-size: 16px;
+            color: #0D47A1;
+            font-size: 15px;
             font-weight: bold;
         }
-        .admin-msg-edit-area {
-            margin-top: 8px;
-        }
-        .admin-msg-edit-area textarea {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 12px;
-            resize: vertical;
-            min-height: 60px;
-        }
-        .admin-msg-edit-area button {
-            padding: 4px 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
+
+        /* ====== دکمه‌های کاربری ====== */
+        .cart-badge {
+            background: #FF8F00;
             color: white;
-            margin-top: 4px;
-        }
-        .admin-msg-edit-area .save-msg {
-            background: #2E7D32;
-        }
-        .admin-msg-edit-area .cancel-msg {
-            background: #616161;
-        }
-        .admin-select-btn {
-            padding: 12px;
-            border: 2px solid #1565C0;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 8px;
-        }
-        .admin-select-btn:hover {
-            background: #E3F2FD;
-        }
-        .admin-select-btn:active {
-            transform: scale(0.98);
-        }
-        .admin-select-btn .admin-name {
-            color: #1565C0;
-        }
-        .admin-select-btn .admin-date {
+            padding: 2px 10px;
+            border-radius: 20px;
             font-size: 11px;
-            color: #888;
+            font-weight: bold;
+            margin-right: 4px;
         }
-        .admin-list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 10px 0;
+        .logout-btn {
+            background: linear-gradient(135deg, #C62828, #B71C1C);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 10px;
+            font-size: 12px;
+            cursor: pointer;
+            margin-right: 6px;
+            transition: all 0.2s;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(198, 40, 40, 0.3);
+        }
+        .logout-btn:active {
+            transform: scale(0.95);
+        }
+        .edit-profile-btn {
+            background: linear-gradient(135deg, #FF8F00, #E65100);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 10px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-right: 6px;
+            transition: all 0.2s;
+            font-weight: bold;
+        }
+        .edit-profile-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ====== ریسپانسیو ====== */
+        @media (max-width: 400px) {
+            .stats {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .btn-group {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .property-card h3,
+            .property-card .address,
+            .property-card .price,
+            .property-card .meta {
+                padding-left: 0;
+            }
+            .property-card .code-badge {
+                position: static;
+                display: inline-block;
+                margin-bottom: 4px;
+            }
+            .property-card .action-btns {
+                position: static;
+                display: flex;
+                gap: 4px;
+                margin-top: 6px;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ====== بارگذاری ====== -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
     </div>
 
+    <!-- ====== صفحه ورود ====== -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
-            <h2>🏠 املاک حسینی</h2>
-            <p>ورود به سیستم</p>
+            <h2>🏠 املاک <span>حسینی</span></h2>
+            <p class="subtitle">به سامانه املاک حسینی خوش آمدید</p>
             <div class="role-select">
                 <button id="roleAdmin" class="active" onclick="selectRole('admin')">👑 مدیر</button>
                 <button id="roleUser" onclick="selectRole('user')">👤 کاربر عادی</button>
@@ -1302,26 +1139,31 @@
         </div>
     </div>
 
+    <!-- ====== برنامه اصلی ====== -->
     <div id="mainApp" style="display:none;">
+        <!-- هدر -->
         <div class="header">
-            <h1>🏠 املاک حسینی</h1>
+            <span class="header-icon">🏠</span>
+            <h1>املاک <span>حسینی</span></h1>
             <p id="welcomeUser">خوش آمدید</p>
         </div>
 
+        <!-- باکس خوش‌آمدگویی -->
         <div class="welcome-box" id="welcomeBox">
-            <h3>👋 به املاک حسینی خوش آمدید</h3>
+            <h3>👋 خوش آمدید</h3>
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
+        <!-- پیام مدیر -->
         <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
             <div id="adminMsgDisplay">
                 <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
                 <small id="adminMsgDate"></small>
             </div>
-            <div id="adminMsgEditArea" class="admin-msg-edit-area" style="display:none;">
-                <textarea id="adminMsgEditInput" placeholder="متن جدید پیام مدیر..."></textarea>
-                <button class="save-msg" onclick="saveAdminMessageEdit()">💾 ذخیره</button>
-                <button class="cancel-msg" onclick="cancelAdminMessageEdit()">❌ انصراف</button>
+            <div id="adminMsgEditArea" style="display:none;">
+                <textarea id="adminMsgEditInput" placeholder="متن جدید پیام مدیر..." style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;min-height:60px;margin-bottom:8px;"></textarea>
+                <button class="save-msg" onclick="saveAdminMessageEdit()" style="padding:6px 20px;border:none;border-radius:8px;font-size:12px;cursor:pointer;color:white;background:#2E7D32;font-weight:bold;">💾 ذخیره</button>
+                <button class="cancel-msg" onclick="cancelAdminMessageEdit()" style="padding:6px 20px;border:none;border-radius:8px;font-size:12px;cursor:pointer;color:white;background:#616161;font-weight:bold;margin-right:6px;">❌ انصراف</button>
             </div>
             <div class="msg-actions" id="adminMsgActions" style="display:none;">
                 <button class="edit-msg" onclick="editAdminMessage()">✏️ ویرایش</button>
@@ -1329,15 +1171,17 @@
             </div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
-            <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
+        <!-- نوار کاربری -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:6px;">
+            <span id="userRoleBadge" class="admin-badge" style="display:inline-block;background:#FFD700;color:#333;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:bold;">👤 کاربر</span>
             <div>
-                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;margin-right:6px;" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
-                <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش پروفایل</button>
+                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:10px;font-size:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#FF8F00,#E65100);margin-right:4px;box-shadow:0 2px 10px rgba(255,143,0,0.3);" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
+                <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش</button>
                 <button class="logout-btn" onclick="logout()">🚪 خروج</button>
             </div>
         </div>
 
+        <!-- ویرایش پروفایل -->
         <div class="form" id="editProfileForm">
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
             <label>نام مدیر</label>
@@ -1346,100 +1190,94 @@
             <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
         </div>
 
-        <div class="guide-box" id="guideBox" style="display:none;">
-            <h4>📖 دفترچه راهنمای مدیر</h4>
-            <ul>
-                <li><span class="badge-icon">➕</span> افزودن ملک جدید با عکس و فیلم</li>
-                <li><span class="badge-icon green">✏️</span> ویرایش اطلاعات ملک</li>
-                <li><span class="badge-icon red">✕</span> حذف ملک</li>
-                <li><span class="badge-icon gold">📌</span> سنجاق کردن یک ملک در بالای لیست</li>
-                <li><span class="badge-icon purple">📊</span> مشاهده نمودار آماری فروش/اجاره</li>
-                <li><span class="badge-icon orange">📄</span> خروجی گزارش (PDF/Excel)</li>
-                <li><span class="badge-icon">💾</span> پشتیبان‌گیری و بازیابی اطلاعات</li>
-                <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی به همه کاربران (غیر ملک)</li>
-                <li><span class="badge-icon">🔍</span> جستجو، فیلتر دسته و قیمت، مرتب‌سازی</li>
-                <li><span class="badge-icon purple">🔒</span> پنهان کردن بخش‌هایی از توضیحات ملک (فقط مدیر ببیند)</li>
-                <li><span class="badge-icon">💬</span> دریافت پیام خصوصی از کاربران</li>
-                <li><span class="badge-icon orange">📅</span> بررسی ماهانه املاک (هر ۱ ماه)</li>
+        <!-- راهنما -->
+        <div class="guide-box" id="guideBox" style="display:none;background:linear-gradient(135deg,#FFF8E1,#FFECB3);border:2px solid #FFB300;border-radius:16px;padding:16px;margin-bottom:12px;">
+            <h4 style="color:#E65100;margin-bottom:8px;display:flex;align-items:center;gap:8px;">📖 دفترچه راهنمای مدیر</h4>
+            <ul style="list-style:none;padding:0;font-size:12px;color:#333;display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+                <li style="padding:4px 0;border-bottom:1px dashed #eee;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;background:#1565C0;color:white;padding:0 6px;border-radius:4px;font-size:10px;min-width:20px;text-align:center;">➕</span> افزودن ملک</li>
+                <li style="padding:4px 0;border-bottom:1px dashed #eee;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;background:#2E7D32;color:white;padding:0 6px;border-radius:4px;font-size:10px;min-width:20px;text-align:center;">✏️</span> ویرایش ملک</li>
+                <li style="padding:4px 0;border-bottom:1px dashed #eee;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;background:#C62828;color:white;padding:0 6px;border-radius:4px;font-size:10px;min-width:20px;text-align:center;">✕</span> حذف ملک</li>
+                <li style="padding:4px 0;border-bottom:1px dashed #eee;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;background:#FFD700;color:#333;padding:0 6px;border-radius:4px;font-size:10px;min-width:20px;text-align:center;">📌</span> سنجاق کردن</li>
+                <li style="padding:4px 0;border-bottom:1px dashed #eee;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;background:#6A1B9A;color:white;padding:0 6px;border-radius:4px;font-size:10px;min-width:20px;text-align:center;">📊</span> نمودار</li>
+                <li style="padding:4px 0;border-bottom:1px dashed #eee;display:flex;align-items:center;gap:6px;"><span style="display:inline-block;background:#E65100;color:white;padding:0 6px;border-radius:4px;font-size:10px;min-width:20px;text-align:center;">📄</span> خروجی</li>
             </ul>
         </div>
 
+        <!-- فیلتر کاربر -->
         <div id="userFilterSection">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-                <span style="font-size:14px;font-weight:bold;color:#1565C0;">🔍 فیلتر املاک</span>
-                <button class="clear-filter-btn" onclick="clearUserFilters()">🗑️ پاک کردن فیلتر</button>
+                <span style="font-size:14px;font-weight:bold;color:#0D47A1;">🔍 فیلتر املاک</span>
+                <button class="clear-filter-btn" onclick="clearUserFilters()" style="background:linear-gradient(135deg,#C62828,#B71C1C);color:white;border:none;padding:6px 14px;border-radius:10px;font-size:12px;cursor:pointer;">🗑️ پاک کردن</button>
             </div>
-            <div class="selection-info" id="filterInfo">
+            <div class="selection-info" id="filterInfo" style="background:#FFF8E1;padding:10px 14px;border-radius:12px;margin-bottom:12px;text-align:center;border-right:4px solid #FFB300;font-size:13px;color:#333;">
                 <span>یک دسته‌بندی و نوع را انتخاب کنید</span>
             </div>
 
-            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">دسته‌بندی ملک:</label>
-            <div class="category-grid" id="categoryGrid">
-                <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)"><span class="icon">🏡</span> زمین مسکونی</button>
-                <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)"><span class="icon">🏢</span> زمین تجاری</button>
-                <button class="cat-btn" data-cat="آپارتمان" onclick="selectCategory(this)"><span class="icon">🏢</span> آپارتمان</button>
-                <button class="cat-btn" data-cat="مغازه" onclick="selectCategory(this)"><span class="icon">🛍️</span> مغازه</button>
-                <button class="cat-btn" data-cat="خانه" onclick="selectCategory(this)"><span class="icon">🏠</span> خانه</button>
-                <button class="cat-btn" data-cat="باغ" onclick="selectCategory(this)"><span class="icon">🌳</span> باغ</button>
-                <button class="cat-btn" data-cat="all" onclick="selectCategory(this)"><span class="icon">📋</span> همه</button>
+            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;font-weight:600;">دسته‌بندی ملک:</label>
+            <div class="category-grid" id="categoryGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+                <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">🏡</span> زمین مسکونی</button>
+                <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">🏢</span> زمین تجاری</button>
+                <button class="cat-btn" data-cat="آپارتمان" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">🏢</span> آپارتمان</button>
+                <button class="cat-btn" data-cat="مغازه" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">🛍️</span> مغازه</button>
+                <button class="cat-btn" data-cat="خانه" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">🏠</span> خانه</button>
+                <button class="cat-btn" data-cat="باغ" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">🌳</span> باغ</button>
+                <button class="cat-btn" data-cat="all" onclick="selectCategory(this)" style="padding:12px 4px;border:2px solid #e8ecf1;border-radius:12px;background:white;font-size:12px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;"><span style="font-size:20px;display:block;margin-bottom:2px;">📋</span> همه</button>
             </div>
 
-            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">نوع معامله:</label>
-            <div class="type-grid" id="typeGrid">
-                <button class="type-btn sale" data-type="sale" onclick="selectType(this)">💰 فروش</button>
-                <button class="type-btn rent" data-type="rent" onclick="selectType(this)">🔑 اجاره</button>
-                <button class="type-btn" data-type="all" onclick="selectType(this)" style="border-color:#1565C0;">📋 همه</button>
+            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;font-weight:600;">نوع معامله:</label>
+            <div class="type-grid" id="typeGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;">
+                <button class="type-btn sale" data-type="sale" onclick="selectType(this)" style="padding:12px;border:2px solid #E65100;border-radius:12px;background:white;font-size:13px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;">💰 فروش</button>
+                <button class="type-btn rent" data-type="rent" onclick="selectType(this)" style="padding:12px;border:2px solid #C62828;border-radius:12px;background:white;font-size:13px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;">🔑 اجاره</button>
+                <button class="type-btn" data-type="all" onclick="selectType(this)" style="padding:12px;border:2px solid #1565C0;border-radius:12px;background:white;font-size:13px;font-weight:bold;cursor:pointer;transition:0.3s;text-align:center;">📋 همه</button>
             </div>
 
-            <div class="price-filter-box" id="priceFilterBox">
-                <div class="price-info" id="priceFilterInfo">💰 محدوده قیمت مورد نظر خود را وارد کنید</div>
+            <div class="price-filter-box" id="priceFilterBox" style="background:#E8EAF6;padding:14px;border-radius:14px;margin-bottom:12px;border-right:4px solid #3F51B5;">
+                <div class="price-info" id="priceFilterInfo" style="font-size:12px;color:#666;text-align:center;margin-bottom:8px;">💰 محدوده قیمت مورد نظر خود را وارد کنید</div>
                 <div id="salePriceFilter">
-                    <label>حداکثر قیمت (تومان)</label>
-                    <input type="number" id="userMaxPrice" placeholder="مثال: 500000000" />
+                    <label style="font-size:12px;color:#555;display:block;margin-bottom:4px;">حداکثر قیمت (تومان)</label>
+                    <input type="number" id="userMaxPrice" placeholder="مثال: 500000000" style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;margin-bottom:8px;" />
                 </div>
                 <div id="rentPriceFilter" style="display:none;">
-                    <label>حداکثر رهن (تومان)</label>
-                    <input type="number" id="userMaxRahn" placeholder="مثال: 30000000" />
-                    <label>حداکثر کرایه (تومان)</label>
-                    <input type="number" id="userMaxRent" placeholder="مثال: 1500000" />
+                    <label style="font-size:12px;color:#555;display:block;margin-bottom:4px;">حداکثر رهن (تومان)</label>
+                    <input type="number" id="userMaxRahn" placeholder="مثال: 30000000" style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;margin-bottom:8px;" />
+                    <label style="font-size:12px;color:#555;display:block;margin-bottom:4px;">حداکثر کرایه (تومان)</label>
+                    <input type="number" id="userMaxRent" placeholder="مثال: 1500000" style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;margin-bottom:8px;" />
                 </div>
-                <button class="btn" onclick="applyUserPriceFilter()">✅ اعمال فیلتر قیمت</button>
-                <button class="btn btn-clear" onclick="clearUserPriceFilter()">🗑️ حذف فیلتر قیمت</button>
+                <button class="btn" onclick="applyUserPriceFilter()" style="width:100%;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#3F51B5,#1A237E);transition:0.2s;">✅ اعمال فیلتر قیمت</button>
+                <button class="btn btn-clear" onclick="clearUserPriceFilter()" style="width:100%;padding:10px;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#C62828,#B71C1C);margin-top:6px;transition:0.2s;">🗑️ حذف فیلتر قیمت</button>
             </div>
         </div>
 
+        <!-- آمار -->
         <div class="stats" id="statsContainer">
             <div><span id="totalCount">0</span><label>کل</label></div>
             <div><span id="saleCount">0</span><label>فروش</label></div>
             <div><span id="rentCount">0</span><label>اجاره</label></div>
-            <div><span id="avgPrice">0</span><label>میانگین قیمت</label></div>
+            <div><span id="avgPrice">0</span><label>میانگین</label></div>
             <div class="online" id="onlineUsers"><span id="onlineCount">0</span><label>👤 آنلاین</label></div>
         </div>
 
+        <!-- دکمه‌های مدیر -->
         <div class="btn-group" id="adminButtons" style="display:none;">
-            <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن ملک</button>
-            <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام عمومی</button>
+            <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
+            <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام</button>
             <button class="btn btn-purple" onclick="toggleChart()">📊 نمودار</button>
             <button class="btn btn-teal" onclick="exportExcel()">📊 Excel</button>
             <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
-            <button class="btn btn-secondary" onclick="viewPrivateMessages()">💬 پیام‌های کاربران</button>
-            <button class="btn btn-warning" onclick="monthlyCheck()">📅 بررسی ماهانه</button>
+            <button class="btn btn-secondary" onclick="viewPrivateMessages()">💬 پیام‌ها</button>
+            <button class="btn btn-warning" onclick="monthlyCheck()">📅 بررسی</button>
+            <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
         </div>
 
-        <div class="backup-section" id="adminBackup" style="display:none;">
-            <button class="btn btn-secondary" onclick="backupData()">💾 پشتیبان</button>
-            <button class="btn btn-warning" onclick="document.getElementById('restoreInput').click()">📂 بازیابی</button>
-            <input type="file" id="restoreInput" accept=".json" class="hidden" onchange="restoreData(event)" />
-        </div>
-
+        <!-- فرم ملک -->
         <div class="form" id="propertyForm">
             <h3 id="formTitle">📋 ثبت ملک جدید</h3>
             <input type="hidden" id="editId" value="" />
-            <label>عنوان ملک *</label>
+            <label>عنوان ملک <span class="required">*</span></label>
             <input type="text" id="fTitle" placeholder="مثال: آپارتمان لوکس" />
             <label>کد ملک (اختیاری)</label>
             <input type="text" id="fCode" placeholder="مثال: MLK-001" />
-            <label>دسته‌بندی ملک *</label>
+            <label>دسته‌بندی ملک <span class="required">*</span></label>
             <select id="fCategory">
                 <option value="زمین مسکونی">🏡 زمین مسکونی</option>
                 <option value="زمین تجاری">🏢 زمین تجاری</option>
@@ -1448,60 +1286,63 @@
                 <option value="خانه">🏠 خانه</option>
                 <option value="باغ">🌳 باغ</option>
             </select>
-            <label>نوع معامله *</label>
+            <label>نوع معامله <span class="required">*</span></label>
             <select id="fType" onchange="togglePriceFields()">
                 <option value="sale">💰 فروش</option>
                 <option value="rent">🔑 اجاره</option>
             </select>
             <div id="saleFields">
-                <label>قیمت فروش (تومان) *</label>
+                <label>قیمت فروش (تومان) <span class="required">*</span></label>
                 <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" oninput="formatPrice(this)" />
             </div>
             <div id="rentFields" style="display:none;">
-                <label>قیمت رهن (تومان) *</label>
+                <label>قیمت رهن (تومان) <span class="required">*</span></label>
                 <input type="text" id="fRahn" placeholder="مثال: 50,000,000" oninput="formatPrice(this)" />
-                <label>قیمت کرایه (تومان) *</label>
+                <label>قیمت کرایه (تومان) <span class="required">*</span></label>
                 <input type="text" id="fRentPrice" placeholder="مثال: 2,000,000" oninput="formatPrice(this)" />
             </div>
-            <label>آدرس *</label>
+            <label>آدرس <span class="required">*</span></label>
             <input type="text" id="fAddress" placeholder="آدرس کامل" />
             <label>متراژ (متر مربع)</label>
             <input type="number" id="fArea" placeholder="مثال: 120" />
             <label>شماره تماس</label>
             <input type="text" id="fPhone" placeholder="مثال: 09123456789" />
-            <label>توضیحات عمومی (قابل مشاهده برای همه)</label>
+            <label>توضیحات عمومی</label>
             <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
-            <label>🔒 بخش مخفی (فقط مدیر می‌بیند)</label>
+            <label>🔒 بخش مخفی (فقط مدیر)</label>
             <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:#6A1B9A;"></textarea>
-            <small style="color:#6A1B9A;font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است و کاربران عادی آن را نمی‌بینند.</small>
-            <div class="file-input-wrapper">
+            <small style="color:#6A1B9A;font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است</small>
+            <div class="file-input-wrapper" style="background:#f5f5f5;padding:10px;border-radius:12px;margin-bottom:12px;border:2px dashed #bbb;">
                 <label>📸 عکس (حداکثر ۲۰ عدد)</label>
-                <input type="file" id="fImages" accept="image/*" multiple />
-                <small>با Ctrl یا Shift چندتا انتخاب کن (حداکثر ۲۰ عدد)</small>
+                <input type="file" id="fImages" accept="image/*" multiple style="width:100%;padding:6px;" />
+                <small style="font-size:10px;color:#888;">با Ctrl یا Shift چندتا انتخاب کن</small>
             </div>
-            <div class="file-input-wrapper">
+            <div class="file-input-wrapper" style="background:#f5f5f5;padding:10px;border-radius:12px;margin-bottom:12px;border:2px dashed #bbb;">
                 <label>🎬 فیلم (یک عدد)</label>
-                <input type="file" id="fVideo" accept="video/*" />
+                <input type="file" id="fVideo" accept="video/*" style="width:100%;padding:6px;" />
             </div>
             <button class="btn btn-success" onclick="saveProperty()">💾 ذخیره</button>
             <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
         </div>
 
+        <!-- فرم پیام عمومی -->
         <div class="form" id="publicMsgForm">
             <h3 id="publicMsgTitle">📢 ارسال پیام عمومی</h3>
             <input type="hidden" id="editMsgId" value="" />
-            <label>متن پیام *</label>
+            <label>متن پیام <span class="required">*</span></label>
             <textarea id="fPublicMsg" placeholder="متن پیام خود را وارد کنید..." style="min-height:80px;"></textarea>
             <button class="btn btn-pink" id="publicMsgSubmitBtn" onclick="savePublicMessage()">📤 ارسال پیام</button>
             <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
         </div>
 
+        <!-- پیام‌های خصوصی -->
         <div class="form" id="privateMsgViewer" style="display:none;">
             <h3>💬 پیام‌های خصوصی کاربران</h3>
             <div id="privateMsgList"></div>
             <button class="btn btn-secondary" onclick="closePrivateMsgViewer()">❌ بستن</button>
         </div>
 
+        <!-- فیلترهای مدیر -->
         <div class="filter-sort" id="adminFilterSort">
             <select id="categoryFilter" onchange="renderList()">
                 <option value="all">همه دسته‌ها</option>
@@ -1518,12 +1359,13 @@
                 <option value="price_high">گران‌ترین</option>
                 <option value="price_low">ارزان‌ترین</option>
             </select>
-            <input type="number" id="minPrice" placeholder="حداقل قیمت" oninput="renderList()" style="min-width:80px;" />
-            <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" style="min-width:80px;" />
+            <input type="number" id="minPrice" placeholder="حداقل قیمت" oninput="renderList()" />
+            <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" />
         </div>
 
-        <div class="chart-container" id="chartContainer" style="display:none;">
-            <h4 style="text-align:center;color:#1565C0;">📊 آمار املاک</h4>
+        <!-- نمودار -->
+        <div class="chart-container" id="chartContainer" style="display:none;background:white;padding:16px;border-radius:16px;margin:12px 0;box-shadow:0 2px 12px rgba(0,0,0,0.08);">
+            <h4 style="text-align:center;color:#0D47A1;">📊 آمار املاک</h4>
             <canvas id="chartCanvas"></canvas>
             <div style="text-align:center;margin-top:8px;font-size:12px;color:#666;">
                 <span style="color:#E65100;">🟧 فروش: <span id="chartSaleCount">0</span></span> &nbsp;|&nbsp;
@@ -1531,18 +1373,23 @@
             </div>
         </div>
 
+        <!-- پیام‌های عمومی -->
         <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
 
+        <!-- جستجو -->
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
 
+        <!-- تب‌های فیلتر -->
         <div class="filter-tabs" id="filterTabs">
             <button class="active" onclick="setFilter('all', this)">همه</button>
             <button onclick="setFilter('sale', this)">💰 فروش</button>
             <button onclick="setFilter('rent', this)">🔑 اجاره</button>
         </div>
 
+        <!-- لیست املاک -->
         <div id="propertyList"></div>
 
+        <!-- سبد خرید -->
         <div class="cart-modal" id="cartModal">
             <div class="cart-content">
                 <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
@@ -1550,10 +1397,12 @@
             </div>
         </div>
 
+        <!-- مودال مدیا -->
         <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
             <div class="modal-content" id="modalContent"></div>
         </div>
 
+        <!-- توست -->
         <div class="toast" id="toast"></div>
     </div>
 
@@ -1615,7 +1464,6 @@
         let publicMessages = [];
         let privateMessages = [];
         let cartItems = [];
-        let onlineUsers = [];
         let currentFilter = 'all';
         let userCategoryFilter = 'all';
         let userTypeFilter = 'all';
@@ -1705,7 +1553,8 @@
                     minute: '2-digit' });
                 html += `
                         <button class="admin-select-btn" onclick="loginAsAdmin(${index})">
-                            <span class="admin-name">👑 ${admin.name}</span>
+                            <span class="admin-icon">👑</span>
+                            <span class="admin-name">${admin.name}</span>
                             <span class="admin-date">${dateStr}</span>
                         </button>
                     `;
@@ -1843,14 +1692,13 @@
                 updateWelcomeMessage();
                 document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
                 document.getElementById('editProfileBtn').style.display = 'inline-block';
-                document.getElementById('adminButtons').style.display = 'flex';
-                document.getElementById('adminBackup').style.display = 'flex';
+                document.getElementById('adminButtons').style.display = 'grid';
                 document.getElementById('guideBox').style.display = 'block';
                 document.getElementById('userRoleBadge').textContent = `👑 ${adminInfo.name}`;
                 document.getElementById('userRoleBadge').style.background = '#FFD700';
                 document.getElementById('userFilterSection').style.display = 'none';
-                document.getElementById('adminFilterSort').style.display = 'flex';
-                document.getElementById('filterTabs').style.display = 'flex';
+                document.getElementById('adminFilterSort').style.display = 'grid';
+                document.getElementById('filterTabs').style.display = 'grid';
                 document.getElementById('onlineUsers').style.display = 'block';
                 updateOnlineUsers();
                 loadAdminMessage();
@@ -1859,7 +1707,6 @@
                 document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
                 document.getElementById('editProfileBtn').style.display = 'none';
                 document.getElementById('adminButtons').style.display = 'none';
-                document.getElementById('adminBackup').style.display = 'none';
                 document.getElementById('guideBox').style.display = 'none';
                 document.getElementById('userRoleBadge').textContent = '👤 کاربر';
                 document.getElementById('userRoleBadge').style.background = '#4CAF50';
@@ -2104,7 +1951,7 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک - نسخه اصلاح شده ======
+        // ====== ذخیره ملک - نسخه نهایی ======
         // ============================================================
         async function saveProperty() {
             if (!isAdmin) {
@@ -2257,7 +2104,7 @@
         }
 
         // ============================================================
-        // ====== سنجاق کردن - نسخه اصلاح شده ======
+        // ====== سنجاق کردن ======
         // ============================================================
         async function togglePin(id) {
             if (!isAdmin) {
@@ -2268,7 +2115,6 @@
             try {
                 showLoading(true);
 
-                // اول همه رو از حالت سنجاق خارج کن
                 for (const p of properties) {
                     if (p.pinned) {
                         await supabaseClient
@@ -2278,14 +2124,12 @@
                     }
                 }
 
-                // بعد ملک مورد نظر رو سنجاق کن
                 const { error } = await supabaseClient
                     .from(TABLE_NAME)
                     .update({ pinned: true })
                     .eq('id', id);
 
                 if (!error) {
-                    // به‌روزرسانی properties محلی
                     for (const p of properties) {
                         p.pinned = false;
                     }
@@ -2308,7 +2152,7 @@
         }
 
         // ============================================================
-        // ====== لایک/دیسلایک - نسخه اصلاح شده ======
+        // ====== لایک/دیسلایک ======
         // ============================================================
         async function likeProperty(id, type) {
             if (isAdmin) {
@@ -2497,7 +2341,7 @@
             container.innerHTML = publicMessages.map(p => `
                     <div class="public-msg-card">
                         <div class="msg-header">
-                            <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
+                            <span style="font-weight:bold;color:#0D47A1;">📢 پیام عمومی</span>
                             <span class="msg-date">${p.date || ''}</span>
                         </div>
                         <div class="msg-text">${sanitizeInput(p.text)}</div>
@@ -2508,11 +2352,11 @@
                             </div>
                         ` : ''}
                         ${!isAdminUser ? `
-                            <div class="like-section-msg">
-                                <button class="like-btn" onclick="likePublicMessage('${p.id}', 'like')">❤️</button>
-                                <span class="count">${p.likes || 0}</span>
-                                <button class="dislike-btn" onclick="likePublicMessage('${p.id}', 'dislike')">👎</button>
-                                <span class="count">${p.dislikes || 0}</span>
+                            <div style="display:flex;gap:12px;margin-top:6px;align-items:center;">
+                                <button onclick="likePublicMessage('${p.id}','like')" style="border:none;background:none;font-size:16px;cursor:pointer;color:#4CAF50;">❤️</button>
+                                <span style="font-size:13px;color:#555;">${p.likes || 0}</span>
+                                <button onclick="likePublicMessage('${p.id}','dislike')" style="border:none;background:none;font-size:16px;cursor:pointer;color:#f44336;">👎</button>
+                                <span style="font-size:13px;color:#555;">${p.dislikes || 0}</span>
                             </div>
                         ` : ''}
                     </div>
@@ -2613,14 +2457,14 @@
 
             const sorted = [...privateMessages].reverse();
             container.innerHTML = sorted.map(p => `
-                    <div class="private-msg-item">
-                        <div class="msg-from">👤 ${sanitizeInput(p.from || 'کاربر')}</div>
+                    <div class="private-msg-item" style="background:#EDE7F6;padding:10px 14px;border-radius:10px;margin-top:6px;font-size:12px;border-right:3px solid #6A1B9A;">
+                        <div style="font-weight:bold;color:#4A148C;">👤 ${sanitizeInput(p.from || 'کاربر')}</div>
                         <div style="font-size:13px;color:#333;margin:4px 0;">${sanitizeInput(p.text)}</div>
                         <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-                            <span class="msg-time">${p.date || ''}</span>
+                            <span style="font-size:10px;color:#888;">${p.date || ''}</span>
                             <span style="font-size:11px;color:#888;">ملک: ${sanitizeInput(getPropertyTitle(p.propertyId))}</span>
                         </div>
-                        <button onclick="deletePrivateMessage('${p.id}')">🗑️ حذف</button>
+                        <button onclick="deletePrivateMessage('${p.id}')" style="background:linear-gradient(135deg,#C62828,#B71C1C);color:white;border:none;padding:2px 12px;border-radius:4px;font-size:10px;cursor:pointer;margin-top:4px;">🗑️ حذف</button>
                     </div>
                 `).join('');
         }
@@ -2758,14 +2602,24 @@
         function selectCategory(btn) {
             document.querySelectorAll('.category-grid .cat-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            btn.style.borderColor = '#1565C0';
+            btn.style.background = 'linear-gradient(135deg,#E3F2FD,#BBDEFB)';
+            btn.style.color = '#0D47A1';
             userCategoryFilter = btn.dataset.cat;
             updateFilterInfo();
             renderList();
         }
 
         function selectType(btn) {
-            document.querySelectorAll('.type-grid .type-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.type-grid .type-btn').forEach(b => {
+                b.classList.remove('active');
+                b.style.borderColor = '';
+                b.style.background = 'white';
+                b.style.color = '';
+            });
             btn.classList.add('active');
+            btn.style.background = 'linear-gradient(135deg,#E3F2FD,#BBDEFB)';
+            btn.style.color = '#0D47A1';
             userTypeFilter = btn.dataset.type;
 
             if (userTypeFilter === 'sale') {
@@ -2802,8 +2656,18 @@
         }
 
         function clearUserFilters() {
-            document.querySelectorAll('.category-grid .cat-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.type-grid .type-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.category-grid .cat-btn').forEach(b => {
+                b.classList.remove('active');
+                b.style.borderColor = '#e8ecf1';
+                b.style.background = 'white';
+                b.style.color = '';
+            });
+            document.querySelectorAll('.type-grid .type-btn').forEach(b => {
+                b.classList.remove('active');
+                b.style.borderColor = '';
+                b.style.background = 'white';
+                b.style.color = '';
+            });
             userCategoryFilter = 'all';
             userTypeFilter = 'all';
             clearUserPriceFilter();
@@ -2932,7 +2796,7 @@
 
             const container = document.getElementById('propertyList');
             if (!filtered.length) {
-                container.innerHTML = `<div class="empty">🏠 هیچ ملکی یافت نشد</div>`;
+                container.innerHTML = `<div class="empty" style="text-align:center;color:#999;padding:30px 0;">🏠 هیچ ملکی یافت نشد</div>`;
                 return;
             }
 
@@ -2953,10 +2817,10 @@
                 let privateMsgHtml = '';
                 if (isUser) {
                     privateMsgHtml = `
-                            <button class="private-msg-btn" onclick="togglePrivateMsg('${p.id}')">💬 ارسال پیام به مدیر</button>
-                            <div class="private-msg-box" id="privateMsgBox_${p.id}">
-                                <textarea placeholder="پیام خود را برای مدیر بنویسید..."></textarea>
-                                <button class="send-btn" onclick="sendPrivateMessage('${p.id}')">📤 ارسال</button>
+                            <button class="private-msg-btn" onclick="togglePrivateMsg('${p.id}')" style="background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;padding:6px 14px;border-radius:8px;font-size:11px;cursor:pointer;margin-top:6px;transition:0.2s;font-weight:bold;">💬 ارسال پیام به مدیر</button>
+                            <div class="private-msg-box" id="privateMsgBox_${p.id}" style="background:#F3E5F5;padding:10px;border-radius:10px;margin-top:6px;border-right:4px solid #6A1B9A;display:none;">
+                                <textarea placeholder="پیام خود را برای مدیر بنویسید..." style="width:100%;padding:8px;border:2px solid #ddd;border-radius:8px;font-size:12px;resize:vertical;min-height:50px;"></textarea>
+                                <button class="send-btn" onclick="sendPrivateMessage('${p.id}')" style="background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;padding:6px 18px;border-radius:8px;font-size:12px;cursor:pointer;margin-top:4px;font-weight:bold;">📤 ارسال</button>
                             </div>
                         `;
                 }
@@ -2997,10 +2861,8 @@
                             </div>
                             ${!isAdminUser ? `
                                 <div class="like-section">
-                                    <button class="like-btn" onclick="likeProperty('${p.id}', 'like')">❤️</button>
-                                    <span class="count">${p.likes || 0}</span>
-                                    <button class="dislike-btn" onclick="likeProperty('${p.id}', 'dislike')">👎</button>
-                                    <span class="count">${p.dislikes || 0}</span>
+                                    <button class="like-btn" onclick="likeProperty('${p.id}', 'like')">❤️ <span class="count">${p.likes || 0}</span></button>
+                                    <button class="dislike-btn" onclick="likeProperty('${p.id}', 'dislike')">👎 <span class="count">${p.dislikes || 0}</span></button>
                                 </div>
                             ` : ''}
                             <div class="share-btns">
@@ -3078,9 +2940,9 @@
             });
 
             html += `
-                    <div class="cart-actions">
-                        <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن سبد</button>
-                        <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
+                    <div class="cart-actions" style="display:flex;gap:8px;margin-top:16px;">
+                        <button class="clear-cart" onclick="clearCart()" style="flex:1;padding:10px;border:none;border-radius:10px;font-size:13px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#C62828,#B71C1C);">🗑️ خالی کردن</button>
+                        <button class="share-cart" onclick="shareCart()" style="flex:1;padding:10px;border:none;border-radius:10px;font-size:13px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#25D366,#128C7E);">📤 اشتراک‌گذاری</button>
                     </div>
                 `;
             container.innerHTML = html;
@@ -3234,7 +3096,7 @@
             ctx.font = '12px Tahoma';
             ctx.fillText('🟧 فروش: ' + sale, 10, 180);
             ctx.fillText('🟥 اجاره: ' + rent, 10, 195);
-            ctx.fillStyle = '#1565C0';
+            ctx.fillStyle = '#0D47A1';
             ctx.font = '14px Tahoma';
             ctx.fillText('کل: ' + total, 10, 20);
         }
@@ -3451,4 +3313,4 @@
         updateCartBadge();
     </script>
 </body>
-    </html>
+            </html>
