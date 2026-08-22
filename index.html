@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🏠 املاک حسینی - نسخه کامل ۱۸ قابلیت</title>
+    <title>🏠 املاک حسینی</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ====== استایل کامل ====== */
         * {
             margin: 0;
             padding: 0;
@@ -144,15 +143,19 @@
         body.dark-mode .guide-box ul li {
             color: #aaa;
         }
-        body.dark-mode .comment-item {
-            background: #0f3460 !important;
-        }
-        body.dark-mode .comment-item .comment-text {
-            color: #eee !important;
-        }
         body.dark-mode .toast {
             background: #16213e !important;
             color: #eee !important;
+        }
+        body.dark-mode .chat-container {
+            background: #16213e !important;
+            border-color: #0f3460 !important;
+        }
+        body.dark-mode .chat-msg.user {
+            background: #0f3460 !important;
+        }
+        body.dark-mode .chat-msg.admin {
+            background: #1a1a2e !important;
         }
         .header {
             background: linear-gradient(135deg, #1565C0, #0D47A1);
@@ -571,6 +574,9 @@
         }
         .share-telegram {
             background: #0088CC;
+        }
+        .share-ita {
+            background: #4CAF50;
         }
         .empty {
             text-align: center;
@@ -1446,125 +1452,37 @@
             margin: 10px 0;
         }
 
-        /* ====== بخش نظرات ====== */
-        .comments-section {
-            margin-top: 8px;
+        /* ====== چت ====== */
+        .chat-container {
             background: #f8f9fa;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 10px;
-        }
-        .comment-item {
-            background: white;
-            padding: 8px 12px;
-            border-radius: 8px;
             margin-top: 6px;
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #e0e0e0;
+        }
+        .chat-container .chat-msg {
+            padding: 6px 10px;
+            margin: 4px 0;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        .chat-container .chat-msg.user {
+            background: #E3F2FD;
+            text-align: right;
             border-right: 3px solid #1565C0;
         }
-        .comment-item .comment-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
+        .chat-container .chat-msg.admin {
+            background: #FFF3E0;
+            text-align: left;
+            border-left: 3px solid #E65100;
+        }
+        .chat-container .chat-msg .time {
+            font-size: 9px;
             color: #888;
         }
-        .comment-item .comment-user {
-            font-weight: bold;
-            color: #1565C0;
-        }
-        .comment-item .comment-text {
-            font-size: 13px;
-            color: #333;
-            margin: 4px 0;
-        }
-        .comment-item .comment-rating {
-            font-size: 14px;
-            color: #FFD700;
-        }
-        .comment-form {
-            display: none;
-            margin-top: 6px;
-        }
-        .comment-form textarea {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 12px;
-            resize: vertical;
-            min-height: 50px;
-        }
-        .comment-form textarea:focus {
-            border-color: #1565C0;
-            outline: none;
-        }
-        .comment-form .comment-actions {
-            display: flex;
-            gap: 6px;
-            margin-top: 4px;
-        }
-        .comment-form .comment-actions select {
-            flex: 1;
-            padding: 6px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 12px;
-        }
-        .comment-form .comment-actions button {
-            padding: 6px 16px;
-            background: linear-gradient(135deg, #2E7D32, #1B5E20);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-        }
-        .comment-form .comment-actions button:active {
-            transform: scale(0.95);
-        }
-        .comment-toggle-btn {
-            width: 100%;
-            padding: 6px;
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 11px;
-            transition: 0.2s;
-        }
-        .comment-toggle-btn:active {
-            transform: scale(0.95);
-        }
-        .comment-count {
-            font-size: 11px;
-            color: #888;
-            margin-right: 4px;
-        }
 
-        /* ====== دکمه علاقه‌مندی ====== */
-        .btn-favorite {
-            background: #E91E63;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 2px 8px rgba(233, 30, 99, 0.3);
-        }
-        .btn-favorite.active {
-            background: #C62828;
-            box-shadow: 0 2px 8px rgba(198, 40, 40, 0.3);
-        }
-        .btn-favorite:active {
-            transform: scale(0.85);
-        }
-
-        /* ====== ریسپانسیو ====== */
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(3, 1fr);
@@ -1598,13 +1516,11 @@
 </head>
 <body>
 
-    <!-- ====== بارگذاری ====== -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
     </div>
 
-    <!-- ====== صفحه ورود ====== -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
             <h2>🏠 املاک <span>حسینی</span></h2>
@@ -1619,13 +1535,13 @@
                 </div>
             </div>
             <div class="login-fields" id="userFields" style="display:none;">
+                <input type="tel" id="userPhoneInput" placeholder="📱 شماره موبایل خود را وارد کنید" style="width:100%;padding:12px;margin-bottom:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;text-align:center;">
                 <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
             </div>
             <div class="login-hint" id="loginHint">مدیران: روی دکمه کلیک کنید</div>
         </div>
     </div>
 
-    <!-- ====== برنامه اصلی ====== -->
     <div id="mainApp" style="display:none;">
         <div class="header">
             <div class="header-top">
@@ -1684,15 +1600,8 @@
                 <li><span class="badge-icon orange">📄</span> خروجی گزارش</li>
                 <li><span class="badge-icon">💾</span> پشتیبان‌گیری</li>
                 <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی</li>
-                <li><span class="badge-icon">🔍</span> جستجو و فیلتر</li>
-                <li><span class="badge-icon purple">🔒</span> بخش مخفی توضیحات</li>
-                <li><span class="badge-icon">💬</span> پیام خصوصی کاربران</li>
+                <li><span class="badge-icon">💬</span> چت با کاربران</li>
                 <li><span class="badge-icon orange">📅</span> بررسی ماهانه</li>
-                <li><span class="badge-icon">⭐</span> امتیازدهی ستاره‌ای</li>
-                <li><span class="badge-icon">❤️</span> علاقه‌مندی‌ها</li>
-                <li><span class="badge-icon">💬</span> نظرات کاربران</li>
-                <li><span class="badge-icon">🌙</span> حالت تاریک</li>
-                <li><span class="badge-icon">👁️</span> تاریخچه بازدید</li>
             </ul>
         </div>
 
@@ -1754,7 +1663,7 @@
             <button class="btn btn-purple" onclick="toggleChart()">📊 نمودار</button>
             <button class="btn btn-teal" onclick="exportExcel()">📊 Excel</button>
             <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
-            <button class="btn btn-secondary" onclick="viewPrivateMessages()">💬 پیام‌ها</button>
+            <button class="btn btn-secondary" onclick="viewChats()">💬 چت</button>
             <button class="btn btn-warning" onclick="monthlyCheck()">📅 بررسی</button>
             <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
         </div>
@@ -1823,6 +1732,16 @@
             <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
         </div>
 
+        <div class="form" id="chatViewer" style="display:none;">
+            <h3>💬 چت با کاربران</h3>
+            <div id="chatList" style="max-height:400px;overflow-y:auto;"></div>
+            <div style="margin-top:10px;">
+                <textarea id="chatReplyInput" placeholder="پاسخ خود را بنویسید..." style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;min-height:60px;resize:vertical;"></textarea>
+                <button class="btn btn-purple" onclick="sendChatReply()">📤 ارسال پاسخ</button>
+            </div>
+            <button class="btn btn-secondary" onclick="closeChatViewer()">❌ بستن</button>
+        </div>
+
         <div class="form" id="privateMsgViewer" style="display:none;">
             <h3>💬 پیام‌های خصوصی کاربران</h3>
             <div id="privateMsgList"></div>
@@ -1886,12 +1805,11 @@
 
     <script>
         // ============================================================
-        // ====== سیستم مدیریت خطا - نسخه پیشرفته ======
+        // ====== سیستم مدیریت خطا ======
         // ============================================================
         const ErrorHandler = {
             log: function(error, context, showToast = true) {
                 const errorMsg = error?.message || error || 'خطای ناشناخته';
-                const fullMsg = `❌ [${context}] ${errorMsg}`;
                 console.error('═══════════════════════════════════════');
                 console.error(`❌ خطا در: ${context}`);
                 console.error(`📝 پیام: ${errorMsg}`);
@@ -1903,7 +1821,6 @@
                 if (showToast) {
                     this.showToast(`❌ ${context}: ${errorMsg}`, 'error');
                 }
-                this.saveToLog({ context, error: errorMsg, time: new Date().toISOString() });
                 return errorMsg;
             },
             showToast: function(msg, type = 'info') {
@@ -1913,48 +1830,14 @@
                 t.className = 'toast ' + type;
                 t.style.display = 'block';
                 clearTimeout(t._hide);
-                t._hide = setTimeout(() => {
-                    t.style.display = 'none';
-                    t.className = 'toast';
-                }, 5000);
-            },
-            saveToLog: function(data) {
-                try {
-                    const logs = JSON.parse(localStorage.getItem('error_logs') || '[]');
-                    logs.push(data);
-                    if (logs.length > 50) logs.shift();
-                    localStorage.setItem('error_logs', JSON.stringify(logs));
-                } catch (e) { /* silent */ }
-            },
-            showErrorLog: function() {
-                try {
-                    const logs = JSON.parse(localStorage.getItem('error_logs') || '[]');
-                    if (!logs.length) {
-                        this.showToast('✅ هیچ خطایی ثبت نشده است!', 'success');
-                        return;
-                    }
-                    console.table(logs);
-                    this.showToast(`📋 ${logs.length} خطا در کنسول ثبت شد`, 'info');
-                } catch (e) { console.error(e); }
-            },
-            wrap: function(fn, context) {
-                return async function(...args) {
-                    try {
-                        return await fn(...args);
-                    } catch (error) {
-                        ErrorHandler.log(error, context);
-                        return null;
-                    }
-                };
+                t._hide = setTimeout(() => { t.style.display = 'none';
+                    t.className = 'toast'; }, 5000);
             },
             showLoading: function(show) {
                 const el = document.getElementById('loadingOverlay');
                 if (!el) return;
-                if (show) {
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                }
+                if (show) el.classList.remove('hidden');
+                else el.classList.add('hidden');
             },
             checkConnection: function() {
                 if (!navigator.onLine) {
@@ -1974,12 +1857,14 @@
         const TABLE_NAME = 'estate_properties';
 
         // ============================================================
-        // ====== ۳ مدیر ثابت ======
+        // ====== ۴ مدیر ثابت ======
         // ============================================================
+        const MAX_ADMINS = 4;
         const FIXED_ADMINS = [
             { id: 'admin_001', name: 'مدیر اول', date: new Date().toISOString() },
             { id: 'admin_002', name: 'مدیر دوم', date: new Date().toISOString() },
-            { id: 'admin_003', name: 'مدیر سوم', date: new Date().toISOString() }
+            { id: 'admin_003', name: 'مدیر سوم', date: new Date().toISOString() },
+            { id: 'admin_004', name: 'مدیر چهارم', date: new Date().toISOString() }
         ];
 
         function getAdmins() {
@@ -1987,11 +1872,9 @@
                 const saved = localStorage.getItem('amlak_fixed_admins');
                 if (saved) {
                     const admins = JSON.parse(saved);
-                    if (admins.length === 3) return admins;
+                    if (admins.length === MAX_ADMINS) return admins;
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری مدیران');
-            }
+            } catch (e) {}
             localStorage.setItem('amlak_fixed_admins', JSON.stringify(FIXED_ADMINS));
             return FIXED_ADMINS;
         }
@@ -2003,9 +1886,7 @@
                     const admins = getAdmins();
                     return admins.find(a => a.id === adminId) || null;
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'دریافت مدیر فعلی');
-            }
+            } catch (e) { return null; }
             return null;
         }
 
@@ -2017,9 +1898,7 @@
                     localStorage.setItem('amlak_current_admin_id', admin.id);
                     return admin;
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'انتخاب مدیر');
-            }
+            } catch (e) {}
             return null;
         }
 
@@ -2040,47 +1919,40 @@
         let userMaxRahn = 0;
         let userMaxRent = 0;
         let userPriceFilterActive = false;
+        let chatMessages = [];
+        let currentChatUserId = null;
 
         // ============================================================
         // ====== توابع کمکی ======
         // ============================================================
-        function showToast(msg, type = 'info') {
-            ErrorHandler.showToast(msg, type);
-        }
+        function showToast(msg, type = 'info') { ErrorHandler.showToast(msg, type); }
 
-        function showLoading(show) {
-            ErrorHandler.showLoading(show);
-        }
+        function showLoading(show) { ErrorHandler.showLoading(show); }
 
-        function sanitizeInput(text) {
-            if (!text) return '';
-            return String(text).replace(/<[^>]*>/g, '').replace(/[<>]/g, '');
-        }
+        function sanitizeInput(text) { if (!text) return ''; return String(text).replace(/<[^>]*>/g, '').replace(/[<>]/g,
+            ''); }
 
         function formatPrice(input) {
             try {
                 let value = input.value.replace(/[^0-9]/g, '');
                 if (value === '') { input.value = ''; return; }
                 let number = parseInt(value);
-                if (!isNaN(number)) {
-                    input.value = number.toLocaleString('en-US');
+                if (!isNaN(number)) { input.value = number.toLocaleString('en-US'); }
+            } catch (e) {}
+        }
+
+        function getRawNumber(f) { try { return String(f).replace(/,/g, ''); } catch { return '0'; } }
+
+        function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+        function hideAllForms(exclude = []) {
+            const forms = ['editProfileForm', 'propertyForm', 'publicMsgForm', 'chatViewer', 'privateMsgViewer'];
+            forms.forEach(f => {
+                if (!exclude.includes(f)) {
+                    const el = document.getElementById(f);
+                    if (el) el.style.display = 'none';
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'فرمت قیمت');
-            }
-        }
-
-        function getRawNumber(formattedValue) {
-            try {
-                return String(formattedValue).replace(/,/g, '');
-            } catch (e) {
-                ErrorHandler.log(e, 'دریافت عدد خام');
-                return '0';
-            }
-        }
-
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+            });
         }
 
         // ============================================================
@@ -2094,9 +1966,7 @@
                 const allUsers = [...admins, ...users];
                 const uniqueUsers = [...new Set(allUsers.map(u => u.id))];
                 document.getElementById('onlineCount').textContent = uniqueUsers.length || 0;
-            } catch (e) {
-                ErrorHandler.log(e, 'بروزرسانی کاربران آنلاین');
-            }
+            } catch (e) {}
         }
 
         // ============================================================
@@ -2105,21 +1975,29 @@
         function selectRole(role) {
             try {
                 document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
+                const admins = getAdmins();
                 if (role === 'admin') {
+                    if (admins.length >= MAX_ADMINS) {
+                        showToast('⚠️ تعداد مدیران کامل است! فقط کاربران عادی می‌توانند وارد شوند.', 'warning');
+                        document.getElementById('roleAdmin').classList.remove('active');
+                        document.getElementById('roleUser').classList.add('active');
+                        document.getElementById('adminFields').style.display = 'none';
+                        document.getElementById('userFields').style.display = 'block';
+                        document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. لطفاً به عنوان کاربر وارد شوید.';
+                        return;
+                    }
                     document.getElementById('roleAdmin').classList.add('active');
                     document.getElementById('adminFields').style.display = 'block';
                     document.getElementById('userFields').style.display = 'none';
-                    document.getElementById('loginHint').textContent = 'یکی از ۳ مدیر را انتخاب کنید';
+                    document.getElementById('loginHint').textContent = 'یکی از ۴ مدیر را انتخاب کنید';
                     showAdminSelection();
                 } else {
                     document.getElementById('roleUser').classList.add('active');
                     document.getElementById('adminFields').style.display = 'none';
                     document.getElementById('userFields').style.display = 'block';
-                    document.getElementById('loginHint').textContent = 'کاربران عادی: روی دکمه کلیک کنید';
+                    document.getElementById('loginHint').textContent = 'شماره موبایل خود را وارد کنید';
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'انتخاب نقش');
-            }
+            } catch (e) { ErrorHandler.log(e, 'انتخاب نقش'); }
         }
 
         function showAdminSelection() {
@@ -2139,9 +2017,7 @@
                 });
                 html += '</div>';
                 document.getElementById('adminFields').innerHTML = html;
-            } catch (e) {
-                ErrorHandler.log(e, 'نمایش انتخاب مدیر');
-            }
+            } catch (e) { ErrorHandler.log(e, 'نمایش انتخاب مدیر'); }
         }
 
         function loginAsAdmin(index) {
@@ -2156,25 +2032,29 @@
                 } else {
                     showToast('❌ خطا در ورود مدیر!', 'error');
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'ورود مدیر');
-            }
+            } catch (e) { ErrorHandler.log(e, 'ورود مدیر'); }
         }
 
         function loginUser() {
             try {
+                const phone = document.getElementById('userPhoneInput').value.trim();
+                if (!phone || phone.length < 10) {
+                    showToast('⚠️ لطفاً شماره موبایل معتبر وارد کنید!', 'warning');
+                    return;
+                }
                 const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
-                const userId = generateId();
-                users.push({ id: userId, date: new Date().toISOString() });
-                localStorage.setItem('amlak_users', JSON.stringify(users));
+                let user = users.find(u => u.phone === phone);
+                if (!user) {
+                    user = { id: generateId(), phone: phone, date: new Date().toISOString() };
+                    users.push(user);
+                    localStorage.setItem('amlak_users', JSON.stringify(users));
+                }
                 isAdmin = false;
-                currentUser = { role: 'user', id: userId };
+                currentUser = { role: 'user', id: user.id, phone: phone };
                 localStorage.setItem('amlak_user', JSON.stringify(currentUser));
                 showToast('👋 خوش آمدید!', 'success');
                 enterApp();
-            } catch (e) {
-                ErrorHandler.log(e, 'ورود کاربر');
-            }
+            } catch (e) { ErrorHandler.log(e, 'ورود کاربر'); }
         }
 
         function logout() {
@@ -2185,91 +2065,67 @@
                 isAdmin = false;
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('loginOverlay').classList.remove('hidden');
-                document.getElementById('adminFields').innerHTML = `
-                            <div id="adminLoginArea">
-                                <button class="btn" onclick="showAdminSelection()">👑 انتخاب مدیر</button>
-                            </div>
-                        `;
-                document.getElementById('roleAdmin').classList.add('active');
-                document.getElementById('roleUser').classList.remove('active');
-                document.getElementById('userFields').style.display = 'none';
-                document.getElementById('loginHint').textContent = 'مدیران: روی دکمه کلیک کنید';
-                updateOnlineUsers();
+                const admins = getAdmins();
+                if (admins.length >= MAX_ADMINS) {
+                    document.getElementById('roleAdmin').classList.remove('active');
+                    document.getElementById('roleUser').classList.add('active');
+                    document.getElementById('adminFields').style.display = 'none';
+                    document.getElementById('userFields').style.display = 'block';
+                    document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. لطفاً به عنوان کاربر وارد شوید.';
+                } else {
+                    document.getElementById('roleAdmin').classList.add('active');
+                    document.getElementById('roleUser').classList.remove('active');
+                    document.getElementById('adminFields').style.display = 'block';
+                    document.getElementById('userFields').style.display = 'none';
+                    document.getElementById('loginHint').textContent = 'یکی از ۴ مدیر را انتخاب کنید';
+                    showAdminSelection();
+                }
                 showToast('🚪 خروج موفق', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'خروج');
-            }
+            } catch (e) { ErrorHandler.log(e, 'خروج'); }
         }
 
         // ============================================================
         // ====== ویرایش پروفایل مدیر ======
         // ============================================================
         function showEditProfile() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
-                    return;
-                }
-                const adminInfo = getCurrentAdmin();
-                const currentName = adminInfo ? adminInfo.name : localStorage.getItem('amlak_admin_name') || '';
-                document.getElementById('editAdminName').value = currentName;
-                document.getElementById('editProfileForm').style.display = 'block';
-                document.getElementById('propertyForm').style.display = 'none';
-                document.getElementById('publicMsgForm').style.display = 'none';
-                document.getElementById('privateMsgViewer').style.display = 'none';
-                document.getElementById('chartContainer').style.display = 'none';
-            } catch (e) {
-                ErrorHandler.log(e, 'نمایش ویرایش پروفایل');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const adminInfo = getCurrentAdmin();
+            document.getElementById('editAdminName').value = adminInfo?.name || '';
+            hideAllForms(['editProfileForm']);
+            document.getElementById('editProfileForm').style.display = 'block';
         }
 
-        function hideEditProfile() {
-            document.getElementById('editProfileForm').style.display = 'none';
-        }
+        function hideEditProfile() { document.getElementById('editProfileForm').style.display = 'none'; }
 
         function saveProfileChanges() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
-                    return;
-                }
-                const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
-                if (!name) {
-                    showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
-                    return;
-                }
-                const admins = getAdmins();
-                const adminInfo = getCurrentAdmin();
-                if (adminInfo) {
-                    const index = admins.findIndex(a => a.id === adminInfo.id);
-                    if (index !== -1) {
-                        admins[index].name = name;
-                        localStorage.setItem('amlak_fixed_admins', JSON.stringify(admins));
-                        localStorage.setItem('amlak_admin_name', name);
-                        if (currentUser) {
-                            currentUser.name = name;
-                            localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-                        }
-                        showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
-                        hideEditProfile();
-                        updateWelcomeMessage();
-                        showAdminSelection();
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
+            if (!name) { showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning'); return; }
+            const admins = getAdmins();
+            const adminInfo = getCurrentAdmin();
+            if (adminInfo) {
+                const index = admins.findIndex(a => a.id === adminInfo.id);
+                if (index !== -1) {
+                    admins[index].name = name;
+                    localStorage.setItem('amlak_fixed_admins', JSON.stringify(admins));
+                    localStorage.setItem('amlak_admin_name', name);
+                    if (currentUser) {
+                        currentUser.name = name;
+                        localStorage.setItem('amlak_user', JSON.stringify(currentUser));
                     }
+                    showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
+                    hideEditProfile();
+                    updateWelcomeMessage();
+                    showAdminSelection();
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'ذخیره تغییرات پروفایل');
             }
         }
 
         function updateWelcomeMessage() {
-            try {
-                const adminInfo = getCurrentAdmin();
-                const name = adminInfo ? adminInfo.name : localStorage.getItem('amlak_admin_name') || 'مدیر عزیز';
-                document.getElementById('welcomeUser').textContent = `👋 خوش آمدید ${name}!`;
-                document.getElementById('userRoleBadge').textContent = `👑 ${name}`;
-            } catch (e) {
-                ErrorHandler.log(e, 'بروزرسانی پیام خوش‌آمدگویی');
-            }
+            const adminInfo = getCurrentAdmin();
+            const name = adminInfo ? adminInfo.name : localStorage.getItem('amlak_admin_name') || 'مدیر عزیز';
+            document.getElementById('welcomeUser').textContent = `👋 خوش آمدید ${name}!`;
+            document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر';
         }
 
         // ============================================================
@@ -2284,15 +2140,13 @@
                 loadPrivateMessages();
                 loadCartItems();
                 loadFavorites();
-                const adminInfo = getCurrentAdmin();
-                if (isAdmin && adminInfo) {
-                    localStorage.setItem('amlak_admin_name', adminInfo.name);
-                    updateWelcomeMessage();
+                loadChatMessages();
+                updateWelcomeMessage();
+                if (isAdmin) {
                     document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'inline-block';
                     document.getElementById('adminButtons').style.display = 'flex';
                     document.getElementById('guideBox').style.display = 'block';
-                    document.getElementById('userRoleBadge').textContent = `👑 ${adminInfo.name}`;
                     document.getElementById('userRoleBadge').style.background = '#FFD700';
                     document.getElementById('userFilterSection').style.display = 'none';
                     document.getElementById('adminFilterSort').style.display = 'flex';
@@ -2301,18 +2155,18 @@
                     updateOnlineUsers();
                     loadAdminMessage();
                 } else {
-                    document.getElementById('welcomeUser').textContent = '👋 خوش آمدید!';
                     document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'none';
                     document.getElementById('adminButtons').style.display = 'none';
                     document.getElementById('guideBox').style.display = 'none';
-                    document.getElementById('userRoleBadge').textContent = '👤 کاربر';
                     document.getElementById('userRoleBadge').style.background = '#4CAF50';
                     document.getElementById('userFilterSection').style.display = 'block';
                     document.getElementById('adminFilterSort').style.display = 'none';
                     document.getElementById('filterTabs').style.display = 'none';
                     document.getElementById('onlineUsers').style.display = 'none';
                     loadAdminMessage();
+                    // بررسی اعلان‌های کاربر
+                    checkUserNotifications();
                 }
                 updateCartBadge();
                 renderList();
@@ -2321,9 +2175,42 @@
                 if (isAdmin) {
                     setInterval(updateOnlineUsers, 30000);
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'ورود به برنامه');
-            }
+            } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
+        }
+
+        // ============================================================
+        // ====== اعلان‌های کاربر ======
+        // ============================================================
+        function checkUserNotifications() {
+            try {
+                if (!currentUser || isAdmin) return;
+                const notifications = JSON.parse(localStorage.getItem('amlak_notifications') || '[]');
+                const userNotifs = notifications.filter(n => n.user_id === currentUser.id && !n.is_read);
+                if (userNotifs.length) {
+                    showToast(`📬 ${userNotifs.length} اعلان جدید دارید!`, 'info');
+                    localStorage.setItem('amlak_notifications', JSON.stringify(notifications.map(n => {
+                        if (n.user_id === currentUser.id) n.is_read = true;
+                        return n;
+                    })));
+                }
+            } catch (e) {}
+        }
+
+        function notifyUsers(title, body) {
+            try {
+                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+                const notifications = JSON.parse(localStorage.getItem('amlak_notifications') || '[]');
+                users.forEach(u => {
+                    notifications.push({
+                        user_id: u.id,
+                        title: title,
+                        body: body,
+                        date: new Date().toISOString(),
+                        is_read: false
+                    });
+                });
+                localStorage.setItem('amlak_notifications', JSON.stringify(notifications));
+            } catch (e) { ErrorHandler.log(e, 'ارسال اعلان'); }
         }
 
         // ============================================================
@@ -2333,78 +2220,45 @@
             try {
                 const adminMsg = localStorage.getItem('amlak_admin_message');
                 if (adminMsg) {
-                    try {
-                        const msgData = JSON.parse(adminMsg);
-                        document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
-                        document.getElementById('adminMsgDate').textContent = msgData.date || '';
-                        document.getElementById('adminMsgBox').style.display = 'block';
-                        if (isAdmin) {
-                            document.getElementById('adminMsgActions').style.display = 'flex';
-                        } else {
-                            document.getElementById('adminMsgActions').style.display = 'none';
-                        }
-                        document.getElementById('adminMsgEditArea').style.display = 'none';
-                        document.getElementById('adminMsgDisplay').style.display = 'block';
-                    } catch {
-                        document.getElementById('adminMsgBox').style.display = 'none';
-                    }
+                    const msgData = JSON.parse(adminMsg);
+                    document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                    document.getElementById('adminMsgDate').textContent = msgData.date || '';
+                    document.getElementById('adminMsgBox').style.display = 'block';
+                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
+                    document.getElementById('adminMsgEditArea').style.display = 'none';
+                    document.getElementById('adminMsgDisplay').style.display = 'block';
                 } else {
                     document.getElementById('adminMsgBox').style.display = 'none';
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری پیام مدیر');
-            }
+            } catch (e) {}
         }
 
         function editAdminMessage() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
-                    return;
-                }
-                const currentMsg = localStorage.getItem('amlak_admin_message');
-                let currentText = '';
-                if (currentMsg) {
-                    try {
-                        const data = JSON.parse(currentMsg);
-                        currentText = data.text || '';
-                    } catch {}
-                }
-                document.getElementById('adminMsgEditInput').value = currentText;
-                document.getElementById('adminMsgDisplay').style.display = 'none';
-                document.getElementById('adminMsgActions').style.display = 'none';
-                document.getElementById('adminMsgEditArea').style.display = 'block';
-            } catch (e) {
-                ErrorHandler.log(e, 'ویرایش پیام مدیر');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const currentMsg = localStorage.getItem('amlak_admin_message');
+            let currentText = '';
+            if (currentMsg) try { currentText = JSON.parse(currentMsg).text || ''; } catch {}
+            document.getElementById('adminMsgEditInput').value = currentText;
+            document.getElementById('adminMsgDisplay').style.display = 'none';
+            document.getElementById('adminMsgActions').style.display = 'none';
+            document.getElementById('adminMsgEditArea').style.display = 'block';
         }
 
         function saveAdminMessageEdit() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
-                    return;
-                }
-                const newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
-                if (!newMsg) {
-                    showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                    return;
-                }
-                const data = {
-                    text: newMsg,
-                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
-                };
-                localStorage.setItem('amlak_admin_message', JSON.stringify(data));
-                document.getElementById('adminMsgDisplay').style.display = 'block';
-                document.getElementById('adminMsgActions').style.display = 'flex';
-                document.getElementById('adminMsgEditArea').style.display = 'none';
-                document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
-                document.getElementById('adminMsgDate').textContent = data.date;
-                document.getElementById('adminMsgBox').style.display = 'block';
-                showToast('✅ پیام مدیر ویرایش شد!', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'ذخیره ویرایش پیام مدیر');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
+            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            const data = { text: newMsg, date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date()
+                .toLocaleTimeString('fa-IR') };
+            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
+            document.getElementById('adminMsgDate').textContent = data.date;
+            document.getElementById('adminMsgBox').style.display = 'block';
+            showToast('✅ پیام مدیر ویرایش شد!', 'success');
+            notifyUsers('📢 پیام جدید از مدیر', newMsg);
         }
 
         function cancelAdminMessageEdit() {
@@ -2414,177 +2268,133 @@
         }
 
         function deleteAdminMessage() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning');
-                    return;
-                }
-                if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
-                localStorage.removeItem('amlak_admin_message');
-                document.getElementById('adminMsgBox').style.display = 'none';
-                showToast('🗑️ پیام مدیر حذف شد', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف پیام مدیر');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
+            localStorage.removeItem('amlak_admin_message');
+            document.getElementById('adminMsgBox').style.display = 'none';
+            showToast('🗑️ پیام مدیر حذف شد', 'success');
         }
 
         // ============================================================
-        // ====== بارگذاری داده‌ها از سرور ======
+        // ====== بارگذاری داده‌ها ======
         // ============================================================
         async function loadProperties() {
             try {
-                if (!ErrorHandler.checkConnection()) return;
                 showLoading(true);
-                const { data, error } = await supabaseClient
-                    .from(TABLE_NAME)
-                    .select('*')
-                    .order('id', { ascending: false });
+                const { data, error } = await supabaseClient.from(TABLE_NAME).select('*').order('id', { ascending: false });
                 if (error) throw new Error(error.message);
                 if (data && data.length > 0) {
                     properties = data;
                     localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 } else {
-                    const localData = localStorage.getItem('amlak_properties');
-                    if (localData) {
-                        properties = JSON.parse(localData);
-                    } else {
-                        properties = [];
-                    }
+                    const local = localStorage.getItem('amlak_properties');
+                    properties = local ? JSON.parse(local) : [];
                 }
             } catch (e) {
                 ErrorHandler.log(e, 'بارگذاری املاک');
-                const localData = localStorage.getItem('amlak_properties');
-                if (localData) {
-                    properties = JSON.parse(localData);
-                } else {
-                    properties = [];
-                }
-            } finally {
-                showLoading(false);
-                updateStats();
-            }
+                const local = localStorage.getItem('amlak_properties');
+                properties = local ? JSON.parse(local) : [];
+            } finally { showLoading(false);
+                updateStats(); }
         }
+
+        function loadPublicMessages() {
+            try { publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages') || '[]'); } catch { publicMessages =
+                    []; }
+        }
+
+        function loadPrivateMessages() {
+            try { privateMessages = JSON.parse(localStorage.getItem('amlak_private_messages') || '[]'); } catch { privateMessages =
+                    []; }
+        }
+
+        function loadCartItems() {
+            try { cartItems = JSON.parse(localStorage.getItem('amlak_cart') || '[]'); } catch { cartItems = []; }
+        }
+
+        function loadFavorites() {
+            try { favorites = JSON.parse(localStorage.getItem('amlak_favorites') || '[]'); } catch { favorites = []; }
+        }
+
+        function loadChatMessages() {
+            try { chatMessages = JSON.parse(localStorage.getItem('amlak_chat_messages') || '[]'); } catch { chatMessages = []; }
+        }
+
+        function saveChatMessages() { localStorage.setItem('amlak_chat_messages', JSON.stringify(chatMessages)); }
 
         // ============================================================
         // ====== توابع قیمت ======
         // ============================================================
         function togglePriceFields() {
-            try {
-                const type = document.getElementById('fType').value;
-                if (type === 'sale') {
-                    document.getElementById('saleFields').style.display = 'block';
-                    document.getElementById('rentFields').style.display = 'none';
-                } else {
-                    document.getElementById('saleFields').style.display = 'none';
-                    document.getElementById('rentFields').style.display = 'block';
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر فیلدهای قیمت');
-            }
+            const type = document.getElementById('fType').value;
+            document.getElementById('saleFields').style.display = type === 'sale' ? 'block' : 'none';
+            document.getElementById('rentFields').style.display = type === 'rent' ? 'block' : 'none';
         }
 
-        // ============================================================
-        // ====== آمار ======
-        // ============================================================
         function updateStats() {
-            try {
-                const total = properties.length;
-                const sale = properties.filter(p => p.type === 'sale').length;
-                const rent = properties.filter(p => p.type === 'rent').length;
-                const prices = properties.map(p => Number(p.price) || 0);
-                const avg = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
-                document.getElementById('totalCount').textContent = total;
-                document.getElementById('saleCount').textContent = sale;
-                document.getElementById('rentCount').textContent = rent;
-                document.getElementById('avgPrice').textContent = avg.toLocaleString();
-                document.getElementById('chartSaleCount').textContent = sale;
-                document.getElementById('chartRentCount').textContent = rent;
-            } catch (e) {
-                ErrorHandler.log(e, 'بروزرسانی آمار');
-            }
+            const total = properties.length;
+            const sale = properties.filter(p => p.type === 'sale').length;
+            const rent = properties.filter(p => p.type === 'rent').length;
+            const prices = properties.map(p => Number(p.price) || 0);
+            const avg = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('saleCount').textContent = sale;
+            document.getElementById('rentCount').textContent = rent;
+            document.getElementById('avgPrice').textContent = avg.toLocaleString();
+            document.getElementById('chartSaleCount').textContent = sale;
+            document.getElementById('chartRentCount').textContent = rent;
         }
 
         // ============================================================
         // ====== فرم ملک ======
         // ============================================================
         function toggleForm(data) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning');
-                    return;
-                }
-                document.getElementById('publicMsgForm').style.display = 'none';
-                document.getElementById('privateMsgViewer').style.display = 'none';
-                document.getElementById('editProfileForm').style.display = 'none';
-                document.getElementById('chartContainer').style.display = 'none';
-                const form = document.getElementById('propertyForm');
-                const title = document.getElementById('formTitle');
-                if (data) {
-                    title.textContent = '✏️ ویرایش ملک';
-                    document.getElementById('editId').value = data.id;
-                    document.getElementById('fCode').value = sanitizeInput(data.customCode) || '';
-                    document.getElementById('fTitle').value = sanitizeInput(data.title) || '';
-                    document.getElementById('fCategory').value = data.category || 'آپارتمان';
-                    document.getElementById('fType').value = data.type || 'sale';
-                    togglePriceFields();
-                    if (data.type === 'sale') {
-                        document.getElementById('fPrice').value = Number(data.price || 0).toLocaleString('en-US');
-                    } else {
-                        document.getElementById('fRahn').value = Number(data.rahn || 0).toLocaleString('en-US');
-                        document.getElementById('fRentPrice').value = Number(data.rentPrice || 0).toLocaleString('en-US');
-                    }
-                    document.getElementById('fAddress').value = sanitizeInput(data.address) || '';
-                    document.getElementById('fArea').value = data.area || '';
-                    document.getElementById('fPhone').value = sanitizeInput(data.phone) || '';
-                    document.getElementById('fDescription').value = sanitizeInput(data.description) || '';
-                    document.getElementById('fHiddenDescription').value = sanitizeInput(data.hiddenDescription) || '';
-                    form.style.display = 'block';
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
+            hideAllForms(['propertyForm']);
+            const form = document.getElementById('propertyForm');
+            if (data) {
+                document.getElementById('formTitle').textContent = '✏️ ویرایش ملک';
+                document.getElementById('editId').value = data.id;
+                document.getElementById('fCode').value = data.customCode || '';
+                document.getElementById('fTitle').value = data.title || '';
+                document.getElementById('fCategory').value = data.category || 'آپارتمان';
+                document.getElementById('fType').value = data.type || 'sale';
+                togglePriceFields();
+                if (data.type === 'sale') {
+                    document.getElementById('fPrice').value = Number(data.price || 0).toLocaleString('en-US');
                 } else {
-                    title.textContent = '📋 ثبت ملک جدید';
-                    document.getElementById('editId').value = '';
-                    clearForm();
-                    form.style.display = form.style.display === 'block' ? 'none' : 'block';
-                    if (form.style.display === 'block') {
-                        togglePriceFields();
-                    }
+                    document.getElementById('fRahn').value = Number(data.rahn || 0).toLocaleString('en-US');
+                    document.getElementById('fRentPrice').value = Number(data.rentPrice || 0).toLocaleString('en-US');
                 }
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر فرم ملک');
+                document.getElementById('fAddress').value = data.address || '';
+                document.getElementById('fArea').value = data.area || '';
+                document.getElementById('fPhone').value = data.phone || '';
+                document.getElementById('fDescription').value = data.description || '';
+                document.getElementById('fHiddenDescription').value = data.hiddenDescription || '';
+                form.style.display = 'block';
+            } else {
+                document.getElementById('formTitle').textContent = '📋 ثبت ملک جدید';
+                clearForm();
+                form.style.display = form.style.display === 'block' ? 'none' : 'block';
+                if (form.style.display === 'block') togglePriceFields();
             }
         }
 
         function clearForm() {
-            try {
-                document.getElementById('fCode').value = '';
-                document.getElementById('fTitle').value = '';
-                document.getElementById('fCategory').value = 'آپارتمان';
-                document.getElementById('fType').value = 'sale';
-                document.getElementById('fPrice').value = '';
-                document.getElementById('fRahn').value = '';
-                document.getElementById('fRentPrice').value = '';
-                document.getElementById('fAddress').value = '';
-                document.getElementById('fArea').value = '';
-                document.getElementById('fPhone').value = '';
-                document.getElementById('fDescription').value = '';
-                document.getElementById('fHiddenDescription').value = '';
-                document.getElementById('fImages').value = '';
-                document.getElementById('fVideo').value = '';
-                togglePriceFields();
-            } catch (e) {
-                ErrorHandler.log(e, 'پاک کردن فرم');
-            }
+            ['fCode', 'fTitle', 'fPrice', 'fRahn', 'fRentPrice', 'fAddress', 'fArea', 'fPhone', 'fDescription',
+                'fHiddenDescription'
+            ].forEach(id => document.getElementById(id).value = '');
+            document.getElementById('editId').value = '';
+            document.getElementById('fCategory').value = 'آپارتمان';
+            document.getElementById('fType').value = 'sale';
+            togglePriceFields();
         }
 
         function generateCode() {
-            try {
-                const now = new Date();
-                const year = now.getFullYear();
-                const count = properties.length + 1;
-                return `MLK-${year}-${String(count).padStart(3, '0')}`;
-            } catch (e) {
-                ErrorHandler.log(e, 'تولید کد');
-                return 'MLK-' + Date.now();
-            }
+            const now = new Date();
+            const year = now.getFullYear();
+            const count = properties.length + 1;
+            return `MLK-${year}-${String(count).padStart(3, '0')}`;
         }
 
         // ============================================================
@@ -2592,117 +2402,81 @@
         // ============================================================
         async function saveProperty() {
             try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning');
-                    return;
-                }
+                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
                 if (!ErrorHandler.checkConnection()) return;
+
                 const editId = document.getElementById('editId').value;
-                const customCode = sanitizeInput(document.getElementById('fCode').value.trim());
-                const title = sanitizeInput(document.getElementById('fTitle').value.trim());
-                const category = document.getElementById('fCategory').value;
-                const type = document.getElementById('fType').value;
-                const address = sanitizeInput(document.getElementById('fAddress').value.trim());
-                const area = document.getElementById('fArea').value.trim() || '0';
-                const phone = sanitizeInput(document.getElementById('fPhone').value.trim()) || '---';
-                const description = sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات';
-                const hiddenDescription = sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '';
-                let price = '0',
-                    rahn = '0',
-                    rentPrice = '0';
-                if (type === 'sale') {
-                    const priceRaw = getRawNumber(document.getElementById('fPrice').value);
-                    if (!priceRaw || priceRaw === '') {
-                        showToast('⚠️ قیمت فروش را وارد کنید!', 'warning');
-                        return;
-                    }
-                    price = priceRaw;
-                } else {
-                    const rahnRaw = getRawNumber(document.getElementById('fRahn').value);
-                    const rentRaw = getRawNumber(document.getElementById('fRentPrice').value);
-                    rahn = rahnRaw || '0';
-                    if (!rentRaw || rentRaw === '') {
-                        showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning');
-                        return;
-                    }
-                    rentPrice = rentRaw;
-                    price = rentPrice;
-                }
-                if (!title || !address) {
-                    showToast('⚠️ عنوان و آدرس الزامی است!', 'warning');
-                    return;
-                }
-                const propertyData = {
-                    customCode: customCode || generateCode(),
-                    title: title,
-                    category: category,
-                    type: type,
-                    price: String(price),
-                    rahn: String(rahn),
-                    rentPrice: String(rentPrice),
-                    address: address,
-                    area: String(area),
-                    phone: phone,
-                    description: description,
-                    hiddenDescription: hiddenDescription,
+                const data = {
+                    customCode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
+                    title: sanitizeInput(document.getElementById('fTitle').value.trim()),
+                    category: document.getElementById('fCategory').value,
+                    type: document.getElementById('fType').value,
+                    price: '0',
+                    rahn: '0',
+                    rentPrice: '0',
+                    address: sanitizeInput(document.getElementById('fAddress').value.trim()),
+                    area: document.getElementById('fArea').value.trim() || '0',
+                    phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
+                    description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
+                    hiddenDescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
                     date: new Date().toLocaleDateString('fa-IR')
                 };
+
+                if (data.type === 'sale') {
+                    const p = getRawNumber(document.getElementById('fPrice').value);
+                    if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
+                    data.price = p;
+                } else {
+                    const r = getRawNumber(document.getElementById('fRahn').value);
+                    const rp = getRawNumber(document.getElementById('fRentPrice').value);
+                    data.rahn = r || '0';
+                    if (!rp) { showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning'); return; }
+                    data.rentPrice = rp;
+                    data.price = rp;
+                }
+
+                if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
+
                 showLoading(true);
                 let success = false;
+
                 if (editId) {
-                    const { error } = await supabaseClient
-                        .from(TABLE_NAME)
-                        .update(propertyData)
-                        .eq('id', editId);
+                    const { error } = await supabaseClient.from(TABLE_NAME).update(data).eq('id', editId);
                     if (error) throw new Error(error.message);
-                    const index = properties.findIndex(p => p.id == editId);
-                    if (index !== -1) {
-                        properties[index] = { ...properties[index], ...propertyData };
-                    }
+                    const idx = properties.findIndex(p => p.id == editId);
+                    if (idx !== -1) properties[idx] = { ...properties[idx], ...data };
                     showToast('✅ ملک ویرایش شد!', 'success');
                     success = true;
                 } else {
-                    const { data, error } = await supabaseClient
-                        .from(TABLE_NAME)
-                        .insert([propertyData])
-                        .select();
+                    const { data: newData, error } = await supabaseClient.from(TABLE_NAME).insert([data]).select();
                     if (error) throw new Error(error.message);
-                    if (data && data.length > 0) {
-                        properties = [...data, ...properties];
-                        showToast('✅ ملک با موفقیت ثبت شد!', 'success');
+                    if (newData && newData.length > 0) {
+                        properties = [...newData, ...properties];
+                        showToast('✅ ملک ثبت شد!', 'success');
                         success = true;
+                        notifyUsers('🏠 ملک جدید', `ملک جدید "${data.title}" به لیست اضافه شد!`);
                     }
                 }
-                if (success) {
-                    localStorage.setItem('amlak_properties', JSON.stringify(properties));
-                }
+
+                if (success) localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 showLoading(false);
-                clearForm();
                 document.getElementById('propertyForm').style.display = 'none';
+                clearForm();
                 updateStats();
                 renderList();
-            } catch (error) {
-                showLoading(false);
-                ErrorHandler.log(error, 'ذخیره ملک');
-            }
+            } catch (e) { showLoading(false);
+                ErrorHandler.log(e, 'ذخیره ملک'); }
         }
 
         // ============================================================
         // ====== حذف ملک ======
         // ============================================================
         async function deleteProperty(id) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
             try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning');
-                    return;
-                }
-                if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
-                if (!ErrorHandler.checkConnection()) return;
                 showLoading(true);
-                const { error } = await supabaseClient
-                    .from(TABLE_NAME)
-                    .delete()
-                    .eq('id', id);
+                const { error } = await supabaseClient.from(TABLE_NAME).delete().eq('id', id);
                 if (error) throw new Error(error.message);
                 properties = properties.filter(p => p.id !== id);
                 localStorage.setItem('amlak_properties', JSON.stringify(properties));
@@ -2710,423 +2484,315 @@
                 updateStats();
                 renderList();
                 showLoading(false);
-            } catch (error) {
-                showLoading(false);
-                ErrorHandler.log(error, 'حذف ملک');
-            }
+            } catch (e) { showLoading(false);
+                ErrorHandler.log(e, 'حذف ملک'); }
         }
 
         // ============================================================
         // ====== سنجاق کردن ======
         // ============================================================
         async function togglePin(id) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند سنجاق کند!', 'warning'); return; }
             try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند سنجاق کند!', 'warning');
-                    return;
-                }
-                if (!ErrorHandler.checkConnection()) return;
                 showLoading(true);
                 for (const p of properties) {
-                    if (p.pinned) {
-                        const { error } = await supabaseClient
-                            .from(TABLE_NAME)
-                            .update({ pinned: false })
-                            .eq('id', p.id);
-                        if (error) throw new Error(error.message);
-                    }
+                    if (p.pinned) { await supabaseClient.from(TABLE_NAME).update({ pinned: false }).eq('id', p.id); }
                 }
-                const { error } = await supabaseClient
-                    .from(TABLE_NAME)
-                    .update({ pinned: true })
-                    .eq('id', id);
-                if (error) throw new Error(error.message);
-                for (const p of properties) {
-                    p.pinned = false;
-                }
+                await supabaseClient.from(TABLE_NAME).update({ pinned: true }).eq('id', id);
+                properties.forEach(p => p.pinned = false);
                 const target = properties.find(p => p.id === id);
                 if (target) target.pinned = true;
                 localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 showToast('📌 ملک سنجاق شد!', 'success');
                 renderList();
                 showLoading(false);
-            } catch (error) {
-                showLoading(false);
-                ErrorHandler.log(error, 'سنجاق ملک');
-            }
+            } catch (e) { showLoading(false);
+                ErrorHandler.log(e, 'سنجاق ملک'); }
         }
 
         // ============================================================
         // ====== لایک/دیسلایک ======
         // ============================================================
         async function likeProperty(id, type) {
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند لایک کند!', 'warning'); return; }
+            if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
             try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند لایک یا دیسلایک کند!', 'warning');
-                    return;
-                }
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return;
-                }
-                if (!ErrorHandler.checkConnection()) return;
-                const userId = currentUser.id;
-                const key = 'amlak_like_prop_' + id + '_' + userId;
-                const userLike = localStorage.getItem(key);
                 const p = properties.find(item => item.id === id);
-                if (!p) {
-                    showToast('❌ ملک یافت نشد!', 'error');
-                    return;
-                }
-                let likes = Number(p.likes) || 0;
-                let dislikes = Number(p.dislikes) || 0;
+                if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
+                const key = 'amlak_like_prop_' + id + '_' + currentUser.id;
+                const userLike = localStorage.getItem(key);
+                let likes = Number(p.likes) || 0,
+                    dislikes = Number(p.dislikes) || 0;
                 if (type === 'like') {
-                    if (userLike === 'like') {
-                        showToast('شما قبلاً این ملک را لایک کرده‌اید', 'warning');
-                        return;
-                    }
-                    if (userLike === 'dislike') {
-                        dislikes = Math.max(0, dislikes - 1);
-                    }
+                    if (userLike === 'like') { showToast('قبلاً لایک کردید', 'warning'); return; }
+                    if (userLike === 'dislike') dislikes = Math.max(0, dislikes - 1);
                     likes++;
                     localStorage.setItem(key, 'like');
                     showToast('❤️ لایک شد!', 'success');
                 } else {
-                    if (userLike === 'dislike') {
-                        showToast('شما قبلاً این ملک را دیسلایک کرده‌اید', 'warning');
-                        return;
-                    }
-                    if (userLike === 'like') {
-                        likes = Math.max(0, likes - 1);
-                    }
+                    if (userLike === 'dislike') { showToast('قبلاً دیسلایک کردید', 'warning'); return; }
+                    if (userLike === 'like') likes = Math.max(0, likes - 1);
                     dislikes++;
                     localStorage.setItem(key, 'dislike');
                     showToast('👎 دیسلایک شد!', 'success');
                 }
-                const { error } = await supabaseClient
-                    .from(TABLE_NAME)
-                    .update({ likes: likes, dislikes: dislikes })
-                    .eq('id', id);
-                if (error) throw new Error(error.message);
+                await supabaseClient.from(TABLE_NAME).update({ likes, dislikes }).eq('id', id);
                 p.likes = likes;
                 p.dislikes = dislikes;
                 localStorage.setItem('amlak_properties', JSON.stringify(properties));
                 renderList();
-            } catch (error) {
-                ErrorHandler.log(error, 'ثبت لایک/دیسلایک');
-            }
+            } catch (e) { ErrorHandler.log(e, 'ثبت لایک/دیسلایک'); }
         }
 
         // ============================================================
-        // ====== سیستم نظرات کاربران (قابلیت جدید ۳ از قبلی) ======
-        // ============================================================
-        async function loadComments(propertyId) {
-            try {
-                if (!ErrorHandler.checkConnection()) return [];
-                const { data, error } = await supabaseClient
-                    .from('comments')
-                    .select('*')
-                    .eq('property_id', propertyId)
-                    .order('created_at', { ascending: false });
-                if (error) throw new Error(error.message);
-                return data || [];
-            } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری نظرات');
-                return [];
-            }
-        }
-
-        async function addComment(propertyId, comment, rating = 0) {
-            try {
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return false;
-                }
-                if (!ErrorHandler.checkConnection()) return false;
-                const { error } = await supabaseClient
-                    .from('comments')
-                    .insert([{
-                        property_id: propertyId,
-                        user_id: currentUser.id,
-                        user_name: currentUser.name || 'کاربر',
-                        comment: comment,
-                        rating: rating
-                    }]);
-                if (error) throw new Error(error.message);
-                showToast('✅ نظر شما ثبت شد!', 'success');
-                return true;
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت نظر');
-                showToast('❌ خطا در ثبت نظر!', 'error');
-                return false;
-            }
-        }
-
-        function toggleCommentForm(propertyId) {
-            try {
-                const form = document.getElementById('commentForm_' + propertyId);
-                if (form) {
-                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'نمایش فرم نظر');
-            }
-        }
-
-        async function submitComment(propertyId) {
-            try {
-                const input = document.getElementById('commentInput_' + propertyId);
-                const rating = document.getElementById('commentRating_' + propertyId);
-                if (!input || !rating) return;
-                const comment = sanitizeInput(input.value.trim());
-                if (!comment) {
-                    showToast('⚠️ لطفاً متن نظر را وارد کنید!', 'warning');
-                    return;
-                }
-                const success = await addComment(propertyId, comment, parseInt(rating.value) || 0);
-                if (success) {
-                    input.value = '';
-                    rating.value = '0';
-                    await renderComments(propertyId);
-                    renderList();
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'ارسال نظر');
-            }
-        }
-
-        async function renderComments(propertyId) {
-            try {
-                const container = document.getElementById('commentsContainer_' + propertyId);
-                if (!container) return;
-                const comments = await loadComments(propertyId);
-                if (!comments.length) {
-                    container.innerHTML = '<div style="text-align:center;color:#999;font-size:12px;padding:8px;">💬 هنوز نظری ثبت نشده است</div>';
-                    return;
-                }
-                container.innerHTML = comments.map(c => `
-                            <div class="comment-item">
-                                <div class="comment-header">
-                                    <span class="comment-user">👤 ${sanitizeInput(c.user_name || 'کاربر')}</span>
-                                    <span>${new Date(c.created_at).toLocaleDateString('fa-IR')}</span>
-                                </div>
-                                <div class="comment-text">${sanitizeInput(c.comment)}</div>
-                                ${c.rating > 0 ? `<div class="comment-rating">${'⭐'.repeat(c.rating)}</div>` : ''}
-                            </div>
-                        `).join('');
-            } catch (e) {
-                ErrorHandler.log(e, 'رندر نظرات');
-            }
-        }
-
-        // ============================================================
-        // ====== سیستم علاقه‌مندی‌ها (قابلیت جدید ۱۳ از جدید) ======
-        // ============================================================
-        function loadFavorites() {
-            try {
-                const data = localStorage.getItem('amlak_favorites');
-                if (data) {
-                    favorites = JSON.parse(data);
-                } else {
-                    favorites = [];
-                }
-            } catch {
-                favorites = [];
-            }
-        }
-
-        function toggleFavorite(propertyId) {
-            try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند علاقه‌مندی داشته باشد!', 'warning');
-                    return;
-                }
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return;
-                }
-                const index = favorites.indexOf(propertyId);
-                if (index === -1) {
-                    favorites.push(propertyId);
-                    showToast('❤️ به علاقه‌مندی‌ها اضافه شد!', 'success');
-                } else {
-                    favorites.splice(index, 1);
-                    showToast('💔 از علاقه‌مندی‌ها حذف شد!', 'info');
-                }
-                localStorage.setItem('amlak_favorites', JSON.stringify(favorites));
-                renderList();
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر علاقه‌مندی');
-            }
-        }
-
-        function isFavorite(propertyId) {
-            return favorites.includes(propertyId);
-        }
-
-        // ============================================================
-        // ====== سیستم امتیازدهی ستاره‌ای (قابلیت جدید ۹ از قبلی) ======
-        // ============================================================
-        function renderStars(rating) {
-            try {
-                const fullStars = Math.floor(rating);
-                const halfStar = rating % 1 >= 0.5 ? 1 : 0;
-                const emptyStars = 5 - fullStars - halfStar;
-                let html = '';
-                for (let i = 0; i < fullStars; i++) html += '⭐';
-                if (halfStar) html += '✨';
-                for (let i = 0; i < emptyStars; i++) html += '☆';
-                return html;
-            } catch (e) {
-                ErrorHandler.log(e, 'رندر ستاره‌ها');
-                return '⭐⭐⭐';
-            }
-        }
-
-        // ============================================================
-        // ====== سیستم تاریخچه بازدید (قابلیت جدید ۱۰ از قبلی) ======
-        // ============================================================
-        async function addViewHistory(propertyId) {
-            try {
-                if (isAdmin) return;
-                if (!currentUser || !currentUser.id) return;
-                if (!ErrorHandler.checkConnection()) return;
-                const { error } = await supabaseClient
-                    .from('view_history')
-                    .insert([{
-                        property_id: propertyId,
-                        user_id: currentUser.id
-                    }]);
-                if (error) throw new Error(error.message);
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت تاریخچه بازدید');
-            }
-        }
-
-        // ============================================================
-        // ====== سیستم پیشنهاد قیمت (قابلیت جدید ۹ از جدید) ======
+        // ====== پیشنهاد قیمت ======
         // ============================================================
         async function submitOffer(propertyId) {
             try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند پیشنهاد قیمت بدهد!', 'warning');
-                    return;
-                }
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return;
-                }
+                if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند پیشنهاد دهد!', 'warning'); return; }
+                if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
                 const input = document.getElementById('offerInput_' + propertyId);
                 if (!input) return;
                 const price = parseInt(input.value.trim());
-                if (!price || price <= 0) {
-                    showToast('⚠️ لطفاً یک قیمت معتبر وارد کنید!', 'warning');
-                    return;
-                }
-                if (!ErrorHandler.checkConnection()) return;
-                const { error } = await supabaseClient
-                    .from('offers')
-                    .insert([{
-                        property_id: propertyId,
-                        user_id: currentUser.id,
-                        user_name: currentUser.name || 'کاربر',
-                        offered_price: price
-                    }]);
+                if (!price || price <= 0) { showToast('⚠️ قیمت معتبر وارد کنید!', 'warning'); return; }
+                const p = properties.find(item => item.id === propertyId);
+                if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
+                const { error } = await supabaseClient.from('offers').insert([{
+                    property_id: propertyId,
+                    user_id: currentUser.id,
+                    user_name: currentUser.name || currentUser.phone || 'کاربر',
+                    offered_price: price
+                }]);
                 if (error) throw new Error(error.message);
                 showToast('✅ پیشنهاد شما ثبت شد!', 'success');
                 input.value = '';
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت پیشنهاد قیمت');
-                showToast('❌ خطا در ثبت پیشنهاد!', 'error');
-            }
+                // ارسال به مدیر از طریق چت
+                sendAdminNotification('💰 پیشنهاد قیمت جدید',
+                    `کاربر ${currentUser.phone || ''} برای "${p.title}" مبلغ ${Number(price).toLocaleString()} تومان پیشنهاد داد`);
+            } catch (e) { ErrorHandler.log(e, 'ثبت پیشنهاد قیمت');
+                showToast('❌ خطا در ثبت پیشنهاد!', 'error'); }
         }
 
         // ============================================================
-        // ====== سیستم رزرو نوبت (قابلیت جدید ۲ از جدید) ======
+        // ====== رزرو نوبت بازدید ======
         // ============================================================
         async function submitAppointment(propertyId) {
             try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند نوبت بگیرد!', 'warning');
-                    return;
-                }
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return;
-                }
+                if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند نوبت بگیرد!', 'warning'); return; }
+                if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
                 const dateInput = document.getElementById('appointmentDate_' + propertyId);
                 const timeInput = document.getElementById('appointmentTime_' + propertyId);
                 if (!dateInput || !timeInput) return;
                 const date = dateInput.value;
                 const time = timeInput.value;
-                if (!date || !time) {
-                    showToast('⚠️ لطفاً تاریخ و زمان را وارد کنید!', 'warning');
-                    return;
-                }
-                if (!ErrorHandler.checkConnection()) return;
-                const { error } = await supabaseClient
-                    .from('appointments')
-                    .insert([{
-                        property_id: propertyId,
-                        user_id: currentUser.id,
-                        user_name: currentUser.name || 'کاربر',
-                        user_phone: '09123456789',
-                        appointment_date: date,
-                        appointment_time: time,
-                        status: 'pending'
-                    }]);
+                if (!date || !time) { showToast('⚠️ تاریخ و زمان را وارد کنید!', 'warning'); return; }
+                const p = properties.find(item => item.id === propertyId);
+                if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
+                const { error } = await supabaseClient.from('appointments').insert([{
+                    property_id: propertyId,
+                    user_id: currentUser.id,
+                    user_name: currentUser.name || currentUser.phone || 'کاربر',
+                    user_phone: currentUser.phone || '09123456789',
+                    appointment_date: date,
+                    appointment_time: time,
+                    status: 'pending'
+                }]);
                 if (error) throw new Error(error.message);
-                showToast('✅ نوبت شما با موفقیت ثبت شد!', 'success');
+                showToast('✅ نوبت شما ثبت شد!', 'success');
                 dateInput.value = '';
                 timeInput.value = '';
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت نوبت');
-                showToast('❌ خطا در ثبت نوبت!', 'error');
-            }
+                sendAdminNotification('📅 قرار بازدید جدید',
+                    `کاربر ${currentUser.phone || ''} برای "${p.title}" در تاریخ ${date} ساعت ${time} درخواست بازدید دارد`);
+            } catch (e) { ErrorHandler.log(e, 'ثبت نوبت');
+                showToast('❌ خطا در ثبت نوبت!', 'error'); }
+        }
+
+        // ============================================================
+        // ====== بیعانه ======
+        // ============================================================
+        function depositPayment(propertyId) {
+            try {
+                if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند بیعانه پرداخت کند!', 'warning'); return; }
+                if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+                const input = document.getElementById('depositInput_' + propertyId);
+                if (!input) return;
+                const amount = parseInt(input.value.trim());
+                if (!amount || amount <= 0) { showToast('⚠️ مبلغ معتبر وارد کنید!', 'warning'); return; }
+                const p = properties.find(item => item.id === propertyId);
+                if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
+                if (!confirm(`آیا مبلغ ${Number(amount).toLocaleString()} تومان برای بیعانه "${p.title}" پرداخت شود؟`)) return;
+                showToast(`✅ بیعانه ${Number(amount).toLocaleString()} تومان با موفقیت پرداخت شد!`, 'success');
+                input.value = '';
+                sendAdminNotification('💰 پرداخت بیعانه',
+                    `کاربر ${currentUser.phone || ''} برای "${p.title}" مبلغ ${Number(amount).toLocaleString()} تومان بیعانه پرداخت کرد`);
+            } catch (e) { ErrorHandler.log(e, 'پرداخت بیعانه');
+                showToast('❌ خطا در پرداخت!', 'error'); }
+        }
+
+        // ============================================================
+        // ====== چت با کاربران ======
+        // ============================================================
+        function sendAdminNotification(title, body) {
+            try {
+                const admins = getAdmins();
+                const notifications = JSON.parse(localStorage.getItem('amlak_admin_notifications') || '[]');
+                admins.forEach(a => {
+                    notifications.push({
+                        admin_id: a.id,
+                        title: title,
+                        body: body,
+                        user_id: currentUser?.id || 'نامشخص',
+                        user_phone: currentUser?.phone || 'نامشخص',
+                        date: new Date().toISOString(),
+                        is_read: false
+                    });
+                });
+                localStorage.setItem('amlak_admin_notifications', JSON.stringify(notifications));
+                if (isAdmin) {
+                    showToast(`📩 ${title}: ${body}`, 'info');
+                }
+            } catch (e) { ErrorHandler.log(e, 'ارسال اعلان به مدیر'); }
+        }
+
+        function viewChats() {
+            try {
+                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning'); return; }
+                hideAllForms(['chatViewer']);
+                document.getElementById('chatViewer').style.display = 'block';
+                renderChatList();
+            } catch (e) { ErrorHandler.log(e, 'نمایش چت‌ها'); }
+        }
+
+        function closeChatViewer() {
+            document.getElementById('chatViewer').style.display = 'none';
+            currentChatUserId = null;
+        }
+
+        function renderChatList() {
+            try {
+                const container = document.getElementById('chatList');
+                if (!container) return;
+                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+                const userChats = users.filter(u => chatMessages.some(m => m.user_id === u.id));
+                if (!userChats.length) {
+                    container.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ چتی با کاربران وجود ندارد</div>';
+                    return;
+                }
+                let html = '';
+                userChats.forEach(u => {
+                    const lastMsg = chatMessages.filter(m => m.user_id === u.id).pop();
+                    html += `
+                                <div onclick="viewChatWithUser('${u.id}')" style="padding:10px;border-bottom:1px solid #eee;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+                                    <div>
+                                        <div style="font-weight:bold;color:#1565C0;">👤 ${u.phone || 'کاربر'}</div>
+                                        <div style="font-size:11px;color:#888;">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
+                                    </div>
+                                    <span style="font-size:11px;color:#888;">${lastMsg ? new Date(lastMsg.date).toLocaleDateString('fa-IR') : ''}</span>
+                                </div>
+                            `;
+                });
+                container.innerHTML = html;
+            } catch (e) { ErrorHandler.log(e, 'رندر لیست چت'); }
+        }
+
+        function viewChatWithUser(userId) {
+            try {
+                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning'); return; }
+                currentChatUserId = userId;
+                renderChatMessages();
+            } catch (e) { ErrorHandler.log(e, 'نمایش چت با کاربر'); }
+        }
+
+        function renderChatMessages() {
+            try {
+                const container = document.getElementById('chatList');
+                if (!container) return;
+                const msgs = chatMessages.filter(m => m.user_id === currentChatUserId);
+                if (!msgs.length) {
+                    container.innerHTML =
+                        '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
+                    return;
+                }
+                const user = JSON.parse(localStorage.getItem('amlak_users') || '[]').find(u => u.id === currentChatUserId);
+                let html = `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.phone || 'کاربر'}</div>`;
+                html += msgs.map(m => `
+                            <div class="chat-msg ${m.sender === 'user' ? 'user' : 'admin'}">
+                                <div>${sanitizeInput(m.text)}</div>
+                                <div class="time">${new Date(m.date).toLocaleString('fa-IR')}</div>
+                            </div>
+                        `).join('');
+                container.innerHTML = html;
+                container.scrollTop = container.scrollHeight;
+            } catch (e) { ErrorHandler.log(e, 'رندر پیام‌های چت'); }
+        }
+
+        function sendChatReply() {
+            try {
+                if (!isAdmin || !currentChatUserId) { showToast('⚠️ خطا در ارسال!', 'error'); return; }
+                const input = document.getElementById('chatReplyInput');
+                const text = sanitizeInput(input.value.trim());
+                if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+                chatMessages.push({
+                    user_id: currentChatUserId,
+                    admin_id: currentUser.id,
+                    text: text,
+                    sender: 'admin',
+                    date: new Date().toISOString()
+                });
+                saveChatMessages();
+                input.value = '';
+                renderChatMessages();
+                showToast('✅ پیام ارسال شد!', 'success');
+                // اعلان به کاربر
+                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+                const user = users.find(u => u.id === currentChatUserId);
+                if (user) {
+                    const notifications = JSON.parse(localStorage.getItem('amlak_notifications') || '[]');
+                    notifications.push({
+                        user_id: user.id,
+                        title: '💬 پاسخ مدیر',
+                        body: text,
+                        date: new Date().toISOString(),
+                        is_read: false
+                    });
+                    localStorage.setItem('amlak_notifications', JSON.stringify(notifications));
+                }
+            } catch (e) { ErrorHandler.log(e, 'ارسال پاسخ چت'); }
+        }
+
+        function sendUserChatMessage(propertyId, text) {
+            try {
+                if (isAdmin) return;
+                if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+                if (!text || !text.trim()) return;
+                const p = properties.find(item => item.id === propertyId);
+                chatMessages.push({
+                    user_id: currentUser.id,
+                    property_id: propertyId,
+                    text: sanitizeInput(text.trim()),
+                    sender: 'user',
+                    date: new Date().toISOString()
+                });
+                saveChatMessages();
+                sendAdminNotification('💬 پیام جدید از کاربر',
+                    `کاربر ${currentUser.phone || ''}: ${sanitizeInput(text.trim())}${p ? ` برای "${p.title}"` : ''}`);
+                showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
+                const input = document.getElementById('userChatInput_' + propertyId);
+                if (input) input.value = '';
+            } catch (e) { ErrorHandler.log(e, 'ارسال پیام کاربر'); }
         }
 
         // ============================================================
         // ====== پیام‌های عمومی ======
         // ============================================================
-        function loadPublicMessages() {
-            try {
-                const data = localStorage.getItem('amlak_public_messages');
-                if (data) {
-                    publicMessages = JSON.parse(data);
-                } else {
-                    publicMessages = [];
-                }
-            } catch {
-                publicMessages = [];
-            }
-        }
-
         function showPublicMsgForm(data) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning');
-                    return;
-                }
-                document.getElementById('propertyForm').style.display = 'none';
-                document.getElementById('chartContainer').style.display = 'none';
-                document.getElementById('privateMsgViewer').style.display = 'none';
-                document.getElementById('editProfileForm').style.display = 'none';
-                const form = document.getElementById('publicMsgForm');
-                if (data) {
-                    document.getElementById('editMsgId').value = data.id;
-                    document.getElementById('fPublicMsg').value = sanitizeInput(data.text);
-                    document.getElementById('publicMsgTitle').textContent = '✏️ ویرایش پیام عمومی';
-                    document.getElementById('publicMsgSubmitBtn').textContent = '💾 ذخیره تغییرات';
-                } else {
-                    document.getElementById('editMsgId').value = '';
-                    document.getElementById('fPublicMsg').value = '';
-                    document.getElementById('publicMsgTitle').textContent = '📢 ارسال پیام عمومی';
-                    document.getElementById('publicMsgSubmitBtn').textContent = '📤 ارسال پیام';
-                }
-                form.style.display = 'block';
-            } catch (e) {
-                ErrorHandler.log(e, 'نمایش فرم پیام عمومی');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
+            hideAllForms(['publicMsgForm']);
+            document.getElementById('editMsgId').value = data?.id || '';
+            document.getElementById('fPublicMsg').value = data?.text || '';
+            document.getElementById('publicMsgTitle').textContent = data ? '✏️ ویرایش پیام عمومی' : '📢 ارسال پیام عمومی';
+            document.getElementById('publicMsgSubmitBtn').textContent = data ? '💾 ذخیره تغییرات' : '📤 ارسال پیام';
+            document.getElementById('publicMsgForm').style.display = 'block';
         }
 
         function hidePublicMsgForm() {
@@ -3136,561 +2802,397 @@
         }
 
         function savePublicMessage() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning');
-                    return;
-                }
-                const editId = document.getElementById('editMsgId').value;
-                const text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
-                if (!text) {
-                    showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                    return;
-                }
-                loadPublicMessages();
-                if (editId) {
-                    const index = publicMessages.findIndex(p => p.id == editId);
-                    if (index !== -1) {
-                        publicMessages[index].text = text;
-                        showToast('✅ پیام ویرایش شد!', 'success');
-                    } else {
-                        showToast('❌ پیام یافت نشد!', 'error');
-                        return;
-                    }
-                } else {
-                    publicMessages.push({
-                        id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-                        text: text,
-                        date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
-                        likes: 0,
-                        dislikes: 0
-                    });
-                    showToast('✅ پیام عمومی ارسال شد!', 'success');
-                }
-                localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-                hidePublicMsgForm();
-                renderPublicMessages();
-            } catch (e) {
-                ErrorHandler.log(e, 'ذخیره پیام عمومی');
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
+            const editId = document.getElementById('editMsgId').value;
+            const text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
+            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            loadPublicMessages();
+            if (editId) {
+                const idx = publicMessages.findIndex(p => p.id == editId);
+                if (idx !== -1) { publicMessages[idx].text = text;
+                    showToast('✅ پیام ویرایش شد!', 'success'); } else { showToast('❌ پیام یافت نشد!', 'error'); return; }
+            } else {
+                publicMessages.push({
+                    id: generateId(),
+                    text: text,
+                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
+                    likes: 0,
+                    dislikes: 0
+                });
+                showToast('✅ پیام عمومی ارسال شد!', 'success');
+                notifyUsers('📢 پیام جدید', text);
             }
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            hidePublicMsgForm();
+            renderPublicMessages();
         }
 
         function deletePublicMessage(id) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning');
-                    return;
-                }
-                if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-                loadPublicMessages();
-                publicMessages = publicMessages.filter(p => p.id != id);
-                localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-                renderPublicMessages();
-                showToast('🗑️ پیام حذف شد', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف پیام عمومی');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            loadPublicMessages();
+            publicMessages = publicMessages.filter(p => p.id != id);
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            renderPublicMessages();
+            showToast('🗑️ پیام حذف شد', 'success');
         }
 
         function editPublicMessage(id) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
-                    return;
-                }
-                loadPublicMessages();
-                const data = publicMessages.find(p => p.id == id);
-                if (data) {
-                    showPublicMsgForm(data);
-                } else {
-                    showToast('❌ پیام یافت نشد!', 'error');
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'ویرایش پیام عمومی');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            loadPublicMessages();
+            const data = publicMessages.find(p => p.id == id);
+            if (data) showPublicMsgForm(data);
+            else showToast('❌ پیام یافت نشد!', 'error');
         }
 
         function renderPublicMessages() {
-            try {
-                const container = document.getElementById('publicMessagesContainer');
-                loadPublicMessages();
-                if (!publicMessages.length) {
-                    container.innerHTML = '';
-                    return;
-                }
-                const isAdminUser = isAdmin;
-                container.innerHTML = publicMessages.map(p => `
-                            <div class="public-msg-card">
-                                <div class="msg-header">
-                                    <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
-                                    <span class="msg-date">${p.date || ''}</span>
-                                </div>
-                                <div class="msg-text">${sanitizeInput(p.text)}</div>
-                                ${isAdminUser ? `
-                                    <div class="msg-actions">
-                                        <button class="edit-msg" onclick="editPublicMessage('${p.id}')">✏️ ویرایش</button>
-                                        <button class="del-msg" onclick="deletePublicMessage('${p.id}')">🗑️ حذف</button>
-                                    </div>
-                                ` : `
-                                    <div class="public-msg-like">
-                                        <button class="like-btn" onclick="likePublicMessage('${p.id}', 'like')">❤️ <span class="count">${p.likes || 0}</span></button>
-                                        <button class="dislike-btn" onclick="likePublicMessage('${p.id}', 'dislike')">👎 <span class="count">${p.dislikes || 0}</span></button>
-                                    </div>
-                                `}
+            const container = document.getElementById('publicMessagesContainer');
+            loadPublicMessages();
+            if (!publicMessages.length) { container.innerHTML = ''; return; }
+            container.innerHTML = publicMessages.map(p => `
+                        <div class="public-msg-card">
+                            <div class="msg-header">
+                                <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
+                                <span class="msg-date">${p.date || ''}</span>
                             </div>
-                        `).join('');
-            } catch (e) {
-                ErrorHandler.log(e, 'رندر پیام‌های عمومی');
-            }
+                            <div class="msg-text">${sanitizeInput(p.text)}</div>
+                            ${isAdmin ? `
+                                <div class="msg-actions">
+                                    <button class="edit-msg" onclick="editPublicMessage('${p.id}')">✏️ ویرایش</button>
+                                    <button class="del-msg" onclick="deletePublicMessage('${p.id}')">🗑️ حذف</button>
+                                </div>
+                            ` : `
+                                <div class="public-msg-like">
+                                    <button class="like-btn" onclick="likePublicMessage('${p.id}','like')">❤️ <span class="count">${p.likes||0}</span></button>
+                                    <button class="dislike-btn" onclick="likePublicMessage('${p.id}','dislike')">👎 <span class="count">${p.dislikes||0}</span></button>
+                                </div>
+                            `}
+                        </div>
+                    `).join('');
         }
 
         function likePublicMessage(id, type) {
-            try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند لایک یا دیسلایک کند!', 'warning');
-                    return;
-                }
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return;
-                }
-                const userId = currentUser.id;
-                const key = 'amlak_like_msg_' + id + '_' + userId;
-                const userLike = localStorage.getItem(key);
-                const p = publicMessages.find(item => item.id == id);
-                if (!p) {
-                    showToast('❌ پیام یافت نشد!', 'error');
-                    return;
-                }
-                let likes = Number(p.likes) || 0;
-                let dislikes = Number(p.dislikes) || 0;
-                if (type === 'like') {
-                    if (userLike === 'like') {
-                        showToast('شما قبلاً این پیام را لایک کرده‌اید', 'warning');
-                        return;
-                    }
-                    if (userLike === 'dislike') {
-                        dislikes = Math.max(0, dislikes - 1);
-                    }
-                    likes++;
-                    localStorage.setItem(key, 'like');
-                    showToast('❤️ لایک شد!', 'success');
-                } else {
-                    if (userLike === 'dislike') {
-                        showToast('شما قبلاً این پیام را دیسلایک کرده‌اید', 'warning');
-                        return;
-                    }
-                    if (userLike === 'like') {
-                        likes = Math.max(0, likes - 1);
-                    }
-                    dislikes++;
-                    localStorage.setItem(key, 'dislike');
-                    showToast('👎 دیسلایک شد!', 'success');
-                }
-                p.likes = likes;
-                p.dislikes = dislikes;
-                localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-                renderPublicMessages();
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت لایک/دیسلایک پیام');
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند لایک کند!', 'warning'); return; }
+            if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+            const p = publicMessages.find(item => item.id == id);
+            if (!p) return;
+            const key = 'amlak_like_msg_' + id + '_' + currentUser.id;
+            const userLike = localStorage.getItem(key);
+            let likes = Number(p.likes) || 0,
+                dislikes = Number(p.dislikes) || 0;
+            if (type === 'like') {
+                if (userLike === 'like') { showToast('قبلاً لایک کردید', 'warning'); return; }
+                if (userLike === 'dislike') dislikes = Math.max(0, dislikes - 1);
+                likes++;
+                localStorage.setItem(key, 'like');
+                showToast('❤️ لایک شد!', 'success');
+            } else {
+                if (userLike === 'dislike') { showToast('قبلاً دیسلایک کردید', 'warning'); return; }
+                if (userLike === 'like') likes = Math.max(0, likes - 1);
+                dislikes++;
+                localStorage.setItem(key, 'dislike');
+                showToast('👎 دیسلایک شد!', 'success');
             }
+            p.likes = likes;
+            p.dislikes = dislikes;
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            renderPublicMessages();
         }
 
         // ============================================================
-        // ====== پیام‌های خصوصی ======
+        // ====== پیام‌های خصوصی قدیمی ======
         // ============================================================
-        function loadPrivateMessages() {
-            try {
-                const data = localStorage.getItem('amlak_private_messages');
-                if (data) {
-                    privateMessages = JSON.parse(data);
-                } else {
-                    privateMessages = [];
-                }
-            } catch {
-                privateMessages = [];
-            }
-        }
-
         function viewPrivateMessages() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند پیام‌ها را ببیند!', 'warning');
-                    return;
-                }
-                document.getElementById('privateMsgViewer').style.display = 'block';
-                document.getElementById('propertyForm').style.display = 'none';
-                document.getElementById('publicMsgForm').style.display = 'none';
-                document.getElementById('chartContainer').style.display = 'none';
-                document.getElementById('editProfileForm').style.display = 'none';
-                renderPrivateMessages();
-            } catch (e) {
-                ErrorHandler.log(e, 'نمایش پیام‌های خصوصی');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام‌ها را ببیند!', 'warning'); return; }
+            hideAllForms(['privateMsgViewer']);
+            document.getElementById('privateMsgViewer').style.display = 'block';
+            renderPrivateMessages();
         }
 
-        function closePrivateMsgViewer() {
-            document.getElementById('privateMsgViewer').style.display = 'none';
-        }
+        function closePrivateMsgViewer() { document.getElementById('privateMsgViewer').style.display = 'none'; }
 
         function renderPrivateMessages() {
-            try {
-                const container = document.getElementById('privateMsgList');
-                loadPrivateMessages();
-                if (!privateMessages.length) {
-                    container.innerHTML =
-                        '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی از کاربران دریافت نشده است</div>';
-                    return;
-                }
-                const sorted = [...privateMessages].reverse();
-                container.innerHTML = sorted.map(p => `
-                            <div class="private-msg-item">
-                                <div class="msg-from">👤 ${sanitizeInput(p.from || 'کاربر')}</div>
-                                <div style="font-size:13px;color:#333;margin:4px 0;">${sanitizeInput(p.text)}</div>
-                                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-                                    <span class="msg-time">${p.date || ''}</span>
-                                    <span style="font-size:11px;color:#888;">ملک: ${sanitizeInput(getPropertyTitle(p.propertyId))}</span>
-                                </div>
-                                <button onclick="deletePrivateMessage('${p.id}')">🗑️ حذف</button>
-                            </div>
-                        `).join('');
-            } catch (e) {
-                ErrorHandler.log(e, 'رندر پیام‌های خصوصی');
+            const container = document.getElementById('privateMsgList');
+            loadPrivateMessages();
+            if (!privateMessages.length) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی از کاربران دریافت نشده است</div>';
+                return;
             }
+            const sorted = [...privateMessages].reverse();
+            container.innerHTML = sorted.map(p => `
+                        <div class="private-msg-item">
+                            <div class="msg-from">👤 ${sanitizeInput(p.from || 'کاربر')}</div>
+                            <div style="font-size:13px;color:#333;margin:4px 0;">${sanitizeInput(p.text)}</div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                                <span class="msg-time">${p.date || ''}</span>
+                                <span style="font-size:11px;color:#888;">ملک: ${sanitizeInput(getPropertyTitle(p.propertyId))}</span>
+                            </div>
+                            <button onclick="deletePrivateMessage('${p.id}')">🗑️ حذف</button>
+                        </div>
+                    `).join('');
         }
 
         function getPropertyTitle(id) {
-            try {
-                if (!id) return 'نامشخص';
-                const p = properties.find(prop => prop.id == id);
-                return p ? p.title : 'نامشخص';
-            } catch {
-                return 'نامشخص';
-            }
+            if (!id) return 'نامشخص';
+            const p = properties.find(prop => prop.id == id);
+            return p ? p.title : 'نامشخص';
         }
 
         function deletePrivateMessage(id) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning');
-                    return;
-                }
-                if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-                loadPrivateMessages();
-                privateMessages = privateMessages.filter(p => p.id != id);
-                localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
-                renderPrivateMessages();
-                showToast('🗑️ پیام حذف شد', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف پیام خصوصی');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            loadPrivateMessages();
+            privateMessages = privateMessages.filter(p => p.id != id);
+            localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
+            renderPrivateMessages();
+            showToast('🗑️ پیام حذف شد', 'success');
         }
 
         function togglePrivateMsg(id) {
-            try {
-                const box = document.getElementById('privateMsgBox_' + id);
-                if (box) {
-                    box.style.display = box.style.display === 'none' || box.style.display === '' ? 'block' : 'none';
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر وضعیت پیام خصوصی');
-            }
+            const box = document.getElementById('privateMsgBox_' + id);
+            if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
         }
 
         function sendPrivateMessage(propertyId) {
-            try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند به خودش پیام بفرستد!', 'warning');
-                    return;
-                }
-                if (!currentUser || !currentUser.id) {
-                    showToast('⚠️ لطفاً وارد حساب کاربری خود شوید!', 'warning');
-                    return;
-                }
-                const box = document.getElementById('privateMsgBox_' + propertyId);
-                if (!box) return;
-                const textarea = box.querySelector('textarea');
-                if (!textarea) return;
-                const text = sanitizeInput(textarea.value.trim());
-                if (!text) {
-                    showToast('⚠️ لطفاً متن پیام را وارد کنید', 'warning');
-                    return;
-                }
-                loadPrivateMessages();
-                privateMessages.push({
-                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
-                    propertyId: propertyId,
-                    from: 'کاربر (ID: ' + currentUser.id + ')',
-                    to: 'مدیر',
-                    text: text,
-                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
-                    read: false
-                });
-                textarea.value = '';
-                box.style.display = 'none';
-                localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
-                showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-                if (isAdmin) {
-                    showToast('📩 پیام جدید از کاربر دریافت شد!', 'info');
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'ارسال پیام خصوصی');
-            }
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند به خودش پیام بفرستد!', 'warning'); return; }
+            if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+            const box = document.getElementById('privateMsgBox_' + propertyId);
+            if (!box) return;
+            const textarea = box.querySelector('textarea');
+            if (!textarea) return;
+            const text = sanitizeInput(textarea.value.trim());
+            if (!text) { showToast('⚠️ لطفاً متن پیام را وارد کنید', 'warning'); return; }
+            loadPrivateMessages();
+            privateMessages.push({
+                id: generateId(),
+                propertyId: propertyId,
+                from: 'کاربر (ID: ' + currentUser.id + ')',
+                to: 'مدیر',
+                text: text,
+                date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
+                read: false
+            });
+            textarea.value = '';
+            box.style.display = 'none';
+            localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
+            showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
+            if (isAdmin) showToast('📩 پیام جدید از کاربر دریافت شد!', 'info');
         }
 
         // ============================================================
-        // ====== بررسی ماهانه ======
+        // ====== سبد خرید ======
         // ============================================================
-        function checkMonthlyAuto() {
-            try {
-                const now = new Date();
-                const today = now.toISOString().split('T')[0];
-                const lastMonthlyCheck = localStorage.getItem('lastMonthlyCheck');
-                if (!lastMonthlyCheck) {
-                    localStorage.setItem('lastMonthlyCheck', today);
-                    return;
-                }
-                const lastDate = new Date(lastMonthlyCheck);
-                const diffMonths = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
-                if (diffMonths >= 1) {
-                    if (isAdmin) {
-                        showToast('📅 زمان بررسی ماهانه املاک فرا رسیده!', 'warning');
-                    }
-                    autoDeleteOldProperties();
-                    localStorage.setItem('lastMonthlyCheck', today);
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'بررسی خودکار ماهانه');
-            }
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('active');
+            if (document.getElementById('cartModal').classList.contains('active')) renderCart();
         }
 
-        async function monthlyCheck() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند بررسی ماهانه انجام دهد!', 'warning');
-                    return;
-                }
-                await autoDeleteOldProperties();
-                localStorage.setItem('lastMonthlyCheck', new Date().toISOString().split('T')[0]);
-                showToast('✅ بررسی ماهانه انجام شد!', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'بررسی ماهانه');
-            }
+        function renderCart() {
+            const container = document.getElementById('cartList');
+            if (!cartItems.length) { container.innerHTML = '<div class="cart-empty">🛒 سبد خرید شما خالی است</div>'; return; }
+            let html = '';
+            cartItems.forEach(id => {
+                const p = properties.find(prop => prop.id === id);
+                if (p) html += `
+                            <div class="cart-item">
+                                <div class="info"><div class="title">${sanitizeInput(p.title)}</div><div class="detail">${sanitizeInput(p.address)}</div></div>
+                                <button class="remove-btn" onclick="removeFromCart('${p.id}')">✕</button>
+                            </div>
+                        `;
+            });
+            html += `
+                        <div class="cart-actions">
+                            <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن</button>
+                            <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
+                        </div>
+                    `;
+            container.innerHTML = html;
         }
 
-        async function autoDeleteOldProperties() {
-            try {
-                let deleted = [];
-                for (const p of properties) {
-                    const keep = confirm(
-                        `آیا ملک "${p.title}" (کد: ${p.customCode || p.code || 'ندارد'}) هنوز موجود است؟\n"OK" = موجود است / "Cancel" = حذف شود`
-                    );
-                    if (!keep) {
-                        deleted.push(p.id);
-                    }
-                }
-                if (deleted.length > 0) {
-                    for (const id of deleted) {
-                        try {
-                            await supabaseClient
-                                .from(TABLE_NAME)
-                                .delete()
-                                .eq('id', id);
-                        } catch (e) {
-                            console.error('Delete error:', e);
-                        }
-                    }
-                    properties = properties.filter(p => !deleted.includes(p.id));
-                    localStorage.setItem('amlak_properties', JSON.stringify(properties));
-                    showToast(`🗑️ ${deleted.length} ملک حذف شد!`, 'success');
-                    updateStats();
-                    renderList();
-                } else {
-                    showToast('✅ همه املاک موجود هستند!', 'success');
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف خودکار املاک قدیمی');
-            }
+        function addToCart(id) {
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند سبد خرید داشته باشد!', 'warning'); return; }
+            if (cartItems.includes(id)) { showToast('⚠️ قبلاً در سبد خرید است!', 'warning'); return; }
+            cartItems.push(id);
+            localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
+            showToast('✅ به سبد خرید اضافه شد!', 'success');
+            updateCartBadge();
+            renderList();
         }
+
+        function removeFromCart(id) {
+            cartItems = cartItems.filter(item => item !== id);
+            localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
+            renderCart();
+            updateCartBadge();
+            renderList();
+            showToast('🗑️ از سبد خرید حذف شد', 'success');
+        }
+
+        function clearCart() {
+            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
+            if (!confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) return;
+            cartItems = [];
+            localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
+            renderCart();
+            updateCartBadge();
+            renderList();
+            showToast('🗑️ سبد خرید خالی شد', 'success');
+        }
+
+        function shareCart() {
+            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
+            let text = '🛒 *لیست املاک مورد علاقه من*\n\n';
+            cartItems.forEach(id => {
+                const p = properties.find(prop => prop.id === id);
+                if (p) text +=
+                    `🏠 ${sanitizeInput(p.title)}\n📍 ${sanitizeInput(p.address)}\n💰 ${Number(p.price).toLocaleString()} تومان\n📐 ${p.area||0} متر\n\n`;
+            });
+            text += '#املاک_حسینی #سبد_خرید';
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+
+        function updateCartBadge() { document.getElementById('cartCount').textContent = cartItems.length; }
+
+        function isInCart(id) { return cartItems.includes(id); }
 
         // ============================================================
-        // ====== فیلترهای کاربر ======
+        // ====== علاقه‌مندی‌ها ======
+        // ============================================================
+        function toggleFavorite(id) {
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند علاقه‌مندی داشته باشد!', 'warning'); return; }
+            if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+            const idx = favorites.indexOf(id);
+            if (idx === -1) { favorites.push(id);
+                showToast('❤️ به علاقه‌مندی‌ها اضافه شد!', 'success'); } else { favorites.splice(idx, 1);
+                showToast('💔 از علاقه‌مندی‌ها حذف شد!', 'info'); }
+            localStorage.setItem('amlak_favorites', JSON.stringify(favorites));
+            renderList();
+        }
+
+        function isFavorite(id) { return favorites.includes(id); }
+
+        // ============================================================
+        // ====== فیلترها ======
         // ============================================================
         function selectCategory(btn) {
-            try {
-                document.querySelectorAll('.category-grid .cat-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.style.borderColor = '#e0e0e0';
-                    b.style.background = 'white';
-                    b.style.color = '';
-                });
-                btn.classList.add('active');
-                btn.style.borderColor = '#1565C0';
-                btn.style.background = '#E3F2FD';
-                btn.style.color = '#1565C0';
-                userCategoryFilter = btn.dataset.cat;
-                updateFilterInfo();
-                renderList();
-            } catch (e) {
-                ErrorHandler.log(e, 'انتخاب دسته');
-            }
+            document.querySelectorAll('.category-grid .cat-btn').forEach(b => { b.classList.remove('active');
+                b.style.borderColor = '#e0e0e0';
+                b.style.background = 'white';
+                b.style.color = ''; });
+            btn.classList.add('active');
+            btn.style.borderColor = '#1565C0';
+            btn.style.background = '#E3F2FD';
+            btn.style.color = '#1565C0';
+            userCategoryFilter = btn.dataset.cat;
+            updateFilterInfo();
+            renderList();
         }
 
         function selectType(btn) {
-            try {
-                document.querySelectorAll('.type-grid .type-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.style.borderColor = '';
-                    b.style.background = 'white';
-                    b.style.color = '';
-                });
-                btn.classList.add('active');
-                btn.style.background = '#E3F2FD';
-                btn.style.color = '#1565C0';
-                userTypeFilter = btn.dataset.type;
-                if (userTypeFilter === 'sale') {
-                    document.getElementById('salePriceFilter').style.display = 'block';
-                    document.getElementById('rentPriceFilter').style.display = 'none';
-                    document.getElementById('priceFilterInfo').textContent = '💰 حداکثر قیمت فروش مورد نظر خود را وارد کنید';
-                } else if (userTypeFilter === 'rent') {
-                    document.getElementById('salePriceFilter').style.display = 'none';
-                    document.getElementById('rentPriceFilter').style.display = 'block';
-                    document.getElementById('priceFilterInfo').textContent = '🔑 حداکثر رهن و کرایه مورد نظر خود را وارد کنید';
-                } else {
-                    document.getElementById('salePriceFilter').style.display = 'block';
-                    document.getElementById('rentPriceFilter').style.display = 'none';
-                    document.getElementById('priceFilterInfo').textContent = '💰 محدوده قیمت مورد نظر خود را وارد کنید';
-                }
-                updateFilterInfo();
-                renderList();
-            } catch (e) {
-                ErrorHandler.log(e, 'انتخاب نوع معامله');
-            }
+            document.querySelectorAll('.type-grid .type-btn').forEach(b => { b.classList.remove('active');
+                b.style.borderColor = '';
+                b.style.background = 'white';
+                b.style.color = ''; });
+            btn.classList.add('active');
+            btn.style.background = '#E3F2FD';
+            btn.style.color = '#1565C0';
+            userTypeFilter = btn.dataset.type;
+            if (userTypeFilter === 'sale') { document.getElementById('salePriceFilter').style.display = 'block';
+                document.getElementById('rentPriceFilter').style.display = 'none';
+                document.getElementById('priceFilterInfo').textContent = '💰 حداکثر قیمت فروش'; } else if (userTypeFilter ===
+                'rent') { document.getElementById('salePriceFilter').style.display = 'none';
+                document.getElementById('rentPriceFilter').style.display = 'block';
+                document.getElementById('priceFilterInfo').textContent = '🔑 حداکثر رهن و کرایه'; } else { document.getElementById(
+                    'salePriceFilter').style.display = 'block';
+                document.getElementById('rentPriceFilter').style.display = 'none';
+                document.getElementById('priceFilterInfo').textContent = '💰 محدوده قیمت'; }
+            updateFilterInfo();
+            renderList();
         }
 
         function updateFilterInfo() {
-            try {
-                const info = document.getElementById('filterInfo');
-                const cat = userCategoryFilter === 'all' ? 'همه' : userCategoryFilter;
-                const type = userTypeFilter === 'all' ? 'همه' : (userTypeFilter === 'sale' ? 'فروش' : 'اجاره');
-                let priceText = '';
-                if (userPriceFilterActive) {
-                    if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
-                        priceText = ` | حداکثر قیمت: ${Number(userMaxPrice).toLocaleString()} تومان`;
-                    } else if (userTypeFilter === 'rent') {
-                        priceText =
-                            ` | حداکثر رهن: ${Number(userMaxRahn).toLocaleString()} | کرایه: ${Number(userMaxRent).toLocaleString()}`;
-                    }
-                }
-                info.innerHTML = `<strong>دسته:</strong> ${cat} | <strong>نوع:</strong> ${type}${priceText}`;
-            } catch (e) {
-                ErrorHandler.log(e, 'بروزرسانی اطلاعات فیلتر');
+            const info = document.getElementById('filterInfo');
+            const cat = userCategoryFilter === 'all' ? 'همه' : userCategoryFilter;
+            const type = userTypeFilter === 'all' ? 'همه' : (userTypeFilter === 'sale' ? 'فروش' : 'اجاره');
+            let priceText = '';
+            if (userPriceFilterActive) {
+                if (userTypeFilter === 'sale' || userTypeFilter === 'all') priceText =
+                    ` | حداکثر: ${Number(userMaxPrice).toLocaleString()} تومان`;
+                else if (userTypeFilter === 'rent') priceText =
+                    ` | رهن: ${Number(userMaxRahn).toLocaleString()} | کرایه: ${Number(userMaxRent).toLocaleString()}`;
             }
+            info.innerHTML = `<strong>دسته:</strong> ${cat} | <strong>نوع:</strong> ${type}${priceText}`;
         }
 
         function clearUserFilters() {
-            try {
-                document.querySelectorAll('.category-grid .cat-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.style.borderColor = '#e0e0e0';
-                    b.style.background = 'white';
-                    b.style.color = '';
-                });
-                document.querySelectorAll('.type-grid .type-btn').forEach(b => {
-                    b.classList.remove('active');
-                    b.style.borderColor = '';
-                    b.style.background = 'white';
-                    b.style.color = '';
-                });
-                userCategoryFilter = 'all';
-                userTypeFilter = 'all';
-                clearUserPriceFilter();
-                updateFilterInfo();
-                renderList();
-            } catch (e) {
-                ErrorHandler.log(e, 'پاک کردن فیلترها');
-            }
+            document.querySelectorAll('.category-grid .cat-btn').forEach(b => { b.classList.remove('active');
+                b.style.borderColor = '#e0e0e0';
+                b.style.background = 'white';
+                b.style.color = ''; });
+            document.querySelectorAll('.type-grid .type-btn').forEach(b => { b.classList.remove('active');
+                b.style.borderColor = '';
+                b.style.background = 'white';
+                b.style.color = ''; });
+            userCategoryFilter = 'all';
+            userTypeFilter = 'all';
+            clearUserPriceFilter();
+            updateFilterInfo();
+            renderList();
         }
 
         function applyUserPriceFilter() {
-            try {
-                if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
-                    const maxPrice = document.getElementById('userMaxPrice').value.trim();
-                    if (!maxPrice) {
-                        showToast('⚠️ لطفاً حداکثر قیمت را وارد کنید', 'warning');
-                        return;
-                    }
-                    userMaxPrice = Number(maxPrice);
-                    userMaxRahn = 0;
-                    userMaxRent = 0;
-                } else if (userTypeFilter === 'rent') {
-                    const maxRahn = document.getElementById('userMaxRahn').value.trim();
-                    const maxRent = document.getElementById('userMaxRent').value.trim();
-                    if (!maxRahn && !maxRent) {
-                        showToast('⚠️ لطفاً حداقل یکی از فیلدهای رهن یا کرایه را وارد کنید', 'warning');
-                        return;
-                    }
-                    userMaxRahn = Number(maxRahn) || Infinity;
-                    userMaxRent = Number(maxRent) || Infinity;
-                    userMaxPrice = 0;
-                }
-                userPriceFilterActive = true;
-                updateFilterInfo();
-                renderList();
-                showToast('✅ فیلتر قیمت اعمال شد!', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'اعمال فیلتر قیمت');
+            if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
+                const maxPrice = document.getElementById('userMaxPrice').value.trim();
+                if (!maxPrice) { showToast('⚠️ حداکثر قیمت را وارد کنید!', 'warning'); return; }
+                userMaxPrice = Number(maxPrice);
+                userMaxRahn = 0;
+                userMaxRent = 0;
+            } else if (userTypeFilter === 'rent') {
+                const maxRahn = document.getElementById('userMaxRahn').value.trim();
+                const maxRent = document.getElementById('userMaxRent').value.trim();
+                if (!maxRahn && !maxRent) { showToast('⚠️ حداقل یکی را وارد کنید!', 'warning'); return; }
+                userMaxRahn = Number(maxRahn) || Infinity;
+                userMaxRent = Number(maxRent) || Infinity;
+                userMaxPrice = 0;
             }
+            userPriceFilterActive = true;
+            updateFilterInfo();
+            renderList();
+            showToast('✅ فیلتر قیمت اعمال شد!', 'success');
         }
 
         function clearUserPriceFilter() {
-            try {
-                userMaxPrice = 0;
-                userMaxRahn = 0;
-                userMaxRent = 0;
-                userPriceFilterActive = false;
-                document.getElementById('userMaxPrice').value = '';
-                document.getElementById('userMaxRahn').value = '';
-                document.getElementById('userMaxRent').value = '';
-                updateFilterInfo();
-                renderList();
-                showToast('🗑️ فیلتر قیمت حذف شد', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف فیلتر قیمت');
-            }
+            userMaxPrice = 0;
+            userMaxRahn = 0;
+            userMaxRent = 0;
+            userPriceFilterActive = false;
+            document.getElementById('userMaxPrice').value = '';
+            document.getElementById('userMaxRahn').value = '';
+            document.getElementById('userMaxRent').value = '';
+            updateFilterInfo();
+            renderList();
+            showToast('🗑️ فیلتر قیمت حذف شد', 'success');
         }
 
         function setFilter(filter, btn) {
-            try {
-                if (!isAdmin) return;
-                currentFilter = filter;
-                document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
-                if (btn) btn.classList.add('active');
-                renderList();
-            } catch (e) {
-                ErrorHandler.log(e, 'تنظیم فیلتر');
-            }
+            if (!isAdmin) return;
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderList();
         }
 
         // ============================================================
-        // ====== حالت تاریک (قابلیت جدید ۱ از قبلی) ======
+        // ====== حالت تاریک ======
         // ============================================================
         function toggleDarkMode() {
-            try {
-                document.body.classList.toggle('dark-mode');
-                const btn = document.querySelector('.dark-toggle');
-                if (document.body.classList.contains('dark-mode')) {
-                    btn.textContent = '☀️';
-                    localStorage.setItem('darkMode', 'true');
-                    showToast('🌙 حالت تاریک فعال شد', 'success');
-                } else {
-                    btn.textContent = '🌙';
-                    localStorage.setItem('darkMode', 'false');
-                    showToast('☀️ حالت روشن فعال شد', 'success');
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر حالت تاریک');
-            }
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-toggle');
+            const isDark = document.body.classList.contains('dark-mode');
+            btn.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            showToast(isDark ? '🌙 حالت تاریک فعال شد' : '☀️ حالت روشن فعال شد', 'success');
         }
 
         // ============================================================
@@ -3700,76 +3202,47 @@
             try {
                 const search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
                 let filtered = [...properties];
+
                 if (isAdmin) {
                     const categoryFilter = document.getElementById('categoryFilter').value;
                     const sortBy = document.getElementById('sortBy').value;
                     const minPrice = Number(document.getElementById('minPrice').value) || 0;
                     const maxPrice = Number(document.getElementById('maxPrice').value) || Infinity;
-                    if (currentFilter !== 'all') {
-                        filtered = filtered.filter(p => p.type === currentFilter);
-                    }
-                    if (categoryFilter !== 'all') {
-                        filtered = filtered.filter(p => p.category === categoryFilter);
-                    }
-                    filtered = filtered.filter(p => {
-                        const price = Number(p.price) || 0;
-                        return price >= minPrice && price <= maxPrice;
-                    });
-                    switch (sortBy) {
-                        case 'newest':
-                            filtered.sort((a, b) => Number(b.id) - Number(a.id));
-                            break;
-                        case 'oldest':
-                            filtered.sort((a, b) => Number(a.id) - Number(b.id));
-                            break;
-                        case 'price_high':
-                            filtered.sort((a, b) => Number(b.price) - Number(a.price));
-                            break;
-                        case 'price_low':
-                            filtered.sort((a, b) => Number(a.price) - Number(b.price));
-                            break;
-                        default:
-                            filtered.sort((a, b) => Number(b.id) - Number(a.id));
-                    }
+                    if (currentFilter !== 'all') filtered = filtered.filter(p => p.type === currentFilter);
+                    if (categoryFilter !== 'all') filtered = filtered.filter(p => p.category === categoryFilter);
+                    filtered = filtered.filter(p => { const price = Number(p.price) || 0; return price >= minPrice &&
+                            price <= maxPrice; });
+                    if (sortBy === 'newest') filtered.sort((a, b) => Number(b.id) - Number(a.id));
+                    else if (sortBy === 'oldest') filtered.sort((a, b) => Number(a.id) - Number(b.id));
+                    else if (sortBy === 'price_high') filtered.sort((a, b) => Number(b.price) - Number(a.price));
+                    else if (sortBy === 'price_low') filtered.sort((a, b) => Number(a.price) - Number(b.price));
                 } else {
-                    if (userCategoryFilter !== 'all') {
-                        filtered = filtered.filter(p => p.category === userCategoryFilter);
-                    }
-                    if (userTypeFilter !== 'all') {
-                        filtered = filtered.filter(p => p.type === userTypeFilter);
-                    }
+                    if (userCategoryFilter !== 'all') filtered = filtered.filter(p => p.category === userCategoryFilter);
+                    if (userTypeFilter !== 'all') filtered = filtered.filter(p => p.type === userTypeFilter);
                     if (userPriceFilterActive) {
-                        if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
-                            filtered = filtered.filter(p => p.type !== 'sale' || Number(p.price) <= userMaxPrice);
-                        } else if (userTypeFilter === 'rent') {
-                            filtered = filtered.filter(p => p.type !== 'rent' ||
-                                (Number(p.rahn) <= userMaxRahn && Number(p.rentPrice) <= userMaxRent));
-                        }
+                        if (userTypeFilter === 'sale' || userTypeFilter === 'all') filtered = filtered.filter(p => p
+                            .type !== 'sale' || Number(p.price) <= userMaxPrice);
+                        else if (userTypeFilter === 'rent') filtered = filtered.filter(p => p.type !== 'rent' ||
+                            (Number(p.rahn) <= userMaxRahn && Number(p.rentPrice) <= userMaxRent));
                     }
                     filtered.sort((a, b) => Number(b.id) - Number(a.id));
                 }
+
                 if (search) {
                     filtered = filtered.filter(p =>
-                        (p.title && p.title.toLowerCase().includes(search)) ||
-                        (p.address && p.address.toLowerCase().includes(search)) ||
-                        (p.code && String(p.code).toLowerCase().includes(search)) ||
-                        (p.customCode && String(p.customCode).toLowerCase().includes(search))
+                        (p.title?.toLowerCase().includes(search)) ||
+                        (p.address?.toLowerCase().includes(search)) ||
+                        (p.customCode?.toLowerCase().includes(search))
                     );
                 }
-                const pinned = filtered.filter(p => p.pinned);
-                const notPinned = filtered.filter(p => !p.pinned);
-                filtered = [...pinned, ...notPinned];
+
                 const container = document.getElementById('propertyList');
-                if (!filtered.length) {
-                    container.innerHTML = `<div class="empty">🏠 هیچ ملکی یافت نشد</div>`;
-                    return;
-                }
-                const isAdminUser = isAdmin;
-                const isUser = !isAdminUser;
+                if (!filtered.length) { container.innerHTML = `<div class="empty">🏠 هیچ ملکی یافت نشد</div>`; return; }
+
                 let html = '';
                 for (const p of filtered) {
                     let hiddenHtml = '';
-                    if (isAdminUser && p.hiddenDescription) {
+                    if (isAdmin && p.hiddenDescription) {
                         hiddenHtml = `
                                     <div class="hidden-part">
                                         <span class="label">🔒 بخش مخفی (فقط مدیر)</span>
@@ -3777,36 +3250,56 @@
                                     </div>
                                 `;
                     }
-                    let privateMsgHtml = '';
-                    if (isUser) {
-                        privateMsgHtml = `
-                                    <button class="private-msg-btn" onclick="togglePrivateMsg('${p.id}')">💬 ارسال پیام به مدیر</button>
-                                    <div class="private-msg-box" id="privateMsgBox_${p.id}">
-                                        <textarea placeholder="پیام خود را برای مدیر بنویسید..."></textarea>
-                                        <button class="send-btn" onclick="sendPrivateMessage('${p.id}')">📤 ارسال</button>
+
+                    const priceDisplay = p.type === 'sale' ?
+                        `💰 ${Number(p.price).toLocaleString()} تومان` :
+                        `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
+
+                    let userChatBtn = '';
+                    let depositHtml = '';
+                    let offerHtml = '';
+                    let appointmentHtml = '';
+
+                    if (!isAdmin && currentUser) {
+                        userChatBtn = `
+                                    <div style="margin-top:6px;display:flex;gap:6px;">
+                                        <input type="text" id="userChatInput_${p.id}" placeholder="💬 پیام به مدیر..." style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
+                                        <button onclick="sendUserChatMessage('${p.id}', document.getElementById('userChatInput_${p.id}').value)" style="padding:6px 12px;background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤</button>
+                                    </div>
+                                `;
+
+                        depositHtml = `
+                                    <div style="margin-top:4px;display:flex;gap:6px;">
+                                        <input type="number" id="depositInput_${p.id}" placeholder="💰 مبلغ بیعانه" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
+                                        <button onclick="depositPayment('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#E91E63,#C2185B);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">💳 پرداخت</button>
+                                    </div>
+                                `;
+
+                        offerHtml = `
+                                    <div style="margin-top:4px;display:flex;gap:6px;">
+                                        <input type="number" id="offerInput_${p.id}" placeholder="💰 پیشنهاد قیمت" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
+                                        <button onclick="submitOffer('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#FF8F00,#E65100);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤 ارسال</button>
+                                    </div>
+                                `;
+
+                        appointmentHtml = `
+                                    <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
+                                        <input type="date" id="appointmentDate_${p.id}" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;min-width:100px;">
+                                        <input type="time" id="appointmentTime_${p.id}" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;min-width:80px;">
+                                        <button onclick="submitAppointment('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#00695C,#004D40);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📅 نوبت</button>
                                     </div>
                                 `;
                     }
-                    const displayCode = p.customCode || p.code || 'ندارد';
-                    let priceDisplay = '';
-                    if (p.type === 'sale') {
-                        priceDisplay = `💰 ${Number(p.price).toLocaleString()} تومان`;
-                    } else {
-                        priceDisplay =
-                            `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
-                    }
-                    const avgRating = p.avg_rating || 0;
-                    const starsHtml = avgRating > 0 ? `<div style="font-size:14px;color:#FFD700;margin-top:4px;">${renderStars(avgRating)}</div>` :
-                        '';
+
                     html += `
                                 <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
                                     ${p.pinned ? `<div class="pinned-badge">📌 سنجاق شده</div>` : ''}
-                                    <span class="code-badge">#${sanitizeInput(displayCode)}</span>
+                                    <span class="code-badge">#${sanitizeInput(p.customCode || p.code || 'ندارد')}</span>
                                     <div class="action-btns">
-                                        ${isAdminUser ? `<button class="btn-pin" onclick="togglePin('${p.id}')">📌</button>` : ''}
-                                        ${isAdminUser ? `<button class="btn-edit" onclick="editProperty('${p.id}')">✏️</button>` : ''}
-                                        ${isAdminUser ? `<button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>` : ''}
-                                        ${isUser ? `
+                                        ${isAdmin ? `<button class="btn-pin" onclick="togglePin('${p.id}')">📌</button>` : ''}
+                                        ${isAdmin ? `<button class="btn-edit" onclick="toggleForm(${JSON.stringify(p).replace(/"/g,"'")})">✏️</button>` : ''}
+                                        ${isAdmin ? `<button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>` : ''}
+                                        ${!isAdmin ? `
                                             <button class="btn-cart ${isInCart(p.id) ? 'in-cart' : ''}" onclick="addToCart('${p.id}')">${isInCart(p.id) ? '✓' : '🛒'}</button>
                                             <button class="btn-favorite ${isFavorite(p.id) ? 'active' : ''}" onclick="toggleFavorite('${p.id}')">${isFavorite(p.id) ? '❤️' : '🤍'}</button>
                                         ` : ''}
@@ -3814,540 +3307,229 @@
                                     <h3>${sanitizeInput(p.title)}</h3>
                                     <div class="address">📍 ${sanitizeInput(p.address)}</div>
                                     <div class="price">${priceDisplay}</div>
-                                    ${starsHtml}
                                     <div class="meta">
                                         <span>📐 ${p.area || 0} متر</span>
                                         <span>📞 ${sanitizeInput(p.phone)}</span>
                                         <span>${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</span>
                                         <span>🏷️ ${p.category || 'بدون دسته'}</span>
                                         ${p.date ? `<span>📅 ${p.date}</span>` : ''}
-                                        ${p.view_count ? `<span>👁️ ${p.view_count} بازدید</span>` : ''}
                                     </div>
                                     <div class="desc">
                                         📝 ${sanitizeInput(p.description)}
                                         ${hiddenHtml}
                                     </div>
-                                    ${!isAdminUser ? `
+                                    ${!isAdmin ? `
                                         <div class="like-section">
-                                            <button class="like-btn" onclick="likeProperty('${p.id}', 'like')">❤️ <span class="count">${p.likes || 0}</span></button>
-                                            <button class="dislike-btn" onclick="likeProperty('${p.id}', 'dislike')">👎 <span class="count">${p.dislikes || 0}</span></button>
+                                            <button class="like-btn" onclick="likeProperty('${p.id}','like')">❤️ <span class="count">${p.likes || 0}</span></button>
+                                            <button class="dislike-btn" onclick="likeProperty('${p.id}','dislike')">👎 <span class="count">${p.dislikes || 0}</span></button>
                                         </div>
                                     ` : ''}
                                     <div class="share-btns">
-                                        <button class="share-whatsapp" onclick="shareProperty('whatsapp', '${p.id}')">📱 واتساپ</button>
-                                        <button class="share-telegram" onclick="shareProperty('telegram', '${p.id}')">✈️ تلگرام</button>
+                                        <button class="share-whatsapp" onclick="shareProperty('whatsapp','${p.id}')">📱 واتساپ</button>
+                                        <button class="share-telegram" onclick="shareProperty('telegram','${p.id}')">✈️ تلگرام</button>
+                                        <button class="share-ita" onclick="shareProperty('ita','${p.id}')">🇮🇷 ایتا</button>
                                     </div>
-                                    <!-- بخش نظرات -->
-                                    ${isUser ? `
-                                        <div style="margin-top:8px;">
-                                            <button class="comment-toggle-btn" onclick="toggleCommentForm('${p.id}')">
-                                                💬 نظرات <span class="comment-count">(${await loadComments(p.id).then(c => c.length)})</span>
-                                            </button>
-                                            <div class="comment-form" id="commentForm_${p.id}">
-                                                <textarea id="commentInput_${p.id}" placeholder="نظر خود را بنویسید..."></textarea>
-                                                <div class="comment-actions">
-                                                    <select id="commentRating_${p.id}">
-                                                        <option value="0">بدون امتیاز</option>
-                                                        <option value="1">⭐</option>
-                                                        <option value="2">⭐⭐</option>
-                                                        <option value="3">⭐⭐⭐</option>
-                                                        <option value="4">⭐⭐⭐⭐</option>
-                                                        <option value="5">⭐⭐⭐⭐⭐</option>
-                                                    </select>
-                                                    <button onclick="submitComment('${p.id}')">📤 ارسال</button>
-                                                </div>
-                                            </div>
-                                            <div id="commentsContainer_${p.id}" style="margin-top:6px;"></div>
-                                        </div>
+                                    ${!isAdmin ? `
+                                        ${offerHtml}
+                                        ${appointmentHtml}
+                                        ${depositHtml}
+                                        ${userChatBtn}
                                     ` : ''}
-                                    <!-- بخش پیشنهاد قیمت -->
-                                    ${isUser ? `
-                                        <div style="margin-top:8px;display:flex;gap:6px;">
-                                            <input type="number" id="offerInput_${p.id}" placeholder="💰 پیشنهاد قیمت (تومان)" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
-                                            <button onclick="submitOffer('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#FF8F00,#E65100);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤 ارسال</button>
-                                        </div>
-                                    ` : ''}
-                                    <!-- بخش رزرو نوبت -->
-                                    ${isUser ? `
-                                        <div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap;">
-                                            <input type="date" id="appointmentDate_${p.id}" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;min-width:100px;">
-                                            <input type="time" id="appointmentTime_${p.id}" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;min-width:80px;">
-                                            <button onclick="submitAppointment('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#00695C,#004D40);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📅 نوبت</button>
-                                        </div>
-                                    ` : ''}
-                                    ${privateMsgHtml}
                                 </div>
                             `;
-                    // ثبت تاریخچه بازدید برای کاربران
-                    if (isUser && currentUser) {
-                        await addViewHistory(p.id);
-                    }
                 }
+
                 container.innerHTML = html;
-                // بارگذاری نظرات برای هر ملک
-                if (isUser) {
-                    for (const p of filtered) {
-                        await renderComments(p.id);
-                    }
-                }
                 updateStats();
-                if (document.getElementById('chartContainer').style.display !== 'none') {
-                    drawChart();
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'رندر لیست املاک');
-            }
-        }
-
-        function editProperty(id) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
-                    return;
-                }
-                const data = properties.find(p => p.id === id);
-                if (data) {
-                    toggleForm(data);
-                } else {
-                    showToast('❌ ملک یافت نشد!', 'error');
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'ویرایش ملک');
-            }
+            } catch (e) { ErrorHandler.log(e, 'رندر لیست'); }
         }
 
         // ============================================================
-        // ====== سبد خرید ======
-        // ============================================================
-        function loadCartItems() {
-            try {
-                const data = localStorage.getItem('amlak_cart');
-                if (data) {
-                    cartItems = JSON.parse(data);
-                } else {
-                    cartItems = [];
-                }
-            } catch {
-                cartItems = [];
-            }
-        }
-
-        function toggleCart() {
-            try {
-                document.getElementById('cartModal').classList.toggle('active');
-                if (document.getElementById('cartModal').classList.contains('active')) {
-                    renderCart();
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر وضعیت سبد خرید');
-            }
-        }
-
-        function renderCart() {
-            try {
-                const container = document.getElementById('cartList');
-                if (!cartItems.length) {
-                    container.innerHTML = `<div class="cart-empty">🛒 سبد خرید شما خالی است</div>`;
-                    return;
-                }
-                let html = '';
-                cartItems.forEach(id => {
-                    const p = properties.find(prop => prop.id === id);
-                    if (p) {
-                        html += `
-                                    <div class="cart-item">
-                                        <div class="info">
-                                            <div class="title">${sanitizeInput(p.title)}</div>
-                                            <div class="detail">${sanitizeInput(p.address)} | ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</div>
-                                        </div>
-                                        <button class="remove-btn" onclick="removeFromCart('${p.id}')">✕</button>
-                                    </div>
-                                `;
-                    }
-                });
-                html += `
-                            <div class="cart-actions">
-                                <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن سبد</button>
-                                <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
-                            </div>
-                        `;
-                container.innerHTML = html;
-            } catch (e) {
-                ErrorHandler.log(e, 'رندر سبد خرید');
-            }
-        }
-
-        function addToCart(id) {
-            try {
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند سبد خرید داشته باشد!', 'warning');
-                    return;
-                }
-                if (cartItems.includes(id)) {
-                    showToast('⚠️ این ملک قبلاً در سبد خرید است!', 'warning');
-                    return;
-                }
-                cartItems.push(id);
-                localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
-                showToast('✅ ملک به سبد خرید اضافه شد!', 'success');
-                updateCartBadge();
-                renderList();
-            } catch (e) {
-                ErrorHandler.log(e, 'افزودن به سبد خرید');
-            }
-        }
-
-        function removeFromCart(id) {
-            try {
-                cartItems = cartItems.filter(item => item !== id);
-                localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
-                renderCart();
-                updateCartBadge();
-                renderList();
-                showToast('🗑️ ملک از سبد خرید حذف شد', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف از سبد خرید');
-            }
-        }
-
-        function clearCart() {
-            try {
-                if (!cartItems.length) {
-                    showToast('⚠️ سبد خرید خالی است!', 'warning');
-                    return;
-                }
-                if (!confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) return;
-                cartItems = [];
-                localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
-                renderCart();
-                updateCartBadge();
-                renderList();
-                showToast('🗑️ سبد خرید خالی شد', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'خالی کردن سبد خرید');
-            }
-        }
-
-        function shareCart() {
-            try {
-                if (!cartItems.length) {
-                    showToast('⚠️ سبد خرید شما خالی است!', 'warning');
-                    return;
-                }
-                let text = '🛒 *لیست املاک مورد علاقه من*\n\n';
-                cartItems.forEach(id => {
-                    const p = properties.find(prop => prop.id === id);
-                    if (p) {
-                        text += `🏠 ${sanitizeInput(p.title)}\n`;
-                        text += `📍 ${sanitizeInput(p.address)}\n`;
-                        if (p.type === 'sale') {
-                            text += `💰 ${Number(p.price).toLocaleString()} تومان\n`;
-                        } else {
-                            text +=
-                                `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان\n`;
-                        }
-                        text += `📐 ${p.area || 0} متر\n📞 ${sanitizeInput(p.phone)}\n\n`;
-                    }
-                });
-                text += '#املاک_حسینی #سبد_خرید';
-                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-            } catch (e) {
-                ErrorHandler.log(e, 'اشتراک‌گذاری سبد خرید');
-            }
-        }
-
-        function updateCartBadge() {
-            try {
-                document.getElementById('cartCount').textContent = cartItems.length;
-            } catch (e) {
-                ErrorHandler.log(e, 'بروزرسانی نشان سبد خرید');
-            }
-        }
-
-        function isInCart(id) {
-            return cartItems.includes(id);
-        }
-
-        // ============================================================
-        // ====== اشتراک‌گذاری ملک ======
+        // ====== اشتراک‌گذاری ======
         // ============================================================
         function shareProperty(platform, id) {
-            try {
-                const p = properties.find(prop => prop.id === id);
-                if (!p) {
-                    showToast('❌ ملک یافت نشد!', 'error');
-                    return;
-                }
-                let priceText = '';
-                if (p.type === 'sale') {
-                    priceText = `💰 قیمت: ${Number(p.price).toLocaleString()} تومان`;
-                } else {
-                    priceText =
-                        `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
-                }
-                const code = p.customCode || p.code || 'ندارد';
-                const text =
-                    `🏠 *${sanitizeInput(p.title)}*\n🆔 کد: ${sanitizeInput(code)}\n📍 آدرس: ${sanitizeInput(p.address)}\n${priceText}\n📐 متراژ: ${p.area || 0} متر\n🏷️ دسته: ${p.category || 'ندارد'}\n📞 تماس: ${sanitizeInput(p.phone)}\n📝 توضیحات: ${sanitizeInput(p.description)}\n#املاک #${p.type === 'sale' ? 'فروش' : 'اجاره'}`;
-                const url = platform === 'whatsapp' ?
-                    `https://wa.me/?text=${encodeURIComponent(text)}` :
-                    `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-                if (url) {
-                    window.open(url, '_blank');
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'اشتراک‌گذاری ملک');
-            }
+            const p = properties.find(prop => prop.id === id);
+            if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
+            let priceText = p.type === 'sale' ? `💰 ${Number(p.price).toLocaleString()} تومان` :
+                `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
+            const text =
+                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#املاک_حسینی`;
+            let url;
+            if (platform === 'whatsapp') url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            else if (platform === 'telegram') url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+            else if (platform === 'ita') url =
+                `https://eitaa.com/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+            if (url) window.open(url, '_blank');
         }
 
         // ============================================================
         // ====== نمودار ======
         // ============================================================
         function toggleChart() {
-            try {
-                const container = document.getElementById('chartContainer');
-                container.style.display = container.style.display === 'none' ? 'block' : 'none';
-                if (container.style.display === 'block') {
-                    drawChart();
-                }
-                document.getElementById('propertyForm').style.display = 'none';
-                document.getElementById('publicMsgForm').style.display = 'none';
-                document.getElementById('privateMsgViewer').style.display = 'none';
-                document.getElementById('editProfileForm').style.display = 'none';
-            } catch (e) {
-                ErrorHandler.log(e, 'تغییر وضعیت نمودار');
-            }
+            const container = document.getElementById('chartContainer');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            if (container.style.display === 'block') drawChart();
+            hideAllForms(['chartContainer']);
         }
 
         function drawChart() {
-            try {
-                const canvas = document.getElementById('chartCanvas');
-                const ctx = canvas.getContext('2d');
-                const sale = properties.filter(p => p.type === 'sale').length;
-                const rent = properties.filter(p => p.type === 'rent').length;
-                const total = sale + rent || 1;
-                canvas.width = 300;
-                canvas.height = 200;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const cx = 100,
-                    cy = 100,
-                    r = 70;
-                const angles = [(sale / total) * 2 * Math.PI, (rent / total) * 2 * Math.PI];
-                const colors = ['#E65100', '#C62828'];
-                let start = -Math.PI / 2;
-                angles.forEach((a, i) => {
-                    ctx.beginPath();
-                    ctx.moveTo(cx, cy);
-                    ctx.arc(cx, cy, r, start, start + a);
-                    ctx.closePath();
-                    ctx.fillStyle = colors[i];
-                    ctx.fill();
-                    start += a;
-                });
-                ctx.fillStyle = '#333';
-                ctx.font = '12px Tahoma';
-                ctx.fillText('🟧 فروش: ' + sale, 10, 180);
-                ctx.fillText('🟥 اجاره: ' + rent, 10, 195);
-                ctx.fillStyle = '#1565C0';
-                ctx.font = '14px Tahoma';
-                ctx.fillText('کل: ' + total, 10, 20);
-            } catch (e) {
-                ErrorHandler.log(e, 'رسم نمودار');
-            }
+            const canvas = document.getElementById('chartCanvas');
+            const ctx = canvas.getContext('2d');
+            const sale = properties.filter(p => p.type === 'sale').length;
+            const rent = properties.filter(p => p.type === 'rent').length;
+            const total = sale + rent || 1;
+            canvas.width = 300;
+            canvas.height = 200;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = 100,
+                cy = 100,
+                r = 70;
+            const angles = [(sale / total) * 2 * Math.PI, (rent / total) * 2 * Math.PI];
+            const colors = ['#E65100', '#C62828'];
+            let start = -Math.PI / 2;
+            angles.forEach((a, i) => { ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, start + a);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                start += a; });
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Tahoma';
+            ctx.fillText('🟧 فروش: ' + sale, 10, 180);
+            ctx.fillText('🟥 اجاره: ' + rent, 10, 195);
+            ctx.fillStyle = '#1565C0';
+            ctx.font = '14px Tahoma';
+            ctx.fillText('کل: ' + total, 10, 20);
         }
 
         // ============================================================
         // ====== خروجی PDF و Excel ======
         // ============================================================
         function exportPDF() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning');
-                    return;
-                }
-                if (!properties.length) {
-                    showToast('⚠️ هیچ ملکی برای خروجی وجود ندارد!', 'warning');
-                    return;
-                }
-                let text = '=== گزارش املاک حسینی ===\n';
-                text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
-                text += 'تعداد کل: ' + properties.length + '\n';
-                text += 'فروش: ' + properties.filter(p => p.type === 'sale').length + '\n';
-                text += 'اجاره: ' + properties.filter(p => p.type === 'rent').length + '\n\n--- لیست املاک ---\n\n';
-                properties.forEach((p, i) => {
-                    text += (i + 1) + '. ' + p.title + '\n';
-                    text += '   کد: ' + (p.customCode || p.code || 'ندارد') + '\n';
-                    text += '   دسته: ' + (p.category || 'ندارد') + '\n';
-                    text += '   نوع: ' + (p.type === 'sale' ? 'فروش' : 'اجاره') + '\n';
-                    if (p.type === 'sale') {
-                        text += '   قیمت فروش: ' + Number(p.price).toLocaleString() + ' تومان\n';
-                    } else {
-                        text += '   رهن: ' + Number(p.rahn).toLocaleString() + ' تومان\n';
-                        text += '   کرایه: ' + Number(p.rentPrice).toLocaleString() + ' تومان\n';
-                    }
-                    text += '   آدرس: ' + p.address + '\n';
-                    text += '   متراژ: ' + (p.area || 0) + ' متر\n';
-                    text += '   تماس: ' + (p.phone || '---') + '\n';
-                    text += '   توضیحات: ' + (p.description || 'بدون توضیحات') + '\n';
-                    if (p.hiddenDescription) {
-                        text += '   🔒 بخش مخفی: ' + p.hiddenDescription + '\n';
-                    }
-                    text += '   لایک: ' + (p.likes || 0) + '\n';
-                    text += '   دیسلایک: ' + (p.dislikes || 0) + '\n';
-                    text += '   --------------------\n';
-                });
-                const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'گزارش_املاک_' + new Date().toISOString().slice(0, 10) + '.txt';
-                link.click();
-                showToast('📄 گزارش دانلود شد!', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'خروجی PDF');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
+            if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
+            let text = '=== گزارش املاک حسینی ===\n';
+            text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
+            text += 'تعداد کل: ' + properties.length + '\n';
+            properties.forEach((p, i) => {
+                text += `${i+1}. ${p.title}\n   کد: ${p.customCode||p.code||'ندارد'}\n   قیمت: ${Number(p.price).toLocaleString()} تومان\n   آدرس: ${p.address}\n   --------------------\n`;
+            });
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'گزارش_املاک_' + new Date().toISOString().slice(0, 10) + '.txt';
+            link.click();
+            showToast('📄 گزارش دانلود شد!', 'success');
         }
 
         function exportExcel() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning');
-                    return;
-                }
-                if (!properties.length) {
-                    showToast('⚠️ هیچ ملکی برای خروجی وجود ندارد!', 'warning');
-                    return;
-                }
-                let csv =
-                    'کد,عنوان,دسته,نوع,قیمت فروش,رهن,کرایه,آدرس,متراژ,تماس,توضیحات,بخش مخفی,تاریخ,لایک,دیسلایک\n';
-                properties.forEach(p => {
-                    csv +=
-                        `"${p.customCode || p.code || ''}","${p.title}","${p.category || ''}","${p.type === 'sale' ? 'فروش' : 'اجاره'}","${p.type === 'sale' ? p.price : ''}","${p.type === 'rent' ? p.rahn : ''}","${p.type === 'rent' ? p.rentPrice : ''}","${p.address}","${p.area || 0}","${p.phone || ''}","${p.description || ''}","${p.hiddenDescription || ''}","${p.date || ''}","${p.likes || 0}","${p.dislikes || 0}"\n`;
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
+            if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
+            let csv = 'کد,عنوان,دسته,نوع,قیمت,آدرس,متراژ,تماس\n';
+            properties.forEach(p => { csv +=
+                    `"${p.customCode||p.code||''}","${p.title}","${p.category||''}","${p.type}","${p.price}","${p.address}","${p.area||0}","${p.phone||''}"\n`;
                 });
-                const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'املاک_' + new Date().toISOString().slice(0, 10) + '.csv';
-                link.click();
-                showToast('📊 فایل Excel دانلود شد!', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'خروجی Excel');
-            }
+            const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'املاک_' + new Date().toISOString().slice(0, 10) + '.csv';
+            link.click();
+            showToast('📊 فایل Excel دانلود شد!', 'success');
         }
 
         // ============================================================
         // ====== پشتیبان ======
         // ============================================================
         function backupData() {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning');
-                    return;
-                }
-                const data = {
-                    properties: properties,
-                    publicMessages: publicMessages,
-                    privateMessages: privateMessages,
-                    cartItems: cartItems,
-                    favorites: favorites,
-                    backupDate: new Date().toISOString()
-                };
-                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'amlak_backup_' + new Date().toISOString().slice(0, 10) + '.json';
-                link.click();
-                showToast('💾 پشتیبان گرفته شد!', 'success');
-            } catch (e) {
-                ErrorHandler.log(e, 'پشتیبان‌گیری');
-            }
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning'); return; }
+            const data = { properties, publicMessages, privateMessages, cartItems, favorites, chatMessages,
+            backupDate: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'amlak_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+            link.click();
+            showToast('💾 پشتیبان گرفته شد!', 'success');
         }
 
         function restoreData(event) {
-            try {
-                if (!isAdmin) {
-                    showToast('⚠️ فقط مدیر می‌تواند بازیابی کند!', 'warning');
-                    return;
-                }
-                const file = event.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = async (e) => {
-                    try {
-                        const data = JSON.parse(e.target.result);
-                        if (data.properties && Array.isArray(data.properties)) {
-                            showLoading(true);
-                            for (const p of properties) {
-                                await supabaseClient
-                                    .from(TABLE_NAME)
-                                    .delete()
-                                    .eq('id', p.id);
-                            }
-                            for (const prop of data.properties) {
-                                const { id, ...propData } = prop;
-                                await supabaseClient
-                                    .from(TABLE_NAME)
-                                    .insert([propData]);
-                            }
-                            properties = data.properties;
-                            localStorage.setItem('amlak_properties', JSON.stringify(properties));
-                            if (data.publicMessages) {
-                                publicMessages = data.publicMessages;
-                                localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-                            }
-                            if (data.privateMessages) {
-                                privateMessages = data.privateMessages;
-                                localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
-                            }
-                            if (data.cartItems) {
-                                cartItems = data.cartItems;
-                                localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
-                            }
-                            if (data.favorites) {
-                                favorites = data.favorites;
-                                localStorage.setItem('amlak_favorites', JSON.stringify(favorites));
-                            }
-                            showLoading(false);
-                            showToast('📂 داده‌ها بازیابی شدند!', 'success');
-                            updateStats();
-                            renderList();
-                            renderPublicMessages();
-                            updateCartBadge();
-                        } else {
-                            showToast('❌ فایل معتبر نیست!', 'error');
-                        }
-                    } catch (err) {
-                        showLoading(false);
-                        ErrorHandler.log(err, 'بازیابی داده');
-                    }
-                };
-                reader.readAsText(file);
-                event.target.value = '';
-            } catch (e) {
-                ErrorHandler.log(e, 'بازیابی اطلاعات');
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند بازیابی کند!', 'warning'); return; }
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = async (e) => {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    if (data.properties) {
+                        properties = data.properties;
+                        localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                        if (data.publicMessages) localStorage.setItem('amlak_public_messages', JSON.stringify(data
+                            .publicMessages));
+                        if (data.cartItems) localStorage.setItem('amlak_cart', JSON.stringify(data.cartItems));
+                        if (data.favorites) localStorage.setItem('amlak_favorites', JSON.stringify(data.favorites));
+                        if (data.chatMessages) localStorage.setItem('amlak_chat_messages', JSON.stringify(data
+                            .chatMessages));
+                        showToast('📂 داده‌ها بازیابی شدند!', 'success');
+                        renderList();
+                        renderPublicMessages();
+                        updateCartBadge();
+                    } else { showToast('❌ فایل معتبر نیست!', 'error'); }
+                } catch (err) { ErrorHandler.log(err, 'بازیابی'); }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // ============================================================
+        // ====== بررسی ماهانه ======
+        // ============================================================
+        function checkMonthlyAuto() {
+            const now = new Date();
+            const today = now.toISOString().split('T')[0];
+            const last = localStorage.getItem('lastMonthlyCheck');
+            if (!last) { localStorage.setItem('lastMonthlyCheck', today); return; }
+            const lastDate = new Date(last);
+            const diff = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
+            if (diff >= 1) { if (isAdmin) showToast('📅 زمان بررسی ماهانه فرا رسیده!', 'warning');
+                autoDeleteOldProperties();
+                localStorage.setItem('lastMonthlyCheck', today); }
+        }
+
+        async function monthlyCheck() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند بررسی کند!', 'warning'); return; }
+            await autoDeleteOldProperties();
+            localStorage.setItem('lastMonthlyCheck', new Date().toISOString().split('T')[0]);
+            showToast('✅ بررسی ماهانه انجام شد!', 'success');
+        }
+
+        async function autoDeleteOldProperties() {
+            let deleted = [];
+            for (const p of properties) {
+                if (!confirm(`آیا ملک "${p.title}" هنوز موجود است؟`)) deleted.push(p.id);
             }
+            if (deleted.length) {
+                for (const id of deleted) { await supabaseClient.from(TABLE_NAME).delete().eq('id', id); }
+                properties = properties.filter(p => !deleted.includes(p.id));
+                localStorage.setItem('amlak_properties', JSON.stringify(properties));
+                showToast(`🗑️ ${deleted.length} ملک حذف شد!`, 'success');
+                updateStats();
+                renderList();
+            } else { showToast('✅ همه املاک موجود هستند!', 'success'); }
         }
 
         // ============================================================
         // ====== نمایش مدیا ======
         // ============================================================
         function showMedia(src, type) {
-            try {
-                const modal = document.getElementById('mediaModal');
-                const content = document.getElementById('modalContent');
-                if (type === 'image') {
-                    content.innerHTML = `<img src="${src}" style="max-height:80vh;" />`;
-                } else {
-                    content.innerHTML =
-                        `<video controls autoplay style="max-height:80vh;max-width:100%;"><source src="${src}" /></video>`;
-                }
-                modal.classList.add('active');
-            } catch (e) {
-                ErrorHandler.log(e, 'نمایش مدیا');
-            }
+            const modal = document.getElementById('mediaModal');
+            const content = document.getElementById('modalContent');
+            content.innerHTML = type === 'image' ? `<img src="${src}" style="max-height:80vh;" />` :
+                `<video controls autoplay style="max-height:80vh;max-width:100%;"><source src="${src}" /></video>`;
+            modal.classList.add('active');
         }
 
-        function closeModal() {
-            document.getElementById('mediaModal').classList.remove('active');
-        }
+        function closeModal() { document.getElementById('mediaModal').classList.remove('active'); }
 
         // ============================================================
         // ====== شروع برنامه ======
@@ -4357,14 +3539,20 @@
             currentUser = savedUser;
             const admins = getAdmins();
             isAdmin = admins.some(a => a.id === savedUser.id);
-            if (isAdmin) {
-                localStorage.setItem('amlak_current_admin_id', savedUser.id);
-            }
+            if (isAdmin) localStorage.setItem('amlak_current_admin_id', savedUser.id);
             enterApp();
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
-            showAdminSelection();
-            document.getElementById('roleAdmin').classList.add('active');
+            const admins = getAdmins();
+            if (admins.length >= MAX_ADMINS) {
+                document.getElementById('roleAdmin').classList.remove('active');
+                document.getElementById('roleUser').classList.add('active');
+                document.getElementById('adminFields').style.display = 'none';
+                document.getElementById('userFields').style.display = 'block';
+                document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. لطفاً به عنوان کاربر وارد شوید.';
+            } else {
+                showAdminSelection();
+            }
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
@@ -4373,25 +3561,17 @@
             if (btn) btn.textContent = '☀️';
         }
 
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-                ErrorHandler.showErrorLog();
-            }
-        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
 
         updateFilterInfo();
         updateCartBadge();
 
         console.log('✅ برنامه املاک حسینی با موفقیت بارگذاری شد!');
-        console.log('📋 برای مشاهده لاگ خطاها: Ctrl+Shift+E');
-        console.log('🌙 برای تغییر حالت تاریک: روی دکمه 🌙/☀️ کلیک کنید');
+        console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
         console.log('📊 تعداد املاک:', properties.length);
-        console.log('👤 وضعیت کاربر:', isAdmin ? 'مدیر' : 'کاربر عادی');
-        console.log('✅ ۱۸ قابلیت جدید به برنامه اضافه شد!');
+        console.log('📌 ۴ مدیر | 🔔 اعلان به کاربران | 💬 چت | 💳 بیعانه');
+        console.log('📱 ورود با شماره موبایل | 🇮🇷 اشتراک در ایتا');
+        console.log('✅ همه قابلیت‌های قبلی و جدید فعال هستند!');
     </script>
 </body>
-    </html>
+                                 </html>
