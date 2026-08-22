@@ -1546,14 +1546,15 @@
             </div>
             <div class="login-fields" id="adminFields">
                 <div id="adminLoginArea">
-                    <button class="btn" onclick="showAdminSelection()">👑 انتخاب مدیر</button>
+                    <input type="password" id="adminPasswordInput" placeholder="🔑 رمز عبور مدیر را وارد کنید" class="password-input">
+                    <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
                 </div>
             </div>
             <div class="login-fields" id="userFields" style="display:none;">
                 <input type="tel" id="userPhoneInput" placeholder="📱 شماره موبایل خود را وارد کنید" style="width:100%;padding:12px;margin-bottom:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;text-align:center;">
                 <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
             </div>
-            <div class="login-hint" id="loginHint">مدیران: روی دکمه کلیک کنید</div>
+            <div class="login-hint" id="loginHint">مدیران: رمز عبور را وارد کنید</div>
         </div>
     </div>
 
@@ -1874,71 +1875,12 @@
         const TABLE_NAME = 'estate_properties';
 
         // ============================================================
-        // ====== ۴ مدیر جدید با رمز عبور ======
+        // ====== مدیریت مدیران با رمز عبور ======
         // ============================================================
-        const MAX_ADMINS = 4;
-        const DEFAULT_PASSWORD = '26742674';
+        const ADMIN_PASSWORD = '26742674';
 
-        function getAdmins() {
-            try {
-                const saved = localStorage.getItem('amlak_admins_data');
-                if (saved) {
-                    const admins = JSON.parse(saved);
-                    if (admins.length === MAX_ADMINS) return admins;
-                }
-            } catch (e) {}
-            const admins = [
-                { id: 'admin_001', name: 'مدیر اول', password: DEFAULT_PASSWORD, date: new Date().toISOString() },
-                { id: 'admin_002', name: 'مدیر دوم', password: DEFAULT_PASSWORD, date: new Date().toISOString() },
-                { id: 'admin_003', name: 'مدیر سوم', password: DEFAULT_PASSWORD, date: new Date().toISOString() },
-                { id: 'admin_004', name: 'مدیر چهارم', password: DEFAULT_PASSWORD, date: new Date().toISOString() }
-            ];
-            localStorage.setItem('amlak_admins_data', JSON.stringify(admins));
-            return admins;
-        }
-
-        function saveAdmins(admins) {
-            localStorage.setItem('amlak_admins_data', JSON.stringify(admins));
-        }
-
-        function verifyAdminPassword(adminId, password) {
-            const admins = getAdmins();
-            const admin = admins.find(a => a.id === adminId);
-            return admin && admin.password === password;
-        }
-
-        function updateAdminPassword(adminId, newPassword) {
-            const admins = getAdmins();
-            const index = admins.findIndex(a => a.id === adminId);
-            if (index !== -1) {
-                admins[index].password = newPassword;
-                saveAdmins(admins);
-                return true;
-            }
-            return false;
-        }
-
-        function getCurrentAdmin() {
-            try {
-                const adminId = localStorage.getItem('amlak_current_admin_id');
-                if (adminId) {
-                    const admins = getAdmins();
-                    return admins.find(a => a.id === adminId) || null;
-                }
-            } catch (e) { return null; }
-            return null;
-        }
-
-        function selectAdmin(index) {
-            try {
-                const admins = getAdmins();
-                if (index >= 0 && index < admins.length) {
-                    const admin = admins[index];
-                    localStorage.setItem('amlak_current_admin_id', admin.id);
-                    return admin;
-                }
-            } catch (e) {}
-            return null;
+        function verifyAdminPassword(password) {
+            return password === ADMIN_PASSWORD;
         }
 
         // ============================================================
@@ -2000,10 +1942,8 @@
         function updateOnlineUsers() {
             try {
                 if (!isAdmin) return;
-                const admins = getAdmins();
                 const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
-                const allUsers = [...admins, ...users];
-                const uniqueUsers = [...new Set(allUsers.map(u => u.id))];
+                const uniqueUsers = [...new Set(users.map(u => u.id))];
                 document.getElementById('onlineCount').textContent = uniqueUsers.length || 0;
             } catch (e) {}
         }
@@ -2014,22 +1954,11 @@
         function selectRole(role) {
             try {
                 document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
-                const admins = getAdmins();
                 if (role === 'admin') {
-                    if (admins.length >= MAX_ADMINS) {
-                        showToast('⚠️ تعداد مدیران کامل است! فقط کاربران عادی می‌توانند وارد شوند.', 'warning');
-                        document.getElementById('roleAdmin').classList.remove('active');
-                        document.getElementById('roleUser').classList.add('active');
-                        document.getElementById('adminFields').style.display = 'none';
-                        document.getElementById('userFields').style.display = 'block';
-                        document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. لطفاً به عنوان کاربر وارد شوید.';
-                        return;
-                    }
                     document.getElementById('roleAdmin').classList.add('active');
                     document.getElementById('adminFields').style.display = 'block';
                     document.getElementById('userFields').style.display = 'none';
-                    document.getElementById('loginHint').textContent = 'یکی از ۴ مدیر را انتخاب کنید';
-                    showAdminSelection();
+                    document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
                 } else {
                     document.getElementById('roleUser').classList.add('active');
                     document.getElementById('adminFields').style.display = 'none';
@@ -2039,50 +1968,22 @@
             } catch (e) { ErrorHandler.log(e, 'انتخاب نقش'); }
         }
 
-        function showAdminSelection() {
+        function loginAdmin() {
             try {
-                const admins = getAdmins();
-                let html = '<div class="admin-list-container">';
-                admins.forEach((admin, index) => {
-                    const date = new Date(admin.date);
-                    const dateStr = date.toLocaleDateString('fa-IR') + ' ' + date.toLocaleTimeString('fa-IR', { hour: '2-digit',
-                        minute: '2-digit' });
-                    html += `
-                                <button class="admin-select-btn" onclick="showAdminPasswordPrompt(${index})">
-                                    <span class="admin-name">👑 ${admin.name}</span>
-                                    <span class="admin-date">${dateStr}</span>
-                                </button>
-                            `;
-                });
-                html += '</div>';
-                document.getElementById('adminFields').innerHTML = html;
-            } catch (e) { ErrorHandler.log(e, 'نمایش انتخاب مدیر'); }
-        }
-
-        function showAdminPasswordPrompt(index) {
-            const password = prompt('🔑 لطفاً رمز عبور مدیر را وارد کنید:');
-            if (password === null) return;
-            const admins = getAdmins();
-            if (index >= 0 && index < admins.length) {
-                if (verifyAdminPassword(admins[index].id, password)) {
-                    loginAsAdmin(index);
-                } else {
-                    showToast('❌ رمز عبور اشتباه است!', 'error');
+                const password = document.getElementById('adminPasswordInput').value.trim();
+                if (!password) {
+                    showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning');
+                    return;
                 }
-            }
-        }
-
-        function loginAsAdmin(index) {
-            try {
-                const admin = selectAdmin(index);
-                if (admin) {
+                if (verifyAdminPassword(password)) {
                     isAdmin = true;
-                    currentUser = { role: 'admin', id: admin.id, name: admin.name };
+                    const adminId = 'admin_' + Date.now().toString(36);
+                    currentUser = { role: 'admin', id: adminId, name: 'مدیر' };
                     localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-                    showToast(`✅ خوش آمدید ${admin.name}!`, 'success');
+                    showToast('✅ خوش آمدید مدیر!', 'success');
                     enterApp();
                 } else {
-                    showToast('❌ خطا در ورود مدیر!', 'error');
+                    showToast('❌ رمز عبور اشتباه است!', 'error');
                 }
             } catch (e) { ErrorHandler.log(e, 'ورود مدیر'); }
         }
@@ -2112,26 +2013,16 @@
         function logout() {
             try {
                 localStorage.removeItem('amlak_user');
-                localStorage.removeItem('amlak_current_admin_id');
                 currentUser = null;
                 isAdmin = false;
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('loginOverlay').classList.remove('hidden');
-                const admins = getAdmins();
-                if (admins.length >= MAX_ADMINS) {
-                    document.getElementById('roleAdmin').classList.remove('active');
-                    document.getElementById('roleUser').classList.add('active');
-                    document.getElementById('adminFields').style.display = 'none';
-                    document.getElementById('userFields').style.display = 'block';
-                    document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. لطفاً به عنوان کاربر وارد شوید.';
-                } else {
-                    document.getElementById('roleAdmin').classList.add('active');
-                    document.getElementById('roleUser').classList.remove('active');
-                    document.getElementById('adminFields').style.display = 'block';
-                    document.getElementById('userFields').style.display = 'none';
-                    document.getElementById('loginHint').textContent = 'یکی از ۴ مدیر را انتخاب کنید';
-                    showAdminSelection();
-                }
+                document.getElementById('roleAdmin').classList.add('active');
+                document.getElementById('roleUser').classList.remove('active');
+                document.getElementById('adminFields').style.display = 'block';
+                document.getElementById('userFields').style.display = 'none';
+                document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
+                document.getElementById('adminPasswordInput').value = '';
                 showToast('🚪 خروج موفق', 'success');
             } catch (e) { ErrorHandler.log(e, 'خروج'); }
         }
@@ -2141,9 +2032,6 @@
         // ============================================================
         function showEditProfile() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            const adminInfo = getCurrentAdmin();
-            document.getElementById('editAdminName').value = adminInfo?.name || '';
-            document.getElementById('editAdminPassword').value = '';
             hideAllForms(['editProfileForm']);
             document.getElementById('editProfileForm').style.display = 'block';
         }
@@ -2153,38 +2041,23 @@
         function saveProfileChanges() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
             const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
-            const newPassword = document.getElementById('editAdminPassword').value.trim();
-
-            if (!name) { showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning'); return; }
-
-            const admins = getAdmins();
-            const adminInfo = getCurrentAdmin();
-            if (adminInfo) {
-                const index = admins.findIndex(a => a.id === adminInfo.id);
-                if (index !== -1) {
-                    admins[index].name = name;
-                    if (newPassword && newPassword.length >= 4) {
-                        admins[index].password = newPassword;
-                        showToast('✅ رمز عبور با موفقیت تغییر کرد!', 'success');
-                    }
-                    saveAdmins(admins);
-                    localStorage.setItem('amlak_admin_name', name);
-                    if (currentUser) {
-                        currentUser.name = name;
-                        localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-                    }
-                    showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
-                    hideEditProfile();
-                    updateWelcomeMessage();
-                    showAdminSelection();
+            if (name) {
+                localStorage.setItem('amlak_admin_name', name);
+                if (currentUser) {
+                    currentUser.name = name;
+                    localStorage.setItem('amlak_user', JSON.stringify(currentUser));
                 }
+                showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
+                hideEditProfile();
+                updateWelcomeMessage();
+            } else {
+                showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
             }
         }
 
         function updateWelcomeMessage() {
-            const adminInfo = getCurrentAdmin();
-            const name = adminInfo ? adminInfo.name : localStorage.getItem('amlak_admin_name') || 'مدیر عزیز';
-            document.getElementById('welcomeUser').textContent = `👋 خوش آمدید ${name}!`;
+            const name = localStorage.getItem('amlak_admin_name') || 'مدیر';
+            document.getElementById('welcomeUser').textContent = isAdmin ? `👋 خوش آمدید ${name}!` : '👋 خوش آمدید!';
             document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر';
         }
 
@@ -2670,18 +2543,15 @@
         // ============================================================
         function sendAdminNotification(title, body) {
             try {
-                const admins = getAdmins();
                 const notifications = JSON.parse(localStorage.getItem('amlak_admin_notifications') || '[]');
-                admins.forEach(a => {
-                    notifications.push({
-                        admin_id: a.id,
-                        title: title,
-                        body: body,
-                        user_id: currentUser?.id || 'نامشخص',
-                        user_phone: currentUser?.phone || 'نامشخص',
-                        date: new Date().toISOString(),
-                        is_read: false
-                    });
+                notifications.push({
+                    admin_id: isAdmin ? currentUser.id : 'admin',
+                    title: title,
+                    body: body,
+                    user_id: currentUser?.id || 'نامشخص',
+                    user_phone: currentUser?.phone || 'نامشخص',
+                    date: new Date().toISOString(),
+                    is_read: false
                 });
                 localStorage.setItem('amlak_admin_notifications', JSON.stringify(notifications));
                 if (isAdmin) {
@@ -3564,22 +3434,14 @@
         const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
         if (savedUser) {
             currentUser = savedUser;
-            const admins = getAdmins();
-            isAdmin = admins.some(a => a.id === savedUser.id);
-            if (isAdmin) localStorage.setItem('amlak_current_admin_id', savedUser.id);
+            isAdmin = currentUser.role === 'admin';
             enterApp();
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
-            const admins = getAdmins();
-            if (admins.length >= MAX_ADMINS) {
-                document.getElementById('roleAdmin').classList.remove('active');
-                document.getElementById('roleUser').classList.add('active');
-                document.getElementById('adminFields').style.display = 'none';
-                document.getElementById('userFields').style.display = 'block';
-                document.getElementById('loginHint').textContent = 'تعداد مدیران کامل است. لطفاً به عنوان کاربر وارد شوید.';
-            } else {
-                showAdminSelection();
-            }
+            document.getElementById('roleAdmin').classList.add('active');
+            document.getElementById('adminFields').style.display = 'block';
+            document.getElementById('userFields').style.display = 'none';
+            document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
@@ -3596,12 +3458,10 @@
         console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
         console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
         console.log('📊 تعداد املاک:', properties.length);
-        console.log('🔑 رمز عبور پیش‌فرض مدیران: 26742674');
-        console.log('📌 ۴ مدیر | 🔔 اعلان | 💬 چت');
+        console.log('🔑 رمز عبور مدیر: 26742674');
+        console.log('📌 مدیران بدون محدودیت تعداد | 🔔 اعلان | 💬 چت');
         console.log('📱 ورود با شماره موبایل | 🇮🇷 ایتا');
         console.log('✅ همه قابلیت‌های قبلی و جدید فعال هستند!');
-        console.log('❌ بیعانه حذف شد');
-        console.log('🏢 دپارتمان املاک حسینی');
     </script>
 </body>
     </html>
