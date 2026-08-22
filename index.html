@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🏠 املاک حسینی</title>
+    <title>🏢 دپارتمان حسینی</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -1483,6 +1483,21 @@
             color: #888;
         }
 
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+            direction: ltr;
+        }
+        .password-input:focus {
+            border-color: #1565C0;
+            outline: none;
+        }
+
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(3, 1fr);
@@ -1523,8 +1538,8 @@
 
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
-            <h2>🏠 املاک <span>حسینی</span></h2>
-            <p>به سامانه املاک حسینی خوش آمدید</p>
+            <h2>🏢 دپارتمان <span>حسینی</span></h2>
+            <p>به سامانه دپارتمان حسینی خوش آمدید</p>
             <div class="role-select">
                 <button id="roleAdmin" class="active" onclick="selectRole('admin')">👑 مدیر</button>
                 <button id="roleUser" onclick="selectRole('user')">👤 کاربر عادی</button>
@@ -1545,14 +1560,14 @@
     <div id="mainApp" style="display:none;">
         <div class="header">
             <div class="header-top">
-                <h1>🏠 املاک <span>حسینی</span></h1>
+                <h1>🏢 دپارتمان <span>حسینی</span></h1>
                 <button class="dark-toggle" onclick="toggleDarkMode()" title="حالت تاریک/روشن">🌙</button>
             </div>
             <p id="welcomeUser">خوش آمدید</p>
         </div>
 
         <div class="welcome-box" id="welcomeBox">
-            <h3>👋 به املاک حسینی خوش آمدید</h3>
+            <h3>👋 به دپارتمان حسینی خوش آمدید</h3>
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
@@ -1585,6 +1600,8 @@
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
             <label>نام مدیر</label>
             <input type="text" id="editAdminName" placeholder="نام خود را وارد کنید..." />
+            <label>رمز عبور جدید</label>
+            <input type="password" id="editAdminPassword" placeholder="رمز عبور جدید را وارد کنید..." />
             <button class="btn btn-success" onclick="saveProfileChanges()">💾 ذخیره تغییرات</button>
             <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
         </div>
@@ -1857,26 +1874,48 @@
         const TABLE_NAME = 'estate_properties';
 
         // ============================================================
-        // ====== ۴ مدیر ثابت ======
+        // ====== ۴ مدیر با رمز عبور ======
         // ============================================================
         const MAX_ADMINS = 4;
-        const FIXED_ADMINS = [
-            { id: 'admin_001', name: 'مدیر اول', date: new Date().toISOString() },
-            { id: 'admin_002', name: 'مدیر دوم', date: new Date().toISOString() },
-            { id: 'admin_003', name: 'مدیر سوم', date: new Date().toISOString() },
-            { id: 'admin_004', name: 'مدیر چهارم', date: new Date().toISOString() }
-        ];
+        const DEFAULT_PASSWORD = '26742674';
 
         function getAdmins() {
             try {
-                const saved = localStorage.getItem('amlak_fixed_admins');
+                const saved = localStorage.getItem('amlak_admins_data');
                 if (saved) {
                     const admins = JSON.parse(saved);
                     if (admins.length === MAX_ADMINS) return admins;
                 }
             } catch (e) {}
-            localStorage.setItem('amlak_fixed_admins', JSON.stringify(FIXED_ADMINS));
-            return FIXED_ADMINS;
+            const admins = [
+                { id: 'admin_001', name: 'مدیر اول', password: DEFAULT_PASSWORD, date: new Date().toISOString() },
+                { id: 'admin_002', name: 'مدیر دوم', password: DEFAULT_PASSWORD, date: new Date().toISOString() },
+                { id: 'admin_003', name: 'مدیر سوم', password: DEFAULT_PASSWORD, date: new Date().toISOString() },
+                { id: 'admin_004', name: 'مدیر چهارم', password: DEFAULT_PASSWORD, date: new Date().toISOString() }
+            ];
+            localStorage.setItem('amlak_admins_data', JSON.stringify(admins));
+            return admins;
+        }
+
+        function saveAdmins(admins) {
+            localStorage.setItem('amlak_admins_data', JSON.stringify(admins));
+        }
+
+        function verifyAdminPassword(adminId, password) {
+            const admins = getAdmins();
+            const admin = admins.find(a => a.id === adminId);
+            return admin && admin.password === password;
+        }
+
+        function updateAdminPassword(adminId, newPassword) {
+            const admins = getAdmins();
+            const index = admins.findIndex(a => a.id === adminId);
+            if (index !== -1) {
+                admins[index].password = newPassword;
+                saveAdmins(admins);
+                return true;
+            }
+            return false;
         }
 
         function getCurrentAdmin() {
@@ -2009,7 +2048,7 @@
                     const dateStr = date.toLocaleDateString('fa-IR') + ' ' + date.toLocaleTimeString('fa-IR', { hour: '2-digit',
                         minute: '2-digit' });
                     html += `
-                                <button class="admin-select-btn" onclick="loginAsAdmin(${index})">
+                                <button class="admin-select-btn" onclick="showAdminPasswordPrompt(${index})">
                                     <span class="admin-name">👑 ${admin.name}</span>
                                     <span class="admin-date">${dateStr}</span>
                                 </button>
@@ -2018,6 +2057,19 @@
                 html += '</div>';
                 document.getElementById('adminFields').innerHTML = html;
             } catch (e) { ErrorHandler.log(e, 'نمایش انتخاب مدیر'); }
+        }
+
+        function showAdminPasswordPrompt(index) {
+            const password = prompt('🔑 لطفاً رمز عبور مدیر را وارد کنید:');
+            if (password === null) return;
+            const admins = getAdmins();
+            if (index >= 0 && index < admins.length) {
+                if (verifyAdminPassword(admins[index].id, password)) {
+                    loginAsAdmin(index);
+                } else {
+                    showToast('❌ رمز عبور اشتباه است!', 'error');
+                }
+            }
         }
 
         function loginAsAdmin(index) {
@@ -2091,6 +2143,7 @@
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
             const adminInfo = getCurrentAdmin();
             document.getElementById('editAdminName').value = adminInfo?.name || '';
+            document.getElementById('editAdminPassword').value = '';
             hideAllForms(['editProfileForm']);
             document.getElementById('editProfileForm').style.display = 'block';
         }
@@ -2100,14 +2153,21 @@
         function saveProfileChanges() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
             const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
+            const newPassword = document.getElementById('editAdminPassword').value.trim();
+
             if (!name) { showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning'); return; }
+
             const admins = getAdmins();
             const adminInfo = getCurrentAdmin();
             if (adminInfo) {
                 const index = admins.findIndex(a => a.id === adminInfo.id);
                 if (index !== -1) {
                     admins[index].name = name;
-                    localStorage.setItem('amlak_fixed_admins', JSON.stringify(admins));
+                    if (newPassword && newPassword.length >= 4) {
+                        admins[index].password = newPassword;
+                        showToast('✅ رمز عبور با موفقیت تغییر کرد!', 'success');
+                    }
+                    saveAdmins(admins);
                     localStorage.setItem('amlak_admin_name', name);
                     if (currentUser) {
                         currentUser.name = name;
@@ -2143,7 +2203,7 @@
                 loadChatMessages();
                 updateWelcomeMessage();
                 if (isAdmin) {
-                    document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
+                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'inline-block';
                     document.getElementById('adminButtons').style.display = 'flex';
                     document.getElementById('guideBox').style.display = 'block';
@@ -2155,7 +2215,7 @@
                     updateOnlineUsers();
                     loadAdminMessage();
                 } else {
-                    document.getElementById('welcomeMessage').textContent = 'به املاک حسینی خوش آمدید';
+                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'none';
                     document.getElementById('adminButtons').style.display = 'none';
                     document.getElementById('guideBox').style.display = 'none';
@@ -2165,7 +2225,6 @@
                     document.getElementById('filterTabs').style.display = 'none';
                     document.getElementById('onlineUsers').style.display = 'none';
                     loadAdminMessage();
-                    // بررسی اعلان‌های کاربر
                     checkUserNotifications();
                 }
                 updateCartBadge();
@@ -2566,7 +2625,6 @@
                 if (error) throw new Error(error.message);
                 showToast('✅ پیشنهاد شما ثبت شد!', 'success');
                 input.value = '';
-                // ارسال به مدیر از طریق چت
                 sendAdminNotification('💰 پیشنهاد قیمت جدید',
                     `کاربر ${currentUser.phone || ''} برای "${p.title}" مبلغ ${Number(price).toLocaleString()} تومان پیشنهاد داد`);
             } catch (e) { ErrorHandler.log(e, 'ثبت پیشنهاد قیمت');
@@ -2714,7 +2772,8 @@
                     return;
                 }
                 const user = JSON.parse(localStorage.getItem('amlak_users') || '[]').find(u => u.id === currentChatUserId);
-                let html = `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.phone || 'کاربر'}</div>`;
+                let html =
+                    `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.phone || 'کاربر'}</div>`;
                 html += msgs.map(m => `
                             <div class="chat-msg ${m.sender === 'user' ? 'user' : 'admin'}">
                                 <div>${sanitizeInput(m.text)}</div>
@@ -2743,7 +2802,6 @@
                 input.value = '';
                 renderChatMessages();
                 showToast('✅ پیام ارسال شد!', 'success');
-                // اعلان به کاربر
                 const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
                 const user = users.find(u => u.id === currentChatUserId);
                 if (user) {
@@ -3048,7 +3106,7 @@
                 if (p) text +=
                     `🏠 ${sanitizeInput(p.title)}\n📍 ${sanitizeInput(p.address)}\n💰 ${Number(p.price).toLocaleString()} تومان\n📐 ${p.area||0} متر\n\n`;
             });
-            text += '#املاک_حسینی #سبد_خرید';
+            text += '#دپارتمان_حسینی #سبد_خرید';
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
 
@@ -3353,7 +3411,7 @@
             let priceText = p.type === 'sale' ? `💰 ${Number(p.price).toLocaleString()} تومان` :
                 `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
             const text =
-                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#املاک_حسینی`;
+                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#دپارتمان_حسینی`;
             let url;
             if (platform === 'whatsapp') url = `https://wa.me/?text=${encodeURIComponent(text)}`;
             else if (platform === 'telegram') url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
@@ -3409,7 +3467,7 @@
         function exportPDF() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
             if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
-            let text = '=== گزارش املاک حسینی ===\n';
+            let text = '=== گزارش دپارتمان حسینی ===\n';
             text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
             text += 'تعداد کل: ' + properties.length + '\n';
             properties.forEach((p, i) => {
@@ -3418,7 +3476,7 @@
             const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'گزارش_املاک_' + new Date().toISOString().slice(0, 10) + '.txt';
+            link.download = 'گزارش_دپارتمان_حسینی_' + new Date().toISOString().slice(0, 10) + '.txt';
             link.click();
             showToast('📄 گزارش دانلود شد!', 'success');
         }
@@ -3433,7 +3491,7 @@
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'املاک_' + new Date().toISOString().slice(0, 10) + '.csv';
+            link.download = 'دپارتمان_حسینی_' + new Date().toISOString().slice(0, 10) + '.csv';
             link.click();
             showToast('📊 فایل Excel دانلود شد!', 'success');
         }
@@ -3448,7 +3506,7 @@
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'amlak_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+            link.download = 'dopar_toman_hoseini_backup_' + new Date().toISOString().slice(0, 10) + '.json';
             link.click();
             showToast('💾 پشتیبان گرفته شد!', 'success');
         }
@@ -3566,12 +3624,13 @@
         updateFilterInfo();
         updateCartBadge();
 
-        console.log('✅ برنامه املاک حسینی با موفقیت بارگذاری شد!');
+        console.log('✅ دپارتمان حسینی با موفقیت بارگذاری شد!');
         console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
         console.log('📊 تعداد املاک:', properties.length);
-        console.log('📌 ۴ مدیر | 🔔 اعلان به کاربران | 💬 چت | 💳 بیعانه');
-        console.log('📱 ورود با شماره موبایل | 🇮🇷 اشتراک در ایتا');
+        console.log('🔑 رمز عبور پیش‌فرض مدیران: 26742674');
+        console.log('📌 ۴ مدیر | 🔔 اعلان | 💬 چت | 💳 بیعانه');
+        console.log('📱 ورود با شماره موبایل | 🇮🇷 ایتا');
         console.log('✅ همه قابلیت‌های قبلی و جدید فعال هستند!');
     </script>
 </body>
-                                 </html>
+    </html>
