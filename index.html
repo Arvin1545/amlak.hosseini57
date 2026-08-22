@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>🏢 دپارتمان حسینی</title>
+    <title>🏢 دپارتمان املاک حسینی</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
@@ -1538,8 +1538,8 @@
 
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
-            <h2>🏢 دپارتمان <span>حسینی</span></h2>
-            <p>به سامانه دپارتمان حسینی خوش آمدید</p>
+            <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
+            <p>به سامانه دپارتمان املاک حسینی خوش آمدید</p>
             <div class="role-select">
                 <button id="roleAdmin" class="active" onclick="selectRole('admin')">👑 مدیر</button>
                 <button id="roleUser" onclick="selectRole('user')">👤 کاربر عادی</button>
@@ -1560,14 +1560,14 @@
     <div id="mainApp" style="display:none;">
         <div class="header">
             <div class="header-top">
-                <h1>🏢 دپارتمان <span>حسینی</span></h1>
+                <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
                 <button class="dark-toggle" onclick="toggleDarkMode()" title="حالت تاریک/روشن">🌙</button>
             </div>
             <p id="welcomeUser">خوش آمدید</p>
         </div>
 
         <div class="welcome-box" id="welcomeBox">
-            <h3>👋 به دپارتمان حسینی خوش آمدید</h3>
+            <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
@@ -1874,7 +1874,7 @@
         const TABLE_NAME = 'estate_properties';
 
         // ============================================================
-        // ====== ۴ مدیر با رمز عبور ======
+        // ====== ۴ مدیر جدید با رمز عبور ======
         // ============================================================
         const MAX_ADMINS = 4;
         const DEFAULT_PASSWORD = '26742674';
@@ -2203,7 +2203,7 @@
                 loadChatMessages();
                 updateWelcomeMessage();
                 if (isAdmin) {
-                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان حسینی خوش آمدید';
+                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'inline-block';
                     document.getElementById('adminButtons').style.display = 'flex';
                     document.getElementById('guideBox').style.display = 'block';
@@ -2215,7 +2215,7 @@
                     updateOnlineUsers();
                     loadAdminMessage();
                 } else {
-                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان حسینی خوش آمدید';
+                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'none';
                     document.getElementById('adminButtons').style.display = 'none';
                     document.getElementById('guideBox').style.display = 'none';
@@ -2666,28 +2666,6 @@
         }
 
         // ============================================================
-        // ====== بیعانه ======
-        // ============================================================
-        function depositPayment(propertyId) {
-            try {
-                if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند بیعانه پرداخت کند!', 'warning'); return; }
-                if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
-                const input = document.getElementById('depositInput_' + propertyId);
-                if (!input) return;
-                const amount = parseInt(input.value.trim());
-                if (!amount || amount <= 0) { showToast('⚠️ مبلغ معتبر وارد کنید!', 'warning'); return; }
-                const p = properties.find(item => item.id === propertyId);
-                if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
-                if (!confirm(`آیا مبلغ ${Number(amount).toLocaleString()} تومان برای بیعانه "${p.title}" پرداخت شود؟`)) return;
-                showToast(`✅ بیعانه ${Number(amount).toLocaleString()} تومان با موفقیت پرداخت شد!`, 'success');
-                input.value = '';
-                sendAdminNotification('💰 پرداخت بیعانه',
-                    `کاربر ${currentUser.phone || ''} برای "${p.title}" مبلغ ${Number(amount).toLocaleString()} تومان بیعانه پرداخت کرد`);
-            } catch (e) { ErrorHandler.log(e, 'پرداخت بیعانه');
-                showToast('❌ خطا در پرداخت!', 'error'); }
-        }
-
-        // ============================================================
         // ====== چت با کاربران ======
         // ============================================================
         function sendAdminNotification(title, body) {
@@ -3106,7 +3084,7 @@
                 if (p) text +=
                     `🏠 ${sanitizeInput(p.title)}\n📍 ${sanitizeInput(p.address)}\n💰 ${Number(p.price).toLocaleString()} تومان\n📐 ${p.area||0} متر\n\n`;
             });
-            text += '#دپارتمان_حسینی #سبد_خرید';
+            text += '#دپارتمان_املاک_حسینی #سبد_خرید';
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
 
@@ -3314,7 +3292,6 @@
                         `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
 
                     let userChatBtn = '';
-                    let depositHtml = '';
                     let offerHtml = '';
                     let appointmentHtml = '';
 
@@ -3323,13 +3300,6 @@
                                     <div style="margin-top:6px;display:flex;gap:6px;">
                                         <input type="text" id="userChatInput_${p.id}" placeholder="💬 پیام به مدیر..." style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
                                         <button onclick="sendUserChatMessage('${p.id}', document.getElementById('userChatInput_${p.id}').value)" style="padding:6px 12px;background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤</button>
-                                    </div>
-                                `;
-
-                        depositHtml = `
-                                    <div style="margin-top:4px;display:flex;gap:6px;">
-                                        <input type="number" id="depositInput_${p.id}" placeholder="💰 مبلغ بیعانه" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
-                                        <button onclick="depositPayment('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#E91E63,#C2185B);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">💳 پرداخت</button>
                                     </div>
                                 `;
 
@@ -3390,7 +3360,6 @@
                                     ${!isAdmin ? `
                                         ${offerHtml}
                                         ${appointmentHtml}
-                                        ${depositHtml}
                                         ${userChatBtn}
                                     ` : ''}
                                 </div>
@@ -3411,7 +3380,7 @@
             let priceText = p.type === 'sale' ? `💰 ${Number(p.price).toLocaleString()} تومان` :
                 `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
             const text =
-                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#دپارتمان_حسینی`;
+                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#دپارتمان_املاک_حسینی`;
             let url;
             if (platform === 'whatsapp') url = `https://wa.me/?text=${encodeURIComponent(text)}`;
             else if (platform === 'telegram') url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
@@ -3467,7 +3436,7 @@
         function exportPDF() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
             if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
-            let text = '=== گزارش دپارتمان حسینی ===\n';
+            let text = '=== گزارش دپارتمان املاک حسینی ===\n';
             text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
             text += 'تعداد کل: ' + properties.length + '\n';
             properties.forEach((p, i) => {
@@ -3476,7 +3445,7 @@
             const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'گزارش_دپارتمان_حسینی_' + new Date().toISOString().slice(0, 10) + '.txt';
+            link.download = 'گزارش_دپارتمان_املاک_حسینی_' + new Date().toISOString().slice(0, 10) + '.txt';
             link.click();
             showToast('📄 گزارش دانلود شد!', 'success');
         }
@@ -3491,7 +3460,7 @@
             const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'دپارتمان_حسینی_' + new Date().toISOString().slice(0, 10) + '.csv';
+            link.download = 'دپارتمان_املاک_حسینی_' + new Date().toISOString().slice(0, 10) + '.csv';
             link.click();
             showToast('📊 فایل Excel دانلود شد!', 'success');
         }
@@ -3506,7 +3475,7 @@
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = 'dopar_toman_hoseini_backup_' + new Date().toISOString().slice(0, 10) + '.json';
+            link.download = 'dopar_taman_amlak_hoseini_backup_' + new Date().toISOString().slice(0, 10) + '.json';
             link.click();
             showToast('💾 پشتیبان گرفته شد!', 'success');
         }
@@ -3624,13 +3593,15 @@
         updateFilterInfo();
         updateCartBadge();
 
-        console.log('✅ دپارتمان حسینی با موفقیت بارگذاری شد!');
+        console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
         console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
         console.log('📊 تعداد املاک:', properties.length);
         console.log('🔑 رمز عبور پیش‌فرض مدیران: 26742674');
-        console.log('📌 ۴ مدیر | 🔔 اعلان | 💬 چت | 💳 بیعانه');
+        console.log('📌 ۴ مدیر | 🔔 اعلان | 💬 چت');
         console.log('📱 ورود با شماره موبایل | 🇮🇷 ایتا');
         console.log('✅ همه قابلیت‌های قبلی و جدید فعال هستند!');
+        console.log('❌ بیعانه حذف شد');
+        console.log('🏢 دپارتمان املاک حسینی');
     </script>
 </body>
     </html>
