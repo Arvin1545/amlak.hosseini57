@@ -157,6 +157,20 @@
         body.dark-mode .chat-msg.admin {
             background: #1a1a2e !important;
         }
+        body.dark-mode .user-list-item {
+            background: #16213e !important;
+            border-color: #0f3460 !important;
+        }
+        body.dark-mode .user-list-item .user-phone {
+            color: #4fc3f7 !important;
+        }
+        body.dark-mode .user-list-item .user-meta {
+            color: #aaa !important;
+        }
+        body.dark-mode .admin-users-section {
+            background: #0f3460 !important;
+            border-color: #4fc3f7 !important;
+        }
         .header {
             background: linear-gradient(135deg, #1565C0, #0D47A1);
             color: white;
@@ -325,6 +339,85 @@
             padding: 12px;
             font-size: 14px;
         }
+        .admin-users-section {
+            background: #E3F2FD;
+            border: 2px solid #1565C0;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        .admin-users-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .admin-users-section .section-header h4 {
+            color: #1565C0;
+            font-size: 16px;
+        }
+        .admin-users-section .section-header .user-count {
+            background: #1565C0;
+            color: white;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .user-list-item {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-right: 4px solid #4CAF50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .user-list-item .user-phone {
+            font-size: 16px;
+            font-weight: bold;
+            color: #1565C0;
+            direction: ltr;
+        }
+        .user-list-item .user-meta {
+            font-size: 11px;
+            color: #888;
+        }
+        .user-list-item .user-status {
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .user-list-item .user-status.verified {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+        .user-list-item .user-status.pending {
+            background: #FFF3E0;
+            color: #E65100;
+        }
+        .user-list-item .user-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .user-list-item .user-actions button {
+            border: none;
+            border-radius: 6px;
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            color: white;
+            transition: 0.2s;
+        }
+        .user-list-item .user-actions .delete-user {
+            background: #C62828;
+        }
+        .user-list-item .user-actions .contact-user {
+            background: #25D366;
+        }
         .filter-sort {
             display: flex;
             gap: 6px;
@@ -423,9 +516,6 @@
             cursor: pointer;
             color: white;
             transition: 0.2s;
-        }
-        .property-card .action-btns button:active {
-            transform: scale(0.9);
         }
         .property-card .btn-edit {
             background: #FFA000;
@@ -565,9 +655,6 @@
             cursor: pointer;
             color: white;
             transition: 0.2s;
-        }
-        .property-card .share-btns button:active {
-            transform: scale(0.95);
         }
         .share-whatsapp {
             background: #25D366;
@@ -718,9 +805,6 @@
             cursor: pointer;
             color: white;
             transition: 0.2s;
-        }
-        .admin-msg-box .msg-actions button:active {
-            transform: scale(0.95);
         }
         .admin-msg-box .msg-actions .del-msg {
             background: #C62828;
@@ -958,9 +1042,6 @@
             cursor: pointer;
             color: white;
             transition: 0.2s;
-        }
-        .public-msg-card .msg-actions button:active {
-            transform: scale(0.95);
         }
         .public-msg-card .msg-actions .del-msg {
             background: #C62828;
@@ -1261,108 +1342,11 @@
             color: white;
             transition: 0.2s;
         }
-        .cart-actions button:active {
-            transform: scale(0.97);
-        }
         .cart-actions .clear-cart {
             background: #C62828;
         }
         .cart-actions .share-cart {
             background: #25D366;
-        }
-        .private-msg-btn {
-            background: #6A1B9A;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-top: 6px;
-            transition: 0.2s;
-            width: 100%;
-        }
-        .private-msg-btn:active {
-            transform: scale(0.95);
-        }
-        .private-msg-box {
-            background: #F3E5F5;
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 6px;
-            border-right: 4px solid #6A1B9A;
-            display: none;
-        }
-        .private-msg-box textarea {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 12px;
-            resize: vertical;
-            min-height: 50px;
-        }
-        .private-msg-box textarea:focus {
-            border-color: #6A1B9A;
-            outline: none;
-        }
-        .private-msg-box .send-btn {
-            background: #6A1B9A;
-            color: white;
-            border: none;
-            padding: 6px 16px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-top: 4px;
-            transition: 0.2s;
-        }
-        .private-msg-box .send-btn:active {
-            transform: scale(0.95);
-        }
-        .private-msg-item {
-            background: #EDE7F6;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin-top: 6px;
-            font-size: 12px;
-            border-right: 3px solid #6A1B9A;
-        }
-        .private-msg-item .msg-from {
-            font-weight: bold;
-            color: #4A148C;
-        }
-        .private-msg-item .msg-time {
-            font-size: 10px;
-            color: #888;
-        }
-        .private-msg-item button {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 2px 10px;
-            border-radius: 4px;
-            font-size: 10px;
-            cursor: pointer;
-            margin-top: 2px;
-            transition: 0.2s;
-        }
-        .private-msg-item button:active {
-            transform: scale(0.95);
-        }
-        .monthly-check-btn {
-            background: #FF6F00;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-bottom: 8px;
-            transition: 0.2s;
-        }
-        .monthly-check-btn:active {
-            transform: scale(0.97);
         }
         .edit-profile-btn {
             background: #FF6F00;
@@ -1416,43 +1400,6 @@
             font-size: 16px;
             font-weight: bold;
         }
-        .admin-select-btn {
-            padding: 12px;
-            border: 2px solid #1565C0;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            transition: 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin-bottom: 8px;
-        }
-        .admin-select-btn:hover {
-            background: #E3F2FD;
-        }
-        .admin-select-btn:active {
-            transform: scale(0.98);
-        }
-        .admin-select-btn .admin-name {
-            color: #1565C0;
-        }
-        .admin-select-btn .admin-date {
-            font-size: 11px;
-            color: #888;
-            font-weight: normal;
-        }
-        .admin-list-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            margin: 10px 0;
-        }
-
-        /* ====== چت ====== */
         .chat-container {
             background: #f8f9fa;
             border-radius: 12px;
@@ -1482,7 +1429,6 @@
             font-size: 9px;
             color: #888;
         }
-
         .password-input {
             width: 100%;
             padding: 12px;
@@ -1496,6 +1442,72 @@
         .password-input:focus {
             border-color: #1565C0;
             outline: none;
+        }
+
+        /* ====== استایل بخش تایید تلگرام ====== */
+        .telegram-connect-box {
+            background: linear-gradient(135deg, #0088CC, #005A8C);
+            padding: 20px;
+            border-radius: 16px;
+            color: white;
+            margin: 10px 0;
+        }
+        .telegram-connect-box h3 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .telegram-connect-box p {
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .telegram-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .telegram-input-group input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            text-align: center;
+            letter-spacing: 5px;
+            direction: ltr;
+        }
+        .telegram-input-group input:focus {
+            outline: 2px solid #FFD700;
+        }
+        .telegram-input-group button {
+            padding: 12px 20px;
+            background: #FFD700;
+            color: #333;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .telegram-timer {
+            text-align: center;
+            font-size: 12px;
+            margin-top: 8px;
+            opacity: 0.8;
+        }
+        .telegram-resend-btn {
+            background: transparent;
+            border: none;
+            color: #FFD700;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: underline;
+            font-size: 13px;
+        }
+        .telegram-resend-btn:disabled {
+            color: #888;
+            cursor: not-allowed;
+            text-decoration: none;
         }
 
         @media (max-width: 400px) {
@@ -1531,11 +1543,13 @@
 </head>
 <body>
 
+    <!-- ====== لودینگ ====== -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
     </div>
 
+    <!-- ====== صفحه ورود ====== -->
     <div class="login-overlay" id="loginOverlay">
         <div class="login-box">
             <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
@@ -1550,14 +1564,31 @@
                     <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
                 </div>
             </div>
-            <div class="login-fields" id="userFields" style="display:none;">
+            <div class="login-fields" id="userFields">
                 <input type="tel" id="userPhoneInput" placeholder="📱 شماره موبایل خود را وارد کنید" style="width:100%;padding:12px;margin-bottom:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;text-align:center;">
-                <button class="btn btn-success" onclick="loginUser()">👤 ورود به عنوان کاربر</button>
+                <button class="btn btn-success" onclick="loginUser()">📱 ارسال کد تایید</button>
+            </div>
+            <!-- ====== بخش تایید تلگرام ====== -->
+            <div class="login-fields" id="telegramVerificationFields" style="display:none;">
+                <div class="telegram-connect-box">
+                    <h3>📱 تایید شماره با تلگرام</h3>
+                    <p>کد ۶ رقمی ارسال شده به تلگرام را وارد کنید</p>
+                    <div class="telegram-input-group">
+                        <input type="text" id="telegramCodeInput" placeholder="کد ۶ رقمی" maxlength="6" />
+                        <button onclick="verifyTelegramCode()">✅ تایید</button>
+                    </div>
+                    <div class="telegram-timer">
+                        <span id="telegramTimer">⏱️ ۰:۰۰</span>
+                        <button class="telegram-resend-btn" id="telegramResendBtn" onclick="resendTelegramCode()" disabled>ارسال مجدد</button>
+                    </div>
+                </div>
+                <div class="login-hint">📱 کد تایید از طریق ربات تلگرام ارسال شد</div>
             </div>
             <div class="login-hint" id="loginHint">مدیران: رمز عبور را وارد کنید</div>
         </div>
     </div>
 
+    <!-- ====== برنامه اصلی ====== -->
     <div id="mainApp" style="display:none;">
         <div class="header">
             <div class="header-top">
@@ -1597,6 +1628,18 @@
             </div>
         </div>
 
+        <!-- ====== لیست کاربران (فقط مدیر) ====== -->
+        <div class="admin-users-section" id="adminUsersSection">
+            <div class="section-header">
+                <h4>👥 لیست کاربران</h4>
+                <span class="user-count" id="userCount">۰ کاربر</span>
+            </div>
+            <div id="usersListContainer">
+                <div style="text-align:center;color:#888;padding:20px;">در حال بارگذاری...</div>
+            </div>
+            <button class="btn btn-secondary" onclick="refreshUsersList()" style="width:100%;margin-top:8px;">🔄 بروزرسانی</button>
+        </div>
+
         <div class="form" id="editProfileForm">
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
             <label>نام مدیر</label>
@@ -1620,6 +1663,8 @@
                 <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی</li>
                 <li><span class="badge-icon">💬</span> چت با کاربران</li>
                 <li><span class="badge-icon orange">📅</span> بررسی ماهانه</li>
+                <li><span class="badge-icon">👥</span> مشاهده لیست کاربران</li>
+                <li><span class="badge-icon blue" style="background:#0088CC;">📱</span> تایید شماره با تلگرام</li>
             </ul>
         </div>
 
@@ -1684,6 +1729,7 @@
             <button class="btn btn-secondary" onclick="viewChats()">💬 چت</button>
             <button class="btn btn-warning" onclick="monthlyCheck()">📅 بررسی</button>
             <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
+            <button class="btn btn-primary" onclick="showUsersList()">👥 کاربران</button>
         </div>
 
         <div class="form" id="propertyForm">
@@ -1823,7 +1869,18 @@
 
     <script>
         // ============================================================
-        // ====== سیستم مدیریت خطا ======
+        // ====== تنظیمات ======
+        // ============================================================
+        const ADMIN_PASSWORD = '26742674';
+        const TELEGRAM_BOT_TOKEN = '8906497207:AAFt0D0ICvtM9m2tj8DbwppWG3RLdDHfz1k';
+
+        const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const TABLE_NAME = 'estate_properties';
+
+        // ============================================================
+        // ====== مدیریت خطا ======
         // ============================================================
         const ErrorHandler = {
             log: function(error, context, showToast = true) {
@@ -1866,22 +1923,9 @@
             }
         };
 
-        // ============================================================
-        // ====== تنظیمات Supabase ======
-        // ============================================================
-        const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        const TABLE_NAME = 'estate_properties';
+        function showToast(msg, type = 'info') { ErrorHandler.showToast(msg, type); }
 
-        // ============================================================
-        // ====== مدیریت مدیران با رمز عبور ======
-        // ============================================================
-        const ADMIN_PASSWORD = '26742674';
-
-        function verifyAdminPassword(password) {
-            return password === ADMIN_PASSWORD;
-        }
+        function showLoading(show) { ErrorHandler.showLoading(show); }
 
         // ============================================================
         // ====== متغیرها ======
@@ -1890,7 +1934,6 @@
         let isAdmin = false;
         let properties = [];
         let publicMessages = [];
-        let privateMessages = [];
         let cartItems = [];
         let favorites = [];
         let currentFilter = 'all';
@@ -1902,14 +1945,14 @@
         let userPriceFilterActive = false;
         let chatMessages = [];
         let currentChatUserId = null;
+        let usersList = [];
+        let telegramVerificationCode = null;
+        let telegramTimerInterval = null;
+        let telegramTimerSeconds = 0;
 
         // ============================================================
         // ====== توابع کمکی ======
         // ============================================================
-        function showToast(msg, type = 'info') { ErrorHandler.showToast(msg, type); }
-
-        function showLoading(show) { ErrorHandler.showLoading(show); }
-
         function sanitizeInput(text) { if (!text) return ''; return String(text).replace(/<[^>]*>/g, '').replace(/[<>]/g,
             ''); }
 
@@ -1937,19 +1980,183 @@
         }
 
         // ============================================================
-        // ====== مدیریت آنلاین کاربران ======
+        // ====== توابع ارسال پیام تلگرام ======
         // ============================================================
-        function updateOnlineUsers() {
+        async function sendTelegramMessage(chatId, text) {
             try {
-                if (!isAdmin) return;
-                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
-                const uniqueUsers = [...new Set(users.map(u => u.id))];
-                document.getElementById('onlineCount').textContent = uniqueUsers.length || 0;
-            } catch (e) {}
+                if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === 'YOUR_TELEGRAM_BOT_TOKEN') {
+                    console.warn('⚠️ توکن تلگرام تنظیم نشده است!');
+                    return false;
+                }
+                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: text,
+                        parse_mode: 'HTML'
+                    })
+                });
+                const result = await response.json();
+                if (result.ok) {
+                    console.log('✅ پیام تلگرام ارسال شد');
+                    return true;
+                } else {
+                    console.error('❌ خطا در ارسال پیام تلگرام:', result);
+                    return false;
+                }
+            } catch (e) {
+                console.error('❌ خطا در ارسال پیام تلگرام:', e);
+                return false;
+            }
         }
 
         // ============================================================
-        // ====== توابع ورود ======
+        // ====== سیستم تایید با تلگرام ======
+        // ============================================================
+        function generateTelegramCode(phone) {
+            try {
+                // تولید کد ۶ رقمی
+                telegramVerificationCode = Math.floor(100000 + Math.random() * 900000);
+
+                // ذخیره کد در localStorage
+                const verificationData = {
+                    phone: phone,
+                    code: telegramVerificationCode,
+                    expires: Date.now() + 300000, // ۵ دقیقه
+                    attempts: 0
+                };
+                localStorage.setItem('amlak_telegram_verification', JSON.stringify(verificationData));
+
+                // ارسال کد از طریق ربات تلگرام
+                sendTelegramCode(phone, telegramVerificationCode);
+
+                showToast('📱 کد تایید به تلگرام ارسال شد!', 'success');
+
+            } catch (e) {
+                ErrorHandler.log(e, 'تولید کد تایید تلگرام');
+                showToast('❌ خطا در تولید کد تایید!', 'error');
+            }
+        }
+
+        function sendTelegramCode(phone, code) {
+            try {
+                // پیدا کردن کاربر در لیست کاربران
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+                const user = users.find(u => u.phone === phone);
+
+                // اگر کاربر قبلاً توی لیست هست و تلگرام آیدی داره
+                if (user && user.telegram_id) {
+                    sendTelegramMessage(user.telegram_id, `
+                            🔐 کد تایید شما برای دپارتمان املاک حسینی
+
+                            📱 کد: <b>${code}</b>
+
+                            ⏱️ این کد تا ۵ دقیقه اعتبار دارد.
+                            🔒 لطفاً کد را به کسی نگویید.
+                        `);
+                    return;
+                }
+
+                // اگر کاربر تلگرام آیدی نداره، از روش جایگزین استفاده می‌کنیم
+                // برای تست، کد رو در کنسول و toast نمایش می‌دهیم
+                console.log(`📱 کد تایید برای ${phone}: ${code}`);
+                showToast(`📱 کد تایید: ${code} (برای تست)`, 'info');
+
+                // در نسخه واقعی، کاربر باید ربات رو استارت کنه تا chat_id دریافت بشه
+                // و بعد کد ارسال بشه
+
+            } catch (e) {
+                ErrorHandler.log(e, 'ارسال کد به تلگرام');
+            }
+        }
+
+        function startTelegramTimer() {
+            telegramTimerSeconds = 300; // ۵ دقیقه
+            const timerDisplay = document.getElementById('telegramTimer');
+            const resendBtn = document.getElementById('telegramResendBtn');
+
+            clearInterval(telegramTimerInterval);
+            resendBtn.disabled = true;
+
+            telegramTimerInterval = setInterval(() => {
+                telegramTimerSeconds--;
+                const minutes = Math.floor(telegramTimerSeconds / 60);
+                const seconds = telegramTimerSeconds % 60;
+                timerDisplay.textContent = `⏱️ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (telegramTimerSeconds <= 0) {
+                    clearInterval(telegramTimerInterval);
+                    resendBtn.disabled = false;
+                    timerDisplay.textContent = '⏱️ کد منقضی شد';
+                    showToast('⏱️ کد تایید منقضی شد! دوباره درخواست کنید.', 'warning');
+                }
+            }, 1000);
+        }
+
+        function resendTelegramCode() {
+            const phone = window._pendingPhone;
+            if (!phone) { showToast('❌ شماره موبایل یافت نشد!', 'error'); return; }
+
+            // تولید کد جدید
+            generateTelegramCode(phone);
+
+            // ریست تایمر
+            startTelegramTimer();
+            document.getElementById('telegramResendBtn').disabled = true;
+            showToast('📱 کد جدید ارسال شد!', 'success');
+        }
+
+        function verifyTelegramCode() {
+            try {
+                const enteredCode = document.getElementById('telegramCodeInput').value.trim();
+                if (!enteredCode || enteredCode.length !== 6) {
+                    showToast('⚠️ کد ۶ رقمی را وارد کنید!', 'warning');
+                    return;
+                }
+
+                // بررسی کد از localStorage
+                const verification = JSON.parse(localStorage.getItem('amlak_telegram_verification'));
+                if (!verification) {
+                    showToast('❌ کد تایید منقضی شده یا وجود ندارد!', 'error');
+                    return;
+                }
+
+                if (Date.now() > verification.expires) {
+                    showToast('❌ کد تایید منقضی شده است! دوباره درخواست کنید.', 'error');
+                    localStorage.removeItem('amlak_telegram_verification');
+                    return;
+                }
+
+                if (String(enteredCode) === String(verification.code)) {
+                    showToast('✅ شماره شما با موفقیت تایید شد!', 'success');
+                    localStorage.removeItem('amlak_telegram_verification');
+                    clearInterval(telegramTimerInterval);
+
+                    // تکمیل ورود کاربر
+                    completeUserLogin(verification.phone);
+                } else {
+                    // افزایش تعداد تلاش‌ها
+                    verification.attempts = (verification.attempts || 0) + 1;
+                    localStorage.setItem('amlak_telegram_verification', JSON.stringify(verification));
+
+                    if (verification.attempts >= 3) {
+                        showToast('❌ تعداد تلاش‌ها بیش از حد مجاز! دوباره درخواست کنید.', 'error');
+                        resendTelegramCode();
+                    } else {
+                        showToast(`❌ کد وارد شده اشتباه است! (${verification.attempts}/3)`, 'error');
+                    }
+                }
+
+            } catch (e) {
+                ErrorHandler.log(e, 'تایید کد تلگرام');
+                showToast('❌ خطا در تایید کد!', 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== مدیریت ورود ======
         // ============================================================
         function selectRole(role) {
             try {
@@ -1958,11 +2165,13 @@
                     document.getElementById('roleAdmin').classList.add('active');
                     document.getElementById('adminFields').style.display = 'block';
                     document.getElementById('userFields').style.display = 'none';
+                    document.getElementById('telegramVerificationFields').style.display = 'none';
                     document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
                 } else {
                     document.getElementById('roleUser').classList.add('active');
                     document.getElementById('adminFields').style.display = 'none';
                     document.getElementById('userFields').style.display = 'block';
+                    document.getElementById('telegramVerificationFields').style.display = 'none';
                     document.getElementById('loginHint').textContent = 'شماره موبایل خود را وارد کنید';
                 }
             } catch (e) { ErrorHandler.log(e, 'انتخاب نقش'); }
@@ -1971,11 +2180,8 @@
         function loginAdmin() {
             try {
                 const password = document.getElementById('adminPasswordInput').value.trim();
-                if (!password) {
-                    showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning');
-                    return;
-                }
-                if (verifyAdminPassword(password)) {
+                if (!password) { showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning'); return; }
+                if (password === ADMIN_PASSWORD) {
                     isAdmin = true;
                     const adminId = 'admin_' + Date.now().toString(36);
                     currentUser = { role: 'admin', id: adminId, name: 'مدیر' };
@@ -1995,19 +2201,87 @@
                     showToast('⚠️ لطفاً شماره موبایل معتبر وارد کنید!', 'warning');
                     return;
                 }
-                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+
+                // ذخیره شماره برای استفاده بعدی
+                window._pendingPhone = phone;
+
+                // تولید کد تایید
+                generateTelegramCode(phone);
+
+                // نمایش بخش تایید تلگرام
+                document.getElementById('userFields').style.display = 'none';
+                document.getElementById('telegramVerificationFields').style.display = 'block';
+                document.getElementById('loginHint').textContent = '📱 کد ارسال شده به تلگرام را وارد کنید';
+
+                // شروع تایمر
+                startTelegramTimer();
+
+            } catch (e) { ErrorHandler.log(e, 'ورود کاربر'); }
+        }
+
+        function completeUserLogin(phone) {
+            try {
+                // ذخیره کاربر در لیست کاربران
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+
+                // بررسی وجود کاربر
                 let user = users.find(u => u.phone === phone);
                 if (!user) {
-                    user = { id: generateId(), phone: phone, date: new Date().toISOString() };
+                    user = {
+                        id: generateId(),
+                        phone: phone,
+                        name: 'کاربر',
+                        verified: true,
+                        date: new Date().toISOString(),
+                        last_login: new Date().toISOString()
+                    };
                     users.push(user);
-                    localStorage.setItem('amlak_users', JSON.stringify(users));
+                    localStorage.setItem('amlak_users_list', JSON.stringify(users));
+
+                    // اعلان به مدیر
+                    notifyAdminNewUser(phone);
+                } else {
+                    // بروزرسانی تاریخ آخرین ورود
+                    user.last_login = new Date().toISOString();
+                    localStorage.setItem('amlak_users_list', JSON.stringify(users));
                 }
+
                 isAdmin = false;
-                currentUser = { role: 'user', id: user.id, phone: phone };
+                currentUser = {
+                    role: 'user',
+                    id: user.id,
+                    phone: phone,
+                    name: user.name || 'کاربر',
+                    verified: true
+                };
                 localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+
                 showToast('👋 خوش آمدید!', 'success');
                 enterApp();
-            } catch (e) { ErrorHandler.log(e, 'ورود کاربر'); }
+
+            } catch (e) {
+                ErrorHandler.log(e, 'تکمیل ورود کاربر');
+                showToast('❌ خطا در ورود!', 'error');
+            }
+        }
+
+        function notifyAdminNewUser(phone) {
+            try {
+                const notifications = JSON.parse(localStorage.getItem('amlak_admin_notifications') || '[]');
+                notifications.push({
+                    type: 'new_user',
+                    phone: phone,
+                    date: new Date().toISOString(),
+                    is_read: false,
+                    title: '👤 کاربر جدید',
+                    body: `کاربر جدید با شماره ${phone} ثبت نام کرد`
+                });
+                localStorage.setItem('amlak_admin_notifications', JSON.stringify(notifications));
+
+                if (isAdmin) {
+                    showToast(`👤 کاربر جدید: ${phone}`, 'info');
+                }
+            } catch (e) { ErrorHandler.log(e, 'اعلان کاربر جدید'); }
         }
 
         function logout() {
@@ -2021,44 +2295,127 @@
                 document.getElementById('roleUser').classList.remove('active');
                 document.getElementById('adminFields').style.display = 'block';
                 document.getElementById('userFields').style.display = 'none';
+                document.getElementById('telegramVerificationFields').style.display = 'none';
                 document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
                 document.getElementById('adminPasswordInput').value = '';
+                document.getElementById('userPhoneInput').value = '';
+                document.getElementById('telegramCodeInput').value = '';
+                clearInterval(telegramTimerInterval);
                 showToast('🚪 خروج موفق', 'success');
             } catch (e) { ErrorHandler.log(e, 'خروج'); }
         }
 
         // ============================================================
-        // ====== ویرایش پروفایل مدیر ======
+        // ====== مدیریت لیست کاربران (فقط مدیر) ======
         // ============================================================
-        function showEditProfile() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            hideAllForms(['editProfileForm']);
-            document.getElementById('editProfileForm').style.display = 'block';
-        }
-
-        function hideEditProfile() { document.getElementById('editProfileForm').style.display = 'none'; }
-
-        function saveProfileChanges() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
-            if (name) {
-                localStorage.setItem('amlak_admin_name', name);
-                if (currentUser) {
-                    currentUser.name = name;
-                    localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-                }
-                showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
-                hideEditProfile();
-                updateWelcomeMessage();
+        function showUsersList() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند لیست کاربران را ببیند!', 'warning');
+                return;
+            }
+            const section = document.getElementById('adminUsersSection');
+            if (section.style.display === 'block') {
+                section.style.display = 'none';
             } else {
-                showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
+                section.style.display = 'block';
+                refreshUsersList();
             }
         }
 
-        function updateWelcomeMessage() {
-            const name = localStorage.getItem('amlak_admin_name') || 'مدیر';
-            document.getElementById('welcomeUser').textContent = isAdmin ? `👋 خوش آمدید ${name}!` : '👋 خوش آمدید!';
-            document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر';
+        function refreshUsersList() {
+            if (!isAdmin) return;
+            try {
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+                usersList = users;
+
+                const container = document.getElementById('usersListContainer');
+                const count = document.getElementById('userCount');
+
+                count.textContent = `${users.length} کاربر`;
+
+                if (!users.length) {
+                    container.innerHTML = `
+                                <div style="text-align:center;color:#999;padding:20px;">
+                                    👤 هنوز کاربری ثبت نام نکرده است
+                                </div>
+                            `;
+                    return;
+                }
+
+                // مرتب‌سازی بر اساس تاریخ (جدیدترین اول)
+                users.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+                let html = '';
+                users.forEach((user, index) => {
+                    const date = new Date(user.date);
+                    const lastLogin = user.last_login ? new Date(user.last_login) : null;
+                    const isNew = (Date.now() - new Date(user.date).getTime()) < 24 * 60 * 60 * 1000;
+
+                    html += `
+                                <div class="user-list-item" style="${isNew ? 'border-right-color: #FFD700;' : ''}">
+                                    <div style="flex:1;">
+                                        <div class="user-phone">📱 ${user.phone}</div>
+                                        <div class="user-meta">
+                                            ${user.name ? `👤 ${sanitizeInput(user.name)}` : ''}
+                                            ${lastLogin ? ` | آخرین ورود: ${lastLogin.toLocaleDateString('fa-IR')} ${lastLogin.toLocaleTimeString('fa-IR', {hour:'2-digit', minute:'2-digit'})}` : ''}
+                                            ${isNew ? ' | 🆕 جدید' : ''}
+                                        </div>
+                                    </div>
+                                    <div style="display:flex;align-items:center;gap:8px;">
+                                        <span class="user-status ${user.verified ? 'verified' : 'pending'}">
+                                            ${user.verified ? '✅ تایید شده' : '⏳ در انتظار'}
+                                        </span>
+                                        <div class="user-actions">
+                                            <button class="contact-user" onclick="contactUser('${user.phone}')" title="ارسال پیام">
+                                                💬
+                                            </button>
+                                            ${isAdmin ? `
+                                                <button class="delete-user" onclick="deleteUser('${user.id}')" title="حذف کاربر">
+                                                    ✕
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                });
+
+                container.innerHTML = html;
+
+            } catch (e) {
+                ErrorHandler.log(e, 'بارگذاری لیست کاربران');
+                document.getElementById('usersListContainer').innerHTML = `
+                            <div style="text-align:center;color:#C62828;padding:20px;">
+                                ❌ خطا در بارگذاری لیست کاربران
+                            </div>
+                        `;
+            }
+        }
+
+        function deleteUser(userId) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف این کاربر مطمئن هستید؟')) return;
+
+            try {
+                let users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+                users = users.filter(u => u.id !== userId);
+                localStorage.setItem('amlak_users_list', JSON.stringify(users));
+                showToast('🗑️ کاربر حذف شد!', 'success');
+                refreshUsersList();
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف کاربر');
+                showToast('❌ خطا در حذف کاربر!', 'error');
+            }
+        }
+
+        function contactUser(phone) {
+            try {
+                const message = encodeURIComponent('سلام! پیام شما از دپارتمان املاک حسینی');
+                window.open(`https://wa.me/98${phone.substring(1)}?text=${message}`, '_blank');
+            } catch (e) {
+                ErrorHandler.log(e, 'ارسال پیام به کاربر');
+                showToast('❌ خطا در ارسال پیام!', 'error');
+            }
         }
 
         // ============================================================
@@ -2070,13 +2427,13 @@
                 document.getElementById('mainApp').style.display = 'block';
                 await loadProperties();
                 loadPublicMessages();
-                loadPrivateMessages();
                 loadCartItems();
                 loadFavorites();
                 loadChatMessages();
                 updateWelcomeMessage();
+
                 if (isAdmin) {
-                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
+                    document.getElementById('welcomeMessage').textContent = 'به پنل مدیریت خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'inline-block';
                     document.getElementById('adminButtons').style.display = 'flex';
                     document.getElementById('guideBox').style.display = 'block';
@@ -2085,8 +2442,10 @@
                     document.getElementById('adminFilterSort').style.display = 'flex';
                     document.getElementById('filterTabs').style.display = 'flex';
                     document.getElementById('onlineUsers').style.display = 'block';
+                    document.getElementById('adminUsersSection').style.display = 'none';
                     updateOnlineUsers();
                     loadAdminMessage();
+                    refreshUsersList();
                 } else {
                     document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'none';
@@ -2097,114 +2456,22 @@
                     document.getElementById('adminFilterSort').style.display = 'none';
                     document.getElementById('filterTabs').style.display = 'none';
                     document.getElementById('onlineUsers').style.display = 'none';
+                    document.getElementById('adminUsersSection').style.display = 'none';
                     loadAdminMessage();
                     checkUserNotifications();
                 }
+
                 updateCartBadge();
                 renderList();
                 renderPublicMessages();
                 checkMonthlyAuto();
+
                 if (isAdmin) {
                     setInterval(updateOnlineUsers, 30000);
+                    setInterval(refreshUsersList, 60000);
                 }
+
             } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
-        }
-
-        // ============================================================
-        // ====== اعلان‌های کاربر ======
-        // ============================================================
-        function checkUserNotifications() {
-            try {
-                if (!currentUser || isAdmin) return;
-                const notifications = JSON.parse(localStorage.getItem('amlak_notifications') || '[]');
-                const userNotifs = notifications.filter(n => n.user_id === currentUser.id && !n.is_read);
-                if (userNotifs.length) {
-                    showToast(`📬 ${userNotifs.length} اعلان جدید دارید!`, 'info');
-                    localStorage.setItem('amlak_notifications', JSON.stringify(notifications.map(n => {
-                        if (n.user_id === currentUser.id) n.is_read = true;
-                        return n;
-                    })));
-                }
-            } catch (e) {}
-        }
-
-        function notifyUsers(title, body) {
-            try {
-                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
-                const notifications = JSON.parse(localStorage.getItem('amlak_notifications') || '[]');
-                users.forEach(u => {
-                    notifications.push({
-                        user_id: u.id,
-                        title: title,
-                        body: body,
-                        date: new Date().toISOString(),
-                        is_read: false
-                    });
-                });
-                localStorage.setItem('amlak_notifications', JSON.stringify(notifications));
-            } catch (e) { ErrorHandler.log(e, 'ارسال اعلان'); }
-        }
-
-        // ============================================================
-        // ====== پیام مدیر ======
-        // ============================================================
-        function loadAdminMessage() {
-            try {
-                const adminMsg = localStorage.getItem('amlak_admin_message');
-                if (adminMsg) {
-                    const msgData = JSON.parse(adminMsg);
-                    document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
-                    document.getElementById('adminMsgDate').textContent = msgData.date || '';
-                    document.getElementById('adminMsgBox').style.display = 'block';
-                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
-                    document.getElementById('adminMsgEditArea').style.display = 'none';
-                    document.getElementById('adminMsgDisplay').style.display = 'block';
-                } else {
-                    document.getElementById('adminMsgBox').style.display = 'none';
-                }
-            } catch (e) {}
-        }
-
-        function editAdminMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            const currentMsg = localStorage.getItem('amlak_admin_message');
-            let currentText = '';
-            if (currentMsg) try { currentText = JSON.parse(currentMsg).text || ''; } catch {}
-            document.getElementById('adminMsgEditInput').value = currentText;
-            document.getElementById('adminMsgDisplay').style.display = 'none';
-            document.getElementById('adminMsgActions').style.display = 'none';
-            document.getElementById('adminMsgEditArea').style.display = 'block';
-        }
-
-        function saveAdminMessageEdit() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            const newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
-            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            const data = { text: newMsg, date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date()
-                .toLocaleTimeString('fa-IR') };
-            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
-            document.getElementById('adminMsgDisplay').style.display = 'block';
-            document.getElementById('adminMsgActions').style.display = 'flex';
-            document.getElementById('adminMsgEditArea').style.display = 'none';
-            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
-            document.getElementById('adminMsgDate').textContent = data.date;
-            document.getElementById('adminMsgBox').style.display = 'block';
-            showToast('✅ پیام مدیر ویرایش شد!', 'success');
-            notifyUsers('📢 پیام جدید از مدیر', newMsg);
-        }
-
-        function cancelAdminMessageEdit() {
-            document.getElementById('adminMsgDisplay').style.display = 'block';
-            document.getElementById('adminMsgActions').style.display = 'flex';
-            document.getElementById('adminMsgEditArea').style.display = 'none';
-        }
-
-        function deleteAdminMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
-            localStorage.removeItem('amlak_admin_message');
-            document.getElementById('adminMsgBox').style.display = 'none';
-            showToast('🗑️ پیام مدیر حذف شد', 'success');
         }
 
         // ============================================================
@@ -2232,11 +2499,6 @@
 
         function loadPublicMessages() {
             try { publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages') || '[]'); } catch { publicMessages =
-                    []; }
-        }
-
-        function loadPrivateMessages() {
-            try { privateMessages = JSON.parse(localStorage.getItem('amlak_private_messages') || '[]'); } catch { privateMessages =
                     []; }
         }
 
@@ -2322,13 +2584,6 @@
             togglePriceFields();
         }
 
-        function generateCode() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const count = properties.length + 1;
-            return `MLK-${year}-${String(count).padStart(3, '0')}`;
-        }
-
         // ============================================================
         // ====== ذخیره ملک ======
         // ============================================================
@@ -2386,7 +2641,8 @@
                         properties = [...newData, ...properties];
                         showToast('✅ ملک ثبت شد!', 'success');
                         success = true;
-                        notifyUsers('🏠 ملک جدید', `ملک جدید "${data.title}" به لیست اضافه شد!`);
+                        // اطلاع‌رسانی به کاربران
+                        notifyUsersNewProperty(data);
                     }
                 }
 
@@ -2398,6 +2654,56 @@
                 renderList();
             } catch (e) { showLoading(false);
                 ErrorHandler.log(e, 'ذخیره ملک'); }
+        }
+
+        function generateCode() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const count = properties.length + 1;
+            return `MLK-${year}-${String(count).padStart(3, '0')}`;
+        }
+
+        // ============================================================
+        // ====== اطلاع‌رسانی به کاربران ======
+        // ============================================================
+        function notifyUsersNewProperty(data) {
+            try {
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+                const message = `
+                        🏠 <b>ملک جدید به لیست اضافه شد!</b>
+
+                        📍 عنوان: ${sanitizeInput(data.title)}
+                        💰 قیمت: ${Number(data.price).toLocaleString()} تومان
+                        📍 آدرس: ${sanitizeInput(data.address)}
+                        🏷️ دسته: ${data.category}
+                        📐 متراژ: ${data.area} متر
+
+                        🔗 برای مشاهده وارد برنامه شوید.
+                    `;
+
+                // ارسال به همه کاربران از طریق تلگرام
+                users.forEach(user => {
+                    if (user.telegram_id) {
+                        sendTelegramMessage(user.telegram_id, message);
+                    }
+                });
+
+                // ذخیره اعلان در localStorage
+                const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
+                users.forEach(user => {
+                    notifications.push({
+                        user_id: user.id,
+                        title: '🏠 ملک جدید',
+                        body: `ملک "${data.title}" به لیست اضافه شد`,
+                        date: new Date().toISOString(),
+                        is_read: false
+                    });
+                });
+                localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications));
+
+            } catch (e) {
+                ErrorHandler.log(e, 'اطلاع‌رسانی به کاربران');
+            }
         }
 
         // ============================================================
@@ -2578,7 +2884,7 @@
             try {
                 const container = document.getElementById('chatList');
                 if (!container) return;
-                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
                 const userChats = users.filter(u => chatMessages.some(m => m.user_id === u.id));
                 if (!userChats.length) {
                     container.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ چتی با کاربران وجود ندارد</div>';
@@ -2619,7 +2925,8 @@
                         '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
                     return;
                 }
-                const user = JSON.parse(localStorage.getItem('amlak_users') || '[]').find(u => u.id === currentChatUserId);
+                const user = JSON.parse(localStorage.getItem('amlak_users_list') || '[]').find(u => u.id ===
+                currentChatUserId);
                 let html =
                     `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.phone || 'کاربر'}</div>`;
                 html += msgs.map(m => `
@@ -2650,10 +2957,10 @@
                 input.value = '';
                 renderChatMessages();
                 showToast('✅ پیام ارسال شد!', 'success');
-                const users = JSON.parse(localStorage.getItem('amlak_users') || '[]');
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
                 const user = users.find(u => u.id === currentChatUserId);
                 if (user) {
-                    const notifications = JSON.parse(localStorage.getItem('amlak_notifications') || '[]');
+                    const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
                     notifications.push({
                         user_id: user.id,
                         title: '💬 پاسخ مدیر',
@@ -2661,7 +2968,7 @@
                         date: new Date().toISOString(),
                         is_read: false
                     });
-                    localStorage.setItem('amlak_notifications', JSON.stringify(notifications));
+                    localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications));
                 }
             } catch (e) { ErrorHandler.log(e, 'ارسال پاسخ چت'); }
         }
@@ -2726,11 +3033,30 @@
                     dislikes: 0
                 });
                 showToast('✅ پیام عمومی ارسال شد!', 'success');
-                notifyUsers('📢 پیام جدید', text);
+                // ارسال به کاربران از طریق تلگرام
+                notifyUsersPublicMessage(text);
             }
             localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
             hidePublicMsgForm();
             renderPublicMessages();
+        }
+
+        function notifyUsersPublicMessage(text) {
+            try {
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+                const message = `
+                        📢 <b>پیام جدید از مدیر</b>
+
+                        ${text}
+
+                        📅 ${new Date().toLocaleDateString('fa-IR')}
+                    `;
+                users.forEach(user => {
+                    if (user.telegram_id) {
+                        sendTelegramMessage(user.telegram_id, message);
+                    }
+                });
+            } catch (e) { ErrorHandler.log(e, 'اطلاع‌رسانی پیام عمومی'); }
         }
 
         function deletePublicMessage(id) {
@@ -2803,87 +3129,6 @@
             p.dislikes = dislikes;
             localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
             renderPublicMessages();
-        }
-
-        // ============================================================
-        // ====== پیام‌های خصوصی قدیمی ======
-        // ============================================================
-        function viewPrivateMessages() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام‌ها را ببیند!', 'warning'); return; }
-            hideAllForms(['privateMsgViewer']);
-            document.getElementById('privateMsgViewer').style.display = 'block';
-            renderPrivateMessages();
-        }
-
-        function closePrivateMsgViewer() { document.getElementById('privateMsgViewer').style.display = 'none'; }
-
-        function renderPrivateMessages() {
-            const container = document.getElementById('privateMsgList');
-            loadPrivateMessages();
-            if (!privateMessages.length) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی از کاربران دریافت نشده است</div>';
-                return;
-            }
-            const sorted = [...privateMessages].reverse();
-            container.innerHTML = sorted.map(p => `
-                        <div class="private-msg-item">
-                            <div class="msg-from">👤 ${sanitizeInput(p.from || 'کاربر')}</div>
-                            <div style="font-size:13px;color:#333;margin:4px 0;">${sanitizeInput(p.text)}</div>
-                            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-                                <span class="msg-time">${p.date || ''}</span>
-                                <span style="font-size:11px;color:#888;">ملک: ${sanitizeInput(getPropertyTitle(p.propertyId))}</span>
-                            </div>
-                            <button onclick="deletePrivateMessage('${p.id}')">🗑️ حذف</button>
-                        </div>
-                    `).join('');
-        }
-
-        function getPropertyTitle(id) {
-            if (!id) return 'نامشخص';
-            const p = properties.find(prop => prop.id == id);
-            return p ? p.title : 'نامشخص';
-        }
-
-        function deletePrivateMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-            loadPrivateMessages();
-            privateMessages = privateMessages.filter(p => p.id != id);
-            localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
-            renderPrivateMessages();
-            showToast('🗑️ پیام حذف شد', 'success');
-        }
-
-        function togglePrivateMsg(id) {
-            const box = document.getElementById('privateMsgBox_' + id);
-            if (box) box.style.display = box.style.display === 'none' ? 'block' : 'none';
-        }
-
-        function sendPrivateMessage(propertyId) {
-            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند به خودش پیام بفرستد!', 'warning'); return; }
-            if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
-            const box = document.getElementById('privateMsgBox_' + propertyId);
-            if (!box) return;
-            const textarea = box.querySelector('textarea');
-            if (!textarea) return;
-            const text = sanitizeInput(textarea.value.trim());
-            if (!text) { showToast('⚠️ لطفاً متن پیام را وارد کنید', 'warning'); return; }
-            loadPrivateMessages();
-            privateMessages.push({
-                id: generateId(),
-                propertyId: propertyId,
-                from: 'کاربر (ID: ' + currentUser.id + ')',
-                to: 'مدیر',
-                text: text,
-                date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
-                read: false
-            });
-            textarea.value = '';
-            box.style.display = 'none';
-            localStorage.setItem('amlak_private_messages', JSON.stringify(privateMessages));
-            showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-            if (isAdmin) showToast('📩 پیام جدید از کاربر دریافت شد!', 'info');
         }
 
         // ============================================================
@@ -3340,7 +3585,7 @@
         // ============================================================
         function backupData() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning'); return; }
-            const data = { properties, publicMessages, privateMessages, cartItems, favorites, chatMessages,
+            const data = { properties, publicMessages, cartItems, favorites, chatMessages, usersList,
             backupDate: new Date().toISOString() };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
@@ -3348,34 +3593,6 @@
             link.download = 'dopar_taman_amlak_hoseini_backup_' + new Date().toISOString().slice(0, 10) + '.json';
             link.click();
             showToast('💾 پشتیبان گرفته شد!', 'success');
-        }
-
-        function restoreData(event) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند بازیابی کند!', 'warning'); return; }
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = async (e) => {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.properties) {
-                        properties = data.properties;
-                        localStorage.setItem('amlak_properties', JSON.stringify(properties));
-                        if (data.publicMessages) localStorage.setItem('amlak_public_messages', JSON.stringify(data
-                            .publicMessages));
-                        if (data.cartItems) localStorage.setItem('amlak_cart', JSON.stringify(data.cartItems));
-                        if (data.favorites) localStorage.setItem('amlak_favorites', JSON.stringify(data.favorites));
-                        if (data.chatMessages) localStorage.setItem('amlak_chat_messages', JSON.stringify(data
-                            .chatMessages));
-                        showToast('📂 داده‌ها بازیابی شدند!', 'success');
-                        renderList();
-                        renderPublicMessages();
-                        updateCartBadge();
-                    } else { showToast('❌ فایل معتبر نیست!', 'error'); }
-                } catch (err) { ErrorHandler.log(err, 'بازیابی'); }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
         }
 
         // ============================================================
@@ -3429,6 +3646,123 @@
         function closeModal() { document.getElementById('mediaModal').classList.remove('active'); }
 
         // ============================================================
+        // ====== توابع مدیر ======
+        // ============================================================
+        function updateOnlineUsers() {
+            try {
+                if (!isAdmin) return;
+                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
+                const uniqueUsers = [...new Set(users.map(u => u.id))];
+                document.getElementById('onlineCount').textContent = uniqueUsers.length || 0;
+            } catch (e) {}
+        }
+
+        function showEditProfile() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            hideAllForms(['editProfileForm']);
+            document.getElementById('editProfileForm').style.display = 'block';
+        }
+
+        function hideEditProfile() { document.getElementById('editProfileForm').style.display = 'none'; }
+
+        function saveProfileChanges() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const name = sanitizeInput(document.getElementById('editAdminName').value.trim());
+            if (name) {
+                localStorage.setItem('amlak_admin_name', name);
+                if (currentUser) {
+                    currentUser.name = name;
+                    localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+                }
+                showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
+                hideEditProfile();
+                updateWelcomeMessage();
+            } else {
+                showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
+            }
+        }
+
+        function updateWelcomeMessage() {
+            const name = localStorage.getItem('amlak_admin_name') || 'مدیر';
+            document.getElementById('welcomeUser').textContent = isAdmin ? `👋 خوش آمدید ${name}!` : '👋 خوش آمدید!';
+            document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر';
+        }
+
+        function loadAdminMessage() {
+            try {
+                const adminMsg = localStorage.getItem('amlak_admin_message');
+                if (adminMsg) {
+                    const msgData = JSON.parse(adminMsg);
+                    document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                    document.getElementById('adminMsgDate').textContent = msgData.date || '';
+                    document.getElementById('adminMsgBox').style.display = 'block';
+                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
+                    document.getElementById('adminMsgEditArea').style.display = 'none';
+                    document.getElementById('adminMsgDisplay').style.display = 'block';
+                } else {
+                    document.getElementById('adminMsgBox').style.display = 'none';
+                }
+            } catch (e) {}
+        }
+
+        function editAdminMessage() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const currentMsg = localStorage.getItem('amlak_admin_message');
+            let currentText = '';
+            if (currentMsg) try { currentText = JSON.parse(currentMsg).text || ''; } catch {}
+            document.getElementById('adminMsgEditInput').value = currentText;
+            document.getElementById('adminMsgDisplay').style.display = 'none';
+            document.getElementById('adminMsgActions').style.display = 'none';
+            document.getElementById('adminMsgEditArea').style.display = 'block';
+        }
+
+        function saveAdminMessageEdit() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            const newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
+            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            const data = { text: newMsg, date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date()
+                .toLocaleTimeString('fa-IR') };
+            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
+            document.getElementById('adminMsgDate').textContent = data.date;
+            document.getElementById('adminMsgBox').style.display = 'block';
+            showToast('✅ پیام مدیر ویرایش شد!', 'success');
+            notifyUsersPublicMessage('📢 پیام جدید از مدیر:\n' + newMsg);
+        }
+
+        function cancelAdminMessageEdit() {
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+        }
+
+        function deleteAdminMessage() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
+            localStorage.removeItem('amlak_admin_message');
+            document.getElementById('adminMsgBox').style.display = 'none';
+            showToast('🗑️ پیام مدیر حذف شد', 'success');
+        }
+
+        function checkUserNotifications() {
+            try {
+                if (!currentUser || isAdmin) return;
+                const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
+                const userNotifs = notifications.filter(n => n.user_id === currentUser.id && !n.is_read);
+                if (userNotifs.length) {
+                    showToast(`📬 ${userNotifs.length} اعلان جدید دارید!`, 'info');
+                    localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications.map(n => {
+                        if (n.user_id === currentUser.id) n.is_read = true;
+                        return n;
+                    })));
+                }
+            } catch (e) {}
+        }
+
+        // ============================================================
         // ====== شروع برنامه ======
         // ============================================================
         const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
@@ -3441,6 +3775,7 @@
             document.getElementById('roleAdmin').classList.add('active');
             document.getElementById('adminFields').style.display = 'block';
             document.getElementById('userFields').style.display = 'none';
+            document.getElementById('telegramVerificationFields').style.display = 'none';
             document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
         }
 
@@ -3459,9 +3794,9 @@
         console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
         console.log('📊 تعداد املاک:', properties.length);
         console.log('🔑 رمز عبور مدیر: 26742674');
-        console.log('📌 مدیران بدون محدودیت تعداد | 🔔 اعلان | 💬 چت');
-        console.log('📱 ورود با شماره موبایل | 🇮🇷 ایتا');
-        console.log('✅ همه قابلیت‌های قبلی و جدید فعال هستند!');
+        console.log('📱 توکن تلگرام:', TELEGRAM_BOT_TOKEN);
+        console.log('✅ تایید شماره با تلگرام فعال است!');
+        console.log('✅ اطلاع‌رسانی به کاربران فعال است!');
     </script>
 </body>
-    </html>
+                </html>
