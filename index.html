@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ===== CSS Variables ===== */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -247,7 +246,6 @@
             border-right-color: #4CAF50 !important;
         }
 
-        /* ===== Header ===== */
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
@@ -315,7 +313,6 @@
             transform: scale(1.05);
         }
 
-        /* ===== Stats ===== */
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -344,7 +341,6 @@
             color: var(--text-light);
         }
 
-        /* ===== Buttons ===== */
         .btn {
             padding: 10px 14px;
             border: none;
@@ -411,7 +407,6 @@
             font-size: 11px;
         }
 
-        /* ===== Form ===== */
         .form {
             background: var(--card-bg);
             padding: 16px;
@@ -474,7 +469,6 @@
             font-size: 14px;
         }
 
-        /* ===== Property Card ===== */
         .property-card {
             background: var(--card-bg);
             padding: 14px;
@@ -650,7 +644,6 @@
             color: var(--text);
         }
 
-        /* ===== Cart Modal ===== */
         .cart-modal {
             position: fixed;
             top: 0;
@@ -832,7 +825,6 @@
             margin-right: 4px;
         }
 
-        /* ===== Search ===== */
         .search-box {
             width: 100%;
             padding: 12px 16px;
@@ -850,7 +842,6 @@
             box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
         }
 
-        /* ===== Toast ===== */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -886,7 +877,6 @@
             color: white;
         }
 
-        /* ===== Login ===== */
         .login-overlay {
             position: fixed;
             top: 0;
@@ -998,7 +988,6 @@
             display: block;
         }
 
-        /* ===== Loading ===== */
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1042,7 +1031,6 @@
             font-weight: bold;
         }
 
-        /* ===== Other ===== */
         .empty {
             text-align: center;
             color: var(--text-light);
@@ -1245,7 +1233,6 @@
             background: #616161;
         }
 
-        /* ===== Category & Type Grids ===== */
         .category-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1394,7 +1381,6 @@
             margin-bottom: 8px;
         }
 
-        /* ===== Guide Box ===== */
         .guide-box {
             background: #FFF8E1;
             border: 2px solid #FFB300;
@@ -1462,7 +1448,6 @@
             background: #C2185B;
         }
 
-        /* ===== Public Messages ===== */
         .public-msg-card {
             background: var(--primary-light);
             padding: 12px;
@@ -1511,7 +1496,6 @@
             background: #FFA000;
         }
 
-        /* ===== Chart ===== */
         .chart-container {
             background: var(--card-bg);
             padding: 16px;
@@ -1528,7 +1512,6 @@
             max-height: 200px;
         }
 
-        /* ===== Modal ===== */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1562,7 +1545,6 @@
             border-radius: 12px;
         }
 
-        /* ===== Chat System ===== */
         .chat-message-item {
             background: var(--card-bg);
             padding: 10px 14px;
@@ -1714,7 +1696,6 @@
             background: var(--danger);
         }
 
-        /* ===== File Input ===== */
         .file-input-wrapper {
             background: var(--bg);
             padding: 8px;
@@ -1734,29 +1715,7 @@
             font-size: 10px;
             color: var(--text-light);
         }
-        .file-preview {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 4px;
-        }
-        .file-preview .file-tag {
-            background: var(--primary-light);
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            color: var(--primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .file-preview .file-tag .remove-file {
-            cursor: pointer;
-            color: var(--danger);
-            font-weight: bold;
-        }
 
-        /* ===== Responsive ===== */
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(2, 1fr);
@@ -1814,7 +1773,6 @@
     </div>
 
     <div id="mainApp" style="display:none;">
-        <!-- Header -->
         <div class="header">
             <div class="header-top">
                 <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
@@ -1823,13 +1781,11 @@
             <p id="welcomeUser">خوش آمدید</p>
         </div>
 
-        <!-- Welcome -->
         <div class="welcome-box" id="welcomeBox">
             <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
-        <!-- Admin Message -->
         <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
             <div id="adminMsgDisplay">
                 <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
@@ -1846,7 +1802,6 @@
             </div>
         </div>
 
-        <!-- Top Bar -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
             <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
             <div>
@@ -1856,7 +1811,6 @@
             </div>
         </div>
 
-        <!-- Users List (Admin) -->
         <div class="admin-users-section" id="adminUsersSection">
             <div class="section-header">
                 <h4>👥 لیست کاربران</h4>
@@ -1868,7 +1822,6 @@
             <button class="btn btn-secondary" onclick="refreshUsersList()" style="width:100%;margin-top:8px;">🔄 بروزرسانی</button>
         </div>
 
-        <!-- Edit Profile -->
         <div class="form" id="editProfileForm">
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
             <label>نام مدیر</label>
@@ -1879,7 +1832,6 @@
             <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
         </div>
 
-        <!-- Guide (Admin) -->
         <div class="guide-box" id="guideBox" style="display:none;">
             <h4>📖 دفترچه راهنمای مدیر</h4>
             <ul>
@@ -1897,7 +1849,6 @@
             </ul>
         </div>
 
-        <!-- User Filters -->
         <div id="userFilterSection">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
                 <span style="font-size:14px;font-weight:bold;color:var(--primary);">🔍 فیلتر املاک</span>
@@ -1942,7 +1893,6 @@
             </div>
         </div>
 
-        <!-- Stats -->
         <div class="stats" id="statsContainer">
             <div><span id="totalCount">0</span><label>کل</label></div>
             <div><span id="saleCount">0</span><label>فروش</label></div>
@@ -1950,7 +1900,6 @@
             <div><span id="avgPrice">0</span><label>میانگین</label></div>
         </div>
 
-        <!-- Admin Buttons -->
         <div class="btn-group" id="adminButtons" style="display:none;">
             <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
             <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام</button>
@@ -1963,7 +1912,6 @@
             <button class="btn btn-primary" onclick="showUsersList()">👥 کاربران</button>
         </div>
 
-        <!-- Property Form -->
         <div class="form" id="propertyForm">
             <h3 id="formTitle">📋 ثبت ملک جدید</h3>
             <input type="hidden" id="editId" value="" />
@@ -2026,7 +1974,6 @@
             <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
         </div>
 
-        <!-- Public Message Form -->
         <div class="form" id="publicMsgForm">
             <h3 id="publicMsgTitle">📢 ارسال پیام عمومی</h3>
             <input type="hidden" id="editMsgId" value="" />
@@ -2036,7 +1983,16 @@
             <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
         </div>
 
-        <!-- Chat Viewer -->
+        <!-- ===== بخش چت کاربر (کاربر می‌بینه و ویرایش میکنه) ===== -->
+        <div class="form" id="userChatSection" style="display:block;">
+            <h3>💬 پیام به مدیر</h3>
+            <div id="userChatMessagesContainer" style="max-height:400px;overflow-y:auto;margin-bottom:10px;padding:8px;background:var(--bg);border-radius:10px;"></div>
+            <div style="display:flex;gap:6px;">
+                <input type="text" id="userChatInput" placeholder="متن پیام خود را بنویسید..." style="flex:1;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;background:var(--card-bg);color:var(--text);">
+                <button class="btn btn-purple" onclick="sendUserMessage()">📤</button>
+            </div>
+        </div>
+
         <div class="form" id="chatViewer" style="display:none;">
             <h3 id="chatViewerTitle">💬 چت با کاربران</h3>
             <div id="chatUserList" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
@@ -2053,7 +2009,6 @@
             <button class="btn btn-secondary" onclick="closeChatViewer()" style="margin-top:6px;">❌ بستن</button>
         </div>
 
-        <!-- Admin Filter Sort -->
         <div class="filter-sort" id="adminFilterSort">
             <select id="categoryFilter" onchange="renderList()">
                 <option value="all">همه دسته‌ها</option>
@@ -2074,7 +2029,6 @@
             <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" />
         </div>
 
-        <!-- Chart -->
         <div class="chart-container" id="chartContainer" style="display:none;">
             <h4>📊 آمار املاک</h4>
             <canvas id="chartCanvas"></canvas>
@@ -2084,23 +2038,18 @@
             </div>
         </div>
 
-        <!-- Public Messages -->
         <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
 
-        <!-- Search -->
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
 
-        <!-- Filter Tabs (Admin) -->
         <div class="filter-tabs" id="filterTabs">
             <button class="active" onclick="setFilter('all', this)">همه</button>
             <button onclick="setFilter('sale', this)">💰 فروش</button>
             <button onclick="setFilter('rent', this)">🔑 اجاره</button>
         </div>
 
-        <!-- Property List -->
         <div id="propertyList"></div>
 
-        <!-- Cart Modal -->
         <div class="cart-modal" id="cartModal">
             <div class="cart-content">
                 <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
@@ -2108,12 +2057,10 @@
             </div>
         </div>
 
-        <!-- Media Modal -->
         <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
             <div class="modal-content" id="modalContent"></div>
         </div>
 
-        <!-- Toast -->
         <div class="toast" id="toast"></div>
     </div>
 
@@ -2186,11 +2133,9 @@
         let userMaxRent = 0;
         let userPriceFilterActive = false;
 
-        // ===== سیستم چت جدید =====
-        let chatMessages = {}; // { userId: [messages] }
+        let chatMessages = {};
         let currentChatUserId = null;
         let usersList = [];
-        let userCounter = 1;
 
         // ============================================================
         // ====== توابع کمکی ======
@@ -2284,6 +2229,8 @@
 
                 showToast('👋 خوش آمدید! شما کاربر #' + user.userNumber + ' هستید', 'success');
                 enterApp();
+                // نمایش پیام‌های کاربر
+                setTimeout(showUserChatMessages, 500);
             } catch (e) {
                 ErrorHandler.log(e, 'ورود کاربر');
                 showToast('❌ خطا در ورود!', 'error');
@@ -2360,7 +2307,7 @@
         }
 
         // ============================================================
-        // ====== سیستم چت ======
+        // ====== سیستم چت (مدیر و کاربر) ======
         // ============================================================
         function loadChatMessages() {
             try {
@@ -2427,6 +2374,7 @@
             return false;
         }
 
+        // ===== توابع چت مدیر =====
         function viewChats() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning'); return; }
             hideAllForms(['chatViewer']);
@@ -2474,7 +2422,6 @@
             const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
             const user = users.find(u => u.id === userId);
 
-            // Mark messages as read
             messages.forEach(m => { if (m.sender === 'user') m.read = true; });
             saveChatMessages();
 
@@ -2483,28 +2430,19 @@
                 return;
             }
 
-            let html = `
-                        <div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">
-                            👤 چت با ${getUserDisplayName(user)}
-                        </div>
-                    `;
+            let html =
+                `<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با ${getUserDisplayName(user)}</div>`;
 
-            messages.forEach((msg, index) => {
+            messages.forEach((msg) => {
                 const isUser = msg.sender === 'user';
-                const isAdminSender = msg.sender === 'admin';
                 const senderName = isUser ? getUserDisplayName(user) : 'مدیر';
                 const senderClass = isUser ? 'user-sender' : 'admin-sender';
                 const msgClass = isUser ? 'user-msg' : 'admin-msg';
-
                 const time = new Date(msg.date).toLocaleString('fa-IR');
 
                 let fileHtml = '';
                 if (msg.file) {
-                    fileHtml = `
-                                <div class="msg-file">
-                                    <a href="${msg.file}" target="_blank">📎 دانلود فایل</a>
-                                </div>
-                            `;
+                    fileHtml = `<div class="msg-file"><a href="${msg.file}" target="_blank">📎 دانلود فایل</a></div>`;
                 }
 
                 let editHtml = '';
@@ -2513,14 +2451,7 @@
                 }
 
                 let actionsHtml = '';
-                if (isUser && !isAdmin) {
-                    actionsHtml = `
-                                <div class="msg-actions">
-                                    <button class="edit-msg-btn" onclick="startEditMessage('${userId}','${msg.id}')">✏️ ویرایش</button>
-                                    <button class="delete-msg-btn" onclick="deleteChatMessage('${userId}','${msg.id}')">🗑️</button>
-                                </div>
-                            `;
-                } else if (isAdmin && isUser) {
+                if (!isAdmin && isUser) {
                     actionsHtml = `
                                 <div class="msg-actions">
                                     <button class="delete-msg-btn" onclick="deleteChatMessage('${userId}','${msg.id}')">🗑️ حذف</button>
@@ -2537,47 +2468,12 @@
                                 <div class="msg-text">${sanitizeInput(msg.text)}</div>
                                 ${fileHtml}
                                 ${actionsHtml}
-                                <div class="msg-edit-area" id="editArea-${msg.id}" style="display:none;">
-                                    <textarea id="editInput-${msg.id}">${sanitizeInput(msg.text)}</textarea>
-                                    <button class="save-edit-btn" onclick="saveEditMessage('${userId}','${msg.id}')">💾 ذخیره</button>
-                                    <button class="cancel-edit-btn" onclick="cancelEditMessage('${msg.id}')">❌ انصراف</button>
-                                </div>
                             </div>
                         `;
             });
 
             container.innerHTML = html;
             container.scrollTop = container.scrollHeight;
-        }
-
-        function startEditMessage(userId, messageId) {
-            document.getElementById('editArea-' + messageId).style.display = 'block';
-            document.getElementById('editInput-' + messageId).focus();
-        }
-
-        function cancelEditMessage(messageId) {
-            document.getElementById('editArea-' + messageId).style.display = 'none';
-        }
-
-        function saveEditMessage(userId, messageId) {
-            const input = document.getElementById('editInput-' + messageId);
-            const newText = input.value.trim();
-            if (!newText) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            if (editMessage(userId, messageId, newText)) {
-                showToast('✅ پیام ویرایش شد!', 'success');
-                renderChatMessagesWithUser(userId);
-            } else {
-                showToast('❌ خطا در ویرایش!', 'error');
-            }
-        }
-
-        function deleteChatMessage(userId, messageId) {
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-            if (deleteMessage(userId, messageId)) {
-                showToast('🗑️ پیام حذف شد', 'success');
-                renderChatMessagesWithUser(userId);
-                renderChatUsersList();
-            }
         }
 
         function sendChatReply() {
@@ -2598,36 +2494,131 @@
             renderChatMessagesWithUser(currentChatUserId);
             renderChatUsersList();
             showToast('✅ پیام ارسال شد!', 'success');
-
-            notifyUserNewMessage(currentChatUserId, text);
+            // به‌روزرسانی پیام‌های کاربر
+            if (!isAdmin) showUserChatMessages();
         }
 
-        function notifyUserNewMessage(userId, text) {
-            try {
-                const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
-                notifications.push({
-                    user_id: userId,
-                    title: '💬 پیام جدید از مدیر',
-                    body: text,
-                    date: new Date().toISOString(),
-                    is_read: false
-                });
-                localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications));
-            } catch (e) {}
+        function deleteChatMessage(userId, messageId) {
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            if (deleteMessage(userId, messageId)) {
+                showToast('🗑️ پیام حذف شد', 'success');
+                renderChatMessagesWithUser(userId);
+                renderChatUsersList();
+                if (!isAdmin) showUserChatMessages();
+            }
         }
 
-        function sendUserChatMessage(propertyId, text) {
-            if (isAdmin) return;
+        function closeChatViewer() {
+            document.getElementById('chatViewer').style.display = 'none';
+            currentChatUserId = null;
+        }
+
+        // ===== توابع چت کاربر (کاربر پیام می‌فرسته، می‌بینه، ویرایش میکنه) =====
+        function showUserChatMessages() {
+            const container = document.getElementById('userChatMessagesContainer');
+            if (!container) return;
+
+            if (!currentUser?.id) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 لطفاً وارد شوید</div>';
+                return;
+            }
+
+            const messages = getChatWithUser(currentUser.id);
+            if (!messages.length) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                return;
+            }
+
+            let html = '';
+            messages.forEach((msg) => {
+                const isUser = msg.sender === 'user';
+                const senderName = isUser ? 'شما' : 'مدیر';
+                const msgClass = isUser ? 'user-msg' : 'admin-msg';
+                const time = new Date(msg.date).toLocaleString('fa-IR');
+
+                let fileHtml = '';
+                if (msg.file) {
+                    fileHtml = `<div class="msg-file"><a href="${msg.file}" target="_blank">📎 دانلود فایل</a></div>`;
+                }
+
+                let editHtml = '';
+                if (msg.edited) {
+                    editHtml = `<span style="font-size:9px;color:var(--text-light);">(ویرایش شده)</span>`;
+                }
+
+                let actionsHtml = '';
+                if (isUser) {
+                    actionsHtml = `
+                                <div class="msg-actions">
+                                    <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
+                                    <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
+                                </div>
+                            `;
+                }
+
+                html += `
+                            <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
+                                <div class="msg-header">
+                                    <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
+                                    <span class="msg-time">${time} ${editHtml}</span>
+                                </div>
+                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
+                                ${fileHtml}
+                                ${actionsHtml}
+                                <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
+                                    <textarea id="userEditInput-${msg.id}">${sanitizeInput(msg.text)}</textarea>
+                                    <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
+                                    <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
+                                </div>
+                            </div>
+                        `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function sendUserMessage() {
             if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
-            if (!text || !text.trim()) return;
+            const input = document.getElementById('userChatInput');
+            const text = sanitizeInput(input.value.trim());
+            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
 
-            sendMessage(currentUser.id, sanitizeInput(text.trim()));
+            sendMessage(currentUser.id, text);
             showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-
-            const input = document.getElementById('userChatInput_' + propertyId);
-            if (input) input.value = '';
-
+            input.value = '';
+            showUserChatMessages();
             notifyAdminNewChat(currentUser.id, text);
+        }
+
+        function startUserEditMessage(messageId) {
+            document.getElementById('userEditArea-' + messageId).style.display = 'block';
+            document.getElementById('userEditInput-' + messageId).focus();
+        }
+
+        function cancelUserEditMessage(messageId) {
+            document.getElementById('userEditArea-' + messageId).style.display = 'none';
+        }
+
+        function saveUserEditMessage(messageId) {
+            const input = document.getElementById('userEditInput-' + messageId);
+            const newText = input.value.trim();
+            if (!newText) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+
+            if (editMessage(currentUser.id, messageId, newText)) {
+                showToast('✅ پیام ویرایش شد!', 'success');
+                showUserChatMessages();
+            } else {
+                showToast('❌ خطا در ویرایش!', 'error');
+            }
+        }
+
+        function deleteUserMessage(messageId) {
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            if (deleteMessage(currentUser.id, messageId)) {
+                showToast('🗑️ پیام حذف شد', 'success');
+                showUserChatMessages();
+            }
         }
 
         function notifyAdminNewChat(userId, text) {
@@ -2648,11 +2639,6 @@
                     showToast(`📩 پیام جدید از ${getUserDisplayName(user)}`, 'info');
                 }
             } catch (e) {}
-        }
-
-        function closeChatViewer() {
-            document.getElementById('chatViewer').style.display = 'none';
-            currentChatUserId = null;
         }
 
         // ============================================================
@@ -2784,6 +2770,7 @@
                     document.getElementById('adminUsersSection').style.display = 'none';
                     loadAdminMessage();
                     refreshUsersList();
+                    document.getElementById('userChatSection').style.display = 'none';
                 } else {
                     document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'none';
@@ -2795,6 +2782,8 @@
                     document.getElementById('filterTabs').style.display = 'none';
                     document.getElementById('adminUsersSection').style.display = 'none';
                     loadAdminMessage();
+                    document.getElementById('userChatSection').style.display = 'block';
+                    showUserChatMessages();
                 }
 
                 updateCartBadge();
@@ -2992,7 +2981,7 @@
         }
 
         // ============================================================
-        // ====== حذف ملک (رفع مشکل) ======
+        // ====== حذف ملک (درست شده) ======
         // ============================================================
         async function deleteProperty(id) {
             if (!isAdmin) {
@@ -3005,18 +2994,14 @@
                 showLoading(true);
                 console.log('🗑️ در حال حذف ملک با ID:', id);
 
-                // حذف از Supabase
                 const { error } = await supabaseClient.from(TABLE_NAME).delete().eq('id', id);
                 if (error) throw new Error(error.message);
 
-                // حذف از لیست محلی
                 const deletedItem = properties.find(p => p.id === id);
                 properties = properties.filter(p => p.id !== id);
 
-                // حذف از localStorage
                 localStorage.setItem('amlak_properties', JSON.stringify(properties));
 
-                // حذف از سبد خرید اگر وجود داشت
                 if (cartItems.includes(id)) {
                     cartItems = cartItems.filter(item => item !== id);
                     localStorage.setItem('amlak_cart', JSON.stringify(cartItems));
@@ -3414,17 +3399,6 @@
                         `💰 ${Number(p.price).toLocaleString()} تومان` :
                         `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
 
-                    let userChatBtn = '';
-
-                    if (!isAdmin && currentUser) {
-                        userChatBtn = `
-                                    <div style="margin-top:6px;display:flex;gap:6px;">
-                                        <input type="text" id="userChatInput_${p.id}" placeholder="💬 پیام به مدیر..." style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;background:var(--card-bg);color:var(--text);">
-                                        <button onclick="sendUserChatMessage('${p.id}', document.getElementById('userChatInput_${p.id}').value)" style="padding:6px 12px;background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;transition:var(--transition);">📤</button>
-                                    </div>
-                                `;
-                    }
-
                     html += `
                                 <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
                                     ${p.pinned ? `<div class="pinned-badge">📌 سنجاق شده</div>` : ''}
@@ -3452,9 +3426,6 @@
                                         ${fileHtml}
                                         ${hiddenHtml}
                                     </div>
-                                    ${!isAdmin ? `
-                                        ${userChatBtn}
-                                    ` : ''}
                                 </div>
                             `;
                 }
@@ -3799,6 +3770,9 @@
             document.getElementById('loginOverlay').classList.add('hidden');
             document.getElementById('mainApp').style.display = 'block';
             enterApp();
+            if (!isAdmin) {
+                setTimeout(showUserChatMessages, 500);
+            }
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
         }
@@ -3819,10 +3793,9 @@
         console.log('📊 تعداد املاک:', properties.length);
         console.log('🔑 رمز عبور مدیر: 26742674');
         console.log('✅ کاربران دارای شماره اختصاصی از ۱ شروع میشوند');
-        console.log('✅ چت اختصاصی با هر کاربر جداگانه');
+        console.log('✅ کاربر پیام خودش و پاسخ مدیر را می‌بیند');
         console.log('✅ کاربر میتواند پیام خود را ویرایش کند');
-        console.log('✅ مدیر میتواند فایل در پیام و ملک آپلود کند');
-        console.log('✅ دکمه حذف ملک رفع شد');
+        console.log('✅ دکمه حذف ملک در کارت ملک قرار دارد');
     </script>
 </body>
-                                                                </html>
+    </html>
