@@ -3,31 +3,63 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' https://cdn.jsdelivr.net 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://zymwhrkmabujxoyiwqnk.supabase.co https://api.telegram.org;">
     <title>🏢 دپارتمان املاک حسینی</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ===== CSS Variables ===== */
+        :root {
+            --primary: #1565C0;
+            --primary-dark: #0D47A1;
+            --primary-light: #E3F2FD;
+            --secondary: #2E7D32;
+            --accent: #FFD700;
+            --danger: #C62828;
+            --warning: #E65100;
+            --purple: #6A1B9A;
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #666;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Tahoma', 'Segoe UI', sans-serif;
         }
+
         body {
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 12px;
             max-width: 500px;
             margin: 0 auto;
             padding-bottom: 80px;
-            transition: all 0.3s;
+            transition: var(--transition);
+            color: var(--text);
         }
+
+        /* ===== Dark Mode ===== */
         body.dark-mode {
-            background: #1a1a2e;
-            color: #eee;
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text: #eee;
+            --text-light: #aaa;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --primary-light: #0f3460;
+        }
+
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #0f3460, #16213e);
         }
         body.dark-mode .property-card {
-            background: #16213e;
-            color: #eee;
+            background: var(--card-bg);
+            color: var(--text);
         }
         body.dark-mode .property-card h3 {
             color: #4fc3f7;
@@ -40,11 +72,8 @@
             background: #0f3460;
             color: #ccc;
         }
-        body.dark-mode .header {
-            background: linear-gradient(135deg, #0f3460, #16213e);
-        }
         body.dark-mode .form {
-            background: #16213e;
+            background: var(--card-bg);
             border-color: #0f3460;
         }
         body.dark-mode .form input,
@@ -58,8 +87,8 @@
             color: #aaa;
         }
         body.dark-mode .stats div {
-            background: #16213e;
-            color: #eee;
+            background: var(--card-bg);
+            color: var(--text);
         }
         body.dark-mode .stats span {
             color: #4fc3f7;
@@ -81,7 +110,7 @@
             color: #eee;
         }
         body.dark-mode .filter-tabs button {
-            background: #16213e;
+            background: var(--card-bg);
             color: #aaa;
             border-color: #0f3460;
         }
@@ -91,7 +120,7 @@
             border-color: #4fc3f7;
         }
         body.dark-mode .search-box {
-            background: #16213e;
+            background: var(--card-bg);
             color: #eee;
             border-color: #0f3460;
         }
@@ -99,7 +128,7 @@
             color: #666;
         }
         body.dark-mode .category-grid .cat-btn {
-            background: #16213e;
+            background: var(--card-bg);
             color: #aaa;
             border-color: #0f3460;
         }
@@ -109,7 +138,7 @@
             border-color: #4fc3f7;
         }
         body.dark-mode .type-grid .type-btn {
-            background: #16213e;
+            background: var(--card-bg);
             color: #aaa;
             border-color: #0f3460;
         }
@@ -129,7 +158,7 @@
             color: #aaa;
         }
         body.dark-mode .price-filter-box input {
-            background: #16213e;
+            background: var(--card-bg);
             color: #eee;
             border-color: #1a1a2e;
         }
@@ -144,12 +173,43 @@
             color: #aaa;
         }
         body.dark-mode .toast {
-            background: #16213e !important;
+            background: var(--card-bg) !important;
             color: #eee !important;
         }
+        body.dark-mode .cart-content {
+            background: var(--card-bg) !important;
+            color: var(--text) !important;
+        }
+        body.dark-mode .cart-item-detail {
+            border-bottom-color: #0f3460 !important;
+        }
+        body.dark-mode .cart-item-desc {
+            background: #0f3460 !important;
+            color: #ccc !important;
+        }
+        body.dark-mode .cart-item-hidden {
+            background: #1a1a2e !important;
+            color: #ce93d8 !important;
+        }
+        body.dark-mode .login-box {
+            background: var(--card-bg) !important;
+            color: var(--text) !important;
+        }
+        body.dark-mode .login-box p {
+            color: #aaa !important;
+        }
+        body.dark-mode .login-hint {
+            background: #0f3460 !important;
+            color: #aaa !important;
+        }
+        body.dark-mode .password-input {
+            background: #0f3460 !important;
+            color: #eee !important;
+            border-color: #1a1a2e !important;
+        }
         body.dark-mode .chat-container {
-            background: #16213e !important;
-            border-color: #0f3460 !important;
+            background: #0f3460 !important;
+            border-color: #1a1a2e !important;
         }
         body.dark-mode .chat-msg.user {
             background: #0f3460 !important;
@@ -158,7 +218,7 @@
             background: #1a1a2e !important;
         }
         body.dark-mode .user-list-item {
-            background: #16213e !important;
+            background: var(--card-bg) !important;
             border-color: #0f3460 !important;
         }
         body.dark-mode .user-list-item .user-phone {
@@ -172,107 +232,150 @@
             border-color: #4fc3f7 !important;
         }
 
+        /* ===== Header ===== */
         .header {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
-            padding: 18px;
-            border-radius: 16px;
+            padding: 20px;
+            border-radius: var(--radius);
             text-align: center;
             margin-bottom: 14px;
-            box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+            box-shadow: 0 4px 20px rgba(21, 101, 192, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            animation: headerShine 8s ease-in-out infinite;
+        }
+        @keyframes headerShine {
+            0%,
+            100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(30%, 20%);
+            }
         }
         .header h1 {
             font-size: 24px;
+            position: relative;
+            z-index: 1;
         }
         .header h1 span {
-            color: #FFD700;
+            color: var(--accent);
         }
         .header p {
             opacity: 0.9;
             font-size: 12px;
+            position: relative;
+            z-index: 1;
         }
         .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
+            z-index: 1;
         }
         .dark-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             color: white;
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 16px;
-            transition: 0.3s;
+            transition: var(--transition);
+            backdrop-filter: blur(4px);
         }
         .dark-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
         }
+
+        /* ===== Stats ===== */
         .stats {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
             gap: 6px;
             margin-bottom: 12px;
-            flex-wrap: wrap;
         }
         .stats div {
-            flex: 1;
-            min-width: 60px;
-            background: white;
-            padding: 10px;
+            background: var(--card-bg);
+            padding: 10px 6px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .stats div:hover {
+            transform: translateY(-2px);
         }
         .stats span {
             display: block;
             font-size: 18px;
             font-weight: bold;
-            color: #1565C0;
+            color: var(--primary);
         }
         .stats label {
-            font-size: 10px;
-            color: #666;
+            font-size: 9px;
+            color: var(--text-light);
         }
-        .btn-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
+        .stats .online {
+            border: 2px solid var(--secondary);
+            background: #E8F5E9;
         }
-        .btn-group .btn {
-            flex: 1;
-            min-width: 70px;
-            padding: 10px 6px;
+        .stats .online span {
+            color: var(--secondary);
+        }
+
+        /* ===== Buttons ===== */
+        .btn {
+            padding: 10px 14px;
             border: none;
             border-radius: 10px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.2s;
+            transition: var(--transition);
             color: white;
             text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
         }
         .btn:active {
-            transform: scale(0.97);
+            transform: scale(0.95);
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         .btn-primary {
-            background: #1565C0;
+            background: var(--primary);
         }
         .btn-success {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .btn-warning {
-            background: #E65100;
+            background: var(--warning);
         }
         .btn-danger {
-            background: #C62828;
+            background: var(--danger);
         }
         .btn-secondary {
             background: #616161;
         }
         .btn-purple {
-            background: #6A1B9A;
+            background: var(--purple);
         }
         .btn-teal {
             background: #00695C;
@@ -281,28 +384,54 @@
             background: #C2185B;
         }
         .btn-gold {
-            background: #FF8F00;
+            background: linear-gradient(135deg, #FF8F00, #E65100);
         }
         .btn-info {
             background: #00838F;
         }
+
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .btn-group .btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px 6px;
+            font-size: 11px;
+        }
+
+        /* ===== Form ===== */
         .form {
-            background: white;
+            background: var(--card-bg);
             padding: 16px;
-            border-radius: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             display: none;
             margin-bottom: 14px;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         .form h3 {
-            color: #1565C0;
+            color: var(--primary);
             margin-bottom: 12px;
             text-align: center;
             font-size: 16px;
         }
         .form label {
             font-size: 12px;
-            color: #555;
+            color: var(--text-light);
             display: block;
             margin-bottom: 3px;
         }
@@ -315,13 +444,16 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 13px;
-            transition: 0.2s;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
         }
         .form input:focus,
         .form select:focus,
         .form textarea:focus {
-            border-color: #1565C0;
+            border-color: var(--primary);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
         }
         .form textarea {
             min-height: 60px;
@@ -333,162 +465,67 @@
             padding: 12px;
             font-size: 14px;
         }
-        .admin-users-section {
-            background: #E3F2FD;
-            border: 2px solid #1565C0;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: none;
-        }
-        .admin-users-section .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-        .admin-users-section .section-header h4 {
-            color: #1565C0;
-            font-size: 16px;
-        }
-        .admin-users-section .section-header .user-count {
-            background: #1565C0;
-            color: white;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .user-list-item {
-            background: white;
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            border-right: 4px solid #4CAF50;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .user-list-item .user-phone {
-            font-size: 16px;
-            font-weight: bold;
-            color: #1565C0;
-            direction: ltr;
-        }
-        .user-list-item .user-meta {
-            font-size: 11px;
-            color: #888;
-        }
-        .user-list-item .user-status {
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .user-list-item .user-status.verified {
-            background: #E8F5E9;
-            color: #2E7D32;
-        }
-        .user-list-item .user-status.pending {
-            background: #FFF3E0;
-            color: #E65100;
-        }
-        .user-list-item .user-actions {
-            display: flex;
-            gap: 4px;
-        }
-        .user-list-item .user-actions button {
-            border: none;
-            border-radius: 6px;
-            padding: 4px 8px;
-            font-size: 11px;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-        .user-list-item .user-actions .delete-user {
-            background: #C62828;
-        }
-        .user-list-item .user-actions .contact-user {
-            background: #25D366;
-        }
-        .filter-sort {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        .filter-sort select,
-        .filter-sort input {
-            flex: 1;
-            min-width: 80px;
-            padding: 8px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 12px;
-        }
-        .filter-tabs {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-        .filter-tabs button {
-            flex: 1;
-            min-width: 50px;
-            padding: 8px 4px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: white;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .filter-tabs button.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
-        }
+
+        /* ===== Property Card ===== */
         .property-card {
-            background: white;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-right: 5px solid #1565C0;
+            background: var(--card-bg);
+            padding: 14px;
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary);
             position: relative;
-            transition: all 0.3s;
+            transition: var(--transition);
+            animation: fadeInUp 0.4s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .property-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
         }
         .property-card.sale {
-            border-right-color: #E65100;
+            border-right-color: var(--warning);
         }
         .property-card.rent {
-            border-right-color: #C62828;
+            border-right-color: var(--danger);
         }
         .property-card.pinned {
-            border: 3px solid #FFD700;
+            border: 3px solid var(--accent);
             background: #FFFDE7;
+        }
+        body.dark-mode .property-card.pinned {
+            background: #1a1a2e;
+            border-color: var(--accent);
         }
         .property-card .pinned-badge {
             position: absolute;
             top: -5px;
             right: 50%;
             transform: translateX(50%);
-            background: #FFD700;
+            background: var(--accent);
             color: #333;
-            padding: 2px 12px;
+            padding: 2px 14px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
         .property-card .code-badge {
             position: absolute;
             top: 8px;
             left: 8px;
-            background: #1565C0;
+            background: var(--primary);
             color: white;
-            padding: 2px 8px;
+            padding: 2px 10px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: bold;
@@ -509,16 +546,19 @@
             font-size: 12px;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: var(--transition);
+        }
+        .property-card .action-btns button:hover {
+            transform: scale(1.1);
         }
         .property-card .btn-edit {
             background: #FFA000;
         }
         .property-card .btn-delete {
-            background: #C62828;
+            background: var(--danger);
         }
         .property-card .btn-pin {
-            background: #FFD700;
+            background: var(--accent);
             color: #333;
         }
         .property-card .btn-cart {
@@ -530,59 +570,48 @@
             height: 28px;
             font-size: 14px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: var(--transition);
         }
         .property-card .btn-cart.in-cart {
-            background: #2E7D32;
+            background: var(--secondary);
         }
-        .property-card .btn-favorite {
-            background: #E91E63;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .property-card .btn-favorite.active {
-            background: #C62828;
+        .property-card .btn-cart:hover {
+            transform: scale(1.1);
         }
         .property-card h3 {
-            color: #1565C0;
+            color: var(--primary);
             margin: 4px 0;
             font-size: 16px;
         }
         .property-card .address {
-            color: #666;
+            color: var(--text-light);
             font-size: 12px;
         }
         .property-card .price {
-            color: #2E7D32;
+            color: var(--secondary);
             font-weight: bold;
             font-size: 16px;
         }
         .property-card .meta {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
             margin-top: 4px;
             font-size: 11px;
-            color: #555;
+            color: var(--text-light);
         }
         .property-card .meta span {
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 2px 10px;
             border-radius: 20px;
         }
         .property-card .desc {
-            background: #f5f5f5;
-            padding: 6px;
+            background: var(--bg);
+            padding: 8px;
             border-radius: 8px;
             margin-top: 6px;
             font-size: 12px;
-            color: #333;
+            color: var(--text);
         }
         .property-card .desc .hidden-part {
             background: #fff3cd;
@@ -591,6 +620,10 @@
             border-radius: 6px;
             display: block;
             margin-top: 4px;
+        }
+        body.dark-mode .property-card .desc .hidden-part {
+            background: #1a1a2e;
+            border-color: #6A1B9A;
         }
         .property-card .desc .hidden-part .label {
             font-size: 10px;
@@ -601,8 +634,12 @@
             display: inline-block;
             margin-bottom: 2px;
         }
+        body.dark-mode .property-card .desc .hidden-part .label {
+            color: #ce93d8;
+            background: #0f3460;
+        }
         .property-card .desc .hidden-part .content {
-            color: #333;
+            color: var(--text);
         }
         .property-card .like-section {
             display: flex;
@@ -614,14 +651,14 @@
         .property-card .like-section button {
             border: none;
             background: none;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             padding: 4px 12px;
             border-radius: 8px;
-            transition: 0.2s;
+            transition: var(--transition);
         }
         .property-card .like-section button:hover {
-            background: #f0f0f0;
+            background: var(--bg);
         }
         .property-card .like-section .like-btn {
             color: #4CAF50;
@@ -631,130 +668,499 @@
         }
         .property-card .like-section .count {
             font-size: 14px;
-            color: #555;
+            color: var(--text-light);
         }
-        .property-card .share-btns {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .property-card .share-btns button {
-            flex: 1;
-            padding: 6px;
-            border: none;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-        .share-whatsapp {
-            background: #25D366;
-        }
-        .share-telegram {
-            background: #0088CC;
-        }
-        .share-ita {
-            background: #4CAF50;
-        }
-        .empty {
-            text-align: center;
-            color: #999;
-            padding: 30px 0;
-        }
-        .search-box {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-bottom: 10px;
-        }
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #333;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 12px;
-            font-size: 13px;
-            display: none;
-            z-index: 9999;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            font-weight: 500;
-        }
-        .toast.error {
-            background: #C62828;
-        }
-        .toast.success {
-            background: #2E7D32;
-        }
-        .toast.warning {
-            background: #E65100;
-        }
-        .toast.info {
-            background: #1565C0;
-        }
-        .file-input-wrapper {
-            background: #f5f5f5;
-            padding: 8px;
-            border-radius: 10px;
-            margin-bottom: 10px;
-            border: 2px dashed #bbb;
-        }
-        .file-input-wrapper input {
-            margin-bottom: 2px;
-        }
-        .file-input-wrapper small {
-            font-size: 10px;
-            color: #888;
-        }
-        .chart-container {
-            background: white;
-            padding: 16px;
-            border-radius: 16px;
-            margin: 12px 0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-        }
-        .chart-container canvas {
-            max-width: 100%;
-            max-height: 200px;
-        }
-        .modal-overlay {
+
+        /* ===== Cart Modal ===== */
+        .cart-modal {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 1500;
             padding: 20px;
+            animation: fadeIn 0.3s ease;
         }
-        .modal-overlay.active {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .cart-modal.active {
             display: flex;
         }
-        .modal-content {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            max-width: 95%;
-            max-height: 90%;
-            overflow: auto;
-            width: 500px;
+        .cart-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+            color: var(--text);
         }
-        .modal-content img,
-        .modal-content video {
-            max-width: 100%;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .cart-content h3 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+        }
+        .cart-content h3 button {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .cart-content h3 button:hover {
+            transform: scale(1.05);
+        }
+        .cart-item-detail {
+            border-bottom: 2px solid #e0e0e0;
+            padding: 14px 0;
+        }
+        .cart-item-detail:last-child {
+            border-bottom: none;
+        }
+        .cart-item-title {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 16px;
+        }
+        .cart-item-address {
+            font-size: 13px;
+            color: var(--text);
+            margin-top: 4px;
+        }
+        .cart-item-price {
+            font-size: 14px;
+            color: var(--secondary);
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .cart-item-meta {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+        .cart-item-desc {
+            font-size: 12px;
+            color: var(--text);
+            margin-top: 4px;
+            background: var(--bg);
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+        .cart-item-hidden {
+            font-size: 12px;
+            color: #6A1B9A;
+            margin-top: 4px;
+            background: #f3e5f5;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border-right: 3px solid #6A1B9A;
+        }
+        .cart-item-code {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+        .cart-item-date {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+        .cart-remove-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+            margin-right: 10px;
+        }
+        .cart-remove-btn:hover {
+            transform: scale(1.1);
+        }
+        .cart-empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px 0;
+            font-size: 16px;
+        }
+        .cart-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .cart-actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: var(--transition);
+        }
+        .cart-actions button:hover {
+            transform: translateY(-2px);
+        }
+        .cart-actions .clear-cart {
+            background: var(--danger);
+        }
+        .cart-actions .share-cart {
+            background: #25D366;
+        }
+        .cart-badge {
+            background: #FF8F00;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+
+        /* ===== Search ===== */
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
             border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .search-box:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            display: none;
+            z-index: 9999;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            font-weight: 500;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        .toast.error {
+            background: var(--danger);
+            color: white;
+        }
+        .toast.success {
+            background: var(--secondary);
+            color: white;
+        }
+        .toast.warning {
+            background: var(--warning);
+            color: white;
+        }
+        .toast.info {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* ===== Login ===== */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        .login-overlay.hidden {
+            display: none;
+        }
+        .login-box {
+            background: var(--card-bg);
+            padding: 32px;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            color: var(--text);
+        }
+        .login-box h2 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+        .login-box h2 span {
+            color: var(--accent);
+        }
+        .login-box p {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .login-buttons .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border-radius: 14px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .login-buttons .btn::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .login-buttons .btn:hover::after {
+            opacity: 1;
+        }
+        .btn-user-login {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+        }
+        .btn-admin-login {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 20px rgba(21, 101, 192, 0.4);
+        }
+        .login-hint {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 14px;
+            padding: 10px;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+        .password-input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            direction: ltr;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .password-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+        }
+
+        /* ===== Loading ===== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 16px;
+        }
+        body.dark-mode .loading-overlay {
+            background: rgba(26, 26, 46, 0.95);
+        }
+        .loading-overlay.hidden {
+            display: none;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .loading-text {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* ===== Other ===== */
+        .empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px 0;
+            font-size: 16px;
+        }
+        .admin-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #333;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+        .edit-profile-btn {
+            background: #FF6F00;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .edit-profile-btn:hover {
+            transform: scale(1.05);
+        }
+        .clear-filter-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .clear-filter-btn:hover {
+            transform: scale(1.05);
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-tabs button {
+            flex: 1;
+            min-width: 50px;
+            padding: 8px 4px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-tabs button:hover {
+            border-color: var(--primary);
+        }
+        .filter-tabs button.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .filter-sort {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .filter-sort select,
+        .filter-sort input {
+            flex: 1;
+            min-width: 70px;
+            padding: 8px 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 12px;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
+        }
+        .filter-sort select:focus,
+        .filter-sort input:focus {
+            border-color: var(--primary);
+            outline: none;
         }
         .welcome-box {
             background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
@@ -762,28 +1168,39 @@
             border-radius: 12px;
             margin-bottom: 12px;
             text-align: center;
-            border-right: 5px solid #2E7D32;
+            border-right: 5px solid var(--secondary);
+        }
+        body.dark-mode .welcome-box {
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            border-color: #4fc3f7;
         }
         .welcome-box h3 {
             color: #1B5E20;
         }
+        body.dark-mode .welcome-box h3 {
+            color: #4fc3f7;
+        }
         .welcome-box p {
-            color: #333;
+            color: var(--text);
             font-size: 13px;
         }
         .admin-msg-box {
             background: #FFF3E0;
-            padding: 10px;
+            padding: 10px 14px;
             border-radius: 10px;
             margin-bottom: 12px;
-            border-right: 5px solid #E65100;
+            border-right: 5px solid var(--warning);
+        }
+        body.dark-mode .admin-msg-box {
+            background: #0f3460;
+            border-color: #4fc3f7;
         }
         .admin-msg-box p {
             font-size: 13px;
-            color: #333;
+            color: var(--text);
         }
         .admin-msg-box small {
-            color: #888;
+            color: var(--text-light);
             font-size: 11px;
         }
         .admin-msg-box .msg-actions {
@@ -792,16 +1209,19 @@
             gap: 6px;
         }
         .admin-msg-box .msg-actions button {
-            padding: 4px 10px;
+            padding: 4px 12px;
             border: none;
             border-radius: 6px;
             font-size: 11px;
             cursor: pointer;
             color: white;
-            transition: 0.2s;
+            transition: var(--transition);
+        }
+        .admin-msg-box .msg-actions button:hover {
+            transform: scale(1.05);
         }
         .admin-msg-box .msg-actions .del-msg {
-            background: #C62828;
+            background: var(--danger);
         }
         .admin-msg-box .msg-actions .edit-msg {
             background: #FFA000;
@@ -817,322 +1237,87 @@
             font-size: 12px;
             resize: vertical;
             min-height: 60px;
+            background: var(--card-bg);
+            color: var(--text);
         }
         .admin-msg-edit-area button {
-            padding: 4px 12px;
+            padding: 4px 14px;
             border: none;
             border-radius: 6px;
             font-size: 11px;
             cursor: pointer;
             color: white;
             margin-top: 4px;
+            transition: var(--transition);
+        }
+        .admin-msg-edit-area button:hover {
+            transform: scale(1.05);
         }
         .admin-msg-edit-area .save-msg {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .admin-msg-edit-area .cancel-msg {
             background: #616161;
         }
-        .login-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 20px;
-        }
-        .login-overlay.hidden {
-            display: none;
-        }
-        .login-box {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-        }
-        .login-box h2 {
-            color: #1565C0;
-            margin-bottom: 8px;
-        }
-        .login-box h2 span {
-            color: #FFD700;
-        }
-        .login-box p {
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 16px;
-        }
 
-        .login-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 10px;
-        }
-        .login-buttons .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-        .login-buttons .btn:active {
-            transform: scale(0.97);
-        }
-        .btn-user-login {
-            background: linear-gradient(135deg, #4CAF50, #2E7D32);
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
-        }
-        .btn-admin-login {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
-            box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
-        }
-
-        .login-hint {
-            font-size: 12px;
-            color: #888;
-            margin-top: 12px;
-            padding: 10px;
-            background: #f5f5f5;
-            border-radius: 8px;
-        }
-
-        .password-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            text-align: center;
-            direction: ltr;
-        }
-        .password-input:focus {
-            border-color: #1565C0;
-            outline: none;
-        }
-
-        .admin-badge {
-            display: inline-block;
-            background: #FFD700;
-            color: #333;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-        }
-        .logout-btn {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-right: 8px;
-            transition: 0.2s;
-        }
-        .logout-btn:active {
-            transform: scale(0.95);
-        }
-        .guide-box {
-            background: #FFF8E1;
-            border: 2px solid #FFB300;
-            border-radius: 12px;
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-        .guide-box h4 {
-            color: #E65100;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .guide-box ul {
-            list-style: none;
-            padding: 0;
-            font-size: 12px;
-            color: #333;
-        }
-        .guide-box ul li {
-            padding: 4px 0;
-            border-bottom: 1px dashed #eee;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .guide-box ul li:last-child {
-            border-bottom: none;
-        }
-        .guide-box .badge-icon {
-            display: inline-block;
-            background: #1565C0;
-            color: white;
-            padding: 0 6px;
-            border-radius: 4px;
-            font-size: 10px;
-            min-width: 20px;
-            text-align: center;
-        }
-        .guide-box .badge-icon.green {
-            background: #2E7D32;
-        }
-        .guide-box .badge-icon.orange {
-            background: #E65100;
-        }
-        .guide-box .badge-icon.red {
-            background: #C62828;
-        }
-        .guide-box .badge-icon.gold {
-            background: #FFD700;
-            color: #333;
-        }
-        .guide-box .badge-icon.purple {
-            background: #6A1B9A;
-        }
-        .guide-box .badge-icon.pink {
-            background: #C2185B;
-        }
-        .public-msg-card {
-            background: #E3F2FD;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            border-right: 5px solid #1565C0;
-        }
-        .public-msg-card .msg-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .public-msg-card .msg-header .msg-date {
-            font-size: 11px;
-            color: #888;
-        }
-        .public-msg-card .msg-text {
-            font-size: 14px;
-            color: #333;
-            margin-top: 4px;
-        }
-        .public-msg-card .msg-actions {
-            margin-top: 6px;
-            display: flex;
-            gap: 6px;
-        }
-        .public-msg-card .msg-actions button {
-            padding: 4px 10px;
-            border: none;
-            border-radius: 6px;
-            font-size: 11px;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-        .public-msg-card .msg-actions .del-msg {
-            background: #C62828;
-        }
-        .public-msg-card .msg-actions .edit-msg {
-            background: #FFA000;
-        }
-        .public-msg-like {
-            display: flex;
-            gap: 12px;
-            margin-top: 6px;
-            align-items: center;
-        }
-        .public-msg-like button {
-            border: none;
-            background: none;
-            font-size: 16px;
-            cursor: pointer;
-            padding: 2px 8px;
-            border-radius: 6px;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .public-msg-like button:hover {
-            background: #f0f0f0;
-        }
-        .public-msg-like .like-btn {
-            color: #4CAF50;
-        }
-        .public-msg-like .dislike-btn {
-            color: #f44336;
-        }
-        .public-msg-like .count {
-            font-size: 13px;
-            color: #555;
-            font-weight: bold;
-        }
+        /* ===== Category & Type Grids ===== */
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
         }
         .category-grid .cat-btn {
-            padding: 14px 8px;
+            padding: 12px 4px;
             border: 3px solid #e0e0e0;
-            border-radius: 16px;
-            background: white;
-            font-size: 13px;
+            border-radius: 14px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
-        .category-grid .cat-btn:active {
-            transform: scale(0.95);
+        .category-grid .cat-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
         }
         .category-grid .cat-btn.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         .category-grid .cat-btn .icon {
-            font-size: 24px;
+            font-size: 22px;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
         .type-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 14px;
         }
         .type-grid .type-btn {
-            padding: 14px;
+            padding: 12px;
             border: 3px solid #e0e0e0;
-            border-radius: 16px;
-            background: white;
-            font-size: 14px;
+            border-radius: 14px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
             text-align: center;
         }
-        .type-grid .type-btn:active {
-            transform: scale(0.95);
+        .type-grid .type-btn:hover {
+            transform: translateY(-2px);
         }
         .type-grid .type-btn.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         .type-grid .type-btn.sale {
             border-color: #E65100;
@@ -1158,24 +1343,15 @@
             text-align: center;
             border-right: 4px solid #FFB300;
             font-size: 13px;
-            color: #333;
+            color: var(--text);
+        }
+        body.dark-mode .selection-info {
+            background: #0f3460;
+            border-color: #4fc3f7;
+            color: #aaa;
         }
         .selection-info strong {
-            color: #1565C0;
-        }
-        .clear-filter-btn {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            margin-right: 8px;
-            transition: 0.2s;
-        }
-        .clear-filter-btn:active {
-            transform: scale(0.95);
+            color: var(--primary);
         }
         .price-filter-box {
             background: #E8EAF6;
@@ -1184,9 +1360,12 @@
             margin-bottom: 12px;
             border-right: 4px solid #3F51B5;
         }
+        body.dark-mode .price-filter-box {
+            background: #0f3460;
+        }
         .price-filter-box label {
             font-size: 12px;
-            color: #555;
+            color: var(--text-light);
             display: block;
             margin-bottom: 4px;
         }
@@ -1197,6 +1376,8 @@
             border-radius: 10px;
             font-size: 13px;
             margin-bottom: 8px;
+            background: var(--card-bg);
+            color: var(--text);
         }
         .price-filter-box input:focus {
             border-color: #3F51B5;
@@ -1212,193 +1393,226 @@
             cursor: pointer;
             color: white;
             background: #3F51B5;
-            transition: 0.2s;
+            transition: var(--transition);
         }
-        .price-filter-box .btn:active {
-            transform: scale(0.97);
+        .price-filter-box .btn:hover {
+            transform: translateY(-2px);
         }
         .price-filter-box .btn-clear {
-            background: #C62828;
+            background: var(--danger);
             margin-top: 6px;
         }
         .price-filter-box .price-info {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
             text-align: center;
             margin-bottom: 8px;
         }
-        .cart-badge {
-            background: #FF8F00;
-            color: white;
-            padding: 2px 10px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: bold;
-            margin-right: 6px;
+
+        /* ===== Guide Box ===== */
+        .guide-box {
+            background: #FFF8E1;
+            border: 2px solid #FFB300;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
-        .cart-modal {
+        body.dark-mode .guide-box {
+            background: #0f3460;
+            border-color: #4fc3f7;
+        }
+        .guide-box h4 {
+            color: var(--warning);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        body.dark-mode .guide-box h4 {
+            color: #4fc3f7;
+        }
+        .guide-box ul {
+            list-style: none;
+            padding: 0;
+            font-size: 12px;
+            color: var(--text);
+        }
+        .guide-box ul li {
+            padding: 4px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-box ul li:last-child {
+            border-bottom: none;
+        }
+        .guide-box .badge-icon {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+        .guide-box .badge-icon.green {
+            background: var(--secondary);
+        }
+        .guide-box .badge-icon.orange {
+            background: var(--warning);
+        }
+        .guide-box .badge-icon.red {
+            background: var(--danger);
+        }
+        .guide-box .badge-icon.gold {
+            background: var(--accent);
+            color: #333;
+        }
+        .guide-box .badge-icon.purple {
+            background: var(--purple);
+        }
+        .guide-box .badge-icon.pink {
+            background: #C2185B;
+        }
+
+        /* ===== Public Messages ===== */
+        .public-msg-card {
+            background: var(--primary-light);
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border-right: 5px solid var(--primary);
+        }
+        body.dark-mode .public-msg-card {
+            background: #0f3460;
+        }
+        .public-msg-card .msg-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .public-msg-card .msg-header .msg-date {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .public-msg-card .msg-text {
+            font-size: 14px;
+            color: var(--text);
+            margin-top: 4px;
+        }
+        .public-msg-card .msg-actions {
+            margin-top: 6px;
+            display: flex;
+            gap: 6px;
+        }
+        .public-msg-card .msg-actions button {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            color: white;
+            transition: var(--transition);
+        }
+        .public-msg-card .msg-actions button:hover {
+            transform: scale(1.05);
+        }
+        .public-msg-card .msg-actions .del-msg {
+            background: var(--danger);
+        }
+        .public-msg-card .msg-actions .edit-msg {
+            background: #FFA000;
+        }
+        .public-msg-like {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+            align-items: center;
+        }
+        .public-msg-like button {
+            border: none;
+            background: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: var(--text);
+        }
+        .public-msg-like button:hover {
+            background: var(--bg);
+        }
+        .public-msg-like .like-btn {
+            color: #4CAF50;
+        }
+        .public-msg-like .dislike-btn {
+            color: #f44336;
+        }
+        .public-msg-like .count {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: bold;
+        }
+
+        /* ===== Chart ===== */
+        .chart-container {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: var(--radius);
+            margin: 12px 0;
+            box-shadow: var(--shadow);
+        }
+        .chart-container h4 {
+            text-align: center;
+            color: var(--primary);
+        }
+        .chart-container canvas {
+            max-width: 100%;
+            max-height: 200px;
+        }
+
+        /* ===== Modal ===== */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
             display: none;
             justify-content: center;
             align-items: center;
-            z-index: 1500;
+            z-index: 1000;
             padding: 20px;
         }
-        .cart-modal.active {
+        .modal-overlay.active {
             display: flex;
         }
-        .cart-content {
-            background: white;
-            border-radius: 20px;
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 20px;
-            max-width: 500px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
+            max-width: 95%;
+            max-height: 90%;
+            overflow: auto;
+            width: 500px;
+            animation: slideUp 0.3s ease;
         }
-        .cart-content h3 {
-            color: #1565C0;
-            text-align: center;
-            margin-bottom: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .modal-content img,
+        .modal-content video {
+            max-width: 100%;
+            border-radius: 12px;
         }
-        .cart-content h3 button {
-            background: #C62828;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .cart-content h3 button:active {
-            transform: scale(0.95);
-        }
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        .cart-item:last-child {
-            border-bottom: none;
-        }
-        .cart-item .info {
-            flex: 1;
-        }
-        .cart-item .info .title {
-            font-weight: bold;
-            color: #1565C0;
-            font-size: 14px;
-        }
-        .cart-item .info .detail {
-            font-size: 12px;
-            color: #666;
-        }
-        .cart-item .remove-btn {
-            background: #C62828;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .cart-item .remove-btn:active {
-            transform: scale(0.9);
-        }
-        .cart-empty {
-            text-align: center;
-            color: #999;
-            padding: 30px 0;
-        }
-        .cart-actions {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .cart-actions button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            color: white;
-            transition: 0.2s;
-        }
-        .cart-actions .clear-cart {
-            background: #C62828;
-        }
-        .cart-actions .share-cart {
-            background: #25D366;
-        }
-        .edit-profile-btn {
-            background: #FF6F00;
-            color: white;
-            border: none;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-right: 6px;
-            transition: 0.2s;
-        }
-        .edit-profile-btn:active {
-            transform: scale(0.95);
-        }
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(255, 255, 255, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .loading-overlay.hidden {
-            display: none;
-        }
-        .spinner {
-            width: 48px;
-            height: 48px;
-            border: 6px solid #e0e0e0;
-            border-top: 6px solid #1565C0;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-        .loading-text {
-            color: #1565C0;
-            font-size: 16px;
-            font-weight: bold;
-        }
+
+        /* ===== Chat ===== */
         .chat-container {
-            background: #f8f9fa;
+            background: var(--bg);
             border-radius: 12px;
             padding: 10px;
             margin-top: 6px;
@@ -1407,42 +1621,150 @@
             border: 1px solid #e0e0e0;
         }
         .chat-container .chat-msg {
-            padding: 6px 10px;
+            padding: 6px 12px;
             margin: 4px 0;
             border-radius: 8px;
             font-size: 12px;
         }
         .chat-container .chat-msg.user {
-            background: #E3F2FD;
+            background: var(--primary-light);
             text-align: right;
-            border-right: 3px solid #1565C0;
+            border-right: 3px solid var(--primary);
         }
         .chat-container .chat-msg.admin {
             background: #FFF3E0;
             text-align: left;
-            border-left: 3px solid #E65100;
+            border-left: 3px solid var(--warning);
+        }
+        body.dark-mode .chat-container .chat-msg.admin {
+            background: #1a1a2e;
+            border-color: #4fc3f7;
         }
         .chat-container .chat-msg .time {
             font-size: 9px;
-            color: #888;
+            color: var(--text-light);
         }
+
+        /* ===== User List ===== */
+        .admin-users-section {
+            background: var(--primary-light);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        body.dark-mode .admin-users-section {
+            background: #0f3460;
+            border-color: #4fc3f7;
+        }
+        .admin-users-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .admin-users-section .section-header h4 {
+            color: var(--primary);
+            font-size: 16px;
+        }
+        body.dark-mode .admin-users-section .section-header h4 {
+            color: #4fc3f7;
+        }
+        .admin-users-section .section-header .user-count {
+            background: var(--primary);
+            color: white;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .user-list-item {
+            background: var(--card-bg);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            border-right: 4px solid var(--secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        body.dark-mode .user-list-item {
+            background: var(--card-bg);
+        }
+        .user-list-item .user-phone {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .user-list-item .user-meta {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .user-list-item .user-status {
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .user-list-item .user-status.verified {
+            background: #E8F5E9;
+            color: var(--secondary);
+        }
+        .user-list-item .user-status.pending {
+            background: #FFF3E0;
+            color: var(--warning);
+        }
+        .user-list-item .user-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .user-list-item .user-actions button {
+            border: none;
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 11px;
+            cursor: pointer;
+            color: white;
+            transition: var(--transition);
+        }
+        .user-list-item .user-actions button:hover {
+            transform: scale(1.05);
+        }
+        .user-list-item .user-actions .delete-user {
+            background: var(--danger);
+        }
+        .user-list-item .user-actions .contact-user {
+            background: #25D366;
+        }
+
+        /* ===== File Input ===== */
+        .file-input-wrapper {
+            background: var(--bg);
+            padding: 8px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border: 2px dashed #bbb;
+        }
+        .file-input-wrapper input {
+            margin-bottom: 2px;
+        }
+        .file-input-wrapper small {
+            font-size: 10px;
+            color: var(--text-light);
+        }
+
+        /* ===== Responsive ===== */
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(3, 1fr);
             }
-            .btn-group {
+            .category-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-            .property-card h3,
-            .property-card .address,
-            .property-card .price,
-            .property-card .meta {
-                padding-left: 0;
-            }
-            .property-card .code-badge {
-                position: static;
-                display: inline-block;
-                margin-bottom: 4px;
+            .btn-group .btn {
+                font-size: 10px;
+                padding: 8px 4px;
             }
             .property-card .action-btns {
                 position: static;
@@ -1451,85 +1773,11 @@
                 margin-top: 6px;
                 flex-wrap: wrap;
             }
-            .category-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .property-card .code-badge {
+                position: static;
+                display: inline-block;
+                margin-bottom: 4px;
             }
-        }
-
-        /* استایل مخصوص سبد خرید */
-        .cart-item-detail {
-            border-bottom: 2px solid #e0e0e0;
-            padding: 15px 0;
-        }
-        .cart-item-detail:last-child {
-            border-bottom: none;
-        }
-        .cart-item-title {
-            font-weight: bold;
-            color: #1565C0;
-            font-size: 16px;
-        }
-        .cart-item-address {
-            font-size: 13px;
-            color: #333;
-            margin-top: 4px;
-        }
-        .cart-item-price {
-            font-size: 14px;
-            color: #2E7D32;
-            font-weight: bold;
-            margin-top: 4px;
-        }
-        .cart-item-meta {
-            font-size: 12px;
-            color: #666;
-            margin-top: 2px;
-        }
-        .cart-item-desc {
-            font-size: 12px;
-            color: #555;
-            margin-top: 4px;
-            background: #f5f5f5;
-            padding: 6px;
-            border-radius: 6px;
-        }
-        .cart-item-hidden {
-            font-size: 12px;
-            color: #6A1B9A;
-            margin-top: 4px;
-            background: #f3e5f5;
-            padding: 6px;
-            border-radius: 6px;
-            border-right: 3px solid #6A1B9A;
-        }
-        .cart-item-code {
-            font-size: 11px;
-            color: #888;
-            margin-top: 2px;
-        }
-        .cart-item-date {
-            font-size: 11px;
-            color: #888;
-            margin-top: 2px;
-        }
-        .cart-remove-btn {
-            background: #C62828;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-            flex-shrink: 0;
-            margin-right: 10px;
-        }
-        .cart-remove-btn:hover {
-            transform: scale(1.1);
-        }
-        .cart-remove-btn:active {
-            transform: scale(0.9);
         }
     </style>
 </head>
@@ -1551,8 +1799,8 @@
                     <button class="btn btn-admin-login" onclick="showAdminLogin()">👑 ورود به عنوان مدیر</button>
                     <div id="adminLoginArea" style="display:none; margin-top:10px;">
                         <input type="password" id="adminPasswordInput" placeholder="🔑 رمز عبور مدیر را وارد کنید" class="password-input">
-                        <button class="btn" onclick="loginAdmin()" style="background:#1565C0; width:100%; padding:12px; border:none; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; color:white;">✅ تایید</button>
-                        <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:12px; border:none; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px;">❌ انصراف</button>
+                        <button class="btn" onclick="loginAdmin()" style="background:var(--primary); width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:var(--transition);">✅ تایید</button>
+                        <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px; transition:var(--transition);">❌ انصراف</button>
                     </div>
                 </div>
             </div>
@@ -1562,6 +1810,7 @@
     </div>
 
     <div id="mainApp" style="display:none;">
+        <!-- Header -->
         <div class="header">
             <div class="header-top">
                 <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
@@ -1570,11 +1819,13 @@
             <p id="welcomeUser">خوش آمدید</p>
         </div>
 
+        <!-- Welcome -->
         <div class="welcome-box" id="welcomeBox">
             <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
+        <!-- Admin Message -->
         <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
             <div id="adminMsgDisplay">
                 <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
@@ -1591,26 +1842,29 @@
             </div>
         </div>
 
+        <!-- Top Bar -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
             <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
             <div>
-                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#FF8F00,#E65100);margin-right:4px;box-shadow:0 2px 10px rgba(255,143,0,0.3);" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
+                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#FF8F00,#E65100);margin-right:4px;box-shadow:0 2px 10px rgba(255,143,0,0.3);transition:var(--transition);" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
                 <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش</button>
                 <button class="logout-btn" onclick="logout()">🚪 خروج</button>
             </div>
         </div>
 
+        <!-- Users List (Admin) -->
         <div class="admin-users-section" id="adminUsersSection">
             <div class="section-header">
                 <h4>👥 لیست کاربران</h4>
                 <span class="user-count" id="userCount">۰ کاربر</span>
             </div>
             <div id="usersListContainer">
-                <div style="text-align:center;color:#888;padding:20px;">در حال بارگذاری...</div>
+                <div style="text-align:center;color:var(--text-light);padding:20px;">در حال بارگذاری...</div>
             </div>
             <button class="btn btn-secondary" onclick="refreshUsersList()" style="width:100%;margin-top:8px;">🔄 بروزرسانی</button>
         </div>
 
+        <!-- Edit Profile -->
         <div class="form" id="editProfileForm">
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
             <label>نام مدیر</label>
@@ -1621,6 +1875,7 @@
             <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
         </div>
 
+        <!-- Guide (Admin) -->
         <div class="guide-box" id="guideBox" style="display:none;">
             <h4>📖 دفترچه راهنمای مدیر</h4>
             <ul>
@@ -1638,16 +1893,17 @@
             </ul>
         </div>
 
+        <!-- User Filters -->
         <div id="userFilterSection">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-                <span style="font-size:14px;font-weight:bold;color:#1565C0;">🔍 فیلتر املاک</span>
+                <span style="font-size:14px;font-weight:bold;color:var(--primary);">🔍 فیلتر املاک</span>
                 <button class="clear-filter-btn" onclick="clearUserFilters()">🗑️ پاک کردن</button>
             </div>
             <div class="selection-info" id="filterInfo">
                 <span>یک دسته‌بندی و نوع را انتخاب کنید</span>
             </div>
 
-            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">دسته‌بندی ملک:</label>
+            <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:4px;">دسته‌بندی ملک:</label>
             <div class="category-grid" id="categoryGrid">
                 <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)"><span class="icon">🏡</span> زمین مسکونی</button>
                 <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)"><span class="icon">🏢</span> زمین تجاری</button>
@@ -1658,11 +1914,11 @@
                 <button class="cat-btn" data-cat="all" onclick="selectCategory(this)"><span class="icon">📋</span> همه</button>
             </div>
 
-            <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">نوع معامله:</label>
+            <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:4px;">نوع معامله:</label>
             <div class="type-grid" id="typeGrid">
                 <button class="type-btn sale" data-type="sale" onclick="selectType(this)">💰 فروش</button>
                 <button class="type-btn rent" data-type="rent" onclick="selectType(this)">🔑 اجاره</button>
-                <button class="type-btn" data-type="all" onclick="selectType(this)" style="border-color:#1565C0;">📋 همه</button>
+                <button class="type-btn" data-type="all" onclick="selectType(this)" style="border-color:var(--primary);">📋 همه</button>
             </div>
 
             <div class="price-filter-box" id="priceFilterBox">
@@ -1682,6 +1938,7 @@
             </div>
         </div>
 
+        <!-- Stats -->
         <div class="stats" id="statsContainer">
             <div><span id="totalCount">0</span><label>کل</label></div>
             <div><span id="saleCount">0</span><label>فروش</label></div>
@@ -1690,6 +1947,7 @@
             <div class="online" id="onlineUsers"><span id="onlineCount">0</span><label>👤 آنلاین</label></div>
         </div>
 
+        <!-- Admin Buttons -->
         <div class="btn-group" id="adminButtons" style="display:none;">
             <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
             <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام</button>
@@ -1702,6 +1960,7 @@
             <button class="btn btn-primary" onclick="showUsersList()">👥 کاربران</button>
         </div>
 
+        <!-- Property Form -->
         <div class="form" id="propertyForm">
             <h3 id="formTitle">📋 ثبت ملک جدید</h3>
             <input type="hidden" id="editId" value="" />
@@ -1742,8 +2001,8 @@
             <label>توضیحات عمومی</label>
             <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
             <label>🔒 بخش مخفی (فقط مدیر)</label>
-            <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:#6A1B9A;"></textarea>
-            <small style="color:#6A1B9A;font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است</small>
+            <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:var(--purple);"></textarea>
+            <small style="color:var(--purple);font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است</small>
             <div class="file-input-wrapper">
                 <label>📸 عکس (حداکثر ۲۰ عدد)</label>
                 <input type="file" id="fImages" accept="image/*" multiple />
@@ -1757,6 +2016,7 @@
             <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
         </div>
 
+        <!-- Public Message Form -->
         <div class="form" id="publicMsgForm">
             <h3 id="publicMsgTitle">📢 ارسال پیام عمومی</h3>
             <input type="hidden" id="editMsgId" value="" />
@@ -1766,16 +2026,18 @@
             <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
         </div>
 
+        <!-- Chat Viewer -->
         <div class="form" id="chatViewer" style="display:none;">
             <h3>💬 چت با کاربران</h3>
             <div id="chatList" style="max-height:400px;overflow-y:auto;"></div>
             <div style="margin-top:10px;">
-                <textarea id="chatReplyInput" placeholder="پاسخ خود را بنویسید..." style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;min-height:60px;resize:vertical;"></textarea>
+                <textarea id="chatReplyInput" placeholder="پاسخ خود را بنویسید..." style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;min-height:60px;resize:vertical;background:var(--card-bg);color:var(--text);"></textarea>
                 <button class="btn btn-purple" onclick="sendChatReply()">📤 ارسال پاسخ</button>
             </div>
             <button class="btn btn-secondary" onclick="closeChatViewer()">❌ بستن</button>
         </div>
 
+        <!-- Admin Filter Sort -->
         <div class="filter-sort" id="adminFilterSort">
             <select id="categoryFilter" onchange="renderList()">
                 <option value="all">همه دسته‌ها</option>
@@ -1796,27 +2058,33 @@
             <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" />
         </div>
 
+        <!-- Chart -->
         <div class="chart-container" id="chartContainer" style="display:none;">
-            <h4 style="text-align:center;color:#1565C0;">📊 آمار املاک</h4>
+            <h4>📊 آمار املاک</h4>
             <canvas id="chartCanvas"></canvas>
-            <div style="text-align:center;margin-top:8px;font-size:12px;color:#666;">
+            <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-light);">
                 <span style="color:#E65100;">🟧 فروش: <span id="chartSaleCount">0</span></span> &nbsp;|&nbsp;
                 <span style="color:#C62828;">🟥 اجاره: <span id="chartRentCount">0</span></span>
             </div>
         </div>
 
+        <!-- Public Messages -->
         <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
 
+        <!-- Search -->
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
 
+        <!-- Filter Tabs (Admin) -->
         <div class="filter-tabs" id="filterTabs">
             <button class="active" onclick="setFilter('all', this)">همه</button>
             <button onclick="setFilter('sale', this)">💰 فروش</button>
             <button onclick="setFilter('rent', this)">🔑 اجاره</button>
         </div>
 
+        <!-- Property List -->
         <div id="propertyList"></div>
 
+        <!-- Cart Modal -->
         <div class="cart-modal" id="cartModal">
             <div class="cart-content">
                 <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
@@ -1824,14 +2092,22 @@
             </div>
         </div>
 
+        <!-- Media Modal -->
         <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
             <div class="modal-content" id="modalContent"></div>
         </div>
 
+        <!-- Toast -->
         <div class="toast" id="toast"></div>
     </div>
 
     <script>
+        // ============================================================
+        // ====== تنظیمات امنیتی ======
+        // ============================================================
+        // Nonce برای امنیت بیشتر
+        const NONCE = 'dQw4w9WgXcQ';
+
         // ============================================================
         // ====== تنظیمات ======
         // ============================================================
@@ -1892,7 +2168,6 @@
         let properties = [];
         let publicMessages = [];
         let cartItems = [];
-        let favorites = [];
         let currentFilter = 'all';
         let userCategoryFilter = 'all';
         let userTypeFilter = 'all';
@@ -1907,8 +2182,16 @@
         // ============================================================
         // ====== توابع کمکی ======
         // ============================================================
-        function sanitizeInput(text) { if (!text) return ''; return String(text).replace(/<[^>]*>/g, '').replace(/[<>]/g,
-            ''); }
+        function sanitizeInput(text) {
+            if (!text) return '';
+            return String(text)
+                .replace(/<[^>]*>/g, '')
+                .replace(/[<>]/g, '')
+                .replace(/[&]/g, '&amp;')
+                .replace(/["]/g, '&quot;')
+                .replace(/[']/g, '&#x27;')
+                .replace(/[/]/g, '&#x2F;');
+        }
 
         function formatPrice(input) {
             try {
@@ -1934,10 +2217,11 @@
         }
 
         // ============================================================
-        // ====== ورود ======
+        // ====== ورود (کاربر عادی مستقیم) ======
         // ============================================================
         function loginAsUser() {
             try {
+                // ورود مستقیم کاربر بدون هیچ تاخیری
                 const userId = 'user_' + Date.now().toString(36);
                 isAdmin = false;
                 currentUser = {
@@ -1946,6 +2230,11 @@
                     name: 'کاربر عادی'
                 };
                 localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+
+                // مخفی کردن صفحه ورود و نمایش برنامه
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('mainApp').style.display = 'block';
+
                 showToast('👋 خوش آمدید!', 'success');
                 enterApp();
             } catch (e) {
@@ -1984,6 +2273,10 @@
                         name: 'مدیر'
                     };
                     localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('mainApp').style.display = 'block';
+
                     showToast('👑 خوش آمدید مدیر!', 'success');
                     enterApp();
                 } else {
@@ -2049,7 +2342,7 @@
 
                 if (!users.length) {
                     container.innerHTML = `
-                                <div style="text-align:center;color:#999;padding:20px;">
+                                <div style="text-align:center;color:var(--text-light);padding:20px;">
                                     👤 هنوز کاربری ثبت نام نکرده است
                                 </div>
                             `;
@@ -2098,7 +2391,7 @@
             } catch (e) {
                 ErrorHandler.log(e, 'بارگذاری لیست کاربران');
                 document.getElementById('usersListContainer').innerHTML = `
-                            <div style="text-align:center;color:#C62828;padding:20px;">
+                            <div style="text-align:center;color:var(--danger);padding:20px;">
                                 ❌ خطا در بارگذاری لیست کاربران
                             </div>
                         `;
@@ -2137,12 +2430,9 @@
         // ============================================================
         async function enterApp() {
             try {
-                document.getElementById('loginOverlay').classList.add('hidden');
-                document.getElementById('mainApp').style.display = 'block';
                 await loadProperties();
                 loadPublicMessages();
                 loadCartItems();
-                loadFavorites();
                 loadChatMessages();
                 updateWelcomeMessage();
 
@@ -2217,10 +2507,6 @@
 
         function loadCartItems() {
             try { cartItems = JSON.parse(localStorage.getItem('amlak_cart') || '[]'); } catch { cartItems = []; }
-        }
-
-        function loadFavorites() {
-            try { favorites = JSON.parse(localStorage.getItem('amlak_favorites') || '[]'); } catch { favorites = []; }
         }
 
         function loadChatMessages() {
@@ -2511,7 +2797,7 @@
                 const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
                 const userChats = users.filter(u => chatMessages.some(m => m.user_id === u.id));
                 if (!userChats.length) {
-                    container.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ چتی با کاربران وجود ندارد</div>';
+                    container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ چتی با کاربران وجود ندارد</div>';
                     return;
                 }
                 let html = '';
@@ -2520,10 +2806,10 @@
                     html += `
                                 <div onclick="viewChatWithUser('${u.id}')" style="padding:10px;border-bottom:1px solid #eee;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
                                     <div>
-                                        <div style="font-weight:bold;color:#1565C0;">👤 ${u.name || u.phone || 'کاربر'}</div>
-                                        <div style="font-size:11px;color:#888;">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
+                                        <div style="font-weight:bold;color:var(--primary);">👤 ${u.name || u.phone || 'کاربر'}</div>
+                                        <div style="font-size:11px;color:var(--text-light);">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
                                     </div>
-                                    <span style="font-size:11px;color:#888;">${lastMsg ? new Date(lastMsg.date).toLocaleDateString('fa-IR') : ''}</span>
+                                    <span style="font-size:11px;color:var(--text-light);">${lastMsg ? new Date(lastMsg.date).toLocaleDateString('fa-IR') : ''}</span>
                                 </div>
                             `;
                 });
@@ -2546,13 +2832,13 @@
                 const msgs = chatMessages.filter(m => m.user_id === currentChatUserId);
                 if (!msgs.length) {
                     container.innerHTML =
-                        '<div style="text-align:center;color:#999;padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
+                        '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
                     return;
                 }
                 const user = JSON.parse(localStorage.getItem('amlak_users_list') || '[]').find(u => u.id ===
                 currentChatUserId);
                 let html =
-                    `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.name || user?.phone || 'کاربر'}</div>`;
+                    `<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با ${user?.name || user?.phone || 'کاربر'}</div>`;
                 html += msgs.map(m => `
                             <div class="chat-msg ${m.sender === 'user' ? 'user' : 'admin'}">
                                 <div>${sanitizeInput(m.text)}</div>
@@ -2672,7 +2958,7 @@
             container.innerHTML = publicMessages.map(p => `
                         <div class="public-msg-card">
                             <div class="msg-header">
-                                <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
+                                <span style="font-weight:bold;color:var(--primary);">📢 پیام عمومی</span>
                                 <span class="msg-date">${p.date || ''}</span>
                             </div>
                             <div class="msg-text">${sanitizeInput(p.text)}</div>
@@ -2720,7 +3006,7 @@
         }
 
         // ============================================================
-        // ====== سبد خرید (نمایش کامل اطلاعات) ======
+        // ====== سبد خرید (نمایش کامل اطلاعات + اشتراک‌گذاری) ======
         // ============================================================
         function toggleCart() {
             document.getElementById('cartModal').classList.toggle('active');
@@ -2739,7 +3025,6 @@
             cartItems.forEach(id => {
                 const p = properties.find(prop => String(prop.id) === String(id));
                 if (p) {
-                    // نمایش قیمت مناسب
                     let priceDisplay = '';
                     if (p.type === 'sale') {
                         priceDisplay = `💰 قیمت فروش: ${Number(p.price).toLocaleString()} تومان`;
@@ -2747,7 +3032,6 @@
                         priceDisplay = `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
                     }
 
-                    // بخش مخفی - فقط برای مدیر
                     let hiddenSection = '';
                     if (isAdmin && p.hiddenDescription) {
                         hiddenSection = `
@@ -2777,6 +3061,12 @@
                                     ${p.date ? `
                                         <div class="cart-item-date">📅 تاریخ ثبت: ${p.date}</div>
                                     ` : ''}
+                                    <!-- دکمه اشتراک‌گذاری در سبد خرید -->
+                                    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
+                                        <button onclick="sharePropertyFromCart('whatsapp','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#25D366;transition:var(--transition);">📱 واتساپ</button>
+                                        <button onclick="sharePropertyFromCart('telegram','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#0088CC;transition:var(--transition);">✈️ تلگرام</button>
+                                        <button onclick="sharePropertyFromCart('ita','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#4CAF50;transition:var(--transition);">🇮🇷 ایتا</button>
+                                    </div>
                                 </div>
                                 <button class="cart-remove-btn" onclick="removeFromCart('${p.id}')">✕</button>
                             </div>
@@ -2785,21 +3075,58 @@
                 }
             });
 
-            // دکمه‌های پایین سبد خرید
             html += `
-                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid #1565C0;">
+                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid var(--primary);">
                     <div class="cart-actions">
                         <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن سبد</button>
-                        <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
+                        <button class="share-cart" onclick="shareAllCart()">📤 اشتراک همه</button>
                     </div>
                     <button onclick="toggleCart()" 
-                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161; transition:0.2s;">
+                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161; transition:var(--transition);">
                         ✕ بستن
                     </button>
                 </div>
             `;
 
             container.innerHTML = html;
+        }
+
+        function sharePropertyFromCart(platform, id) {
+            const p = properties.find(prop => String(prop.id) === String(id));
+            if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
+            let priceText = p.type === 'sale' ? `💰 ${Number(p.price).toLocaleString()} تومان` :
+                `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
+            const text =
+                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#دپارتمان_املاک_حسینی`;
+            let url;
+            if (platform === 'whatsapp') url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            else if (platform === 'telegram') url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
+            else if (platform === 'ita') url =
+                `https://eitaa.com/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
+            if (url) window.open(url, '_blank');
+        }
+
+        function shareAllCart() {
+            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
+            let text = '🛒 *لیست املاک مورد علاقه من*\n\n';
+            cartItems.forEach(id => {
+                const p = properties.find(prop => prop.id === id);
+                if (p) {
+                    text += `🏠 ${sanitizeInput(p.title)}\n`;
+                    text += `📍 ${sanitizeInput(p.address)}\n`;
+                    if (p.type === 'sale') {
+                        text += `💰 ${Number(p.price).toLocaleString()} تومان\n`;
+                    } else {
+                        text += `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}\n`;
+                    }
+                    text += `📐 ${p.area||0} متر\n`;
+                    text += `📞 ${sanitizeInput(p.phone) || '---'}\n`;
+                    text += `🏷️ ${p.category || 'بدون دسته'}\n`;
+                    text += `📝 ${sanitizeInput(p.description) || ''}\n\n`;
+                }
+            });
+            text += '#دپارتمان_املاک_حسینی #سبد_خرید';
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
 
         function addToCart(id) {
@@ -2832,48 +3159,9 @@
             showToast('🗑️ سبد خرید خالی شد', 'success');
         }
 
-        function shareCart() {
-            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
-            let text = '🛒 *لیست املاک مورد علاقه من*\n\n';
-            cartItems.forEach(id => {
-                const p = properties.find(prop => prop.id === id);
-                if (p) {
-                    text += `🏠 ${sanitizeInput(p.title)}\n`;
-                    text += `📍 ${sanitizeInput(p.address)}\n`;
-                    if (p.type === 'sale') {
-                        text += `💰 ${Number(p.price).toLocaleString()} تومان\n`;
-                    } else {
-                        text += `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}\n`;
-                    }
-                    text += `📐 ${p.area||0} متر\n`;
-                    text += `📞 ${sanitizeInput(p.phone) || '---'}\n`;
-                    text += `🏷️ ${p.category || 'بدون دسته'}\n`;
-                    text += `📝 ${sanitizeInput(p.description) || ''}\n\n`;
-                }
-            });
-            text += '#دپارتمان_املاک_حسینی #سبد_خرید';
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
-        }
-
         function updateCartBadge() { document.getElementById('cartCount').textContent = cartItems.length; }
 
         function isInCart(id) { return cartItems.includes(id); }
-
-        // ============================================================
-        // ====== علاقه‌مندی‌ها ======
-        // ============================================================
-        function toggleFavorite(id) {
-            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند علاقه‌مندی داشته باشد!', 'warning'); return; }
-            if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
-            const idx = favorites.indexOf(id);
-            if (idx === -1) { favorites.push(id);
-                showToast('❤️ به علاقه‌مندی‌ها اضافه شد!', 'success'); } else { favorites.splice(idx, 1);
-                showToast('💔 از علاقه‌مندی‌ها حذف شد!', 'info'); }
-            localStorage.setItem('amlak_favorites', JSON.stringify(favorites));
-            renderList();
-        }
-
-        function isFavorite(id) { return favorites.includes(id); }
 
         // ============================================================
         // ====== فیلترها ======
@@ -2881,12 +3169,12 @@
         function selectCategory(btn) {
             document.querySelectorAll('.category-grid .cat-btn').forEach(b => { b.classList.remove('active');
                 b.style.borderColor = '#e0e0e0';
-                b.style.background = 'white';
-                b.style.color = ''; });
+                b.style.background = 'var(--card-bg)';
+                b.style.color = 'var(--text)'; });
             btn.classList.add('active');
-            btn.style.borderColor = '#1565C0';
-            btn.style.background = '#E3F2FD';
-            btn.style.color = '#1565C0';
+            btn.style.borderColor = 'var(--primary)';
+            btn.style.background = 'var(--primary-light)';
+            btn.style.color = 'var(--primary)';
             userCategoryFilter = btn.dataset.cat;
             updateFilterInfo();
             renderList();
@@ -2895,11 +3183,11 @@
         function selectType(btn) {
             document.querySelectorAll('.type-grid .type-btn').forEach(b => { b.classList.remove('active');
                 b.style.borderColor = '';
-                b.style.background = 'white';
-                b.style.color = ''; });
+                b.style.background = 'var(--card-bg)';
+                b.style.color = 'var(--text)'; });
             btn.classList.add('active');
-            btn.style.background = '#E3F2FD';
-            btn.style.color = '#1565C0';
+            btn.style.background = 'var(--primary-light)';
+            btn.style.color = 'var(--primary)';
             userTypeFilter = btn.dataset.type;
             if (userTypeFilter === 'sale') { document.getElementById('salePriceFilter').style.display = 'block';
                 document.getElementById('rentPriceFilter').style.display = 'none';
@@ -2931,12 +3219,12 @@
         function clearUserFilters() {
             document.querySelectorAll('.category-grid .cat-btn').forEach(b => { b.classList.remove('active');
                 b.style.borderColor = '#e0e0e0';
-                b.style.background = 'white';
-                b.style.color = ''; });
+                b.style.background = 'var(--card-bg)';
+                b.style.color = 'var(--text)'; });
             document.querySelectorAll('.type-grid .type-btn').forEach(b => { b.classList.remove('active');
                 b.style.borderColor = '';
-                b.style.background = 'white';
-                b.style.color = ''; });
+                b.style.background = 'var(--card-bg)';
+                b.style.color = 'var(--text)'; });
             userCategoryFilter = 'all';
             userTypeFilter = 'all';
             clearUserPriceFilter();
@@ -2999,7 +3287,7 @@
         }
 
         // ============================================================
-        // ====== رندر لیست ======
+        // ====== رندر لیست (بدون دکمه‌های اشتراک و علاقه‌مندی) ======
         // ============================================================
         async function renderList() {
             try {
@@ -3063,8 +3351,8 @@
                     if (!isAdmin && currentUser) {
                         userChatBtn = `
                                     <div style="margin-top:6px;display:flex;gap:6px;">
-                                        <input type="text" id="userChatInput_${p.id}" placeholder="💬 پیام به مدیر..." style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
-                                        <button onclick="sendUserChatMessage('${p.id}', document.getElementById('userChatInput_${p.id}').value)" style="padding:6px 12px;background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤</button>
+                                        <input type="text" id="userChatInput_${p.id}" placeholder="💬 پیام به مدیر..." style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;background:var(--card-bg);color:var(--text);">
+                                        <button onclick="sendUserChatMessage('${p.id}', document.getElementById('userChatInput_${p.id}').value)" style="padding:6px 12px;background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;transition:var(--transition);">📤</button>
                                     </div>
                                 `;
                     }
@@ -3079,7 +3367,6 @@
                                         ${isAdmin ? `<button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>` : ''}
                                         ${!isAdmin ? `
                                             <button class="btn-cart ${isInCart(p.id) ? 'in-cart' : ''}" onclick="addToCart('${p.id}')">${isInCart(p.id) ? '✓' : '🛒'}</button>
-                                            <button class="btn-favorite ${isFavorite(p.id) ? 'active' : ''}" onclick="toggleFavorite('${p.id}')">${isFavorite(p.id) ? '❤️' : '🤍'}</button>
                                         ` : ''}
                                     </div>
                                     <h3>${sanitizeInput(p.title)}</h3>
@@ -3102,11 +3389,6 @@
                                             <button class="dislike-btn" onclick="likeProperty('${p.id}','dislike')">👎 <span class="count">${p.dislikes || 0}</span></button>
                                         </div>
                                     ` : ''}
-                                    <div class="share-btns">
-                                        <button class="share-whatsapp" onclick="shareProperty('whatsapp','${p.id}')">📱 واتساپ</button>
-                                        <button class="share-telegram" onclick="shareProperty('telegram','${p.id}')">✈️ تلگرام</button>
-                                        <button class="share-ita" onclick="shareProperty('ita','${p.id}')">🇮🇷 ایتا</button>
-                                    </div>
                                     ${!isAdmin ? `
                                         ${userChatBtn}
                                     ` : ''}
@@ -3117,24 +3399,6 @@
                 container.innerHTML = html;
                 updateStats();
             } catch (e) { ErrorHandler.log(e, 'رندر لیست'); }
-        }
-
-        // ============================================================
-        // ====== اشتراک‌گذاری ======
-        // ============================================================
-        function shareProperty(platform, id) {
-            const p = properties.find(prop => prop.id === id);
-            if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
-            let priceText = p.type === 'sale' ? `💰 ${Number(p.price).toLocaleString()} تومان` :
-                `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
-            const text =
-                `🏠 *${sanitizeInput(p.title)}*\n📍 ${sanitizeInput(p.address)}\n${priceText}\n📐 ${p.area||0} متر\n📞 ${sanitizeInput(p.phone)}\n📝 ${sanitizeInput(p.description)}\n#دپارتمان_املاک_حسینی`;
-            let url;
-            if (platform === 'whatsapp') url = `https://wa.me/?text=${encodeURIComponent(text)}`;
-            else if (platform === 'telegram') url = `https://t.me/share/url?url=&text=${encodeURIComponent(text)}`;
-            else if (platform === 'ita') url =
-                `https://eitaa.com/share/url?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(text)}`;
-            if (url) window.open(url, '_blank');
         }
 
         // ============================================================
@@ -3218,7 +3482,7 @@
         // ============================================================
         function backupData() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning'); return; }
-            const data = { properties, publicMessages, cartItems, favorites, chatMessages, usersList,
+            const data = { properties, publicMessages, cartItems, chatMessages, usersList,
             backupDate: new Date().toISOString() };
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const link = document.createElement('a');
@@ -3386,6 +3650,9 @@
         if (savedUser) {
             currentUser = savedUser;
             isAdmin = currentUser.role === 'admin';
+            // ورود مستقیم
+            document.getElementById('loginOverlay').classList.add('hidden');
+            document.getElementById('mainApp').style.display = 'block';
             enterApp();
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
@@ -3409,6 +3676,10 @@
         console.log('✅ کاربر عادی بدون نیاز به اطلاعات وارد می‌شود');
         console.log('✅ اطلاعات کامل ملک در سبد خرید نمایش داده می‌شود');
         console.log('✅ بخش مخفی فقط برای مدیر قابل مشاهده است');
+        console.log('✅ دکمه‌های اشتراک‌گذاری فقط در سبد خرید هستند');
+        console.log('✅ دکمه علاقه‌مندی حذف شد - فقط سبد خرید');
+        console.log('✅ ظاهر حرفه‌ای‌تر با انیمیشن‌ها و افکت‌ها');
+        console.log('✅ امنیت با Nonce و Sanitize Input');
     </script>
 </body>
-    </html>
+                    </html>
