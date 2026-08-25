@@ -234,13 +234,6 @@
             font-size: 10px;
             color: #666;
         }
-        .stats .online {
-            background: #E8F5E9;
-            border: 2px solid #2E7D32;
-        }
-        .stats .online span {
-            color: #2E7D32;
-        }
         .btn-group {
             display: flex;
             flex-wrap: wrap;
@@ -876,57 +869,60 @@
             font-size: 13px;
             margin-bottom: 16px;
         }
-        .login-box .role-select {
+
+        .login-buttons {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
         }
-        .login-box .role-select button {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            background: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.2s;
-        }
-        .login-box .role-select button.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
-        }
-        .login-box .role-select button:active {
-            transform: scale(0.97);
-        }
-        .login-box .btn {
+        .login-buttons .btn {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             color: white;
-            background: #1565C0;
-            margin-top: 10px;
             transition: 0.2s;
         }
-        .login-box .btn:active {
+        .login-buttons .btn:active {
             transform: scale(0.97);
         }
-        .login-box .btn-success {
-            background: #2E7D32;
-            margin-top: 6px;
+        .btn-user-login {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
         }
+        .btn-admin-login {
+            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            box-shadow: 0 4px 15px rgba(21, 101, 192, 0.4);
+        }
+
         .login-hint {
             font-size: 12px;
             color: #888;
-            margin-top: 10px;
-            padding: 8px;
+            margin-top: 12px;
+            padding: 10px;
             background: #f5f5f5;
             border-radius: 8px;
         }
+
+        .password-input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            text-align: center;
+            direction: ltr;
+        }
+        .password-input:focus {
+            border-color: #1565C0;
+            outline: none;
+        }
+
         .admin-badge {
             display: inline-block;
             background: #FFD700;
@@ -1430,84 +1426,6 @@
             font-size: 9px;
             color: #888;
         }
-        .password-input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 14px;
-            text-align: center;
-            direction: ltr;
-        }
-        .password-input:focus {
-            border-color: #1565C0;
-            outline: none;
-        }
-        .telegram-connect-box {
-            background: linear-gradient(135deg, #0088CC, #005A8C);
-            padding: 20px;
-            border-radius: 16px;
-            color: white;
-            margin: 10px 0;
-        }
-        .telegram-connect-box h3 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        .telegram-connect-box p {
-            text-align: center;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        .telegram-input-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .telegram-input-group input {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            text-align: center;
-            letter-spacing: 5px;
-            direction: ltr;
-        }
-        .telegram-input-group input:focus {
-            outline: 2px solid #FFD700;
-        }
-        .telegram-input-group button {
-            padding: 12px 20px;
-            background: #FFD700;
-            color: #333;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .telegram-timer {
-            text-align: center;
-            font-size: 12px;
-            margin-top: 8px;
-            opacity: 0.8;
-        }
-        .telegram-resend-btn {
-            background: transparent;
-            border: none;
-            color: #FFD700;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: underline;
-            font-size: 13px;
-        }
-        .telegram-resend-btn:disabled {
-            color: #888;
-            cursor: not-allowed;
-            text-decoration: none;
-        }
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(3, 1fr);
@@ -1537,6 +1455,82 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+
+        /* استایل مخصوص سبد خرید */
+        .cart-item-detail {
+            border-bottom: 2px solid #e0e0e0;
+            padding: 15px 0;
+        }
+        .cart-item-detail:last-child {
+            border-bottom: none;
+        }
+        .cart-item-title {
+            font-weight: bold;
+            color: #1565C0;
+            font-size: 16px;
+        }
+        .cart-item-address {
+            font-size: 13px;
+            color: #333;
+            margin-top: 4px;
+        }
+        .cart-item-price {
+            font-size: 14px;
+            color: #2E7D32;
+            font-weight: bold;
+            margin-top: 4px;
+        }
+        .cart-item-meta {
+            font-size: 12px;
+            color: #666;
+            margin-top: 2px;
+        }
+        .cart-item-desc {
+            font-size: 12px;
+            color: #555;
+            margin-top: 4px;
+            background: #f5f5f5;
+            padding: 6px;
+            border-radius: 6px;
+        }
+        .cart-item-hidden {
+            font-size: 12px;
+            color: #6A1B9A;
+            margin-top: 4px;
+            background: #f3e5f5;
+            padding: 6px;
+            border-radius: 6px;
+            border-right: 3px solid #6A1B9A;
+        }
+        .cart-item-code {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+        .cart-item-date {
+            font-size: 11px;
+            color: #888;
+            margin-top: 2px;
+        }
+        .cart-remove-btn {
+            background: #C62828;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+            margin-right: 10px;
+        }
+        .cart-remove-btn:hover {
+            transform: scale(1.1);
+        }
+        .cart-remove-btn:active {
+            transform: scale(0.9);
+        }
     </style>
 </head>
 <body>
@@ -1550,37 +1544,20 @@
         <div class="login-box">
             <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
             <p>به سامانه دپارتمان املاک حسینی خوش آمدید</p>
-            <div class="role-select">
-                <button id="roleAdmin" class="active" onclick="selectRole('admin')">👑 مدیر</button>
-                <button id="roleUser" onclick="selectRole('user')">👤 کاربر عادی</button>
-            </div>
-            <div class="login-fields" id="adminFields">
-                <div id="adminLoginArea">
-                    <input type="password" id="adminPasswordInput" placeholder="🔑 رمز عبور مدیر را وارد کنید" class="password-input">
-                    <button class="btn" onclick="loginAdmin()">👑 ورود مدیر</button>
-                </div>
-            </div>
-            <div class="login-fields" id="userFields">
-                <input type="tel" id="userPhoneInput" placeholder="📱 شماره موبایل خود را وارد کنید" style="width:100%;padding:12px;margin-bottom:10px;border:2px solid #e0e0e0;border-radius:10px;font-size:14px;text-align:center;">
-                <button class="btn btn-success" onclick="loginUser()">📱 ارسال کد تایید</button>
-            </div>
-            <div class="login-fields" id="telegramVerificationFields" style="display:none;">
-                <div class="telegram-connect-box">
-                    <h3>📱 تایید شماره با تلگرام</h3>
-                    <p>کد ۶ رقمی ارسال شده به تلگرام را وارد کنید</p>
-                    <div class="telegram-input-group">
-                        <input type="text" id="telegramCodeInput" placeholder="کد ۶ رقمی" maxlength="6" />
-                        <button onclick="verifyTelegramCode()">✅ تایید</button>
-                    </div>
-                    <div class="telegram-timer">
-                        <span id="telegramTimer">⏱️ ۰:۰۰</span>
-                        <button class="telegram-resend-btn" id="telegramResendBtn" onclick="resendTelegramCode()" disabled>ارسال مجدد</button>
+
+            <div class="login-buttons">
+                <button class="btn btn-user-login" onclick="loginAsUser()">👤 ورود به عنوان کاربر عادی</button>
+                <div style="position:relative;">
+                    <button class="btn btn-admin-login" onclick="showAdminLogin()">👑 ورود به عنوان مدیر</button>
+                    <div id="adminLoginArea" style="display:none; margin-top:10px;">
+                        <input type="password" id="adminPasswordInput" placeholder="🔑 رمز عبور مدیر را وارد کنید" class="password-input">
+                        <button class="btn" onclick="loginAdmin()" style="background:#1565C0; width:100%; padding:12px; border:none; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; color:white;">✅ تایید</button>
+                        <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:12px; border:none; border-radius:10px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px;">❌ انصراف</button>
                     </div>
                 </div>
-                <div class="login-hint">📱 کد تایید از طریق ربات تلگرام ارسال شد</div>
-                <button class="btn btn-secondary" onclick="cancelTelegramVerification()" style="margin-top:8px;">❌ بازگشت</button>
             </div>
-            <div class="login-hint" id="loginHint">مدیران: رمز عبور را وارد کنید</div>
+
+            <div class="login-hint" id="loginHint">👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند</div>
         </div>
     </div>
 
@@ -1859,7 +1836,6 @@
         // ====== تنظیمات ======
         // ============================================================
         const ADMIN_PASSWORD = '26742674';
-        const TELEGRAM_BOT_TOKEN = '8906497207:AAFt0D0ICvtM9m2tj8DbwppWG3RLdDHfz1k';
 
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
@@ -1872,14 +1848,8 @@
         const ErrorHandler = {
             log: function(error, context, showToast = true) {
                 const errorMsg = error?.message || error || 'خطای ناشناخته';
-                console.error('═══════════════════════════════════════');
                 console.error(`❌ خطا در: ${context}`);
                 console.error(`📝 پیام: ${errorMsg}`);
-                if (error?.stack) {
-                    console.error(`📍 محل خطا: ${error.stack.split('\n')[1]?.trim() || 'نامشخص'}`);
-                }
-                console.error(`🕐 زمان: ${new Date().toLocaleString('fa-IR')}`);
-                console.error('═══════════════════════════════════════');
                 if (showToast) {
                     this.showToast(`❌ ${context}: ${errorMsg}`, 'error');
                 }
@@ -1933,10 +1903,6 @@
         let chatMessages = [];
         let currentChatUserId = null;
         let usersList = [];
-        let pendingPhone = null;
-        let telegramVerificationCode = null;
-        let telegramTimerInterval = null;
-        let telegramTimerSeconds = 0;
 
         // ============================================================
         // ====== توابع کمکی ======
@@ -1968,437 +1934,77 @@
         }
 
         // ============================================================
-        // ====== توابع ارسال پیام تلگرام ======
+        // ====== ورود ======
         // ============================================================
-        async function sendTelegramMessage(chatId, text) {
+        function loginAsUser() {
             try {
-                if (!TELEGRAM_BOT_TOKEN || TELEGRAM_BOT_TOKEN === 'YOUR_TELEGRAM_BOT_TOKEN') {
-                    console.warn('⚠️ توکن تلگرام تنظیم نشده است!');
-                    return false;
-                }
-                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: chatId,
-                        text: text,
-                        parse_mode: 'HTML'
-                    })
-                });
-                const result = await response.json();
-                if (result.ok) {
-                    console.log('✅ پیام تلگرام ارسال شد');
-                    return true;
-                } else {
-                    console.error('❌ خطا در ارسال پیام تلگرام:', result);
-                    return false;
-                }
-            } catch (e) {
-                console.error('❌ خطا در ارسال پیام تلگرام:', e);
-                return false;
-            }
-        }
-
-        // ============================================================
-        // ====== سیستم تایید با تلگرام ======
-        // ============================================================
-        function generateTelegramCode(phone) {
-            try {
-                telegramVerificationCode = Math.floor(100000 + Math.random() * 900000);
-
-                const verificationData = {
-                    phone: phone,
-                    code: telegramVerificationCode,
-                    expires: Date.now() + 300000,
-                    attempts: 0
+                const userId = 'user_' + Date.now().toString(36);
+                isAdmin = false;
+                currentUser = {
+                    role: 'user',
+                    id: userId,
+                    name: 'کاربر عادی'
                 };
-                localStorage.setItem('amlak_telegram_verification', JSON.stringify(verificationData));
-
-                // ارسال کد از طریق ربات تلگرام
-                sendTelegramCode(phone, telegramVerificationCode);
-
-                showToast('📱 کد تایید به تلگرام ارسال شد!', 'success');
-
+                localStorage.setItem('amlak_user', JSON.stringify(currentUser));
+                showToast('👋 خوش آمدید!', 'success');
+                enterApp();
             } catch (e) {
-                ErrorHandler.log(e, 'تولید کد تایید تلگرام');
-                showToast('❌ خطا در تولید کد تایید!', 'error');
+                ErrorHandler.log(e, 'ورود کاربر');
+                showToast('❌ خطا در ورود!', 'error');
             }
         }
 
-        function sendTelegramCode(phone, code) {
-            try {
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                const user = users.find(u => u.phone === phone);
-
-                if (user && user.telegram_id) {
-                    sendTelegramMessage(user.telegram_id, `
-                            🔐 کد تایید شما برای دپارتمان املاک حسینی
-
-                            📱 کد: <b>${code}</b>
-
-                            ⏱️ این کد تا ۵ دقیقه اعتبار دارد.
-                            🔒 لطفاً کد را به کسی نگویید.
-                        `);
-                    return;
-                }
-
-                console.log(`📱 کد تایید برای ${phone}: ${code}`);
-                showToast(`📱 کد تایید: ${code} (برای تست)`, 'info');
-
-            } catch (e) {
-                ErrorHandler.log(e, 'ارسال کد به تلگرام');
-            }
+        function showAdminLogin() {
+            document.getElementById('adminLoginArea').style.display = 'block';
+            document.getElementById('adminPasswordInput').focus();
+            document.querySelector('.btn-admin-login').style.display = 'none';
+            document.getElementById('loginHint').textContent = '🔑 رمز عبور مدیر را وارد کنید';
         }
 
-        function startTelegramTimer() {
-            telegramTimerSeconds = 300;
-            const timerDisplay = document.getElementById('telegramTimer');
-            const resendBtn = document.getElementById('telegramResendBtn');
-
-            clearInterval(telegramTimerInterval);
-            resendBtn.disabled = true;
-
-            telegramTimerInterval = setInterval(() => {
-                telegramTimerSeconds--;
-                const minutes = Math.floor(telegramTimerSeconds / 60);
-                const seconds = telegramTimerSeconds % 60;
-                timerDisplay.textContent = `⏱️ ${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-
-                if (telegramTimerSeconds <= 0) {
-                    clearInterval(telegramTimerInterval);
-                    resendBtn.disabled = false;
-                    timerDisplay.textContent = '⏱️ کد منقضی شد';
-                    showToast('⏱️ کد تایید منقضی شد! دوباره درخواست کنید.', 'warning');
-                }
-            }, 1000);
-        }
-
-        function resendTelegramCode() {
-            const phone = pendingPhone;
-            if (!phone) { showToast('❌ شماره موبایل یافت نشد!', 'error'); return; }
-
-            generateTelegramCode(phone);
-            startTelegramTimer();
-            document.getElementById('telegramResendBtn').disabled = true;
-            showToast('📱 کد جدید ارسال شد!', 'success');
-        }
-
-        function verifyTelegramCode() {
-            try {
-                const enteredCode = document.getElementById('telegramCodeInput').value.trim();
-                if (!enteredCode || enteredCode.length !== 6) {
-                    showToast('⚠️ کد ۶ رقمی را وارد کنید!', 'warning');
-                    return;
-                }
-
-                const verification = JSON.parse(localStorage.getItem('amlak_telegram_verification'));
-                if (!verification) {
-                    showToast('❌ کد تایید منقضی شده یا وجود ندارد!', 'error');
-                    return;
-                }
-
-                if (Date.now() > verification.expires) {
-                    showToast('❌ کد تایید منقضی شده است! دوباره درخواست کنید.', 'error');
-                    localStorage.removeItem('amlak_telegram_verification');
-                    return;
-                }
-
-                if (String(enteredCode) === String(verification.code)) {
-                    showToast('✅ شماره شما با موفقیت تایید شد!', 'success');
-                    localStorage.removeItem('amlak_telegram_verification');
-                    clearInterval(telegramTimerInterval);
-                    completeUserLogin(verification.phone);
-                } else {
-                    verification.attempts = (verification.attempts || 0) + 1;
-                    localStorage.setItem('amlak_telegram_verification', JSON.stringify(verification));
-
-                    if (verification.attempts >= 3) {
-                        showToast('❌ تعداد تلاش‌ها بیش از حد مجاز! دوباره درخواست کنید.', 'error');
-                        resendTelegramCode();
-                    } else {
-                        showToast(`❌ کد وارد شده اشتباه است! (${verification.attempts}/3)`, 'error');
-                    }
-                }
-
-            } catch (e) {
-                ErrorHandler.log(e, 'تایید کد تلگرام');
-                showToast('❌ خطا در تایید کد!', 'error');
-            }
-        }
-
-        function cancelTelegramVerification() {
-            document.getElementById('telegramVerificationFields').style.display = 'none';
-            document.getElementById('userFields').style.display = 'block';
-            document.getElementById('loginHint').textContent = 'شماره موبایل خود را وارد کنید';
-            document.getElementById('telegramCodeInput').value = '';
-            clearInterval(telegramTimerInterval);
-        }
-
-        // ============================================================
-        // ====== مدیریت ورود ======
-        // ============================================================
-        function selectRole(role) {
-            try {
-                document.querySelectorAll('.role-select button').forEach(b => b.classList.remove('active'));
-                if (role === 'admin') {
-                    document.getElementById('roleAdmin').classList.add('active');
-                    document.getElementById('adminFields').style.display = 'block';
-                    document.getElementById('userFields').style.display = 'none';
-                    document.getElementById('telegramVerificationFields').style.display = 'none';
-                    document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
-                } else {
-                    document.getElementById('roleUser').classList.add('active');
-                    document.getElementById('adminFields').style.display = 'none';
-                    document.getElementById('userFields').style.display = 'block';
-                    document.getElementById('telegramVerificationFields').style.display = 'none';
-                    document.getElementById('loginHint').textContent = 'شماره موبایل خود را وارد کنید';
-                }
-            } catch (e) { ErrorHandler.log(e, 'انتخاب نقش'); }
+        function hideAdminLogin() {
+            document.getElementById('adminLoginArea').style.display = 'none';
+            document.querySelector('.btn-admin-login').style.display = 'block';
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('loginHint').textContent = '👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند';
         }
 
         function loginAdmin() {
             try {
                 const password = document.getElementById('adminPasswordInput').value.trim();
-                if (!password) { showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning'); return; }
+                if (!password) {
+                    showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning');
+                    return;
+                }
                 if (password === ADMIN_PASSWORD) {
                     isAdmin = true;
                     const adminId = 'admin_' + Date.now().toString(36);
-                    currentUser = { role: 'admin', id: adminId, name: 'مدیر' };
+                    currentUser = {
+                        role: 'admin',
+                        id: adminId,
+                        name: 'مدیر'
+                    };
                     localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-                    showToast('✅ خوش آمدید مدیر!', 'success');
+                    showToast('👑 خوش آمدید مدیر!', 'success');
                     enterApp();
                 } else {
                     showToast('❌ رمز عبور اشتباه است!', 'error');
+                    document.getElementById('adminPasswordInput').value = '';
+                    document.getElementById('adminPasswordInput').focus();
                 }
-            } catch (e) { ErrorHandler.log(e, 'ورود مدیر'); }
-        }
-
-        function loginUser() {
-            try {
-                const phone = document.getElementById('userPhoneInput').value.trim();
-                if (!phone || phone.length < 10) {
-                    showToast('⚠️ لطفاً شماره موبایل معتبر وارد کنید!', 'warning');
-                    return;
-                }
-
-                pendingPhone = phone;
-
-                // چک کن کاربر قبلاً ثبت شده با telegram_id داره یا نه
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                const existingUser = users.find(u => u.phone === phone);
-
-                if (existingUser && existingUser.telegram_id) {
-                    // کاربر قبلاً ربات رو استارت کرده
-                    generateTelegramCode(phone);
-                    document.getElementById('userFields').style.display = 'none';
-                    document.getElementById('telegramVerificationFields').style.display = 'block';
-                    document.getElementById('loginHint').textContent = '📱 کد ارسال شده به تلگرام را وارد کنید';
-                    startTelegramTimer();
-                } else {
-                    // کاربر جدید - لینک ربات رو نشون بده
-                    showToast('📱 ابتدا ربات را در تلگرام استارت کنید!', 'info');
-                    document.getElementById('userFields').style.display = 'none';
-                    document.getElementById('telegramVerificationFields').style.display = 'block';
-                    document.getElementById('loginHint').textContent = '📱 ابتدا ربات را استارت کنید';
-
-                    // نمایش لینک استارت ربات
-                    const verificationBox = document.querySelector('.telegram-connect-box');
-                    verificationBox.innerHTML = `
-                            <h3 style="text-align: center;">📱 ابتدا ربات را استارت کنید</h3>
-                            <p style="text-align: center; font-size: 14px; opacity: 0.9;">
-                                برای دریافت کد تایید، روی لینک زیر کلیک کنید و دکمه Start را بزنید
-                            </p>
-                            <div style="text-align: center; margin: 15px 0;">
-                                <a href="https://t.me/AmlakHoseiniBot" target="_blank" 
-                                   style="display: inline-block; background: #FFD700; color: #333; padding: 12px 30px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 16px;">
-                                    🤖 استارت ربات در تلگرام
-                                </a>
-                            </div>
-                            <button onclick="checkTelegramStart()" 
-                                    style="width: 100%; padding: 12px; background: #4CAF50; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer;">
-                                🔄 بعد از استارت، اینجا کلیک کن
-                            </button>
-                            <div style="text-align: center; margin-top: 10px; font-size: 12px; opacity: 0.7;">
-                                ⏱️ پس از استارت، کد تایید به تلگرام شما ارسال میشود
-                            </div>
-                        `;
-
-                    // حذف دکمه بازگشت موقت
-                    document.querySelector('.login-fields .btn-secondary')?.remove();
-                }
-
-            } catch (e) { ErrorHandler.log(e, 'ورود کاربر'); }
-        }
-
-        async function checkTelegramStart() {
-            try {
-                if (!pendingPhone) {
-                    showToast('❌ شماره موبایل یافت نشد!', 'error');
-                    return;
-                }
-
-                showToast('⏳ در حال بررسی...', 'info');
-                showLoading(true);
-
-                // چک کردن آخرین پیام‌های ربات
-                const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?limit=50`;
-                const response = await fetch(url);
-                const data = await response.json();
-
-                if (data.ok && data.result) {
-                    let found = false;
-                    let chatId = null;
-
-                    for (const update of data.result) {
-                        if (update.message && update.message.text === '/start') {
-                            chatId = update.message.chat.id;
-                            found = true;
-                            break;
-                        }
-                    }
-
-                    if (found && chatId) {
-                        // ذخیره chat_id برای کاربر
-                        saveTelegramId(pendingPhone, chatId);
-
-                        showToast('✅ ربات استارت شد! کد تایید ارسال میشود...', 'success');
-
-                        // تولید و ارسال کد
-                        generateTelegramCode(pendingPhone);
-
-                        // تغییر UI به بخش تایید کد
-                        const verificationBox = document.querySelector('.telegram-connect-box');
-                        verificationBox.innerHTML = `
-                                <h3 style="text-align: center;">📱 کد تایید ارسال شد</h3>
-                                <p style="text-align: center; font-size: 14px; opacity: 0.9;">
-                                    کد ۶ رقمی ارسال شده به تلگرام را وارد کنید
-                                </p>
-                                <div class="telegram-input-group">
-                                    <input type="text" id="telegramCodeInput" placeholder="کد ۶ رقمی" maxlength="6" 
-                                           style="flex:1; padding: 12px; border: none; border-radius: 10px; font-size: 18px; text-align: center; letter-spacing: 5px; direction: ltr;">
-                                    <button onclick="verifyTelegramCode()" 
-                                            style="padding: 12px 20px; background: #4CAF50; color: white; border: none; border-radius: 10px; font-size: 14px; font-weight: bold; cursor: pointer;">
-                                        ✅ تایید
-                                    </button>
-                                </div>
-                                <div class="telegram-timer">
-                                    <span id="telegramTimer">⏱️ ۰:۰۰</span>
-                                    <button class="telegram-resend-btn" id="telegramResendBtn" onclick="resendTelegramCode()" disabled
-                                            style="background: transparent; border: none; color: #FFD700; cursor: pointer; font-weight: bold; text-decoration: underline; font-size: 13px;">
-                                        ارسال مجدد
-                                    </button>
-                                </div>
-                            `;
-
-                        startTelegramTimer();
-                        document.getElementById('loginHint').textContent = '📱 کد ارسال شده به تلگرام را وارد کنید';
-
-                        // اضافه کردن دکمه بازگشت
-                        const loginFields = document.querySelector('.login-fields');
-                        const backBtn = document.createElement('button');
-                        backBtn.className = 'btn btn-secondary';
-                        backBtn.textContent = '❌ بازگشت';
-                        backBtn.onclick = cancelTelegramVerification;
-                        backBtn.style.marginTop = '8px';
-                        loginFields.appendChild(backBtn);
-
-                    } else {
-                        showToast('⚠️ ابتدا روی لینک کلیک کنید و دکمه Start را بزنید!', 'warning');
-                    }
-                } else {
-                    showToast('❌ خطا در ارتباط با تلگرام! دوباره تلاش کنید.', 'error');
-                }
-
-                showLoading(false);
-
             } catch (e) {
-                showLoading(false);
-                ErrorHandler.log(e, 'بررسی استارت ربات');
-                showToast('❌ خطا در بررسی! دوباره تلاش کنید.', 'error');
-            }
-        }
-
-        function saveTelegramId(phone, chatId) {
-            try {
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                let user = users.find(u => u.phone === phone);
-                if (user) {
-                    user.telegram_id = chatId;
-                } else {
-                    users.push({
-                        id: generateId(),
-                        phone: phone,
-                        telegram_id: chatId,
-                        verified: false,
-                        date: new Date().toISOString()
-                    });
-                }
-                localStorage.setItem('amlak_users_list', JSON.stringify(users));
-            } catch (e) {
-                ErrorHandler.log(e, 'ذخیره chat_id');
-            }
-        }
-
-        function completeUserLogin(phone) {
-            try {
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                let user = users.find(u => u.phone === phone);
-                if (!user) {
-                    user = {
-                        id: generateId(),
-                        phone: phone,
-                        name: 'کاربر',
-                        verified: true,
-                        date: new Date().toISOString(),
-                        last_login: new Date().toISOString()
-                    };
-                    users.push(user);
-                    localStorage.setItem('amlak_users_list', JSON.stringify(users));
-                    notifyAdminNewUser(phone);
-                } else {
-                    user.verified = true;
-                    user.last_login = new Date().toISOString();
-                    localStorage.setItem('amlak_users_list', JSON.stringify(users));
-                }
-
-                isAdmin = false;
-                currentUser = {
-                    role: 'user',
-                    id: user.id,
-                    phone: phone,
-                    name: user.name || 'کاربر',
-                    verified: true
-                };
-                localStorage.setItem('amlak_user', JSON.stringify(currentUser));
-
-                showToast('👋 خوش آمدید!', 'success');
-                enterApp();
-
-            } catch (e) {
-                ErrorHandler.log(e, 'تکمیل ورود کاربر');
+                ErrorHandler.log(e, 'ورود مدیر');
                 showToast('❌ خطا در ورود!', 'error');
             }
         }
 
-        function notifyAdminNewUser(phone) {
-            try {
-                const notifications = JSON.parse(localStorage.getItem('amlak_admin_notifications') || '[]');
-                notifications.push({
-                    type: 'new_user',
-                    phone: phone,
-                    date: new Date().toISOString(),
-                    is_read: false,
-                    title: '👤 کاربر جدید',
-                    body: `کاربر جدید با شماره ${phone} ثبت نام کرد`
-                });
-                localStorage.setItem('amlak_admin_notifications', JSON.stringify(notifications));
-
-                if (isAdmin) {
-                    showToast(`👤 کاربر جدید: ${phone}`, 'info');
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const adminArea = document.getElementById('adminLoginArea');
+                if (adminArea.style.display === 'block') {
+                    loginAdmin();
                 }
-            } catch (e) { ErrorHandler.log(e, 'اعلان کاربر جدید'); }
-        }
+            }
+        });
 
         function logout() {
             try {
@@ -2407,16 +2013,8 @@
                 isAdmin = false;
                 document.getElementById('mainApp').style.display = 'none';
                 document.getElementById('loginOverlay').classList.remove('hidden');
-                document.getElementById('roleAdmin').classList.add('active');
-                document.getElementById('roleUser').classList.remove('active');
-                document.getElementById('adminFields').style.display = 'block';
-                document.getElementById('userFields').style.display = 'none';
-                document.getElementById('telegramVerificationFields').style.display = 'none';
-                document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
-                document.getElementById('adminPasswordInput').value = '';
-                document.getElementById('userPhoneInput').value = '';
-                document.getElementById('telegramCodeInput').value = '';
-                clearInterval(telegramTimerInterval);
+                hideAdminLogin();
+                document.querySelector('.btn-admin-login').style.display = 'block';
                 showToast('🚪 خروج موفق', 'success');
             } catch (e) { ErrorHandler.log(e, 'خروج'); }
         }
@@ -2469,12 +2067,11 @@
                     html += `
                                 <div class="user-list-item" style="${isNew ? 'border-right-color: #FFD700;' : ''}">
                                     <div style="flex:1;">
-                                        <div class="user-phone">📱 ${user.phone}</div>
+                                        <div class="user-phone">👤 ${user.name || 'کاربر'}</div>
                                         <div class="user-meta">
-                                            ${user.name ? `👤 ${sanitizeInput(user.name)}` : ''}
-                                            ${lastLogin ? ` | آخرین ورود: ${lastLogin.toLocaleDateString('fa-IR')} ${lastLogin.toLocaleTimeString('fa-IR', {hour:'2-digit', minute:'2-digit'})}` : ''}
+                                            ${user.phone ? `📱 ${user.phone}` : ''}
+                                            ${lastLogin ? ` | آخرین ورود: ${lastLogin.toLocaleDateString('fa-IR')}` : ''}
                                             ${isNew ? ' | 🆕 جدید' : ''}
-                                            ${user.telegram_id ? ' | 🤖 تلگرام متصل' : ''}
                                         </div>
                                     </div>
                                     <div style="display:flex;align-items:center;gap:8px;">
@@ -2482,7 +2079,7 @@
                                             ${user.verified ? '✅ تایید شده' : '⏳ در انتظار'}
                                         </span>
                                         <div class="user-actions">
-                                            <button class="contact-user" onclick="contactUser('${user.phone}')" title="ارسال پیام">
+                                            <button class="contact-user" onclick="contactUser('${user.phone || ''}')" title="ارسال پیام">
                                                 💬
                                             </button>
                                             ${isAdmin ? `
@@ -2526,6 +2123,7 @@
 
         function contactUser(phone) {
             try {
+                if (!phone) { showToast('⚠️ شماره تماس موجود نیست!', 'warning'); return; }
                 const message = encodeURIComponent('سلام! پیام شما از دپارتمان املاک حسینی');
                 window.open(`https://wa.me/98${phone.substring(1)}?text=${message}`, '_blank');
             } catch (e) {
@@ -2574,7 +2172,6 @@
                     document.getElementById('onlineUsers').style.display = 'none';
                     document.getElementById('adminUsersSection').style.display = 'none';
                     loadAdminMessage();
-                    checkUserNotifications();
                 }
 
                 updateCartBadge();
@@ -2764,7 +2361,6 @@
                         properties = [...newData, ...properties];
                         showToast('✅ ملک ثبت شد!', 'success');
                         success = true;
-                        notifyUsersNewProperty(data);
                     }
                 }
 
@@ -2776,47 +2372,6 @@
                 renderList();
             } catch (e) { showLoading(false);
                 ErrorHandler.log(e, 'ذخیره ملک'); }
-        }
-
-        // ============================================================
-        // ====== اطلاع‌رسانی به کاربران ======
-        // ============================================================
-        function notifyUsersNewProperty(data) {
-            try {
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                const message = `
-                        🏠 <b>ملک جدید به لیست اضافه شد!</b>
-
-                        📍 عنوان: ${sanitizeInput(data.title)}
-                        💰 قیمت: ${Number(data.price).toLocaleString()} تومان
-                        📍 آدرس: ${sanitizeInput(data.address)}
-                        🏷️ دسته: ${data.category}
-                        📐 متراژ: ${data.area} متر
-
-                        🔗 برای مشاهده وارد برنامه شوید.
-                    `;
-
-                users.forEach(user => {
-                    if (user.telegram_id) {
-                        sendTelegramMessage(user.telegram_id, message);
-                    }
-                });
-
-                const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
-                users.forEach(user => {
-                    notifications.push({
-                        user_id: user.id,
-                        title: '🏠 ملک جدید',
-                        body: `ملک "${data.title}" به لیست اضافه شد`,
-                        date: new Date().toISOString(),
-                        is_read: false
-                    });
-                });
-                localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications));
-
-            } catch (e) {
-                ErrorHandler.log(e, 'اطلاع‌رسانی به کاربران');
-            }
         }
 
         // ============================================================
@@ -2862,12 +2417,10 @@
         }
 
         // ============================================================
-        // ====== لایک/دیسلایک (اصلاح شده) ======
+        // ====== لایک/دیسلایک ======
         // ============================================================
         async function likeProperty(id, type) {
             try {
-                console.log(`🔍 لایک/دیسلایک برای ملک: ${id}، نوع: ${type}`);
-
                 if (isAdmin) {
                     showToast('⚠️ مدیر نمی‌تواند لایک کند!', 'warning');
                     return;
@@ -2879,7 +2432,6 @@
 
                 const p = properties.find(item => String(item.id) === String(id));
                 if (!p) {
-                    console.error('❌ ملک پیدا نشد! ID:', id);
                     showToast('❌ ملک یافت نشد!', 'error');
                     return;
                 }
@@ -2936,179 +2488,8 @@
         }
 
         // ============================================================
-        // ====== پیشنهاد قیمت (اصلاح شده) ======
-        // ============================================================
-        async function submitOffer(propertyId) {
-            try {
-                console.log(`💰 پیشنهاد قیمت برای ملک: ${propertyId}`);
-
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند پیشنهاد دهد!', 'warning');
-                    return;
-                }
-                if (!currentUser?.id) {
-                    showToast('⚠️ لطفاً وارد شوید!', 'warning');
-                    return;
-                }
-
-                const input = document.getElementById('offerInput_' + propertyId);
-                if (!input) {
-                    showToast('❌ ورودی پیدا نشد!', 'error');
-                    return;
-                }
-
-                const price = parseInt(input.value.trim());
-                if (!price || price <= 0) {
-                    showToast('⚠️ قیمت معتبر وارد کنید!', 'warning');
-                    return;
-                }
-
-                const p = properties.find(item => String(item.id) === String(propertyId));
-                if (!p) {
-                    console.error('❌ ملک پیدا نشد! ID:', propertyId);
-                    showToast('❌ ملک یافت نشد!', 'error');
-                    return;
-                }
-
-                const { data, error } = await supabaseClient
-                    .from('offers')
-                    .insert([{
-                        property_id: propertyId,
-                        user_id: currentUser.id,
-                        user_name: currentUser.name || currentUser.phone || 'کاربر',
-                        offered_price: price,
-                        status: 'pending'
-                    }])
-                    .select();
-
-                if (error) throw new Error(error.message);
-
-                showToast('✅ پیشنهاد شما ثبت شد!', 'success');
-                input.value = '';
-
-                sendAdminNotification('💰 پیشنهاد قیمت جدید',
-                    `کاربر ${currentUser.phone || ''} برای "${p.title}" مبلغ ${Number(price).toLocaleString()} تومان پیشنهاد داد`
-                );
-
-                const offers = JSON.parse(localStorage.getItem('amlak_offers') || '[]');
-                offers.push({
-                    id: data[0]?.id || Date.now(),
-                    property_id: propertyId,
-                    user_id: currentUser.id,
-                    offered_price: price,
-                    status: 'pending',
-                    date: new Date().toISOString()
-                });
-                localStorage.setItem('amlak_offers', JSON.stringify(offers));
-
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت پیشنهاد قیمت');
-                showToast('❌ خطا در ثبت پیشنهاد!', 'error');
-            }
-        }
-
-        // ============================================================
-        // ====== نوبت بازدید (اصلاح شده) ======
-        // ============================================================
-        async function submitAppointment(propertyId) {
-            try {
-                console.log(`📅 نوبت بازدید برای ملک: ${propertyId}`);
-
-                if (isAdmin) {
-                    showToast('⚠️ مدیر نمی‌تواند نوبت بگیرد!', 'warning');
-                    return;
-                }
-                if (!currentUser?.id) {
-                    showToast('⚠️ لطفاً وارد شوید!', 'warning');
-                    return;
-                }
-
-                const dateInput = document.getElementById('appointmentDate_' + propertyId);
-                const timeInput = document.getElementById('appointmentTime_' + propertyId);
-
-                if (!dateInput || !timeInput) {
-                    showToast('❌ ورودی پیدا نشد!', 'error');
-                    return;
-                }
-
-                const date = dateInput.value;
-                const time = timeInput.value;
-
-                if (!date || !time) {
-                    showToast('⚠️ تاریخ و زمان را وارد کنید!', 'warning');
-                    return;
-                }
-
-                const p = properties.find(item => String(item.id) === String(propertyId));
-                if (!p) {
-                    console.error('❌ ملک پیدا نشد! ID:', propertyId);
-                    showToast('❌ ملک یافت نشد!', 'error');
-                    return;
-                }
-
-                const { data, error } = await supabaseClient
-                    .from('appointments')
-                    .insert([{
-                        property_id: propertyId,
-                        user_id: currentUser.id,
-                        user_name: currentUser.name || currentUser.phone || 'کاربر',
-                        user_phone: currentUser.phone || '09123456789',
-                        appointment_date: date,
-                        appointment_time: time,
-                        status: 'pending'
-                    }])
-                    .select();
-
-                if (error) throw new Error(error.message);
-
-                showToast('✅ نوبت شما ثبت شد!', 'success');
-                dateInput.value = '';
-                timeInput.value = '';
-
-                sendAdminNotification('📅 قرار بازدید جدید',
-                    `کاربر ${currentUser.phone || ''} برای "${p.title}" در تاریخ ${date} ساعت ${time} درخواست بازدید دارد`
-                );
-
-                const appointments = JSON.parse(localStorage.getItem('amlak_appointments') || '[]');
-                appointments.push({
-                    id: data[0]?.id || Date.now(),
-                    property_id: propertyId,
-                    user_id: currentUser.id,
-                    appointment_date: date,
-                    appointment_time: time,
-                    status: 'pending',
-                    date: new Date().toISOString()
-                });
-                localStorage.setItem('amlak_appointments', JSON.stringify(appointments));
-
-            } catch (e) {
-                ErrorHandler.log(e, 'ثبت نوبت');
-                showToast('❌ خطا در ثبت نوبت!', 'error');
-            }
-        }
-
-        // ============================================================
         // ====== چت با کاربران ======
         // ============================================================
-        function sendAdminNotification(title, body) {
-            try {
-                const notifications = JSON.parse(localStorage.getItem('amlak_admin_notifications') || '[]');
-                notifications.push({
-                    admin_id: isAdmin ? currentUser.id : 'admin',
-                    title: title,
-                    body: body,
-                    user_id: currentUser?.id || 'نامشخص',
-                    user_phone: currentUser?.phone || 'نامشخص',
-                    date: new Date().toISOString(),
-                    is_read: false
-                });
-                localStorage.setItem('amlak_admin_notifications', JSON.stringify(notifications));
-                if (isAdmin) {
-                    showToast(`📩 ${title}: ${body}`, 'info');
-                }
-            } catch (e) { ErrorHandler.log(e, 'ارسال اعلان به مدیر'); }
-        }
-
         function viewChats() {
             try {
                 if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning'); return; }
@@ -3139,7 +2520,7 @@
                     html += `
                                 <div onclick="viewChatWithUser('${u.id}')" style="padding:10px;border-bottom:1px solid #eee;cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
                                     <div>
-                                        <div style="font-weight:bold;color:#1565C0;">👤 ${u.phone || 'کاربر'}</div>
+                                        <div style="font-weight:bold;color:#1565C0;">👤 ${u.name || u.phone || 'کاربر'}</div>
                                         <div style="font-size:11px;color:#888;">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
                                     </div>
                                     <span style="font-size:11px;color:#888;">${lastMsg ? new Date(lastMsg.date).toLocaleDateString('fa-IR') : ''}</span>
@@ -3171,7 +2552,7 @@
                 const user = JSON.parse(localStorage.getItem('amlak_users_list') || '[]').find(u => u.id ===
                 currentChatUserId);
                 let html =
-                    `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.phone || 'کاربر'}</div>`;
+                    `<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با ${user?.name || user?.phone || 'کاربر'}</div>`;
                 html += msgs.map(m => `
                             <div class="chat-msg ${m.sender === 'user' ? 'user' : 'admin'}">
                                 <div>${sanitizeInput(m.text)}</div>
@@ -3200,19 +2581,6 @@
                 input.value = '';
                 renderChatMessages();
                 showToast('✅ پیام ارسال شد!', 'success');
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                const user = users.find(u => u.id === currentChatUserId);
-                if (user) {
-                    const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
-                    notifications.push({
-                        user_id: user.id,
-                        title: '💬 پاسخ مدیر',
-                        body: text,
-                        date: new Date().toISOString(),
-                        is_read: false
-                    });
-                    localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications));
-                }
             } catch (e) { ErrorHandler.log(e, 'ارسال پاسخ چت'); }
         }
 
@@ -3221,7 +2589,6 @@
                 if (isAdmin) return;
                 if (!currentUser?.id) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
                 if (!text || !text.trim()) return;
-                const p = properties.find(item => item.id === propertyId);
                 chatMessages.push({
                     user_id: currentUser.id,
                     property_id: propertyId,
@@ -3230,8 +2597,6 @@
                     date: new Date().toISOString()
                 });
                 saveChatMessages();
-                sendAdminNotification('💬 پیام جدید از کاربر',
-                    `کاربر ${currentUser.phone || ''}: ${sanitizeInput(text.trim())}${p ? ` برای "${p.title}"` : ''}`);
                 showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
                 const input = document.getElementById('userChatInput_' + propertyId);
                 if (input) input.value = '';
@@ -3276,29 +2641,10 @@
                     dislikes: 0
                 });
                 showToast('✅ پیام عمومی ارسال شد!', 'success');
-                notifyUsersPublicMessage(text);
             }
             localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
             hidePublicMsgForm();
             renderPublicMessages();
-        }
-
-        function notifyUsersPublicMessage(text) {
-            try {
-                const users = JSON.parse(localStorage.getItem('amlak_users_list') || '[]');
-                const message = `
-                        📢 <b>پیام جدید از مدیر</b>
-
-                        ${text}
-
-                        📅 ${new Date().toLocaleDateString('fa-IR')}
-                    `;
-                users.forEach(user => {
-                    if (user.telegram_id) {
-                        sendTelegramMessage(user.telegram_id, message);
-                    }
-                });
-            } catch (e) { ErrorHandler.log(e, 'اطلاع‌رسانی پیام عمومی'); }
         }
 
         function deletePublicMessage(id) {
@@ -3374,7 +2720,7 @@
         }
 
         // ============================================================
-        // ====== سبد خرید ======
+        // ====== سبد خرید (نمایش کامل اطلاعات) ======
         // ============================================================
         function toggleCart() {
             document.getElementById('cartModal').classList.toggle('active');
@@ -3383,23 +2729,76 @@
 
         function renderCart() {
             const container = document.getElementById('cartList');
-            if (!cartItems.length) { container.innerHTML = '<div class="cart-empty">🛒 سبد خرید شما خالی است</div>'; return; }
+            if (!cartItems.length) {
+                container.innerHTML = '<div class="cart-empty">🛒 سبد خرید شما خالی است</div>';
+                return;
+            }
+
             let html = '';
+
             cartItems.forEach(id => {
-                const p = properties.find(prop => prop.id === id);
-                if (p) html += `
-                            <div class="cart-item">
-                                <div class="info"><div class="title">${sanitizeInput(p.title)}</div><div class="detail">${sanitizeInput(p.address)}</div></div>
-                                <button class="remove-btn" onclick="removeFromCart('${p.id}')">✕</button>
+                const p = properties.find(prop => String(prop.id) === String(id));
+                if (p) {
+                    // نمایش قیمت مناسب
+                    let priceDisplay = '';
+                    if (p.type === 'sale') {
+                        priceDisplay = `💰 قیمت فروش: ${Number(p.price).toLocaleString()} تومان`;
+                    } else {
+                        priceDisplay = `🔑 رهن: ${Number(p.rahn).toLocaleString()} تومان | کرایه: ${Number(p.rentPrice).toLocaleString()} تومان`;
+                    }
+
+                    // بخش مخفی - فقط برای مدیر
+                    let hiddenSection = '';
+                    if (isAdmin && p.hiddenDescription) {
+                        hiddenSection = `
+                            <div class="cart-item-hidden">
+                                🔒 <strong>بخش مخفی (فقط مدیر):</strong> ${sanitizeInput(p.hiddenDescription)}
                             </div>
                         `;
-            });
-            html += `
-                        <div class="cart-actions">
-                            <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن</button>
-                            <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
+                    }
+
+                    html += `
+                        <div class="cart-item-detail">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div style="flex:1;">
+                                    <div class="cart-item-title">🏠 ${sanitizeInput(p.title)}</div>
+                                    <div class="cart-item-address">📍 ${sanitizeInput(p.address)}</div>
+                                    <div class="cart-item-price">${priceDisplay}</div>
+                                    <div class="cart-item-meta">📐 متراژ: ${p.area || 0} متر مربع</div>
+                                    <div class="cart-item-meta">📞 تماس: ${sanitizeInput(p.phone) || '---'}</div>
+                                    <div class="cart-item-meta">🏷️ دسته: ${p.category || 'بدون دسته'} | ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</div>
+                                    ${p.description ? `
+                                        <div class="cart-item-desc">📝 ${sanitizeInput(p.description)}</div>
+                                    ` : ''}
+                                    ${hiddenSection}
+                                    ${p.customCode ? `
+                                        <div class="cart-item-code">#کد: ${sanitizeInput(p.customCode)}</div>
+                                    ` : ''}
+                                    ${p.date ? `
+                                        <div class="cart-item-date">📅 تاریخ ثبت: ${p.date}</div>
+                                    ` : ''}
+                                </div>
+                                <button class="cart-remove-btn" onclick="removeFromCart('${p.id}')">✕</button>
+                            </div>
                         </div>
                     `;
+                }
+            });
+
+            // دکمه‌های پایین سبد خرید
+            html += `
+                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid #1565C0;">
+                    <div class="cart-actions">
+                        <button class="clear-cart" onclick="clearCart()">🗑️ خالی کردن سبد</button>
+                        <button class="share-cart" onclick="shareCart()">📤 اشتراک‌گذاری</button>
+                    </div>
+                    <button onclick="toggleCart()" 
+                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161; transition:0.2s;">
+                        ✕ بستن
+                    </button>
+                </div>
+            `;
+
             container.innerHTML = html;
         }
 
@@ -3438,8 +2837,19 @@
             let text = '🛒 *لیست املاک مورد علاقه من*\n\n';
             cartItems.forEach(id => {
                 const p = properties.find(prop => prop.id === id);
-                if (p) text +=
-                    `🏠 ${sanitizeInput(p.title)}\n📍 ${sanitizeInput(p.address)}\n💰 ${Number(p.price).toLocaleString()} تومان\n📐 ${p.area||0} متر\n\n`;
+                if (p) {
+                    text += `🏠 ${sanitizeInput(p.title)}\n`;
+                    text += `📍 ${sanitizeInput(p.address)}\n`;
+                    if (p.type === 'sale') {
+                        text += `💰 ${Number(p.price).toLocaleString()} تومان\n`;
+                    } else {
+                        text += `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}\n`;
+                    }
+                    text += `📐 ${p.area||0} متر\n`;
+                    text += `📞 ${sanitizeInput(p.phone) || '---'}\n`;
+                    text += `🏷️ ${p.category || 'بدون دسته'}\n`;
+                    text += `📝 ${sanitizeInput(p.description) || ''}\n\n`;
+                }
             });
             text += '#دپارتمان_املاک_حسینی #سبد_خرید';
             window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
@@ -3589,7 +2999,7 @@
         }
 
         // ============================================================
-        // ====== رندر لیست (اصلاح شده) ======
+        // ====== رندر لیست ======
         // ============================================================
         async function renderList() {
             try {
@@ -3649,29 +3059,12 @@
                         `🔑 رهن: ${Number(p.rahn).toLocaleString()} | کرایه: ${Number(p.rentPrice).toLocaleString()}`;
 
                     let userChatBtn = '';
-                    let offerHtml = '';
-                    let appointmentHtml = '';
 
                     if (!isAdmin && currentUser) {
                         userChatBtn = `
                                     <div style="margin-top:6px;display:flex;gap:6px;">
                                         <input type="text" id="userChatInput_${p.id}" placeholder="💬 پیام به مدیر..." style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
                                         <button onclick="sendUserChatMessage('${p.id}', document.getElementById('userChatInput_${p.id}').value)" style="padding:6px 12px;background:linear-gradient(135deg,#6A1B9A,#4A148C);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤</button>
-                                    </div>
-                                `;
-
-                        offerHtml = `
-                                    <div style="margin-top:4px;display:flex;gap:6px;">
-                                        <input type="number" id="offerInput_${p.id}" placeholder="💰 پیشنهاد قیمت" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;">
-                                        <button onclick="submitOffer('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#FF8F00,#E65100);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📤 ارسال</button>
-                                    </div>
-                                `;
-
-                        appointmentHtml = `
-                                    <div style="margin-top:4px;display:flex;gap:6px;flex-wrap:wrap;">
-                                        <input type="date" id="appointmentDate_${p.id}" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;min-width:100px;">
-                                        <input type="time" id="appointmentTime_${p.id}" style="flex:1;padding:6px;border:2px solid #ddd;border-radius:8px;font-size:12px;min-width:80px;">
-                                        <button onclick="submitAppointment('${p.id}')" style="padding:6px 12px;background:linear-gradient(135deg,#00695C,#004D40);color:white;border:none;border-radius:8px;cursor:pointer;font-weight:bold;font-size:11px;">📅 نوبت</button>
                                     </div>
                                 `;
                     }
@@ -3715,8 +3108,6 @@
                                         <button class="share-ita" onclick="shareProperty('ita','${p.id}')">🇮🇷 ایتا</button>
                                     </div>
                                     ${!isAdmin ? `
-                                        ${offerHtml}
-                                        ${appointmentHtml}
                                         ${userChatBtn}
                                     ` : ''}
                                 </div>
@@ -3927,7 +3318,7 @@
         function updateWelcomeMessage() {
             const name = localStorage.getItem('amlak_admin_name') || 'مدیر';
             document.getElementById('welcomeUser').textContent = isAdmin ? `👋 خوش آمدید ${name}!` : '👋 خوش آمدید!';
-            document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر';
+            document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر عادی';
         }
 
         function loadAdminMessage() {
@@ -3972,7 +3363,6 @@
             document.getElementById('adminMsgDate').textContent = data.date;
             document.getElementById('adminMsgBox').style.display = 'block';
             showToast('✅ پیام مدیر ویرایش شد!', 'success');
-            notifyUsersPublicMessage('📢 پیام جدید از مدیر:\n' + newMsg);
         }
 
         function cancelAdminMessageEdit() {
@@ -3989,21 +3379,6 @@
             showToast('🗑️ پیام مدیر حذف شد', 'success');
         }
 
-        function checkUserNotifications() {
-            try {
-                if (!currentUser || isAdmin) return;
-                const notifications = JSON.parse(localStorage.getItem('amlak_user_notifications') || '[]');
-                const userNotifs = notifications.filter(n => n.user_id === currentUser.id && !n.is_read);
-                if (userNotifs.length) {
-                    showToast(`📬 ${userNotifs.length} اعلان جدید دارید!`, 'info');
-                    localStorage.setItem('amlak_user_notifications', JSON.stringify(notifications.map(n => {
-                        if (n.user_id === currentUser.id) n.is_read = true;
-                        return n;
-                    })));
-                }
-            } catch (e) {}
-        }
-
         // ============================================================
         // ====== شروع برنامه ======
         // ============================================================
@@ -4014,11 +3389,6 @@
             enterApp();
         } else {
             document.getElementById('loginOverlay').classList.remove('hidden');
-            document.getElementById('roleAdmin').classList.add('active');
-            document.getElementById('adminFields').style.display = 'block';
-            document.getElementById('userFields').style.display = 'none';
-            document.getElementById('telegramVerificationFields').style.display = 'none';
-            document.getElementById('loginHint').textContent = 'رمز عبور مدیر را وارد کنید';
         }
 
         if (localStorage.getItem('darkMode') === 'true') {
@@ -4036,12 +3406,9 @@
         console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
         console.log('📊 تعداد املاک:', properties.length);
         console.log('🔑 رمز عبور مدیر: 26742674');
-        console.log('📱 توکن تلگرام:', TELEGRAM_BOT_TOKEN);
-        console.log('✅ تایید شماره با تلگرام فعال است!');
-        console.log('✅ اطلاع‌رسانی به کاربران فعال است!');
-        console.log('✅ لایک/دیسلایک اصلاح شده!');
-        console.log('✅ پیشنهاد قیمت اصلاح شده!');
-        console.log('✅ نوبت بازدید اصلاح شده!');
+        console.log('✅ کاربر عادی بدون نیاز به اطلاعات وارد می‌شود');
+        console.log('✅ اطلاعات کامل ملک در سبد خرید نمایش داده می‌شود');
+        console.log('✅ بخش مخفی فقط برای مدیر قابل مشاهده است');
     </script>
 </body>
-                                                                                                       </html>
+    </html>
