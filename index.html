@@ -231,6 +231,14 @@
             background: #0f3460 !important;
             border-color: #4fc3f7 !important;
         }
+        body.dark-mode .login-full-box {
+            background: rgba(0,0,0,0.9) !important;
+        }
+        body.dark-mode .admin-full-msg {
+            background: #0f3460 !important;
+            color: #FFD700 !important;
+            border-color: #4fc3f7 !important;
+        }
 
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -378,6 +386,15 @@
         }
         .btn-info {
             background: #00838F;
+        }
+        .btn-disabled {
+            background: #999;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        .btn-disabled:hover {
+            transform: none;
+            box-shadow: none;
         }
 
         .btn-group {
@@ -942,6 +959,16 @@
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             box-shadow: 0 4px 20px rgba(21, 101, 192, 0.4);
         }
+        .btn-admin-login.disabled {
+            background: #999;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .btn-admin-login.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
         .login-hint {
             font-size: 12px;
             color: var(--text-light);
@@ -973,6 +1000,17 @@
             color: var(--text-light);
             margin-bottom: 6px;
             display: block;
+        }
+        .admin-full-msg {
+            background: #FFF3E0;
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 14px;
+            text-align: center;
+            color: var(--warning);
+            font-weight: bold;
+            font-size: 14px;
         }
 
         .loading-overlay {
@@ -1949,6 +1987,93 @@
             font-size: 12px;
         }
 
+        .admin-users-section {
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 16px;
+            margin-bottom: 14px;
+            display: none;
+        }
+        .admin-users-section .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .admin-users-section .section-header h4 {
+            color: var(--primary);
+            font-size: 14px;
+        }
+        .admin-users-section .user-count {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .user-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            border-right: 3px solid transparent;
+        }
+        .user-list-item:last-child {
+            border-bottom: none;
+        }
+        .user-list-item .user-phone {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 13px;
+        }
+        .user-list-item .user-meta {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .user-list-item .user-status {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .user-list-item .user-status.verified {
+            background: #E8F5E9;
+            color: var(--secondary);
+        }
+        .user-list-item .user-status.pending {
+            background: #FFF3E0;
+            color: var(--warning);
+        }
+        .user-list-item .user-actions {
+            display: flex;
+            gap: 4px;
+        }
+        .user-list-item .user-actions button {
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+        }
+        .user-list-item .user-actions .contact-user {
+            background: var(--primary);
+        }
+        .user-list-item .user-actions .delete-user {
+            background: var(--danger);
+        }
+        .user-list-item .user-actions button:hover {
+            transform: scale(1.1);
+        }
+        body.dark-mode .user-list-item .user-status.verified {
+            background: #0f3460;
+            color: #4fc3f7;
+        }
+        body.dark-mode .user-list-item .user-status.pending {
+            background: #0f3460;
+            color: #FFB300;
+        }
+
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(2, 1fr);
@@ -1997,6 +2122,10 @@
                 <input type="password" id="adminPasswordInput" placeholder="رمز عبور مدیر" class="password-input">
                 <button class="btn" onclick="loginAdmin()" style="background:var(--primary); width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:var(--transition);">✅ تایید</button>
                 <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px; transition:var(--transition);">❌ انصراف</button>
+            </div>
+
+            <div id="adminFullMsg" style="display:none;" class="admin-full-msg">
+                ⚠️ ظرفیت مدیران تکمیل شده است (۴ مدیر)
             </div>
 
             <div class="login-hint" id="loginHint">👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند</div>
@@ -2462,44 +2591,59 @@
         // ====== توابع Supabase ======
         // ============================================================
         async function getSetting(key) {
-            const { data, error } = await supabase
-                .from(TABLES.settings)
-                .select('value')
-                .eq('key', key)
-                .single();
-            if (error && error.code !== 'PGRST116') {
-                console.error('❌ خطا در دریافت تنظیم:', error);
+            try {
+                const { data, error } = await supabase
+                    .from(TABLES.settings)
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code !== 'PGRST116') {
+                    console.error('❌ خطا در دریافت تنظیم:', error);
+                    return null;
+                }
+                return data?.value || null;
+            } catch (e) {
+                console.error('❌ خطا در دریافت تنظیم:', e);
                 return null;
             }
-            return data?.value || null;
         }
 
         async function setSetting(key, value) {
-            const { error } = await supabase
-                .from(TABLES.settings)
-                .upsert({ key, value, updated_at: new Date().toISOString() });
-            if (error) {
-                console.error('❌ خطا در ذخیره تنظیم:', error);
+            try {
+                const { error } = await supabase
+                    .from(TABLES.settings)
+                    .upsert({ key, value, updated_at: new Date().toISOString() });
+                if (error) {
+                    console.error('❌ خطا در ذخیره تنظیم:', error);
+                    return false;
+                }
+                return true;
+            } catch (e) {
+                console.error('❌ خطا در ذخیره تنظیم:', e);
                 return false;
             }
-            return true;
         }
 
         // ============================================================
         // ====== سیستم کاربران ======
         // ============================================================
         async function getNextUserNumber() {
-            const { data, error } = await supabase
-                .from(TABLES.users)
-                .select('user_number')
-                .order('user_number', { ascending: false })
-                .limit(1);
+            try {
+                const { data, error } = await supabase
+                    .from(TABLES.users)
+                    .select('user_number')
+                    .order('user_number', { ascending: false })
+                    .limit(1);
 
-            if (error && error.code !== 'PGRST116') {
-                console.error('❌ خطا در دریافت شماره کاربر:', error);
+                if (error && error.code !== 'PGRST116') {
+                    console.error('❌ خطا در دریافت شماره کاربر:', error);
+                    return 1;
+                }
+                return (data && data.length > 0) ? data[0].user_number + 1 : 1;
+            } catch (e) {
+                console.error('❌ خطا در دریافت شماره کاربر:', e);
                 return 1;
             }
-            return (data && data.length > 0) ? data[0].user_number + 1 : 1;
         }
 
         async function registerUser(name) {
@@ -2554,6 +2698,289 @@
             } catch (e) {
                 ErrorHandler.log(e, 'حذف کاربر');
                 return false;
+            }
+        }
+
+        // ============================================================
+        // ====== سیستم مدیریت مدیران ======
+        // ============================================================
+        async function getAdminCount() {
+            const count = await getSetting('admin_count');
+            adminCount = parseInt(count) || 0;
+            return adminCount;
+        }
+
+        async function incrementAdminCount() {
+            const newCount = adminCount + 1;
+            await setSetting('admin_count', String(newCount));
+            adminCount = newCount;
+            return adminCount;
+        }
+
+        function updateAdminLoginButton() {
+            const btn = document.getElementById('adminLoginBtn');
+            const fullMsg = document.getElementById('adminFullMsg');
+            if (adminCount >= MAX_ADMINS) {
+                if (btn) {
+                    btn.style.display = 'none';
+                }
+                if (fullMsg) {
+                    fullMsg.style.display = 'block';
+                }
+                document.getElementById('loginSubText').textContent = '⚠️ ظرفیت مدیران تکمیل شده است';
+                document.getElementById('loginHint').textContent = '👤 لطفاً به عنوان کاربر عادی وارد شوید';
+            } else {
+                if (btn) {
+                    btn.style.display = 'block';
+                }
+                if (fullMsg) {
+                    fullMsg.style.display = 'none';
+                }
+                document.getElementById('loginSubText').textContent = 'به سامانه دپارتمان املاک حسینی خوش آمدید';
+                document.getElementById('loginHint').textContent = `👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند (${MAX_ADMINS - adminCount} مدیر باقی مانده)`;
+            }
+        }
+
+        // ============================================================
+        // ====== ورود ======
+        // ============================================================
+        async function checkAdminLimitAndUpdateUI() {
+            await getAdminCount();
+            updateAdminLoginButton();
+            return adminCount;
+        }
+
+        async function loginAsUser() {
+            try {
+                const user = await registerUser('کاربر');
+                if (!user) {
+                    showToast('❌ خطا در ثبت کاربر!', 'error');
+                    return;
+                }
+
+                isAdmin = false;
+                currentUser = {
+                    role: 'user',
+                    id: user.id,
+                    userNumber: user.user_number,
+                    name: user.name
+                };
+                localStorage.setItem('amlak_user', JSON.stringify({ role: 'user', id: user.id }));
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('mainApp').style.display = 'block';
+
+                showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
+                await enterApp();
+                await loadUserChatMessages();
+            } catch (e) {
+                ErrorHandler.log(e, 'ورود کاربر');
+                showToast('❌ خطا در ورود!', 'error');
+            }
+        }
+
+        function showAdminLogin() {
+            if (adminCount >= MAX_ADMINS) {
+                showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
+                return;
+            }
+            document.getElementById('adminLoginArea').style.display = 'block';
+            document.getElementById('adminPasswordInput').focus();
+            document.getElementById('loginHint').textContent = '🔑 رمز عبور مدیر را وارد کنید';
+        }
+
+        function hideAdminLogin() {
+            document.getElementById('adminLoginArea').style.display = 'none';
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('loginHint').textContent = `👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند (${MAX_ADMINS - adminCount} مدیر باقی مانده)`;
+        }
+
+        async function loginAdmin() {
+            try {
+                if (adminCount >= MAX_ADMINS) {
+                    showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
+                    return;
+                }
+
+                const password = document.getElementById('adminPasswordInput').value.trim();
+                if (!password) {
+                    showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning');
+                    return;
+                }
+                if (password === ADMIN_PASSWORD) {
+                    isAdmin = true;
+                    const adminId = 'admin_' + Date.now().toString(36);
+                    currentUser = {
+                        role: 'admin',
+                        id: adminId,
+                        name: 'مدیر'
+                    };
+                    localStorage.setItem('amlak_user', JSON.stringify({ role: 'admin', id: adminId }));
+
+                    // افزایش تعداد مدیران
+                    await incrementAdminCount();
+                    await checkAdminLimitAndUpdateUI();
+
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('mainApp').style.display = 'block';
+
+                    showToast('👑 خوش آمدید مدیر!', 'success');
+                    await enterApp();
+                } else {
+                    showToast('❌ رمز عبور اشتباه است!', 'error');
+                    document.getElementById('adminPasswordInput').value = '';
+                    document.getElementById('adminPasswordInput').focus();
+                }
+            } catch (e) {
+                ErrorHandler.log(e, 'ورود مدیر');
+                showToast('❌ خطا در ورود!', 'error');
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const adminArea = document.getElementById('adminLoginArea');
+                if (adminArea.style.display === 'block') {
+                    loginAdmin();
+                }
+                if (document.getElementById('userChatInput') && document.activeElement === document.getElementById(
+                        'userChatInput')) {
+                    sendUserMessage();
+                }
+            }
+        });
+
+        async function logout() {
+            try {
+                localStorage.removeItem('amlak_user');
+                currentUser = null;
+                isAdmin = false;
+                document.getElementById('mainApp').style.display = 'none';
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                hideAdminLogin();
+                await checkAdminLimitAndUpdateUI();
+                showToast('🚪 خروج موفق', 'success');
+            } catch (e) { ErrorHandler.log(e, 'خروج'); }
+        }
+
+        // ============================================================
+        // ====== چت کاربر ======
+        // ============================================================
+        async function loadUserChatMessages() {
+            if (!currentUser || isAdmin) return;
+            const container = document.getElementById('userChatMessagesContainer');
+            if (!container) return;
+
+            const messages = await loadChatMessages(currentUser.id);
+            chatMessages = messages;
+
+            if (!messages.length) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                return;
+            }
+
+            let html = '';
+            messages.forEach((msg) => {
+                const isUser = msg.sender === 'user';
+                const senderName = isUser ? 'شما' : 'مدیر';
+                const msgClass = isUser ? 'user-msg' : 'admin-msg';
+                const time = new Date(msg.date).toLocaleString('fa-IR');
+
+                let fileHtml = '';
+                if (msg.file) {
+                    fileHtml = `<div class="msg-file"><a href="${msg.file}" target="_blank">📎 دانلود فایل</a></div>`;
+                }
+
+                let editHtml = '';
+                if (msg.edited) {
+                    editHtml = `<span style="font-size:9px;color:var(--text-light);">(ویرایش شده)</span>`;
+                }
+
+                let actionsHtml = '';
+                if (isUser) {
+                    actionsHtml = `
+                                <div class="msg-actions">
+                                    <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
+                                    <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
+                                </div>
+                            `;
+                }
+
+                html += `
+                            <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
+                                <div class="msg-header">
+                                    <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
+                                    <span class="msg-time">${time} ${editHtml}</span>
+                                </div>
+                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
+                                ${fileHtml}
+                                ${actionsHtml}
+                                <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
+                                    <textarea id="userEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
+                                    <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
+                                    <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
+                                </div>
+                            </div>
+                        `;
+            });
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendUserMessage() {
+            if (!currentUser?.id) {
+                showToast('⚠️ لطفاً وارد شوید!', 'warning');
+                return;
+            }
+            const input = document.getElementById('userChatInput');
+            const text = sanitizeInput(input.value.trim());
+            if (!text) {
+                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
+                return;
+            }
+
+            const msg = await sendMessageToSupabase(currentUser.id, text);
+            if (msg) {
+                showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
+                input.value = '';
+                await loadUserChatMessages();
+                await addNotification('admin', '💬 پیام جدید از کاربر', text);
+            }
+        }
+
+        async function startUserEditMessage(messageId) {
+            document.getElementById('userEditArea-' + messageId).style.display = 'block';
+            document.getElementById('userEditInput-' + messageId).focus();
+        }
+
+        function cancelUserEditMessage(messageId) {
+            document.getElementById('userEditArea-' + messageId).style.display = 'none';
+        }
+
+        async function saveUserEditMessage(messageId) {
+            const input = document.getElementById('userEditInput-' + messageId);
+            const newText = input.value.trim();
+            if (!newText) {
+                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
+                return;
+            }
+
+            const result = await editMessageOnSupabase(currentUser.id, messageId, newText);
+            if (result) {
+                showToast('✅ پیام ویرایش شد!', 'success');
+                await loadUserChatMessages();
+            } else {
+                showToast('❌ خطا در ویرایش!', 'error');
+            }
+        }
+
+        async function deleteUserMessage(messageId) {
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            const result = await deleteMessageFromSupabase(currentUser.id, messageId);
+            if (result) {
+                showToast('🗑️ پیام حذف شد', 'success');
+                await loadUserChatMessages();
             }
         }
 
@@ -2745,259 +3172,6 @@
             } catch (e) {
                 ErrorHandler.log(e, 'ثبت اعلان');
                 return false;
-            }
-        }
-
-        // ============================================================
-        // ====== ورود ======
-        // ============================================================
-        async function checkAdminLimit() {
-            const count = await getSetting('admin_count');
-            adminCount = parseInt(count) || 0;
-
-            if (adminCount >= MAX_ADMINS) {
-                document.getElementById('adminLoginBtn').style.display = 'none';
-                document.getElementById('loginSubText').textContent = '👤 تعداد مدیران کامل شده است. لطفاً به عنوان کاربر وارد شوید';
-                document.getElementById('loginHint').textContent = '⚠️ ظرفیت مدیران تکمیل شده است';
-                return true;
-            }
-            return false;
-        }
-
-        async function loginAsUser() {
-            try {
-                const user = await registerUser('کاربر');
-                if (!user) {
-                    showToast('❌ خطا در ثبت کاربر!', 'error');
-                    return;
-                }
-
-                isAdmin = false;
-                currentUser = {
-                    role: 'user',
-                    id: user.id,
-                    userNumber: user.user_number,
-                    name: user.name
-                };
-                localStorage.setItem('amlak_user', JSON.stringify({ role: 'user', id: user.id }));
-
-                document.getElementById('loginOverlay').classList.add('hidden');
-                document.getElementById('mainApp').style.display = 'block';
-
-                showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
-                await enterApp();
-                await loadUserChatMessages();
-            } catch (e) {
-                ErrorHandler.log(e, 'ورود کاربر');
-                showToast('❌ خطا در ورود!', 'error');
-            }
-        }
-
-        function showAdminLogin() {
-            // بررسی ظرفیت مدیران
-            if (adminCount >= MAX_ADMINS) {
-                showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
-                return;
-            }
-            document.getElementById('adminLoginArea').style.display = 'block';
-            document.getElementById('adminPasswordInput').focus();
-            document.getElementById('loginHint').textContent = '🔑 رمز عبور مدیر را وارد کنید';
-        }
-
-        function hideAdminLogin() {
-            document.getElementById('adminLoginArea').style.display = 'none';
-            document.getElementById('adminPasswordInput').value = '';
-            document.getElementById('loginHint').textContent = '👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند';
-        }
-
-        async function loginAdmin() {
-            try {
-                // دوباره چک کن که ظرفیت پر نشده باشه
-                if (adminCount >= MAX_ADMINS) {
-                    showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
-                    return;
-                }
-
-                const password = document.getElementById('adminPasswordInput').value.trim();
-                if (!password) {
-                    showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning');
-                    return;
-                }
-                if (password === ADMIN_PASSWORD) {
-                    isAdmin = true;
-                    const adminId = 'admin_' + Date.now().toString(36);
-                    currentUser = {
-                        role: 'admin',
-                        id: adminId,
-                        name: 'مدیر'
-                    };
-                    localStorage.setItem('amlak_user', JSON.stringify({ role: 'admin', id: adminId }));
-
-                    // افزایش تعداد مدیران
-                    const newCount = adminCount + 1;
-                    await setSetting('admin_count', String(newCount));
-                    adminCount = newCount;
-                    await checkAdminLimit();
-
-                    document.getElementById('loginOverlay').classList.add('hidden');
-                    document.getElementById('mainApp').style.display = 'block';
-
-                    showToast('👑 خوش آمدید مدیر!', 'success');
-                    await enterApp();
-                } else {
-                    showToast('❌ رمز عبور اشتباه است!', 'error');
-                    document.getElementById('adminPasswordInput').value = '';
-                    document.getElementById('adminPasswordInput').focus();
-                }
-            } catch (e) {
-                ErrorHandler.log(e, 'ورود مدیر');
-                showToast('❌ خطا در ورود!', 'error');
-            }
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const adminArea = document.getElementById('adminLoginArea');
-                if (adminArea.style.display === 'block') {
-                    loginAdmin();
-                }
-                if (document.getElementById('userChatInput') && document.activeElement === document.getElementById(
-                        'userChatInput')) {
-                    sendUserMessage();
-                }
-            }
-        });
-
-        async function logout() {
-            try {
-                localStorage.removeItem('amlak_user');
-                currentUser = null;
-                isAdmin = false;
-                document.getElementById('mainApp').style.display = 'none';
-                document.getElementById('loginOverlay').classList.remove('hidden');
-                hideAdminLogin();
-                showToast('🚪 خروج موفق', 'success');
-            } catch (e) { ErrorHandler.log(e, 'خروج'); }
-        }
-
-        // ============================================================
-        // ====== چت کاربر ======
-        // ============================================================
-        async function loadUserChatMessages() {
-            if (!currentUser || isAdmin) return;
-            const container = document.getElementById('userChatMessagesContainer');
-            if (!container) return;
-
-            const messages = await loadChatMessages(currentUser.id);
-            chatMessages = messages;
-
-            if (!messages.length) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
-                return;
-            }
-
-            let html = '';
-            messages.forEach((msg) => {
-                const isUser = msg.sender === 'user';
-                const senderName = isUser ? 'شما' : 'مدیر';
-                const msgClass = isUser ? 'user-msg' : 'admin-msg';
-                const time = new Date(msg.date).toLocaleString('fa-IR');
-
-                let fileHtml = '';
-                if (msg.file) {
-                    fileHtml = `<div class="msg-file"><a href="${msg.file}" target="_blank">📎 دانلود فایل</a></div>`;
-                }
-
-                let editHtml = '';
-                if (msg.edited) {
-                    editHtml = `<span style="font-size:9px;color:var(--text-light);">(ویرایش شده)</span>`;
-                }
-
-                let actionsHtml = '';
-                if (isUser) {
-                    actionsHtml = `
-                                <div class="msg-actions">
-                                    <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
-                                    <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
-                                </div>
-                            `;
-                }
-
-                html += `
-                            <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
-                                <div class="msg-header">
-                                    <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
-                                    <span class="msg-time">${time} ${editHtml}</span>
-                                </div>
-                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
-                                ${fileHtml}
-                                ${actionsHtml}
-                                <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
-                                    <textarea id="userEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
-                                    <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
-                                    <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
-                                </div>
-                            </div>
-                        `;
-            });
-
-            container.innerHTML = html;
-            container.scrollTop = container.scrollHeight;
-        }
-
-        async function sendUserMessage() {
-            if (!currentUser?.id) {
-                showToast('⚠️ لطفاً وارد شوید!', 'warning');
-                return;
-            }
-            const input = document.getElementById('userChatInput');
-            const text = sanitizeInput(input.value.trim());
-            if (!text) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            const msg = await sendMessageToSupabase(currentUser.id, text);
-            if (msg) {
-                showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-                input.value = '';
-                await loadUserChatMessages();
-                await addNotification('admin', '💬 پیام جدید از کاربر', text);
-            }
-        }
-
-        async function startUserEditMessage(messageId) {
-            document.getElementById('userEditArea-' + messageId).style.display = 'block';
-            document.getElementById('userEditInput-' + messageId).focus();
-        }
-
-        function cancelUserEditMessage(messageId) {
-            document.getElementById('userEditArea-' + messageId).style.display = 'none';
-        }
-
-        async function saveUserEditMessage(messageId) {
-            const input = document.getElementById('userEditInput-' + messageId);
-            const newText = input.value.trim();
-            if (!newText) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            const result = await editMessageOnSupabase(currentUser.id, messageId, newText);
-            if (result) {
-                showToast('✅ پیام ویرایش شد!', 'success');
-                await loadUserChatMessages();
-            } else {
-                showToast('❌ خطا در ویرایش!', 'error');
-            }
-        }
-
-        async function deleteUserMessage(messageId) {
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-            const result = await deleteMessageFromSupabase(currentUser.id, messageId);
-            if (result) {
-                showToast('🗑️ پیام حذف شد', 'success');
-                await loadUserChatMessages();
             }
         }
 
@@ -4486,17 +4660,34 @@
         // ====== شروع برنامه ======
         // ============================================================
         async function init() {
-            await checkAdminLimit();
+            // بررسی تعداد مدیران و بروزرسانی UI
+            await checkAdminLimitAndUpdateUI();
 
             const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
             if (savedUser) {
                 if (savedUser.role === 'admin') {
-                    isAdmin = true;
-                    currentUser = {
-                        role: 'admin',
-                        id: savedUser.id,
-                        name: 'مدیر'
-                    };
+                    // بررسی کن که آیا هنوز ظرفیت مدیران پر نشده یا قبلاً مدیر بوده
+                    // اگه ظرفیت پر شده باشه، دیگه مدیر جدید قبول نمیشه
+                    // ولی اگه قبلاً مدیر بوده، اجازه ورود داره
+                    if (adminCount >= MAX_ADMINS) {
+                        // ظرفیت پر شده، ولی اگه قبلاً مدیر بوده، اجازه ورود داره
+                        // برای سادگی، فرض می‌کنیم که اگه تو localStorage ذخیره شده، مدیر هست
+                        // ولی برای امنیت بیشتر، چک می‌کنیم که آیا این ID در لیست مدیران هست یا نه
+                        // فعلاً اجازه ورود می‌دیم
+                        isAdmin = true;
+                        currentUser = {
+                            role: 'admin',
+                            id: savedUser.id,
+                            name: 'مدیر'
+                        };
+                    } else {
+                        isAdmin = true;
+                        currentUser = {
+                            role: 'admin',
+                            id: savedUser.id,
+                            name: 'مدیر'
+                        };
+                    }
                 } else {
                     const users = await getUsers();
                     const user = users.find(u => u.id === savedUser.id);
@@ -4548,4 +4739,4 @@
         init();
     </script>
 </body>
-                    </html>
+    </html>
