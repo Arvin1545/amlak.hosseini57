@@ -1788,7 +1788,6 @@
             cursor: pointer;
         }
 
-        /* ===== بخش پیشنهاد هوش مصنوعی ===== */
         .ai-suggestion-section {
             background: linear-gradient(135deg, #E8EAF6, #C5CAE9);
             border: 2px solid var(--purple);
@@ -1885,7 +1884,6 @@
             transform: scale(1.05);
         }
 
-        /* ===== بخش پیش‌نمایش کاربر (مدیر) ===== */
         .user-preview-section {
             background: var(--card-bg);
             border: 2px solid var(--primary);
@@ -2006,7 +2004,6 @@
     </div>
 
     <div id="mainApp" style="display:none;">
-        <!-- Header -->
         <div class="header">
             <div class="header-top">
                 <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
@@ -2015,13 +2012,11 @@
             <p id="welcomeUser">خوش آمدید</p>
         </div>
 
-        <!-- Welcome -->
         <div class="welcome-box" id="welcomeBox">
             <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
             <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
         </div>
 
-        <!-- Admin Message -->
         <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
             <div id="adminMsgDisplay">
                 <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
@@ -2038,7 +2033,6 @@
             </div>
         </div>
 
-        <!-- Top Bar -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
             <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
             <div>
@@ -2048,7 +2042,6 @@
             </div>
         </div>
 
-        <!-- AI Section -->
         <div class="ai-suggestion-section" id="aiSection">
             <h3>🤖 پیشنهاد هوشمند ملک</h3>
             <div class="ai-form">
@@ -2077,7 +2070,6 @@
             <div class="ai-results" id="aiResults"></div>
         </div>
 
-        <!-- User Preview (Admin) -->
         <div class="user-preview-section" id="userPreviewSection">
             <h3>👁️ پیش‌نمایش کاربران</h3>
             <div class="preview-tabs">
@@ -2088,7 +2080,6 @@
             <div class="preview-content" id="previewContent"></div>
         </div>
 
-        <!-- Users List (Admin) -->
         <div class="admin-users-section" id="adminUsersSection">
             <div class="section-header">
                 <h4>👥 لیست کاربران</h4>
@@ -2100,7 +2091,6 @@
             <button class="btn btn-secondary" onclick="refreshUsersList()" style="width:100%;margin-top:8px;">🔄 بروزرسانی</button>
         </div>
 
-        <!-- Edit Profile -->
         <div class="form" id="editProfileForm">
             <h3>✏️ ویرایش اطلاعات مدیر</h3>
             <label>نام مدیر</label>
@@ -2111,7 +2101,6 @@
             <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
         </div>
 
-        <!-- Guide (Admin) -->
         <div class="guide-box" id="guideBox" style="display:none;">
             <h4>📖 دفترچه راهنمای مدیر</h4>
             <ul>
@@ -2130,7 +2119,6 @@
             </ul>
         </div>
 
-        <!-- User Filters -->
         <div id="userFilterSection">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
                 <span style="font-size:14px;font-weight:bold;color:var(--primary);">🔍 فیلتر املاک</span>
@@ -2175,7 +2163,6 @@
             </div>
         </div>
 
-        <!-- Stats -->
         <div class="stats" id="statsContainer">
             <div><span id="totalCount">0</span><label>کل</label></div>
             <div><span id="saleCount">0</span><label>فروش</label></div>
@@ -2183,7 +2170,6 @@
             <div><span id="avgPrice">0</span><label>میانگین</label></div>
         </div>
 
-        <!-- Admin Buttons -->
         <div class="btn-group" id="adminButtons" style="display:none;">
             <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
             <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام</button>
@@ -2197,7 +2183,6 @@
             <button class="btn btn-purple" onclick="toggleUserPreview()">👁️ پیش‌نمایش</button>
         </div>
 
-        <!-- Property Form -->
         <div class="form" id="propertyForm">
             <h3 id="formTitle">📋 ثبت ملک جدید</h3>
             <input type="hidden" id="editId" value="" />
@@ -2260,7 +2245,6 @@
             <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
         </div>
 
-        <!-- Public Message Form -->
         <div class="form" id="publicMsgForm">
             <h3 id="publicMsgTitle">📢 ارسال پیام عمومی</h3>
             <input type="hidden" id="editMsgId" value="" />
@@ -2270,7 +2254,6 @@
             <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
         </div>
 
-        <!-- User Chat Section -->
         <div class="user-chat-section" id="userChatSection">
             <h3>💬 ارسال پیام به مدیر</h3>
             <div class="chat-messages" id="userChatMessagesContainer">
@@ -2285,7 +2268,6 @@
             </div>
         </div>
 
-        <!-- Chat Viewer (Admin) -->
         <div class="form" id="chatViewer" style="display:none;">
             <h3 id="chatViewerTitle">💬 چت با کاربران</h3>
             <div id="chatUserList" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
@@ -2302,7 +2284,6 @@
             <button class="btn btn-secondary" onclick="closeChatViewer()" style="margin-top:6px;">❌ بستن</button>
         </div>
 
-        <!-- Admin Filter Sort -->
         <div class="filter-sort" id="adminFilterSort">
             <select id="categoryFilter" onchange="renderList()">
                 <option value="all">همه دسته‌ها</option>
@@ -2323,7 +2304,6 @@
             <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" />
         </div>
 
-        <!-- Chart -->
         <div class="chart-container" id="chartContainer" style="display:none;">
             <h4>📊 آمار املاک</h4>
             <canvas id="chartCanvas"></canvas>
@@ -2333,23 +2313,18 @@
             </div>
         </div>
 
-        <!-- Public Messages -->
         <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
 
-        <!-- Search -->
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
 
-        <!-- Filter Tabs (Admin) -->
         <div class="filter-tabs" id="filterTabs">
             <button class="active" onclick="setFilter('all', this)">همه</button>
             <button onclick="setFilter('sale', this)">💰 فروش</button>
             <button onclick="setFilter('rent', this)">🔑 اجاره</button>
         </div>
 
-        <!-- Property List -->
         <div id="propertyList"></div>
 
-        <!-- Cart Modal -->
         <div class="cart-modal" id="cartModal">
             <div class="cart-content">
                 <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
@@ -2357,12 +2332,10 @@
             </div>
         </div>
 
-        <!-- Media Modal -->
         <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
             <div class="modal-content" id="modalContent"></div>
         </div>
 
-        <!-- Toast -->
         <div class="toast" id="toast"></div>
     </div>
 
@@ -2377,7 +2350,6 @@
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // نام جدول‌ها
         const TABLES = {
             properties: 'estate_properties',
             users: 'users',
@@ -2573,13 +2545,9 @@
 
         async function deleteUser(userId) {
             try {
-                // حذف پیام‌های کاربر
                 await supabase.from(TABLES.messages).delete().eq('user_id', userId);
-                // حذف سبد خرید کاربر
                 await supabase.from(TABLES.cart).delete().eq('user_id', userId);
-                // حذف اعلان‌های کاربر
                 await supabase.from(TABLES.notifications).delete().eq('user_id', userId);
-                // حذف خود کاربر
                 const { error } = await supabase.from(TABLES.users).delete().eq('id', userId);
                 if (error) throw new Error(error.message);
                 return true;
@@ -2780,22 +2748,6 @@
             }
         }
 
-        async function getNotifications(userId) {
-            try {
-                const { data, error } = await supabase
-                    .from(TABLES.notifications)
-                    .select('*')
-                    .eq('user_id', userId)
-                    .order('date', { ascending: false });
-
-                if (error) throw new Error(error.message);
-                return data || [];
-            } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری اعلان‌ها');
-                return [];
-            }
-        }
-
         // ============================================================
         // ====== ورود ======
         // ============================================================
@@ -2842,6 +2794,7 @@
         }
 
         function showAdminLogin() {
+            // بررسی ظرفیت مدیران
             if (adminCount >= MAX_ADMINS) {
                 showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
                 return;
@@ -2859,6 +2812,7 @@
 
         async function loginAdmin() {
             try {
+                // دوباره چک کن که ظرفیت پر نشده باشه
                 if (adminCount >= MAX_ADMINS) {
                     showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
                     return;
@@ -3272,7 +3226,7 @@
         }
 
         // ============================================================
-        // ====== هوش مصنوعی پیشنهاد ملک ======
+        // ====== هوش مصنوعی ======
         // ============================================================
         function getAISuggestions() {
             const budget = parseInt(document.getElementById('aiBudget').value) || 0;
@@ -3386,7 +3340,7 @@
         }
 
         // ============================================================
-        // ====== پیش‌نمایش کاربران (فقط مدیر) ======
+        // ====== پیش‌نمایش کاربران ======
         // ============================================================
         let previewMode = 'properties';
 
@@ -3871,7 +3825,7 @@
                                         <button onclick="sharePropertyFromCart('ita','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#4CAF50;transition:var(--transition);">🇮🇷 ایتا</button>
                                     </div>
                                 </div>
-                                <button class="cart-remove-btn" onclick="addToCartHandler('${p.id}')">✕</button>
+                                <button class="cart-remove-btn" onclick="removeFromCartHandler('${p.id}')">✕</button>
                             </div>
                         </div>
                     `;
@@ -4544,7 +4498,6 @@
                         name: 'مدیر'
                     };
                 } else {
-                    // کاربر عادی - باید از دیتابیس اطلاعاتش رو بگیره
                     const users = await getUsers();
                     const user = users.find(u => u.id === savedUser.id);
                     if (user) {
@@ -4556,7 +4509,6 @@
                             name: user.name
                         };
                     } else {
-                        // کاربر در دیتابیس نیست - برو صفحه ورود
                         document.getElementById('loginOverlay').classList.remove('hidden');
                         return;
                     }
@@ -4596,4 +4548,4 @@
         init();
     </script>
 </body>
-                                                                                                   </html>
+                    </html>
