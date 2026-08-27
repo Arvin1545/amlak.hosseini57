@@ -1,45 +1,1659 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa" dir="rtl">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>🏢 دپارتمان املاک حسینی</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
+    <style>
+        :root {
+            --primary: #1565C0;
+            --primary-dark: #0D47A1;
+            --primary-light: #E3F2FD;
+            --secondary: #2E7D32;
+            --accent: #FFD700;
+            --danger: #C62828;
+            --warning: #E65100;
+            --purple: #6A1B9A;
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #666;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+        }
+        body {
+            background: var(--bg);
+            padding: 12px;
+            max-width: 500px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+            transition: var(--transition);
+            color: var(--text);
+        }
+        body.dark-mode {
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text: #eee;
+            --text-light: #aaa;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --primary-light: #0f3460;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 20px rgba(21, 101, 192, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        .header h1 {
+            font-size: 24px;
+            position: relative;
+            z-index: 1;
+        }
+        .header h1 span {
+            color: var(--accent);
+        }
+        .header p {
+            opacity: 0.9;
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        .dark-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: var(--transition);
+            backdrop-filter: blur(4px);
+        }
+        .btn {
+            padding: 10px 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .btn-primary {
+            background: var(--primary);
+        }
+        .btn-success {
+            background: var(--secondary);
+        }
+        .btn-danger {
+            background: var(--danger);
+        }
+        .btn-secondary {
+            background: #616161;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, #FF8F00, #E65100);
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            color: var(--text);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 13px;
+            display: none;
+            z-index: 9999;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            font-weight: 500;
+        }
+        .toast.error {
+            background: var(--danger);
+            color: white;
+        }
+        .toast.success {
+            background: var(--secondary);
+            color: white;
+        }
+        .toast.warning {
+            background: var(--warning);
+            color: white;
+        }
+        .toast.info {
+            background: var(--primary);
+            color: white;
+        }
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 20px;
+        }
+        .login-overlay.hidden {
+            display: none;
+        }
+        .login-box {
+            background: var(--card-bg);
+            padding: 32px;
+            border-radius: 24px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            color: var(--text);
+        }
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .login-box h2 {
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+        .login-box h2 span {
+            color: var(--accent);
+        }
+        .login-box p {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        .login-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .login-buttons .btn {
+            width: 100%;
+            padding: 16px;
+            font-size: 16px;
+            border-radius: 14px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-user-login {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
+        }
+        .btn-admin-login {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 4px 20px rgba(21, 101, 192, 0.4);
+        }
+        .btn-admin-login.disabled {
+            background: #999;
+            box-shadow: none;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .login-hint {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 14px;
+            padding: 10px;
+            background: var(--bg);
+            border-radius: 8px;
+        }
+        .password-input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 14px;
+            text-align: center;
+            direction: ltr;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .password-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+        }
+        .admin-full-msg {
+            background: #FFF3E0;
+            border: 2px solid var(--warning);
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 14px;
+            text-align: center;
+            color: var(--warning);
+            font-weight: bold;
+            font-size: 14px;
+            display: none;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+            gap: 16px;
+        }
+        body.dark-mode .loading-overlay {
+            background: rgba(26, 26, 46, 0.95);
+        }
+        .loading-overlay.hidden {
+            display: none;
+        }
+        .spinner {
+            width: 48px;
+            height: 48px;
+            border: 4px solid #e0e0e0;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        .loading-text {
+            color: var(--primary);
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .admin-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: #333;
+            padding: 2px 12px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+        .logout-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .logout-btn:hover {
+            transform: scale(1.05);
+        }
+        .welcome-box {
+            background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+            padding: 14px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-align: center;
+            border-right: 5px solid var(--secondary);
+        }
+        body.dark-mode .welcome-box {
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            border-color: #4fc3f7;
+        }
+        .welcome-box h3 {
+            color: #1B5E20;
+        }
+        body.dark-mode .welcome-box h3 {
+            color: #4fc3f7;
+        }
+        .welcome-box p {
+            color: var(--text);
+            font-size: 13px;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .stats div {
+            background: var(--card-bg);
+            padding: 10px 6px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        .stats span {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        .stats label {
+            font-size: 9px;
+            color: var(--text-light);
+        }
+        .search-box {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 13px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .search-box:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+        }
+        .property-card {
+            background: var(--card-bg);
+            padding: 14px;
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary);
+            position: relative;
+            transition: var(--transition);
+            animation: fadeInUp 0.4s ease;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .property-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+        }
+        .property-card.sale {
+            border-right-color: var(--warning);
+        }
+        .property-card.rent {
+            border-right-color: var(--danger);
+        }
+        .property-card h3 {
+            color: var(--primary);
+            margin: 4px 0;
+            font-size: 16px;
+        }
+        .property-card .address {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        .property-card .price {
+            color: var(--secondary);
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .property-card .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .property-card .meta span {
+            background: var(--bg);
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .property-card .desc {
+            background: var(--bg);
+            padding: 8px;
+            border-radius: 8px;
+            margin-top: 6px;
+            font-size: 12px;
+            color: var(--text);
+        }
+        .empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px 0;
+            font-size: 16px;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .btn-group .btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 10px 6px;
+            font-size: 11px;
+        }
+        .form {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: none;
+            margin-bottom: 14px;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .form h3 {
+            color: var(--primary);
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .form label {
+            font-size: 12px;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 3px;
+        }
+        .form input,
+        .form select,
+        .form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 13px;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .form input:focus,
+        .form select:focus,
+        .form textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
+        }
+        .form textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        .form .btn {
+            width: 100%;
+            margin-top: 4px;
+            padding: 12px;
+            font-size: 14px;
+        }
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            padding: 20px;
+        }
+        .cart-modal.active {
+            display: flex;
+        }
+        .cart-content {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: var(--text);
+        }
+        .cart-content h3 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+        }
+        .cart-content h3 button {
+            background: var(--danger);
+            color: white;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .cart-empty {
+            text-align: center;
+            color: var(--text-light);
+            padding: 40px 0;
+            font-size: 16px;
+        }
+        .cart-badge {
+            background: #FF8F00;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 4px;
+        }
+        .filter-tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-tabs button {
+            flex: 1;
+            min-width: 50px;
+            padding: 8px 4px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text);
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .filter-tabs button.active {
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+        .filter-sort {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        .filter-sort select,
+        .filter-sort input {
+            flex: 1;
+            min-width: 70px;
+            padding: 8px 10px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 12px;
+            background: var(--card-bg);
+            color: var(--text);
+        }
+        .guide-box {
+            background: #FFF8E1;
+            border: 2px solid #FFB300;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        body.dark-mode .guide-box {
+            background: #0f3460;
+            border-color: #4fc3f7;
+        }
+        .guide-box h4 {
+            color: var(--warning);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        body.dark-mode .guide-box h4 {
+            color: #4fc3f7;
+        }
+        .guide-box ul {
+            list-style: none;
+            padding: 0;
+            font-size: 12px;
+            color: var(--text);
+        }
+        .guide-box ul li {
+            padding: 4px 0;
+            border-bottom: 1px dashed #eee;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .guide-box ul li:last-child {
+            border-bottom: none;
+        }
+        .guide-box .badge-icon {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0 6px;
+            border-radius: 4px;
+            font-size: 10px;
+            min-width: 20px;
+            text-align: center;
+        }
+        @media (max-width: 400px) {
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
 </head>
 <body>
-    <button onclick="loginUser()">ورود کاربر</button>
-    <button onclick="loginAdmin()">ورود مدیر</button>
-    <div id="result"></div>
+
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">⏳ در حال اتصال به سرور...</div>
+    </div>
+
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
+            <p id="loginSubText">به سامانه دپارتمان املاک حسینی خوش آمدید</p>
+
+            <div class="login-buttons" id="loginButtons">
+                <button class="btn btn-user-login" onclick="loginAsUser()">👤 ورود به عنوان کاربر عادی</button>
+                <button class="btn btn-admin-login" id="adminLoginBtn" onclick="showAdminLogin()">👑 ورود به عنوان مدیر</button>
+            </div>
+
+            <div id="adminLoginArea" style="display:none; margin-top:10px;">
+                <label class="admin-login-label">🔑 لطفاً رمز عبور مدیر را وارد کنید</label>
+                <input type="password" id="adminPasswordInput" placeholder="رمز عبور مدیر" class="password-input">
+                <button class="btn" onclick="loginAdmin()" style="background:var(--primary); width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:var(--transition);">✅ تایید</button>
+                <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px; transition:var(--transition);">❌ انصراف</button>
+            </div>
+
+            <div id="adminFullMsg" class="admin-full-msg">
+                ⚠️ ظرفیت مدیران تکمیل شده است (۴ مدیر)
+            </div>
+
+            <div class="login-hint" id="loginHint">👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند</div>
+        </div>
+    </div>
+
+    <div id="mainApp" style="display:none;">
+        <div class="header">
+            <div class="header-top">
+                <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
+                <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+            </div>
+            <p id="welcomeUser">خوش آمدید</p>
+        </div>
+
+        <div class="welcome-box">
+            <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
+            <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
+            <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
+            <div>
+                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;box-shadow:0 2px 10px rgba(255,143,0,0.3);transition:var(--transition);" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
+                <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:inline-block;">🚪 خروج</button>
+            </div>
+        </div>
+
+        <div class="guide-box" id="guideBox">
+            <h4>📖 دفترچه راهنمای مدیر</h4>
+            <ul>
+                <li><span class="badge-icon">➕</span> افزودن ملک جدید</li>
+                <li><span class="badge-icon green">✏️</span> ویرایش اطلاعات ملک</li>
+                <li><span class="badge-icon red">✕</span> حذف ملک</li>
+                <li><span class="badge-icon gold">📌</span> سنجاق کردن ملک</li>
+                <li><span class="badge-icon purple">📊</span> مشاهده نمودار</li>
+                <li><span class="badge-icon">💾</span> پشتیبان‌گیری</li>
+            </ul>
+        </div>
+
+        <div class="btn-group" id="adminButtons" style="display:none;">
+            <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
+            <button class="btn btn-purple" onclick="toggleChart()">📊 نمودار</button>
+            <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
+            <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
+        </div>
+
+        <div class="form" id="propertyForm">
+            <h3 id="formTitle">📋 ثبت ملک جدید</h3>
+            <input type="hidden" id="editId" value="" />
+            <label>عنوان ملک <span class="required">*</span></label>
+            <input type="text" id="fTitle" placeholder="مثال: آپارتمان لوکس" />
+            <label>دسته‌بندی ملک <span class="required">*</span></label>
+            <select id="fCategory">
+                <option value="زمین مسکونی">🏡 زمین مسکونی</option>
+                <option value="زمین تجاری">🏢 زمین تجاری</option>
+                <option value="آپارتمان">🏢 آپارتمان</option>
+                <option value="مغازه">🛍️ مغازه</option>
+                <option value="خانه">🏠 خانه</option>
+                <option value="باغ">🌳 باغ</option>
+            </select>
+            <label>نوع معامله <span class="required">*</span></label>
+            <select id="fType">
+                <option value="sale">💰 فروش</option>
+                <option value="rent">🔑 اجاره</option>
+            </select>
+            <label>قیمت (تومان) <span class="required">*</span></label>
+            <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" />
+            <label>آدرس <span class="required">*</span></label>
+            <input type="text" id="fAddress" placeholder="آدرس کامل" />
+            <label>متراژ (متر مربع)</label>
+            <input type="number" id="fArea" placeholder="مثال: 120" />
+            <label>شماره تماس</label>
+            <input type="text" id="fPhone" placeholder="مثال: 09123456789" />
+            <label>توضیحات</label>
+            <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
+            <button class="btn btn-success" onclick="saveProperty()">💾 ذخیره</button>
+            <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
+        </div>
+
+        <div class="stats" id="statsContainer">
+            <div><span id="totalCount">0</span><label>کل</label></div>
+            <div><span id="saleCount">0</span><label>فروش</label></div>
+            <div><span id="rentCount">0</span><label>اجاره</label></div>
+            <div><span id="avgPrice">0</span><label>میانگین</label></div>
+        </div>
+
+        <div class="chart-container" id="chartContainer" style="display:none;">
+            <h4>📊 آمار املاک</h4>
+            <canvas id="chartCanvas"></canvas>
+        </div>
+
+        <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
+
+        <div class="filter-tabs" id="filterTabs">
+            <button class="active" onclick="setFilter('all', this)">همه</button>
+            <button onclick="setFilter('sale', this)">💰 فروش</button>
+            <button onclick="setFilter('rent', this)">🔑 اجاره</button>
+        </div>
+
+        <div id="propertyList"></div>
+
+        <div class="cart-modal" id="cartModal">
+            <div class="cart-content">
+                <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
+                <div id="cartList"></div>
+            </div>
+        </div>
+
+        <div class="toast" id="toast"></div>
+    </div>
 
     <script>
+        // ============================================================
+        // ====== تنظیمات ======
+        // ============================================================
+        const ADMIN_PASSWORD = '26742674';
+        const MAX_ADMINS = 4;
+
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        async function loginUser() {
+        const TABLES = {
+            properties: 'estate_properties',
+            users: 'users',
+            messages: 'chat_messages',
+            cart: 'user_cart',
+            notifications: 'notifications',
+            settings: 'settings'
+        };
+
+        // ============================================================
+        // ====== متغیرها ======
+        // ============================================================
+        let currentUser = null;
+        let isAdmin = false;
+        let properties = [];
+        let cartItems = [];
+        let currentFilter = 'all';
+        let adminCount = 0;
+
+        // ============================================================
+        // ====== توابع کمکی ======
+        // ============================================================
+        function showToast(msg, type = 'info') {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.className = 'toast ' + type;
+            t.style.display = 'block';
+            clearTimeout(t._hide);
+            t._hide = setTimeout(() => { t.style.display = 'none'; }, 4000);
+        }
+
+        function showLoading(show) {
+            document.getElementById('loadingOverlay').classList.toggle('hidden', !show);
+        }
+
+        function sanitizeInput(text) {
+            if (!text) return '';
+            return String(text).replace(/<[^>]*>/g, '').replace(/[<>]/g, '');
+        }
+
+        function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+        function formatNumber(num) { return Number(num).toLocaleString('en-US'); }
+
+        function hideAllForms() {
+            ['propertyForm'].forEach(id => {
+                document.getElementById(id).style.display = 'none';
+            });
+        }
+
+        // ============================================================
+        // ====== توابع Supabase ======
+        // ============================================================
+        async function getSetting(key) {
             try {
                 const { data, error } = await supabase
-                    .from('users')
-                    .insert([{ 
-                        id: 'user_' + Date.now(),
-                        user_number: 1,
-                        name: 'کاربر تست',
-                        date: new Date().toISOString()
-                    }])
-                    .select();
-                    
+                    .from(TABLES.settings)
+                    .select('value')
+                    .eq('key', key)
+                    .single();
+                if (error && error.code !== 'PGRST116') return null;
+                return data?.value || null;
+            } catch (e) { return null; }
+        }
+
+        async function setSetting(key, value) {
+            try {
+                const { error } = await supabase
+                    .from(TABLES.settings)
+                    .upsert({ key, value });
                 if (error) throw error;
-                document.getElementById('result').innerHTML = '✅ کاربر وارد شد: ' + JSON.stringify(data);
-            } catch(e) {
-                document.getElementById('result').innerHTML = '❌ خطا: ' + e.message;
+                return true;
+            } catch (e) { return false; }
+        }
+
+        async function getAdminCount() {
+            const count = await getSetting('admin_count');
+            adminCount = parseInt(count) || 0;
+            return adminCount;
+        }
+
+        async function incrementAdminCount() {
+            const newCount = adminCount + 1;
+            await setSetting('admin_count', String(newCount));
+            adminCount = newCount;
+            return adminCount;
+        }
+
+        async function getUsers() {
+            try {
+                const { data, error } = await supabase
+                    .from(TABLES.users)
+                    .select('*')
+                    .order('user_number', { ascending: true });
+                if (error) throw error;
+                return data || [];
+            } catch (e) { return []; }
+        }
+
+        async function registerUser(name) {
+            try {
+                const { data, error } = await supabase
+                    .from(TABLES.users)
+                    .select('user_number')
+                    .order('user_number', { ascending: false })
+                    .limit(1);
+                const userNumber = (data && data.length > 0) ? data[0].user_number + 1 : 1;
+
+                const newUser = {
+                    id: 'user_' + Date.now().toString(36),
+                    user_number: userNumber,
+                    name: name || 'کاربر ' + userNumber,
+                    phone: '0900' + String(userNumber).padStart(8, '0'),
+                    verified: true,
+                    date: new Date().toISOString(),
+                    last_login: new Date().toISOString()
+                };
+
+                const { data: inserted, error } = await supabase
+                    .from(TABLES.users)
+                    .insert([newUser])
+                    .select();
+
+                if (error) throw error;
+                return inserted[0];
+            } catch (e) {
+                showToast('❌ خطا در ثبت کاربر: ' + e.message, 'error');
+                return null;
             }
         }
 
-        async function loginAdmin() {
-            const password = prompt('رمز عبور مدیر:');
-            if (password === '26742674') {
-                document.getElementById('result').innerHTML = '👑 مدیر وارد شد!';
+        // ============================================================
+        // ====== توابع ورود ======
+        // ============================================================
+        async function checkAdminLimit() {
+            await getAdminCount();
+            const btn = document.getElementById('adminLoginBtn');
+            const fullMsg = document.getElementById('adminFullMsg');
+
+            if (adminCount >= MAX_ADMINS) {
+                btn.classList.add('disabled');
+                fullMsg.style.display = 'block';
+                document.getElementById('loginSubText').textContent = '⚠️ ظرفیت مدیران تکمیل شده است';
+                document.getElementById('loginHint').textContent = '👤 لطفاً به عنوان کاربر عادی وارد شوید';
             } else {
-                document.getElementById('result').innerHTML = '❌ رمز اشتباه!';
+                btn.classList.remove('disabled');
+                fullMsg.style.display = 'none';
+                document.getElementById('loginSubText').textContent = 'به سامانه دپارتمان املاک حسینی خوش آمدید';
+                document.getElementById('loginHint').textContent = `👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند (${MAX_ADMINS - adminCount} مدیر باقی مانده)`;
             }
         }
+
+        async function loginAsUser() {
+            try {
+                showLoading(true);
+                showToast('⏳ در حال ورود...', 'info');
+
+                const user = await registerUser('کاربر');
+                if (!user) {
+                    showLoading(false);
+                    showToast('❌ خطا در ثبت کاربر!', 'error');
+                    return;
+                }
+
+                isAdmin = false;
+                currentUser = {
+                    role: 'user',
+                    id: user.id,
+                    userNumber: user.user_number,
+                    name: user.name
+                };
+                localStorage.setItem('amlak_user', JSON.stringify({ role: 'user', id: user.id }));
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('mainApp').style.display = 'block';
+
+                showLoading(false);
+                showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
+                await enterApp();
+
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا در ورود: ' + e.message, 'error');
+            }
+        }
+
+        function showAdminLogin() {
+            if (adminCount >= MAX_ADMINS) {
+                showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
+                return;
+            }
+            document.getElementById('adminLoginArea').style.display = 'block';
+            document.getElementById('adminPasswordInput').focus();
+            document.getElementById('loginHint').textContent = '🔑 رمز عبور مدیر را وارد کنید';
+        }
+
+        function hideAdminLogin() {
+            document.getElementById('adminLoginArea').style.display = 'none';
+            document.getElementById('adminPasswordInput').value = '';
+            document.getElementById('loginHint').textContent = `👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند (${MAX_ADMINS - adminCount} مدیر باقی مانده)`;
+        }
+
+        async function loginAdmin() {
+            try {
+                if (adminCount >= MAX_ADMINS) {
+                    showToast('⚠️ ظرفیت مدیران تکمیل شده است!', 'warning');
+                    return;
+                }
+
+                const password = document.getElementById('adminPasswordInput').value.trim();
+                if (!password) {
+                    showToast('⚠️ لطفاً رمز عبور را وارد کنید!', 'warning');
+                    return;
+                }
+
+                if (password === ADMIN_PASSWORD) {
+                    showLoading(true);
+
+                    isAdmin = true;
+                    const adminId = 'admin_' + Date.now().toString(36);
+                    currentUser = {
+                        role: 'admin',
+                        id: adminId,
+                        name: 'مدیر'
+                    };
+                    localStorage.setItem('amlak_user', JSON.stringify({ role: 'admin', id: adminId }));
+
+                    await incrementAdminCount();
+                    await checkAdminLimit();
+
+                    document.getElementById('adminLoginArea').style.display = 'none';
+                    document.getElementById('adminPasswordInput').value = '';
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('mainApp').style.display = 'block';
+
+                    showLoading(false);
+                    showToast('👑 خوش آمدید مدیر!', 'success');
+                    await enterApp();
+
+                } else {
+                    showToast('❌ رمز عبور اشتباه است!', 'error');
+                    document.getElementById('adminPasswordInput').value = '';
+                    document.getElementById('adminPasswordInput').focus();
+                }
+
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا در ورود: ' + e.message, 'error');
+            }
+        }
+
+        async function logout() {
+            try {
+                localStorage.removeItem('amlak_user');
+                currentUser = null;
+                isAdmin = false;
+                document.getElementById('mainApp').style.display = 'none';
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                hideAdminLogin();
+                await checkAdminLimit();
+                showToast('🚪 خروج موفق', 'success');
+            } catch (e) {
+                showToast('❌ خطا در خروج', 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== ورود به برنامه ======
+        // ============================================================
+        async function enterApp() {
+            try {
+                await loadProperties();
+                await loadUserCart();
+                updateWelcomeMessage();
+                updateUI();
+                renderList();
+                updateCartBadge();
+                updateStats();
+            } catch (e) {
+                showToast('❌ خطا در بارگذاری: ' + e.message, 'error');
+            }
+        }
+
+        function updateWelcomeMessage() {
+            const name = localStorage.getItem('amlak_admin_name') || 'مدیر';
+            document.getElementById('welcomeUser').textContent = isAdmin ? `👋 خوش آمدید ${name}!` : '👋 خوش آمدید!';
+            document.getElementById('userRoleBadge').textContent = isAdmin ? `👑 ${name}` : '👤 کاربر عادی';
+            document.getElementById('welcomeMessage').textContent = isAdmin ? 'به پنل مدیریت خوش آمدید' :
+                'به دپارتمان املاک حسینی خوش آمدید';
+            if (!isAdmin && currentUser) {
+                document.getElementById('welcomeUser').textContent += ` (شماره: #${currentUser.userNumber || '?'})`;
+            }
+        }
+
+        function updateUI() {
+            const guideBox = document.getElementById('guideBox');
+            const adminButtons = document.getElementById('adminButtons');
+            const filterTabs = document.getElementById('filterTabs');
+
+            if (isAdmin) {
+                guideBox.style.display = 'block';
+                adminButtons.style.display = 'flex';
+                filterTabs.style.display = 'flex';
+                document.getElementById('userRoleBadge').style.background = '#FFD700';
+            } else {
+                guideBox.style.display = 'none';
+                adminButtons.style.display = 'none';
+                filterTabs.style.display = 'none';
+                document.getElementById('userRoleBadge').style.background = '#4CAF50';
+            }
+        }
+
+        // ============================================================
+        // ====== بارگذاری داده‌ها ======
+        // ============================================================
+        async function loadProperties() {
+            try {
+                showLoading(true);
+                const { data, error } = await supabase
+                    .from(TABLES.properties)
+                    .select('*')
+                    .order('id', { ascending: false });
+
+                if (error) throw error;
+                properties = data || [];
+                showLoading(false);
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا در بارگذاری املاک: ' + e.message, 'error');
+                properties = [];
+            }
+        }
+
+        async function loadUserCart() {
+            if (currentUser && !isAdmin) {
+                try {
+                    const { data, error } = await supabase
+                        .from(TABLES.cart)
+                        .select('property_id')
+                        .eq('user_id', currentUser.id);
+                    if (error) throw error;
+                    cartItems = data.map(item => item.property_id) || [];
+                } catch (e) {
+                    cartItems = [];
+                }
+            } else {
+                cartItems = [];
+            }
+        }
+
+        // ============================================================
+        // ====== توابع اصلی ======
+        // ============================================================
+        function toggleForm(data) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
+            hideAllForms();
+            const form = document.getElementById('propertyForm');
+            if (data) {
+                document.getElementById('formTitle').textContent = '✏️ ویرایش ملک';
+                document.getElementById('editId').value = data.id;
+                document.getElementById('fTitle').value = data.title || '';
+                document.getElementById('fCategory').value = data.category || 'آپارتمان';
+                document.getElementById('fType').value = data.type || 'sale';
+                document.getElementById('fPrice').value = Number(data.price || 0).toLocaleString('en-US');
+                document.getElementById('fAddress').value = data.address || '';
+                document.getElementById('fArea').value = data.area || '';
+                document.getElementById('fPhone').value = data.phone || '';
+                document.getElementById('fDescription').value = data.description || '';
+                form.style.display = 'block';
+            } else {
+                document.getElementById('formTitle').textContent = '📋 ثبت ملک جدید';
+                clearForm();
+                form.style.display = form.style.display === 'block' ? 'none' : 'block';
+            }
+        }
+
+        function clearForm() {
+            ['fTitle', 'fPrice', 'fAddress', 'fArea', 'fPhone', 'fDescription'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('editId').value = '';
+            document.getElementById('fCategory').value = 'آپارتمان';
+            document.getElementById('fType').value = 'sale';
+        }
+
+        async function saveProperty() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
+
+            const editId = document.getElementById('editId').value;
+            const data = {
+                title: sanitizeInput(document.getElementById('fTitle').value.trim()),
+                category: document.getElementById('fCategory').value,
+                type: document.getElementById('fType').value,
+                price: document.getElementById('fPrice').value.replace(/,/g, '') || '0',
+                address: sanitizeInput(document.getElementById('fAddress').value.trim()),
+                area: document.getElementById('fArea').value.trim() || '0',
+                phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
+                description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
+                date: new Date().toLocaleDateString('fa-IR')
+            };
+
+            if (!data.title || !data.address) {
+                showToast('⚠️ عنوان و آدرس الزامی است!', 'warning');
+                return;
+            }
+
+            try {
+                showLoading(true);
+                if (editId) {
+                    const { error } = await supabase
+                        .from(TABLES.properties)
+                        .update(data)
+                        .eq('id', editId);
+                    if (error) throw error;
+                    const idx = properties.findIndex(p => p.id == editId);
+                    if (idx !== -1) properties[idx] = { ...properties[idx], ...data };
+                    showToast('✅ ملک ویرایش شد!', 'success');
+                } else {
+                    const { data: newData, error } = await supabase
+                        .from(TABLES.properties)
+                        .insert([data])
+                        .select();
+                    if (error) throw error;
+                    if (newData && newData.length > 0) {
+                        properties = [...newData, ...properties];
+                        showToast('✅ ملک ثبت شد!', 'success');
+                    }
+                }
+                showLoading(false);
+                document.getElementById('propertyForm').style.display = 'none';
+                clearForm();
+                updateStats();
+                renderList();
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا در ذخیره: ' + e.message, 'error');
+            }
+        }
+
+        async function deleteProperty(id) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
+
+            try {
+                showLoading(true);
+                const { error } = await supabase
+                    .from(TABLES.properties)
+                    .delete()
+                    .eq('id', id);
+                if (error) throw error;
+                properties = properties.filter(p => p.id !== id);
+                showToast('🗑️ ملک حذف شد', 'success');
+                updateStats();
+                renderList();
+                showLoading(false);
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا در حذف: ' + e.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== سبد خرید ======
+        // ============================================================
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('active');
+            if (document.getElementById('cartModal').classList.contains('active')) renderCart();
+        }
+
+        function renderCart() {
+            const container = document.getElementById('cartList');
+            if (!cartItems.length) {
+                container.innerHTML = '<div class="cart-empty">🛒 سبد خرید شما خالی است</div>';
+                return;
+            }
+
+            let html = '';
+            cartItems.forEach(id => {
+                const p = properties.find(prop => String(prop.id) === String(id));
+                if (p) {
+                    html += `
+                        <div class="cart-item-detail" style="border-bottom:2px solid #e0e0e0;padding:14px 0;">
+                            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                                <div>
+                                    <div style="font-weight:bold;color:var(--primary);font-size:16px;">🏠 ${sanitizeInput(p.title)}</div>
+                                    <div style="font-size:13px;color:var(--text);">📍 ${sanitizeInput(p.address)}</div>
+                                    <div style="font-size:14px;color:var(--secondary);font-weight:bold;">💰 ${Number(p.price).toLocaleString()} تومان</div>
+                                    <div style="font-size:12px;color:var(--text-light);">📐 ${p.area || 0} متر</div>
+                                </div>
+                                <button onclick="removeFromCartHandler('${p.id}')" style="background:var(--danger);color:white;border:none;border-radius:50%;width:32px;height:32px;font-size:16px;cursor:pointer;">✕</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            html += `
+                <div style="margin-top:16px;padding-top:12px;border-top:3px solid var(--primary);">
+                    <button onclick="clearCartHandler()" style="width:100%;padding:10px;border:none;border-radius:10px;font-size:13px;font-weight:bold;cursor:pointer;color:white;background:var(--danger);">🗑️ خالی کردن سبد</button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        async function addToCartHandler(id) {
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند سبد خرید داشته باشد!', 'warning'); return; }
+            if (!currentUser) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+            if (cartItems.includes(id)) { showToast('⚠️ قبلاً در سبد خرید است!', 'warning'); return; }
+
+            try {
+                const { error } = await supabase
+                    .from(TABLES.cart)
+                    .insert([{ id: generateId(), user_id: currentUser.id, property_id: id }]);
+                if (error) throw error;
+                cartItems.push(id);
+                updateCartBadge();
+                renderList();
+                renderCart();
+                showToast('✅ به سبد خرید اضافه شد!', 'success');
+            } catch (e) {
+                showToast('❌ خطا: ' + e.message, 'error');
+            }
+        }
+
+        async function removeFromCartHandler(id) {
+            if (!currentUser) return;
+            try {
+                const { error } = await supabase
+                    .from(TABLES.cart)
+                    .delete()
+                    .eq('user_id', currentUser.id)
+                    .eq('property_id', id);
+                if (error) throw error;
+                cartItems = cartItems.filter(item => item !== id);
+                updateCartBadge();
+                renderList();
+                renderCart();
+                showToast('🗑️ از سبد خرید حذف شد', 'success');
+            } catch (e) {
+                showToast('❌ خطا: ' + e.message, 'error');
+            }
+        }
+
+        async function clearCartHandler() {
+            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
+            if (!confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) return;
+
+            try {
+                const { error } = await supabase
+                    .from(TABLES.cart)
+                    .delete()
+                    .eq('user_id', currentUser.id);
+                if (error) throw error;
+                cartItems = [];
+                updateCartBadge();
+                renderList();
+                renderCart();
+                showToast('🗑️ سبد خرید خالی شد', 'success');
+            } catch (e) {
+                showToast('❌ خطا: ' + e.message, 'error');
+            }
+        }
+
+        function updateCartBadge() {
+            document.getElementById('cartCount').textContent = cartItems.length;
+        }
+
+        function isInCart(id) { return cartItems.includes(id); }
+
+        // ============================================================
+        // ====== فیلترها و رندر ======
+        // ============================================================
+        function setFilter(filter, btn) {
+            if (!isAdmin) return;
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderList();
+        }
+
+        function renderList() {
+            try {
+                const search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
+                let filtered = [...properties];
+
+                if (isAdmin) {
+                    if (currentFilter !== 'all') {
+                        filtered = filtered.filter(p => p.type === currentFilter);
+                    }
+                } else {
+                    filtered = filtered.filter(p => p.type === 'sale' || p.type === 'rent');
+                }
+
+                if (search) {
+                    filtered = filtered.filter(p =>
+                        (p.title?.toLowerCase().includes(search)) ||
+                        (p.address?.toLowerCase().includes(search))
+                    );
+                }
+
+                const container = document.getElementById('propertyList');
+                if (!filtered.length) {
+                    container.innerHTML = `<div class="empty">🏠 هیچ ملکی یافت نشد</div>`;
+                    return;
+                }
+
+                let html = '';
+                for (const p of filtered) {
+                    const priceDisplay = p.type === 'sale' ?
+                        `💰 ${Number(p.price).toLocaleString()} تومان` :
+                        `🔑 ${Number(p.price).toLocaleString()} تومان`;
+
+                    html += `
+                        <div class="property-card ${p.type}">
+                            <h3>${sanitizeInput(p.title)}</h3>
+                            <div class="address">📍 ${sanitizeInput(p.address)}</div>
+                            <div class="price">${priceDisplay}</div>
+                            <div class="meta">
+                                <span>📐 ${p.area || 0} متر</span>
+                                <span>📞 ${sanitizeInput(p.phone)}</span>
+                                <span>${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</span>
+                                <span>🏷️ ${p.category || 'بدون دسته'}</span>
+                                ${p.date ? `<span>📅 ${p.date}</span>` : ''}
+                            </div>
+                            <div class="desc">📝 ${sanitizeInput(p.description)}</div>
+                            ${isAdmin ? `
+                                <div style="margin-top:8px;display:flex;gap:6px;">
+                                    <button class="btn btn-primary" onclick="toggleForm(${JSON.stringify(p).replace(/"/g,"'")})" style="flex:1;padding:6px;font-size:11px;">✏️ ویرایش</button>
+                                    <button class="btn btn-danger" onclick="deleteProperty('${p.id}')" style="flex:1;padding:6px;font-size:11px;">🗑️ حذف</button>
+                                </div>
+                            ` : `
+                                <button class="btn ${isInCart(p.id) ? 'btn-success' : 'btn-gold'}" onclick="addToCartHandler('${p.id}')" style="width:100%;margin-top:8px;padding:8px;font-size:12px;">
+                                    ${isInCart(p.id) ? '✅ در سبد خرید' : '🛒 افزودن به سبد خرید'}
+                                </button>
+                            `}
+                        </div>
+                    `;
+                }
+
+                container.innerHTML = html;
+                updateStats();
+            } catch (e) {
+                showToast('❌ خطا در رندر لیست', 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== آمار ======
+        // ============================================================
+        function updateStats() {
+            const total = properties.length;
+            const sale = properties.filter(p => p.type === 'sale').length;
+            const rent = properties.filter(p => p.type === 'rent').length;
+            const prices = properties.map(p => Number(p.price) || 0);
+            const avg = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('saleCount').textContent = sale;
+            document.getElementById('rentCount').textContent = rent;
+            document.getElementById('avgPrice').textContent = avg.toLocaleString();
+        }
+
+        // ============================================================
+        // ====== نمودار ======
+        // ============================================================
+        function toggleChart() {
+            const container = document.getElementById('chartContainer');
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            if (container.style.display === 'block') drawChart();
+        }
+
+        function drawChart() {
+            const canvas = document.getElementById('chartCanvas');
+            const ctx = canvas.getContext('2d');
+            const sale = properties.filter(p => p.type === 'sale').length;
+            const rent = properties.filter(p => p.type === 'rent').length;
+            const total = sale + rent || 1;
+            canvas.width = 300;
+            canvas.height = 200;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            const cx = 100,
+                cy = 100,
+                r = 70;
+            const angles = [(sale / total) * 2 * Math.PI, (rent / total) * 2 * Math.PI];
+            const colors = ['#E65100', '#C62828'];
+            let start = -Math.PI / 2;
+            angles.forEach((a, i) => {
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.arc(cx, cy, r, start, start + a);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                start += a;
+            });
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Tahoma';
+            ctx.fillText('🟧 فروش: ' + sale, 10, 180);
+            ctx.fillText('🟥 اجاره: ' + rent, 10, 195);
+            ctx.fillStyle = '#1565C0';
+            ctx.font = '14px Tahoma';
+            ctx.fillText('کل: ' + total, 10, 20);
+        }
+
+        // ============================================================
+        // ====== خروجی ======
+        // ============================================================
+        function exportPDF() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
+            if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
+            let text = '=== گزارش دپارتمان املاک حسینی ===\n';
+            text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
+            text += 'تعداد کل: ' + properties.length + '\n\n';
+            properties.forEach((p, i) => {
+                text += `${i+1}. ${p.title}\n   قیمت: ${Number(p.price).toLocaleString()} تومان\n   آدرس: ${p.address}\n   --------------------\n`;
+            });
+            const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'گزارش_املاک_' + new Date().toISOString().slice(0, 10) + '.txt';
+            link.click();
+            showToast('📄 گزارش دانلود شد!', 'success');
+        }
+
+        function backupData() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning'); return; }
+            const data = { properties, backupDate: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'backup_amlak_' + new Date().toISOString().slice(0, 10) + '.json';
+            link.click();
+            showToast('💾 پشتیبان گرفته شد!', 'success');
+        }
+
+        // ============================================================
+        // ====== حالت تاریک ======
+        // ============================================================
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.dark-toggle');
+            const isDark = document.body.classList.contains('dark-mode');
+            btn.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            showToast(isDark ? '🌙 حالت تاریک فعال شد' : '☀️ حالت روشن فعال شد', 'success');
+        }
+
+        // ============================================================
+        // ====== شروع برنامه ======
+        // ============================================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const adminArea = document.getElementById('adminLoginArea');
+                if (adminArea.style.display === 'block') {
+                    loginAdmin();
+                }
+            }
+            if (e.key === 'Escape') {
+                document.getElementById('cartModal').classList.remove('active');
+            }
+        });
+
+        async function init() {
+            await checkAdminLimit();
+
+            const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
+            if (savedUser) {
+                if (savedUser.role === 'admin') {
+                    isAdmin = true;
+                    currentUser = { role: 'admin', id: savedUser.id, name: 'مدیر' };
+                } else {
+                    const users = await getUsers();
+                    const user = users.find(u => u.id === savedUser.id);
+                    if (user) {
+                        isAdmin = false;
+                        currentUser = { role: 'user', id: user.id, userNumber: user.user_number, name: user.name };
+                    } else {
+                        document.getElementById('loginOverlay').classList.remove('hidden');
+                        return;
+                    }
+                }
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('mainApp').style.display = 'block';
+                await enterApp();
+            } else {
+                document.getElementById('loginOverlay').classList.remove('hidden');
+            }
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('.dark-toggle').textContent = '☀️';
+            }
+
+            console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
+            console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
+            console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
+        }
+
+        init();
     </script>
 </body>
-</html>
+        </html>
