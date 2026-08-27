@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* تمام استایل‌ها مثل قبل */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -2753,9 +2752,12 @@
 
         async function loginAsUser() {
             try {
+                showLoading(true);
                 showToast('⏳ در حال ورود...', 'info');
+
                 const user = await registerUser('کاربر');
                 if (!user) {
+                    showLoading(false);
                     showToast('❌ خطا در ثبت کاربر!', 'error');
                     return;
                 }
@@ -2772,10 +2774,12 @@
                 document.getElementById('loginOverlay').classList.add('hidden');
                 document.getElementById('mainApp').style.display = 'block';
 
+                showLoading(false);
                 showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
                 await enterApp();
                 await loadUserChatMessages();
             } catch (e) {
+                showLoading(false);
                 ErrorHandler.log(e, 'ورود کاربر');
                 showToast('❌ خطا در ورود!', 'error');
             }
@@ -2810,6 +2814,7 @@
                     return;
                 }
                 if (password === ADMIN_PASSWORD) {
+                    showLoading(true);
                     isAdmin = true;
                     const adminId = 'admin_' + Date.now().toString(36);
                     currentUser = {
@@ -2824,7 +2829,9 @@
 
                     document.getElementById('loginOverlay').classList.add('hidden');
                     document.getElementById('mainApp').style.display = 'block';
+                    document.getElementById('adminLoginArea').style.display = 'none';
 
+                    showLoading(false);
                     showToast('👑 خوش آمدید مدیر!', 'success');
                     await enterApp();
                 } else {
@@ -2833,6 +2840,7 @@
                     document.getElementById('adminPasswordInput').focus();
                 }
             } catch (e) {
+                showLoading(false);
                 ErrorHandler.log(e, 'ورود مدیر');
                 showToast('❌ خطا در ورود!', 'error');
             }
@@ -4661,7 +4669,6 @@
         // ====== شروع برنامه ======
         // ============================================================
         async function init() {
-            // بررسی تعداد مدیران و بروزرسانی UI
             await checkAdminLimitAndUpdateUI();
 
             const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
@@ -4714,11 +4721,7 @@
             console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
             console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
             console.log('📊 تعداد املاک:', properties.length);
-            console.log('🔑 رمز عبور مدیر: 26742674');
             console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
-            console.log('🤖 سیستم پیشنهاد هوشمند فعال است');
-            console.log('👁️ پیش‌نمایش کاربران فعال است');
-            console.log('✅ همه داده‌ها در Supabase ذخیره می‌شوند');
         }
 
         init();
