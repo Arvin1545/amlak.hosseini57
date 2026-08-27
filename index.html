@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* تمام استایل‌ها مثل قبل */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -2752,6 +2753,7 @@
 
         async function loginAsUser() {
             try {
+                showToast('⏳ در حال ورود...', 'info');
                 const user = await registerUser('کاربر');
                 if (!user) {
                     showToast('❌ خطا در ثبت کاربر!', 'error');
@@ -2817,7 +2819,6 @@
                     };
                     localStorage.setItem('amlak_user', JSON.stringify({ role: 'admin', id: adminId }));
 
-                    // افزایش تعداد مدیران
                     await incrementAdminCount();
                     await checkAdminLimitAndUpdateUI();
 
@@ -4666,28 +4667,12 @@
             const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
             if (savedUser) {
                 if (savedUser.role === 'admin') {
-                    // بررسی کن که آیا هنوز ظرفیت مدیران پر نشده یا قبلاً مدیر بوده
-                    // اگه ظرفیت پر شده باشه، دیگه مدیر جدید قبول نمیشه
-                    // ولی اگه قبلاً مدیر بوده، اجازه ورود داره
-                    if (adminCount >= MAX_ADMINS) {
-                        // ظرفیت پر شده، ولی اگه قبلاً مدیر بوده، اجازه ورود داره
-                        // برای سادگی، فرض می‌کنیم که اگه تو localStorage ذخیره شده، مدیر هست
-                        // ولی برای امنیت بیشتر، چک می‌کنیم که آیا این ID در لیست مدیران هست یا نه
-                        // فعلاً اجازه ورود می‌دیم
-                        isAdmin = true;
-                        currentUser = {
-                            role: 'admin',
-                            id: savedUser.id,
-                            name: 'مدیر'
-                        };
-                    } else {
-                        isAdmin = true;
-                        currentUser = {
-                            role: 'admin',
-                            id: savedUser.id,
-                            name: 'مدیر'
-                        };
-                    }
+                    isAdmin = true;
+                    currentUser = {
+                        role: 'admin',
+                        id: savedUser.id,
+                        name: 'مدیر'
+                    };
                 } else {
                     const users = await getUsers();
                     const user = users.find(u => u.id === savedUser.id);
