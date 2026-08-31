@@ -232,7 +232,7 @@
             border-color: #4fc3f7 !important;
         }
         body.dark-mode .login-full-box {
-            background: rgba(0,0,0,0.9) !important;
+            background: rgba(0, 0, 0, 0.9) !important;
         }
         body.dark-mode .admin-full-msg {
             background: #0f3460 !important;
@@ -2113,15 +2113,15 @@
             <p id="loginSubText">به سامانه دپارتمان املاک حسینی خوش آمدید</p>
 
             <div class="login-buttons" id="loginButtons">
-                <button class="btn btn-user-login" onclick="loginAsUser()">👤 ورود به عنوان کاربر عادی</button>
-                <button class="btn btn-admin-login" id="adminLoginBtn" onclick="showAdminLogin()">👑 ورود به عنوان مدیر</button>
+                <button class="btn btn-user-login" id="userLoginBtn">👤 ورود به عنوان کاربر عادی</button>
+                <button class="btn btn-admin-login" id="adminLoginBtn">👑 ورود به عنوان مدیر</button>
             </div>
 
             <div id="adminLoginArea" style="display:none; margin-top:10px;">
                 <label class="admin-login-label">🔑 لطفاً رمز عبور مدیر را وارد کنید</label>
                 <input type="password" id="adminPasswordInput" placeholder="رمز عبور مدیر" class="password-input">
-                <button class="btn" onclick="loginAdmin()" style="background:var(--primary); width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:var(--transition);">✅ تایید</button>
-                <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px; transition:var(--transition);">❌ انصراف</button>
+                <button class="btn" id="adminConfirmBtn" style="background:var(--primary); width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:var(--transition);">✅ تایید</button>
+                <button class="btn" id="adminCancelBtn" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px; transition:var(--transition);">❌ انصراف</button>
             </div>
 
             <div id="adminFullMsg" style="display:none;" class="admin-full-msg">
@@ -2735,7 +2735,7 @@
         }
 
         // ============================================================
-        // ====== ورود ======
+        // ====== توابع ورود ======
         // ============================================================
         async function checkAdminLimitAndUpdateUI() {
             await getAdminCount();
@@ -2839,19 +2839,61 @@
             }
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const adminArea = document.getElementById('adminLoginArea');
-                if (adminArea.style.display === 'block') {
-                    loginAdmin();
-                }
-                if (document.getElementById('userChatInput') && document.activeElement === document.getElementById(
-                        'userChatInput')) {
-                    sendUserMessage();
-                }
+        // ============================================================
+        // ====== اتصال دستی دکمه‌ها با addEventListener ======
+        // ============================================================
+        function setupLoginButtons() {
+            // دکمه ورود کاربر
+            const userBtn = document.getElementById('userLoginBtn');
+            if (userBtn) {
+                userBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loginAsUser();
+                });
             }
-        });
 
+            // دکمه ورود مدیر
+            const adminBtn = document.getElementById('adminLoginBtn');
+            if (adminBtn) {
+                adminBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showAdminLogin();
+                });
+            }
+
+            // دکمه تایید مدیر
+            const confirmBtn = document.getElementById('adminConfirmBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    loginAdmin();
+                });
+            }
+
+            // دکمه انصراف مدیر
+            const cancelBtn = document.getElementById('adminCancelBtn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    hideAdminLogin();
+                });
+            }
+
+            // ورود با کلید Enter در فیلد رمز
+            const passInput = document.getElementById('adminPasswordInput');
+            if (passInput) {
+                passInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        loginAdmin();
+                    }
+                });
+            }
+        }
+
+        // ============================================================
+        // ====== خروج ======
+        // ============================================================
         async function logout() {
             try {
                 localStorage.removeItem('amlak_user');
@@ -2864,6 +2906,19 @@
                 showToast('🚪 خروج موفق', 'success');
             } catch (e) { ErrorHandler.log(e, 'خروج'); }
         }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const adminArea = document.getElementById('adminLoginArea');
+                if (adminArea.style.display === 'block') {
+                    loginAdmin();
+                }
+                if (document.getElementById('userChatInput') && document.activeElement === document.getElementById(
+                        'userChatInput')) {
+                    sendUserMessage();
+                }
+            }
+        });
 
         // ============================================================
         // ====== چت کاربر ======
@@ -4661,6 +4716,9 @@
         // ====== شروع برنامه ======
         // ============================================================
         async function init() {
+            // ابتدا دکمه‌ها را متصل کن
+            setupLoginButtons();
+
             await checkAdminLimitAndUpdateUI();
 
             const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
@@ -4719,7 +4777,8 @@
             console.log('✅ همه داده‌ها در Supabase ذخیره می‌شوند');
         }
 
-        init();
+        // اجرای برنامه وقتی صفحه کامل بارگذاری شد
+        document.addEventListener('DOMContentLoaded', init);
     </script>
 </body>
     </html>
