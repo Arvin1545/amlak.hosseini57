@@ -1,41 +1,32 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ورود - نسخه اندروید</title>
+    <title>دپارتمان املاک حسینی</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: Tahoma, Arial, sans-serif;
+            font-family: Tahoma, sans-serif;
             background: #f0f2f5;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            direction: rtl;
         }
-        .box {
+        .container {
             background: white;
-            padding: 35px 25px;
+            padding: 40px 30px;
             border-radius: 24px;
             max-width: 400px;
             width: 100%;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.12);
             text-align: center;
         }
-        h1 {
-            color: #1565C0;
-            font-size: 24px;
-            margin-bottom: 5px;
-        }
+        h1 { color: #1565C0; font-size: 26px; margin-bottom: 5px; }
         h1 span { color: #FFD700; }
-        p.sub {
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 25px;
-        }
+        p.sub { color: #666; font-size: 14px; margin-bottom: 25px; }
         .btn {
             width: 100%;
             padding: 16px;
@@ -43,17 +34,17 @@
             border-radius: 14px;
             font-size: 17px;
             font-weight: bold;
-            cursor: pointer;
             color: white;
+            cursor: pointer;
             margin: 8px 0;
-            transition: 0.3s;
+            transition: 0.2s;
         }
         .btn:active { transform: scale(0.96); }
         .btn-user { background: linear-gradient(135deg, #4CAF50, #2E7D32); }
         .btn-admin { background: linear-gradient(135deg, #1565C0, #0D47A1); }
         .btn-confirm { background: #1565C0; }
-        .btn-cancel { background: #999; }
-        .result-box {
+        .btn-cancel { background: #9e9e9e; }
+        .result {
             background: #f8f9fa;
             padding: 14px;
             border-radius: 12px;
@@ -68,10 +59,10 @@
         }
         .hidden { display: none !important; }
         .admin-area {
-            margin-top: 15px;
-            padding: 20px;
             background: #E3F2FD;
+            padding: 20px;
             border-radius: 14px;
+            margin-top: 15px;
             border: 2px solid #1565C0;
         }
         .admin-area input {
@@ -81,40 +72,34 @@
             border-radius: 10px;
             font-size: 16px;
             text-align: center;
-            direction: ltr;
             margin: 10px 0;
         }
-        .admin-area input:focus {
-            border-color: #1565C0;
-            outline: none;
-        }
+        .admin-area input:focus { border-color: #1565C0; outline: none; }
         .btn-group { display: flex; gap: 8px; }
         .btn-group .btn { flex: 1; margin: 0; }
-        .status-green { border-color: #4CAF50 !important; }
-        .status-blue { border-color: #1565C0 !important; }
-        .status-gold { border-color: #FFD700 !important; }
-        .status-red { border-color: #f44336 !important; }
+        .status-green { border-color: #4CAF50 !important; background: #E8F5E9 !important; }
+        .status-blue { border-color: #1565C0 !important; background: #E3F2FD !important; }
+        .status-gold { border-color: #FFD700 !important; background: #FFF8E1 !important; }
+        .status-red { border-color: #f44336 !important; background: #FFEBEE !important; }
     </style>
 </head>
 <body>
 
-<div class="box">
+<div class="container">
     <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
     <p class="sub">به سامانه خوش آمدید</p>
 
-    <div class="result-box" id="resultBox">
-        👋 روی یکی از دکمه‌ها کلیک کن
-    </div>
+    <div class="result" id="resultBox">👋 روی یکی از دکمه‌ها کلیک کن</div>
 
     <button class="btn btn-user" onclick="loginUser()">👤 ورود کاربر عادی</button>
-    <button class="btn btn-admin" onclick="showAdminPanel()">👑 ورود مدیر</button>
+    <button class="btn btn-admin" onclick="showAdmin()">👑 ورود مدیر</button>
 
-    <div class="admin-area hidden" id="adminPanel">
+    <div class="admin-area hidden" id="adminBox">
         <p style="font-weight:bold;color:#1565C0;">🔑 رمز مدیر رو وارد کن</p>
         <input type="password" id="adminPass" placeholder="رمز عبور مدیر">
         <div class="btn-group">
             <button class="btn btn-confirm" onclick="loginAdmin()">✅ تایید</button>
-            <button class="btn btn-cancel" onclick="hideAdminPanel()">❌ انصراف</button>
+            <button class="btn btn-cancel" onclick="hideAdmin()">❌ انصراف</button>
         </div>
     </div>
 </div>
@@ -123,7 +108,7 @@
     function setResult(text, className = '') {
         const box = document.getElementById('resultBox');
         box.textContent = text;
-        box.className = 'result-box';
+        box.className = 'result';
         if (className) box.classList.add(className);
     }
 
@@ -132,15 +117,15 @@
         alert('✅ وارد شدی!');
     }
 
-    function showAdminPanel() {
-        document.getElementById('adminPanel').classList.remove('hidden');
+    function showAdmin() {
+        document.getElementById('adminBox').classList.remove('hidden');
         setResult('🔑 رمز مدیر رو وارد کن', 'status-blue');
         document.getElementById('adminPass').value = '';
         document.getElementById('adminPass').focus();
     }
 
-    function hideAdminPanel() {
-        document.getElementById('adminPanel').classList.add('hidden');
+    function hideAdmin() {
+        document.getElementById('adminBox').classList.add('hidden');
         setResult('❌ انصراف از ورود مدیر', '');
         document.getElementById('adminPass').value = '';
     }
@@ -150,10 +135,10 @@
         if (pass === '26742674') {
             setResult('👑 خوش آمدی مدیر گرامی!', 'status-gold');
             alert('👑 وارد شدی!');
-            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('adminBox').classList.add('hidden');
             document.getElementById('adminPass').value = '';
         } else {
-            setResult('❌ رمز عبور اشتباه است! دوباره تلاش کن', 'status-red');
+            setResult('❌ رمز عبور اشتباه است!', 'status-red');
             alert('❌ رمز اشتباهه!');
             document.getElementById('adminPass').value = '';
             document.getElementById('adminPass').focus();
@@ -174,7 +159,6 @@
     });
 
     console.log('✅ برنامه با موفقیت اجرا شد!');
-    console.log('👤 دکمه‌ها با onclick کار میکنن');
 </script>
 
 </body>
