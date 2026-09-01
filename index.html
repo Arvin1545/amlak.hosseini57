@@ -3678,7 +3678,7 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک (اصلاح شده) ======
+        // ====== ذخیره ملک (اصلاح شده با customcode کوچک) ======
         // ============================================================
         async function saveProperty() {
             try {
@@ -3687,27 +3687,26 @@
 
                 var editId = document.getElementById('editId').value;
 
-                // ===== جمع‌آوری داده‌ها =====
                 var data = {
                     id: generateId(),
-                    customCode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
+                    customcode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
                     title: sanitizeInput(document.getElementById('fTitle').value.trim()),
                     category: document.getElementById('fCategory').value,
                     type: document.getElementById('fType').value,
                     price: '0',
                     rahn: '0',
-                    rentPrice: '0',
+                    rentprice: '0',
                     address: sanitizeInput(document.getElementById('fAddress').value.trim()),
                     area: document.getElementById('fArea').value.trim() || '0',
                     phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
                     description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
-                    hiddenDescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
+                    hiddendescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
                     file: null,
                     date: new Date().toLocaleDateString('fa-IR'),
-                    pinned: false
+                    pinned: false,
+                    code: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode()
                 };
 
-                // ===== قیمت‌ها =====
                 if (data.type === 'sale') {
                     var p = document.getElementById('fPrice').value.replace(/,/g, '');
                     if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
@@ -3717,7 +3716,7 @@
                     var rp = document.getElementById('fRentPrice').value.replace(/,/g, '');
                     data.rahn = r || '0';
                     if (!rp) { showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning'); return; }
-                    data.rentPrice = rp;
+                    data.rentprice = rp;
                     data.price = rp;
                 }
 
@@ -3726,7 +3725,6 @@
                 showLoading(true);
                 console.log('📤 ارسال به Supabase:', data);
 
-                // ===== ذخیره در Supabase =====
                 var response = await supabaseClient
                     .from('estate_properties')
                     .insert([data])
@@ -3770,7 +3768,7 @@
             if (data) {
                 document.getElementById('formTitle').textContent = '✏️ ویرایش ملک';
                 document.getElementById('editId').value = data.id;
-                document.getElementById('fCode').value = data.customCode || '';
+                document.getElementById('fCode').value = data.customcode || '';
                 document.getElementById('fTitle').value = data.title || '';
                 document.getElementById('fCategory').value = data.category || 'آپارتمان';
                 document.getElementById('fType').value = data.type || 'sale';
@@ -3779,13 +3777,13 @@
                     document.getElementById('fPrice').value = Number(data.price || 0).toLocaleString('en-US');
                 } else {
                     document.getElementById('fRahn').value = Number(data.rahn || 0).toLocaleString('en-US');
-                    document.getElementById('fRentPrice').value = Number(data.rentPrice || 0).toLocaleString('en-US');
+                    document.getElementById('fRentPrice').value = Number(data.rentprice || 0).toLocaleString('en-US');
                 }
                 document.getElementById('fAddress').value = data.address || '';
                 document.getElementById('fArea').value = data.area || '';
                 document.getElementById('fPhone').value = data.phone || '';
                 document.getElementById('fDescription').value = data.description || '';
-                document.getElementById('fHiddenDescription').value = data.hiddenDescription || '';
+                document.getElementById('fHiddenDescription').value = data.hiddendescription || '';
                 form.style.display = 'block';
             } else {
                 document.getElementById('formTitle').textContent = '📋 ثبت ملک جدید';
@@ -3958,14 +3956,14 @@
                         priceDisplay = '💰 قیمت فروش: ' + Number(p.price).toLocaleString() + ' تومان';
                     } else {
                         priceDisplay = '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' تومان | کرایه: ' + Number(p
-                            .rentPrice).toLocaleString() + ' تومان';
+                            .rentprice).toLocaleString() + ' تومان';
                     }
 
                     var hiddenSection = '';
-                    if (isAdmin && p.hiddenDescription) {
+                    if (isAdmin && p.hiddendescription) {
                         hiddenSection = `
                             <div class="cart-item-hidden">
-                                🔒 <strong>بخش مخفی (فقط مدیر):</strong> ${sanitizeInput(p.hiddenDescription)}
+                                🔒 <strong>بخش مخفی (فقط مدیر):</strong> ${sanitizeInput(p.hiddendescription)}
                             </div>
                         `;
                     }
@@ -3990,7 +3988,7 @@
                                     ${p.description ? '<div class="cart-item-desc">📝 ' + sanitizeInput(p.description) + '</div>' : ''}
                                     ${hiddenSection}
                                     ${fileSection}
-                                    ${p.customCode ? '<div class="cart-item-code">#کد: ' + sanitizeInput(p.customCode) + '</div>' : ''}
+                                    ${p.customcode ? '<div class="cart-item-code">#کد: ' + sanitizeInput(p.customcode) + '</div>' : ''}
                                     ${p.date ? '<div class="cart-item-date">📅 تاریخ ثبت: ' + p.date + '</div>' : ''}
                                     <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
                                         <button onclick="sharePropertyFromCart('whatsapp','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#25D366;transition:var(--transition);">📱 واتساپ</button>
@@ -4028,7 +4026,7 @@
             }
             if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
             var priceText = p.type === 'sale' ? '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentPrice).toLocaleString();
+                '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice).toLocaleString();
             var text =
                 '🏠 *' + sanitizeInput(p.title) + '*\n📍 ' + sanitizeInput(p.address) + '\n' + priceText + '\n📐 ' + (p
                     .area || 0) + ' متر\n📞 ' + sanitizeInput(p.phone) + '\n📝 ' + sanitizeInput(p.description) +
@@ -4057,7 +4055,7 @@
                     if (p.type === 'sale') {
                         text += '💰 ' + Number(p.price).toLocaleString() + ' تومان\n';
                     } else {
-                        text += '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentPrice)
+                        text += '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
                             .toLocaleString() + '\n';
                     }
                     text += '📐 ' + (p.area || 0) + ' متر\n';
@@ -4304,7 +4302,7 @@
                         if (userTypeFilter === 'sale' || userTypeFilter === 'all') filtered = filtered.filter(function(
                             p) { return p.type !== 'sale' || Number(p.price) <= userMaxPrice; });
                         else if (userTypeFilter === 'rent') filtered = filtered.filter(function(p) { return p.type !==
-                                'rent' || (Number(p.rahn) <= userMaxRahn && Number(p.rentPrice) <= userMaxRent); });
+                                'rent' || (Number(p.rahn) <= userMaxRahn && Number(p.rentprice) <= userMaxRent); });
                     }
                     filtered.sort(function(a, b) { return Number(b.id) - Number(a.id); });
                 }
@@ -4313,7 +4311,7 @@
                     filtered = filtered.filter(function(p) {
                         return (p.title && p.title.toLowerCase().indexOf(search) !== -1) ||
                             (p.address && p.address.toLowerCase().indexOf(search) !== -1) ||
-                            (p.customCode && p.customCode.toLowerCase().indexOf(search) !== -1);
+                            (p.customcode && p.customcode.toLowerCase().indexOf(search) !== -1);
                     });
                 }
 
@@ -4324,11 +4322,11 @@
                 for (var i = 0; i < filtered.length; i++) {
                     var p = filtered[i];
                     var hiddenHtml = '';
-                    if (isAdmin && p.hiddenDescription) {
+                    if (isAdmin && p.hiddendescription) {
                         hiddenHtml = `
                                     <div class="hidden-part">
                                         <span class="label">🔒 بخش مخفی (فقط مدیر)</span>
-                                        <div class="content">${sanitizeInput(p.hiddenDescription)}</div>
+                                        <div class="content">${sanitizeInput(p.hiddendescription)}</div>
                                     </div>
                                 `;
                     }
@@ -4344,7 +4342,7 @@
 
                     var priceDisplay = p.type === 'sale' ?
                         '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                        '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentPrice)
+                        '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
                         .toLocaleString();
 
                     var actionBtns = '';
@@ -4365,7 +4363,7 @@
                     html += `
                                 <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
                                     ${p.pinned ? '<div class="pinned-badge">📌 سنجاق شده</div>' : ''}
-                                    <span class="code-badge">#${sanitizeInput(p.customCode || p.code || 'ندارد')}</span>
+                                    <span class="code-badge">#${sanitizeInput(p.customcode || p.code || 'ندارد')}</span>
                                     <div class="action-btns">
                                         ${actionBtns}
                                     </div>
@@ -4447,7 +4445,7 @@
             text += 'تعداد کل: ' + properties.length + '\n';
             for (var i = 0; i < properties.length; i++) {
                 var p = properties[i];
-                text += (i + 1) + '. ' + p.title + '\n   کد: ' + (p.customCode || p.code || 'ندارد') + '\n   قیمت: ' + Number(
+                text += (i + 1) + '. ' + p.title + '\n   کد: ' + (p.customcode || p.code || 'ندارد') + '\n   قیمت: ' + Number(
                     p.price).toLocaleString() + ' تومان\n   آدرس: ' + p.address + '\n   --------------------\n';
             }
             var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
@@ -4464,7 +4462,7 @@
             var csv = 'کد,عنوان,دسته,نوع,قیمت,آدرس,متراژ,تماس\n';
             for (var i = 0; i < properties.length; i++) {
                 var p = properties[i];
-                csv += '"' + (p.customCode || p.code || '') + '","' + p.title + '","' + (p.category || '') + '","' + p.type +
+                csv += '"' + (p.customcode || p.code || '') + '","' + p.title + '","' + (p.category || '') + '","' + p.type +
                     '","' + p.price + '","' + p.address + '","' + (p.area || 0) + '","' + (p.phone || '') + '"\n';
             }
             var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
