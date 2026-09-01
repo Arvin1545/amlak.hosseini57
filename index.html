@@ -3678,54 +3678,85 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک ======
+        // ====== ذخیره ملک (اصلاح شده) ======
         // ============================================================
-        async function savePropertyToSupabase(data) {
-            if (!supabaseClient) return false;
+        async function saveProperty() {
             try {
+                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
+                if (!supabaseClient) { showToast('❌ اتصال به سرور برقرار نیست!', 'error'); return; }
+
+                var editId = document.getElementById('editId').value;
+
+                // ===== جمع‌آوری داده‌ها =====
+                var data = {
+                    id: generateId(),
+                    customCode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
+                    title: sanitizeInput(document.getElementById('fTitle').value.trim()),
+                    category: document.getElementById('fCategory').value,
+                    type: document.getElementById('fType').value,
+                    price: '0',
+                    rahn: '0',
+                    rentPrice: '0',
+                    address: sanitizeInput(document.getElementById('fAddress').value.trim()),
+                    area: document.getElementById('fArea').value.trim() || '0',
+                    phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
+                    description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
+                    hiddenDescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
+                    file: null,
+                    date: new Date().toLocaleDateString('fa-IR'),
+                    pinned: false
+                };
+
+                // ===== قیمت‌ها =====
+                if (data.type === 'sale') {
+                    var p = document.getElementById('fPrice').value.replace(/,/g, '');
+                    if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
+                    data.price = p;
+                } else {
+                    var r = document.getElementById('fRahn').value.replace(/,/g, '');
+                    var rp = document.getElementById('fRentPrice').value.replace(/,/g, '');
+                    data.rahn = r || '0';
+                    if (!rp) { showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning'); return; }
+                    data.rentPrice = rp;
+                    data.price = rp;
+                }
+
+                if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
+
+                showLoading(true);
+                console.log('📤 ارسال به Supabase:', data);
+
+                // ===== ذخیره در Supabase =====
                 var response = await supabaseClient
                     .from('estate_properties')
                     .insert([data])
                     .select();
-                if (response.error) throw response.error;
+
+                if (response.error) {
+                    console.error('❌ خطای Supabase:', response.error);
+                    showToast('❌ خطا: ' + response.error.message, 'error');
+                    showLoading(false);
+                    return;
+                }
+
+                console.log('✅ پاسخ Supabase:', response.data);
+
                 if (response.data && response.data.length > 0) {
                     properties = response.data.concat(properties);
-                    return true;
+                    showToast('✅ ملک ثبت شد!', 'success');
+                    document.getElementById('propertyForm').style.display = 'none';
+                    clearForm();
+                    updateStats();
+                    renderList();
+                } else {
+                    showToast('❌ خطا در ذخیره ملک!', 'error');
                 }
-                return false;
-            } catch (e) {
-                ErrorHandler.log(e, 'ذخیره ملک');
-                return false;
-            }
-        }
 
-        async function updatePropertyInSupabase(id, data) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('estate_properties')
-                    .update(data)
-                    .eq('id', id);
-                if (response.error) throw response.error;
-                return true;
+                showLoading(false);
             } catch (e) {
-                ErrorHandler.log(e, 'ویرایش ملک');
-                return false;
-            }
-        }
-
-        async function deletePropertyFromSupabase(id) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('estate_properties')
-                    .delete()
-                    .eq('id', id);
-                if (response.error) throw response.error;
-                return true;
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف ملک');
-                return false;
+                showLoading(false);
+                console.error('❌ خطای کلی:', e);
+                showToast('❌ خطا: ' + e.message, 'error');
             }
         }
 
@@ -3806,87 +3837,6 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک (اصلی) ======
-        // ============================================================
-        async function saveProperty() {
-            try {
-                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
-                if (!supabaseClient) { showToast('❌ اتصال به سرور برقرار نیست!', 'error'); return; }
-
-                var editId = document.getElementById('editId').value;
-
-                var fileUrl = null;
-                var fileInput = document.getElementById('fFile');
-                if (fileInput.files && fileInput.files.length > 0) {
-                    fileUrl = '📎 ' + fileInput.files[0].name;
-                }
-
-                var data = {
-                    customCode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
-                    title: sanitizeInput(document.getElementById('fTitle').value.trim()),
-                    category: document.getElementById('fCategory').value,
-                    type: document.getElementById('fType').value,
-                    price: '0',
-                    rahn: '0',
-                    rentPrice: '0',
-                    address: sanitizeInput(document.getElementById('fAddress').value.trim()),
-                    area: document.getElementById('fArea').value.trim() || '0',
-                    phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
-                    description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
-                    hiddenDescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
-                    file: fileUrl,
-                    date: new Date().toLocaleDateString('fa-IR')
-                };
-
-                if (data.type === 'sale') {
-                    var p = getRawNumber(document.getElementById('fPrice').value);
-                    if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
-                    data.price = p;
-                } else {
-                    var r = getRawNumber(document.getElementById('fRahn').value);
-                    var rp = getRawNumber(document.getElementById('fRentPrice').value);
-                    data.rahn = r || '0';
-                    if (!rp) { showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning'); return; }
-                    data.rentPrice = rp;
-                    data.price = rp;
-                }
-
-                if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
-
-                showLoading(true);
-                var success = false;
-
-                if (editId) {
-                    var updated = await updatePropertyInSupabase(editId, data);
-                    if (updated) {
-                        var idx = properties.findIndex(function(p) { return p.id == editId; });
-                        if (idx !== -1) properties[idx] = { ...properties[idx], ...data };
-                        showToast('✅ ملک ویرایش شد!', 'success');
-                        success = true;
-                    }
-                } else {
-                    var newData = { ...data, id: generateId() };
-                    var saved = await savePropertyToSupabase(newData);
-                    if (saved) {
-                        showToast('✅ ملک ثبت شد!', 'success');
-                        success = true;
-                    }
-                }
-
-                if (success) {
-                    showLoading(false);
-                    document.getElementById('propertyForm').style.display = 'none';
-                    clearForm();
-                    updateStats();
-                    renderList();
-                } else {
-                    showToast('❌ خطا در ذخیره ملک!', 'error');
-                }
-            } catch (e) { showLoading(false);
-                ErrorHandler.log(e, 'ذخیره ملک'); }
-        }
-
-        // ============================================================
         // ====== حذف ملک ======
         // ============================================================
         async function deleteProperty(id) {
@@ -3926,6 +3876,21 @@
                 renderList();
             } else {
                 showToast('❌ خطا در حذف ملک!', 'error');
+            }
+        }
+
+        async function deletePropertyFromSupabase(id) {
+            if (!supabaseClient) return false;
+            try {
+                var response = await supabaseClient
+                    .from('estate_properties')
+                    .delete()
+                    .eq('id', id);
+                if (response.error) throw response.error;
+                return true;
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف ملک');
+                return false;
             }
         }
 
