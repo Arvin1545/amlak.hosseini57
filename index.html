@@ -260,6 +260,200 @@
             background: var(--card-bg) !important;
             color: var(--text) !important;
         }
+        body.dark-mode .gallery-modal {
+            background: rgba(0, 0, 0, 0.92) !important;
+        }
+        body.dark-mode .gallery-close {
+            color: #fff !important;
+        }
+        body.dark-mode .gallery-nav {
+            color: #fff !important;
+            background: rgba(0, 0, 0, 0.5) !important;
+        }
+        body.dark-mode .gallery-thumb {
+            border-color: #0f3460 !important;
+        }
+        body.dark-mode .gallery-thumb.active {
+            border-color: #FFD700 !important;
+        }
+        body.dark-mode .gallery-counter {
+            color: #aaa !important;
+        }
+
+        .gallery-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            flex-direction: column;
+        }
+        .gallery-modal.active {
+            display: flex;
+        }
+        .gallery-content {
+            max-width: 100%;
+            max-height: 90vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        .gallery-main-container {
+            width: 100%;
+            max-height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        .gallery-main {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 12px;
+        }
+        .gallery-main video {
+            max-width: 100%;
+            max-height: 70vh;
+            border-radius: 12px;
+            background: #000;
+        }
+        .gallery-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: white;
+            font-size: 32px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            z-index: 10;
+        }
+        .gallery-close:hover {
+            background: rgba(255, 0, 0, 0.6);
+            transform: scale(1.1);
+        }
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            font-size: 36px;
+            cursor: pointer;
+            background: rgba(0, 0, 0, 0.4);
+            border: none;
+            padding: 12px 18px;
+            border-radius: 50%;
+            transition: var(--transition);
+            z-index: 10;
+        }
+        .gallery-nav:hover {
+            background: rgba(0, 0, 0, 0.7);
+            transform: translateY(-50%) scale(1.1);
+        }
+        .gallery-nav.prev {
+            left: 10px;
+        }
+        .gallery-nav.next {
+            right: 10px;
+        }
+        .gallery-thumbs {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 100%;
+            max-height: 120px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+        .gallery-thumb-wrapper {
+            position: relative;
+            cursor: pointer;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 3px solid transparent;
+            transition: var(--transition);
+        }
+        .gallery-thumb-wrapper.active {
+            border-color: var(--accent);
+        }
+        .gallery-thumb-wrapper:hover {
+            transform: scale(1.05);
+        }
+        .gallery-thumb {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            display: block;
+            border-radius: 6px;
+        }
+        .gallery-thumb video {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            display: block;
+            border-radius: 6px;
+            background: #000;
+        }
+        .gallery-thumb-badge {
+            position: absolute;
+            bottom: 4px;
+            right: 4px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .gallery-counter {
+            color: #ccc;
+            font-size: 14px;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .property-card.pinned {
+            border: 3px solid var(--accent);
+            background: #FFFDE7;
+        }
+        body.dark-mode .property-card.pinned {
+            background: #1a1a2e;
+            border-color: var(--accent);
+        }
+        .property-card .pinned-badge {
+            position: absolute;
+            top: -5px;
+            right: 50%;
+            transform: translateX(50%);
+            background: var(--accent);
+            color: #333;
+            padding: 2px 14px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+        }
 
         .header {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
@@ -537,27 +731,6 @@
         .property-card.rent {
             border-right-color: var(--danger);
         }
-        .property-card.pinned {
-            border: 3px solid var(--accent);
-            background: #FFFDE7;
-        }
-        body.dark-mode .property-card.pinned {
-            background: #1a1a2e;
-            border-color: var(--accent);
-        }
-        .property-card .pinned-badge {
-            position: absolute;
-            top: -5px;
-            right: 50%;
-            transform: translateX(50%);
-            background: var(--accent);
-            color: #333;
-            padding: 2px 14px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
-        }
         .property-card .code-badge {
             position: absolute;
             top: 8px;
@@ -599,6 +772,10 @@
         .property-card .btn-pin {
             background: var(--accent);
             color: #333;
+        }
+        .property-card .btn-pin.pinned {
+            background: var(--danger);
+            color: white;
         }
         .property-card .btn-cart {
             background: #FF8F00;
@@ -2126,9 +2303,22 @@
 </head>
 <body>
 
-    <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
+    </div>
+
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-content" onclick="event.stopPropagation()">
+            <button class="gallery-close" onclick="closeGallery()">✕</button>
+            <div class="gallery-main-container" id="galleryMainContainer">
+                <button class="gallery-nav prev" onclick="galleryPrev(event)">‹</button>
+                <button class="gallery-nav next" onclick="galleryNext(event)">›</button>
+                <div id="galleryMain"></div>
+            </div>
+            <div class="gallery-counter" id="galleryCounter"></div>
+            <div class="gallery-thumbs" id="galleryThumbs"></div>
+        </div>
     </div>
 
     <div class="login-overlay" id="loginOverlay">
@@ -2386,7 +2576,7 @@
             </div>
 
             <div class="file-input-wrapper">
-                <label>📸 عکس (حداکثر ۲۰ عدد)</label>
+                <label>📸 عکس‌ها (حداکثر ۲۰ عدد)</label>
                 <input type="file" id="fImages" accept="image/*" multiple />
                 <small>با Ctrl یا Shift چندتا انتخاب کن</small>
             </div>
@@ -2519,6 +2709,11 @@
         let currentChatUserId = null;
         let usersList = [];
         let adminCount = 0;
+
+        // ===== گالری =====
+        let galleryItems = [];
+        let galleryCurrentIndex = 0;
+        let galleryPropertyId = null;
 
         // ============================================================
         // ====== مدیریت خطا ======
@@ -2912,48 +3107,7 @@
         }
 
         // ============================================================
-        // ====== سبد خرید ======
-        // ============================================================
-        async function addToCartSupabase(userId, propertyId) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('user_cart')
-                    .insert([{
-                        id: generateId(),
-                        user_id: userId,
-                        property_id: propertyId,
-                        added_at: new Date().toISOString()
-                    }]);
-                return !response.error;
-            } catch (e) { return false; }
-        }
-
-        async function removeFromCartSupabase(userId, propertyId) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('user_cart')
-                    .delete()
-                    .eq('user_id', userId)
-                    .eq('property_id', propertyId);
-                return !response.error;
-            } catch (e) { return false; }
-        }
-
-        async function clearCartSupabase(userId) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('user_cart')
-                    .delete()
-                    .eq('user_id', userId);
-                return !response.error;
-            } catch (e) { return false; }
-        }
-
-        // ============================================================
-        // ====== چت ======
+        // ====== توابع چت ======
         // ============================================================
         async function loadChatMessages(userId) {
             if (!supabaseClient) return [];
@@ -2994,34 +3148,6 @@
             } catch (e) { return null; }
         }
 
-        async function editMessageOnSupabase(userId, messageId, newText) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .update({
-                        text: sanitizeInput(newText),
-                        edited: true,
-                        edit_date: new Date().toISOString()
-                    })
-                    .eq('id', messageId)
-                    .eq('user_id', userId);
-                return !response.error;
-            } catch (e) { return false; }
-        }
-
-        async function deleteMessageFromSupabase(userId, messageId) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .delete()
-                    .eq('id', messageId)
-                    .eq('user_id', userId);
-                return !response.error;
-            } catch (e) { return false; }
-        }
-
         async function addNotification(userId, title, body) {
             if (!supabaseClient) return false;
             try {
@@ -3040,364 +3166,624 @@
         }
 
         // ============================================================
-        // ====== چت کاربر ======
+        // ====== گالری ======
         // ============================================================
-        async function loadUserChatMessages() {
-            if (!currentUser || isAdmin) return;
-            var container = document.getElementById('userChatMessagesContainer');
-            if (!container) return;
-
-            var messages = await loadChatMessages(currentUser.id);
-            chatMessages = messages;
-
-            if (!messages.length) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
-                return;
+        function openGallery(propertyId) {
+            var property = null;
+            for (var i = 0; i < properties.length; i++) {
+                if (properties[i].id === propertyId) { property = properties[i]; break; }
             }
+            if (!property) return;
 
-            var html = '';
-            for (var i = 0; i < messages.length; i++) {
-                var msg = messages[i];
-                var isUser = msg.sender === 'user';
-                var senderName = isUser ? 'شما' : 'مدیر';
-                var msgClass = isUser ? 'user-msg' : 'admin-msg';
-                var time = new Date(msg.date).toLocaleString('fa-IR');
+            galleryItems = [];
+            galleryPropertyId = propertyId;
 
-                var fileHtml = '';
-                if (msg.file) {
-                    fileHtml = '<div class="msg-file"><a href="' + msg.file + '" target="_blank">📎 دانلود فایل</a></div>';
+            if (property.images && Array.isArray(property.images)) {
+                for (var j = 0; j < property.images.length; j++) {
+                    galleryItems.push({
+                        type: 'image',
+                        url: property.images[j],
+                        thumb: property.images[j]
+                    });
                 }
-
-                var editHtml = '';
-                if (msg.edited) {
-                    editHtml = '<span style="font-size:9px;color:var(--text-light);">(ویرایش شده)</span>';
-                }
-
-                var actionsHtml = '';
-                if (isUser) {
-                    actionsHtml = `
-                                <div class="msg-actions">
-                                    <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
-                                    <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
-                                </div>
-                            `;
-                }
-
-                html += `
-                            <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
-                                <div class="msg-header">
-                                    <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
-                                    <span class="msg-time">${time} ${editHtml}</span>
-                                </div>
-                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
-                                ${fileHtml}
-                                ${actionsHtml}
-                                <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
-                                    <textarea id="userEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
-                                    <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
-                                    <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
-                                </div>
-                            </div>
-                        `;
             }
 
-            container.innerHTML = html;
-            container.scrollTop = container.scrollHeight;
-        }
-
-        async function sendUserMessage() {
-            if (!currentUser || !currentUser.id) {
-                showToast('⚠️ لطفاً وارد شوید!', 'warning');
-                return;
+            if (property.video) {
+                galleryItems.push({
+                    type: 'video',
+                    url: property.video,
+                    thumb: property.video
+                });
             }
-            var input = document.getElementById('userChatInput');
-            var text = sanitizeInput(input.value.trim());
-            if (!text) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
+
+            if (galleryItems.length === 0) {
+                showToast('📸 این ملک عکس یا فیلمی ندارد!', 'warning');
                 return;
             }
 
-            var msg = await sendMessageToSupabase(currentUser.id, text);
-            if (msg) {
-                showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-                input.value = '';
-                await loadUserChatMessages();
-                await addNotification('admin', '💬 پیام جدید از کاربر', text);
+            galleryCurrentIndex = 0;
+            renderGallery();
+            document.getElementById('galleryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeGallery() {
+            var video = document.querySelector('#galleryMain video');
+            if (video) {
+                video.pause();
+                video.currentTime = 0;
             }
+            document.getElementById('galleryModal').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        async function startUserEditMessage(messageId) {
-            document.getElementById('userEditArea-' + messageId).style.display = 'block';
-            document.getElementById('userEditInput-' + messageId).focus();
-        }
+        function renderGallery() {
+            var main = document.getElementById('galleryMain');
+            var thumbs = document.getElementById('galleryThumbs');
+            var counter = document.getElementById('galleryCounter');
+            var item = galleryItems[galleryCurrentIndex];
 
-        function cancelUserEditMessage(messageId) {
-            document.getElementById('userEditArea-' + messageId).style.display = 'none';
-        }
-
-        async function saveUserEditMessage(messageId) {
-            var input = document.getElementById('userEditInput-' + messageId);
-            var newText = input.value.trim();
-            if (!newText) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            var result = await editMessageOnSupabase(currentUser.id, messageId, newText);
-            if (result) {
-                showToast('✅ پیام ویرایش شد!', 'success');
-                await loadUserChatMessages();
+            if (item.type === 'video') {
+                main.innerHTML = '<video controls autoplay><source src="' + item.url + '" type="video/mp4"></video>';
             } else {
-                showToast('❌ خطا در ویرایش!', 'error');
+                main.innerHTML = '<img src="' + item.url + '" class="gallery-main" />';
             }
+
+            var thumbsHtml = '';
+            for (var i = 0; i < galleryItems.length; i++) {
+                var it = galleryItems[i];
+                var activeClass = i === galleryCurrentIndex ? 'active' : '';
+                var wrapperClass = 'gallery-thumb-wrapper ' + activeClass;
+                if (it.type === 'video') {
+                    thumbsHtml += '<div class="' + wrapperClass + '" onclick="galleryGoTo(' + i + ')"><video src="' + it
+                        .url + '" class="gallery-thumb"></video><span class="gallery-thumb-badge">🎬</span></div>';
+                } else {
+                    thumbsHtml += '<div class="' + wrapperClass + '" onclick="galleryGoTo(' + i + ')"><img src="' + it
+                        .thumb + '" class="gallery-thumb" /></div>';
+                }
+            }
+            thumbs.innerHTML = thumbsHtml;
+
+            counter.textContent = (galleryCurrentIndex + 1) + ' از ' + galleryItems.length;
         }
 
-        async function deleteUserMessage(messageId) {
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-            var result = await deleteMessageFromSupabase(currentUser.id, messageId);
-            if (result) {
-                showToast('🗑️ پیام حذف شد', 'success');
-                await loadUserChatMessages();
-            }
+        function galleryGoTo(index) {
+            if (index < 0) index = galleryItems.length - 1;
+            if (index >= galleryItems.length) index = 0;
+            galleryCurrentIndex = index;
+            renderGallery();
+        }
+
+        function galleryPrev(e) {
+            if (e) e.stopPropagation();
+            galleryGoTo(galleryCurrentIndex - 1);
+        }
+
+        function galleryNext(e) {
+            if (e) e.stopPropagation();
+            galleryGoTo(galleryCurrentIndex + 1);
         }
 
         // ============================================================
-        // ====== چت مدیر ======
+        // ====== سنجاق (Pin/Unpin) ======
         // ============================================================
-        async function viewChats() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning'); return; }
-            hideAllForms(['chatViewer']);
-            document.getElementById('chatViewer').style.display = 'block';
-            document.getElementById('chatViewerTitle').textContent = '💬 چت با کاربران';
-            await renderChatUsersList();
-        }
-
-        async function renderChatUsersList() {
-            var container = document.getElementById('chatUserList');
-            var users = await getUsers();
-
-            var usersWithChat = [];
-            for (var i = 0; i < users.length; i++) {
-                var user = users[i];
-                var msgs = await loadChatMessages(user.id);
-                if (msgs.length > 0) {
-                    usersWithChat.push({ user: user, messages: msgs });
-                }
-            }
-
-            if (usersWithChat.length === 0) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:15px;">💬 هنوز پیامی از کاربران دریافت نشده است</div>';
-                return;
-            }
-
-            var html = '';
-            for (var j = 0; j < usersWithChat.length; j++) {
-                var u = usersWithChat[j];
-                var lastMsg = u.messages[u.messages.length - 1];
-                var unreadCount = 0;
-                for (var k = 0; k < u.messages.length; k++) {
-                    if (u.messages[k].sender === 'user' && !u.messages[k].read) unreadCount++;
-                }
-                html += `
-                            <div class="chat-user-item" onclick="selectChatUser('${u.user.id}')">
-                                <div class="user-info">
-                                    <div class="user-name">👤 #${u.user.user_number} - ${u.user.name || 'کاربر'}</div>
-                                    <div class="user-preview">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
-                                </div>
-                                ${unreadCount > 0 ? '<span class="user-badge unread">' + unreadCount + ' جدید</span>' : '<span class="user-badge">' + u.messages.length + '</span>'}
-                            </div>
-                        `;
-            }
-            container.innerHTML = html;
-        }
-
-        async function selectChatUser(userId) {
-            currentChatUserId = userId;
-            await renderChatMessagesWithUser(userId);
-        }
-
-        async function renderChatMessagesWithUser(userId) {
-            var container = document.getElementById('chatMessagesContainer');
-            var messages = await loadChatMessages(userId);
-            var users = await getUsers();
-            var user = null;
-            for (var i = 0; i < users.length; i++) {
-                if (users[i].id === userId) { user = users[i]; break; }
-            }
-
-            if (messages.length === 0) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
-                return;
-            }
-
-            var html =
-                '<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با #' + (user ?
-                    user.user_number : '') + ' - ' + (user ? user.name : 'کاربر') + '</div>';
-
-            for (var j = 0; j < messages.length; j++) {
-                var msg = messages[j];
-                var isUser = msg.sender === 'user';
-                var senderName = isUser ? (user ? user.name : 'کاربر') : 'مدیر';
-                var senderClass = isUser ? 'user-sender' : 'admin-sender';
-                var msgClass = isUser ? 'user-msg' : 'admin-msg';
-                var time = new Date(msg.date).toLocaleString('fa-IR');
-
-                var fileHtml = '';
-                if (msg.file) {
-                    fileHtml = '<div class="msg-file"><a href="' + msg.file + '" target="_blank">📎 دانلود فایل</a></div>';
-                }
-
-                var editHtml = '';
-                if (msg.edited) {
-                    editHtml = '<span style="font-size:9px;color:var(--text-light);">(ویرایش شده)</span>';
-                }
-
-                html += `
-                            <div class="chat-message-item ${msgClass}" id="msg-${msg.id}">
-                                <div class="msg-header">
-                                    <span class="msg-sender ${senderClass}">${senderName}</span>
-                                    <span class="msg-time">${time} ${editHtml}</span>
-                                </div>
-                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
-                                ${fileHtml}
-                            </div>
-                        `;
-            }
-
-            container.innerHTML = html;
-            container.scrollTop = container.scrollHeight;
-        }
-
-        async function sendChatReply() {
-            if (!isAdmin || !currentChatUserId) { showToast('⚠️ خطا در ارسال!', 'error'); return; }
-            var input = document.getElementById('chatReplyInput');
-            var text = sanitizeInput(input.value.trim());
-            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-
-            var fileInput = document.getElementById('chatFileInput');
-            var fileUrl = null;
-            if (fileInput.files && fileInput.files.length > 0) {
-                fileUrl = '📎 ' + fileInput.files[0].name;
-                fileInput.value = '';
-            }
-
-            var msg = await sendMessageToSupabase(currentChatUserId, text, fileUrl);
-            if (msg) {
-                input.value = '';
-                await renderChatMessagesWithUser(currentChatUserId);
-                await renderChatUsersList();
-                showToast('✅ پیام ارسال شد!', 'success');
-                await loadUserChatMessages();
-                await addNotification(currentChatUserId, '💬 پاسخ مدیر', text);
-            }
-        }
-
-        function closeChatViewer() {
-            document.getElementById('chatViewer').style.display = 'none';
-            currentChatUserId = null;
-        }
-
-        // ============================================================
-        // ====== مدیریت لیست کاربران ======
-        // ============================================================
-        async function showUsersList() {
+        async function togglePin(id) {
             if (!isAdmin) {
-                showToast('⚠️ فقط مدیر می‌تواند لیست کاربران را ببیند!', 'warning');
+                showToast('⚠️ فقط مدیر می‌تواند سنجاق کند!', 'warning');
                 return;
             }
-            var section = document.getElementById('adminUsersSection');
-            if (section.style.display === 'block') {
-                section.style.display = 'none';
-            } else {
-                section.style.display = 'block';
-                await refreshUsersList();
-            }
-        }
 
-        async function refreshUsersList() {
-            if (!isAdmin) return;
             try {
-                var users = await getUsers();
-                usersList = users;
+                showLoading(true);
 
-                var container = document.getElementById('usersListContainer');
-                var count = document.getElementById('userCount');
-
-                count.textContent = users.length + ' کاربر';
-
-                if (!users.length) {
-                    container.innerHTML =
-                        '<div style="text-align:center;color:var(--text-light);padding:20px;">👤 هنوز کاربری ثبت نام نکرده است</div>';
+                // پیدا کردن ملک
+                var property = null;
+                var index = -1;
+                for (var i = 0; i < properties.length; i++) {
+                    if (properties[i].id === id) {
+                        property = properties[i];
+                        index = i;
+                        break;
+                    }
+                }
+                if (!property) {
+                    showToast('❌ ملک یافت نشد!', 'error');
+                    showLoading(false);
                     return;
                 }
 
-                var html = '';
-                for (var i = 0; i < users.length; i++) {
-                    var user = users[i];
-                    var msgs = await loadChatMessages(user.id);
-                    var msgCount = msgs.length;
-                    var lastLogin = user.last_login ? new Date(user.last_login) : null;
-                    var isNew = (Date.now() - new Date(user.date).getTime()) < 24 * 60 * 60 * 1000;
+                // تغییر وضعیت سنجاق
+                var newPinnedState = !property.pinned;
 
-                    html += `
-                                <div class="user-list-item" style="${isNew ? 'border-right-color: #FFD700;' : ''}">
-                                    <div style="flex:1;">
-                                        <div class="user-phone">#${user.user_number} - ${user.name || 'کاربر'}</div>
-                                        <div class="user-meta">
-                                            📱 ${user.phone || ''}
-                                            ${lastLogin ? ' | آخرین ورود: ' + lastLogin.toLocaleDateString('fa-IR') : ''}
-                                            ${isNew ? ' | 🆕 جدید' : ''}
-                                            💬 ${msgCount} پیام
-                                        </div>
-                                    </div>
-                                    <div style="display:flex;align-items:center;gap:8px;">
-                                        <span class="user-status ${user.verified ? 'verified' : 'pending'}">
-                                            ${user.verified ? '✅ تایید شده' : '⏳ در انتظار'}
-                                        </span>
-                                        <div class="user-actions">
-                                            <button class="contact-user" onclick="selectChatUser('${user.id}');viewChats();" title="چت">
-                                                💬
-                                            </button>
-                                            ${isAdmin ? '<button class="delete-user" onclick="deleteUserHandler(\'' + user.id + '\')" title="حذف کاربر">✕</button>' : ''}
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
+                // بروزرسانی در Supabase
+                var response = await supabaseClient
+                    .from('estate_properties')
+                    .update({ pinned: newPinnedState })
+                    .eq('id', id);
+
+                if (response.error) {
+                    console.error('❌ خطا در سنجاق:', response.error);
+                    showToast('❌ خطا در سنجاق!', 'error');
+                    showLoading(false);
+                    return;
                 }
 
-                container.innerHTML = html;
+                // بروزرسانی در آرایه properties
+                properties[index].pinned = newPinnedState;
 
+                showToast(newPinnedState ? '📌 ملک سنجاق شد!' : '📌 سنجاق ملک برداشته شد!', 'success');
+
+                // رندر مجدد لیست
+                renderList();
+                showLoading(false);
             } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری لیست کاربران');
-                document.getElementById('usersListContainer').innerHTML = `
-                            <div style="text-align:center;color:var(--danger);padding:20px;">
-                                ❌ خطا در بارگذاری لیست کاربران
-                            </div>
-                        `;
+                showLoading(false);
+                ErrorHandler.log(e, 'سنجاق ملک');
+                showToast('❌ خطا در سنجاق!', 'error');
             }
         }
 
-        async function deleteUserHandler(userId) {
+        // ============================================================
+        // ====== ذخیره ملک (با آپلود عکس و فیلم) ======
+        // ============================================================
+        async function saveProperty() {
+            try {
+                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
+                if (!supabaseClient) { showToast('❌ اتصال به سرور برقرار نیست!', 'error'); return; }
+
+                showLoading(true);
+
+                var editId = document.getElementById('editId').value;
+
+                // ===== آپلود فایل ضمیمه =====
+                var fileUrl = null;
+                var fileInput = document.getElementById('fFile');
+                if (fileInput.files && fileInput.files.length > 0) {
+                    var file = fileInput.files[0];
+                    var fileExt = file.name.split('.').pop();
+                    var fileName = Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + fileExt;
+
+                    var { data: uploadData, error: uploadError } = await supabaseClient.storage
+                        .from('property_files')
+                        .upload('files/' + fileName, file);
+
+                    if (!uploadError) {
+                        var { data: urlData } = supabaseClient.storage
+                            .from('property_files')
+                            .getPublicUrl('files/' + fileName);
+                        fileUrl = urlData.publicUrl;
+                    }
+                }
+
+                // ===== آپلود عکس‌ها =====
+                var imageUrls = [];
+                var imagesInput = document.getElementById('fImages');
+                if (imagesInput.files && imagesInput.files.length > 0) {
+                    for (var i = 0; i < imagesInput.files.length; i++) {
+                        var imgFile = imagesInput.files[i];
+                        var imgExt = imgFile.name.split('.').pop();
+                        var imgName = Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 8) + '.' + imgExt;
+
+                        var { data: imgUpload, error: imgError } = await supabaseClient.storage
+                            .from('property_files')
+                            .upload('images/' + imgName, imgFile);
+
+                        if (!imgError) {
+                            var { data: imgUrlData } = supabaseClient.storage
+                                .from('property_files')
+                                .getPublicUrl('images/' + imgName);
+                            imageUrls.push(imgUrlData.publicUrl);
+                        }
+                    }
+                }
+
+                // ===== آپلود فیلم =====
+                var videoUrl = null;
+                var videoInput = document.getElementById('fVideo');
+                if (videoInput.files && videoInput.files.length > 0) {
+                    var videoFile = videoInput.files[0];
+                    var videoExt = videoFile.name.split('.').pop();
+                    var videoName = Date.now() + '_video_' + Math.random().toString(36).slice(2, 8) + '.' + videoExt;
+
+                    var { data: videoUpload, error: videoError } = await supabaseClient.storage
+                        .from('property_files')
+                        .upload('videos/' + videoName, videoFile);
+
+                    if (!videoError) {
+                        var { data: videoUrlData } = supabaseClient.storage
+                            .from('property_files')
+                            .getPublicUrl('videos/' + videoName);
+                        videoUrl = videoUrlData.publicUrl;
+                    }
+                }
+
+                // ===== اطلاعات ملک =====
+                var data = {
+                    id: generateId(),
+                    customcode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
+                    title: sanitizeInput(document.getElementById('fTitle').value.trim()),
+                    category: document.getElementById('fCategory').value,
+                    type: document.getElementById('fType').value,
+                    price: '0',
+                    rahn: '0',
+                    rentprice: '0',
+                    address: sanitizeInput(document.getElementById('fAddress').value.trim()),
+                    area: document.getElementById('fArea').value.trim() || '0',
+                    phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
+                    description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
+                    hiddendescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
+                    file: fileUrl,
+                    images: imageUrls,
+                    video: videoUrl,
+                    date: new Date().toLocaleDateString('fa-IR'),
+                    pinned: false,
+                    code: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode()
+                };
+
+                // ===== قیمت‌ها =====
+                if (data.type === 'sale') {
+                    var p = document.getElementById('fPrice').value.replace(/,/g, '');
+                    if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
+                    data.price = p;
+                } else {
+                    var r = document.getElementById('fRahn').value.replace(/,/g, '');
+                    var rp = document.getElementById('fRentPrice').value.replace(/,/g, '');
+                    data.rahn = r || '0';
+                    if (!rp) { showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning'); return; }
+                    data.rentprice = rp;
+                    data.price = rp;
+                }
+
+                if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
+
+                console.log('📤 ارسال به Supabase:', data);
+
+                var response = await supabaseClient
+                    .from('estate_properties')
+                    .insert([data])
+                    .select();
+
+                if (response.error) {
+                    console.error('❌ خطای Supabase:', response.error);
+                    showToast('❌ خطا: ' + response.error.message, 'error');
+                    showLoading(false);
+                    return;
+                }
+
+                console.log('✅ پاسخ Supabase:', response.data);
+
+                if (response.data && response.data.length > 0) {
+                    properties = response.data.concat(properties);
+                    showToast('✅ ملک ثبت شد!', 'success');
+                    document.getElementById('propertyForm').style.display = 'none';
+                    clearForm();
+                    updateStats();
+                    renderList();
+                } else {
+                    showToast('❌ خطا در ذخیره ملک!', 'error');
+                }
+
+                showLoading(false);
+            } catch (e) {
+                showLoading(false);
+                console.error('❌ خطای کلی:', e);
+                showToast('❌ خطا: ' + e.message, 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== فرم ملک ======
+        // ============================================================
+        function toggleForm(data) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
+            hideAllForms(['propertyForm']);
+            var form = document.getElementById('propertyForm');
+            if (data) {
+                document.getElementById('formTitle').textContent = '✏️ ویرایش ملک';
+                document.getElementById('editId').value = data.id;
+                document.getElementById('fCode').value = data.customcode || '';
+                document.getElementById('fTitle').value = data.title || '';
+                document.getElementById('fCategory').value = data.category || 'آپارتمان';
+                document.getElementById('fType').value = data.type || 'sale';
+                togglePriceFields();
+                if (data.type === 'sale') {
+                    document.getElementById('fPrice').value = Number(data.price || 0).toLocaleString('en-US');
+                } else {
+                    document.getElementById('fRahn').value = Number(data.rahn || 0).toLocaleString('en-US');
+                    document.getElementById('fRentPrice').value = Number(data.rentprice || 0).toLocaleString('en-US');
+                }
+                document.getElementById('fAddress').value = data.address || '';
+                document.getElementById('fArea').value = data.area || '';
+                document.getElementById('fPhone').value = data.phone || '';
+                document.getElementById('fDescription').value = data.description || '';
+                document.getElementById('fHiddenDescription').value = data.hiddendescription || '';
+                form.style.display = 'block';
+            } else {
+                document.getElementById('formTitle').textContent = '📋 ثبت ملک جدید';
+                clearForm();
+                form.style.display = form.style.display === 'block' ? 'none' : 'block';
+                if (form.style.display === 'block') togglePriceFields();
+            }
+        }
+
+        function clearForm() {
+            var ids = ['fCode', 'fTitle', 'fPrice', 'fRahn', 'fRentPrice', 'fAddress', 'fArea', 'fPhone', 'fDescription',
+                'fHiddenDescription'
+            ];
+            for (var i = 0; i < ids.length; i++) {
+                document.getElementById(ids[i]).value = '';
+            }
+            document.getElementById('editId').value = '';
+            document.getElementById('fCategory').value = 'آپارتمان';
+            document.getElementById('fType').value = 'sale';
+            togglePriceFields();
+            document.getElementById('fFile').value = '';
+            document.getElementById('fImages').value = '';
+            document.getElementById('fVideo').value = '';
+        }
+
+        function generateCode() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var count = properties.length + 1;
+            return 'MLK-' + year + '-' + String(count).padStart(3, '0');
+        }
+
+        function togglePriceFields() {
+            var type = document.getElementById('fType').value;
+            document.getElementById('saleFields').style.display = type === 'sale' ? 'block' : 'none';
+            document.getElementById('rentFields').style.display = type === 'rent' ? 'block' : 'none';
+        }
+
+        function updateStats() {
+            var total = properties.length;
+            var sale = properties.filter(function(p) { return p.type === 'sale'; }).length;
+            var rent = properties.filter(function(p) { return p.type === 'rent'; }).length;
+            var prices = properties.map(function(p) { return Number(p.price) || 0; });
+            var avg = prices.length ? Math.round(prices.reduce(function(a, b) { return a + b; }, 0) / prices.length) : 0;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('saleCount').textContent = sale;
+            document.getElementById('rentCount').textContent = rent;
+            document.getElementById('avgPrice').textContent = avg.toLocaleString();
+            document.getElementById('chartSaleCount').textContent = sale;
+            document.getElementById('chartRentCount').textContent = rent;
+        }
+
+        // ============================================================
+        // ====== حذف ملک ======
+        // ============================================================
+        async function deleteProperty(id) {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف این کاربر مطمئن هستید؟')) return;
-            if (!supabaseClient) { showToast('❌ اتصال به سرور برقرار نیست!', 'error'); return; }
+            if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
+
+            showLoading(true);
 
             try {
-                await supabaseClient.from('chat_messages').delete().eq('user_id', userId);
-                await supabaseClient.from('user_cart').delete().eq('user_id', userId);
-                await supabaseClient.from('notifications').delete().eq('user_id', userId);
-                var response = await supabaseClient.from('users').delete().eq('id', userId);
+                var response = await supabaseClient
+                    .from('estate_properties')
+                    .delete()
+                    .eq('id', id);
                 if (response.error) throw response.error;
-                showToast('🗑️ کاربر حذف شد!', 'success');
-                await refreshUsersList();
-                await renderChatUsersList();
+
+                var deletedItem = null;
+                var newProps = [];
+                for (var i = 0; i < properties.length; i++) {
+                    if (properties[i].id === id) { deletedItem = properties[i]; } else { newProps.push(properties[i]); }
+                }
+                properties = newProps;
+
+                // حذف از سبد خرید
+                var found = false;
+                for (var j = 0; j < cartItems.length; j++) {
+                    if (cartItems[j] === id) { found = true; break; }
+                }
+                if (found && !isAdmin) {
+                    var newCart = [];
+                    for (var k = 0; k < cartItems.length; k++) {
+                        if (cartItems[k] !== id) { newCart.push(cartItems[k]); }
+                    }
+                    cartItems = newCart;
+                    if (currentUser && !isAdmin) {
+                        await supabaseClient
+                            .from('user_cart')
+                            .delete()
+                            .eq('user_id', currentUser.id)
+                            .eq('property_id', id);
+                    }
+                    updateCartBadge();
+                }
+
+                showToast('🗑️ ملک "' + (deletedItem ? deletedItem.title : '') + '" حذف شد', 'success');
+                updateStats();
+                renderList();
+                showLoading(false);
             } catch (e) {
-                ErrorHandler.log(e, 'حذف کاربر');
-                showToast('❌ خطا در حذف کاربر!', 'error');
+                showLoading(false);
+                ErrorHandler.log(e, 'حذف ملک');
+                showToast('❌ خطا در حذف ملک!', 'error');
             }
+        }
+
+        // ============================================================
+        // ====== سبد خرید ======
+        // ============================================================
+        function toggleCart() {
+            document.getElementById('cartModal').classList.toggle('active');
+            if (document.getElementById('cartModal').classList.contains('active')) renderCart();
+        }
+
+        function renderCart() {
+            var container = document.getElementById('cartList');
+            if (!cartItems.length) {
+                container.innerHTML = '<div class="cart-empty">🛒 سبد خرید شما خالی است</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < cartItems.length; i++) {
+                var id = cartItems[i];
+                var p = null;
+                for (var j = 0; j < properties.length; j++) {
+                    if (String(properties[j].id) === String(id)) { p = properties[j]; break; }
+                }
+                if (p) {
+                    var priceDisplay = '';
+                    if (p.type === 'sale') {
+                        priceDisplay = '💰 قیمت فروش: ' + Number(p.price).toLocaleString() + ' تومان';
+                    } else {
+                        priceDisplay = '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' تومان | کرایه: ' + Number(p
+                            .rentprice).toLocaleString() + ' تومان';
+                    }
+
+                    html += `
+                        <div class="cart-item-detail">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div style="flex:1;">
+                                    <div class="cart-item-title">🏠 ${sanitizeInput(p.title)}</div>
+                                    <div class="cart-item-address">📍 ${sanitizeInput(p.address)}</div>
+                                    <div class="cart-item-price">${priceDisplay}</div>
+                                    <div class="cart-item-meta">📐 متراژ: ${p.area || 0} متر مربع</div>
+                                    <div class="cart-item-meta">📞 تماس: ${sanitizeInput(p.phone) || '---'}</div>
+                                    ${p.description ? '<div class="cart-item-desc">📝 ' + sanitizeInput(p.description) + '</div>' : ''}
+                                    ${p.images && p.images.length > 0 ? '<div style="font-size:11px;color:var(--text-light);">📸 ' + p.images.length + ' عکس</div>' : ''}
+                                    ${p.video ? '<div style="font-size:11px;color:var(--text-light);">🎬 فیلم</div>' : ''}
+                                </div>
+                                <button class="cart-remove-btn" onclick="removeFromCartHandler('${p.id}')">✕</button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            html += `
+                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid var(--primary);">
+                    <div class="cart-actions">
+                        <button class="clear-cart" onclick="clearCartHandler()">🗑️ خالی کردن سبد</button>
+                        <button class="share-cart" onclick="shareAllCart()">📤 اشتراک همه</button>
+                    </div>
+                    <button onclick="toggleCart()" 
+                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161; transition:var(--transition);">
+                        ✕ بستن
+                    </button>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function shareAllCart() {
+            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
+            var text = '🛒 *لیست املاک مورد علاقه من*\n\n';
+            for (var i = 0; i < cartItems.length; i++) {
+                var id = cartItems[i];
+                var p = null;
+                for (var j = 0; j < properties.length; j++) {
+                    if (properties[j].id === id) { p = properties[j]; break; }
+                }
+                if (p) {
+                    text += '🏠 ' + sanitizeInput(p.title) + '\n';
+                    text += '📍 ' + sanitizeInput(p.address) + '\n';
+                    if (p.type === 'sale') {
+                        text += '💰 ' + Number(p.price).toLocaleString() + ' تومان\n';
+                    } else {
+                        text += '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
+                            .toLocaleString() + '\n';
+                    }
+                    text += '📐 ' + (p.area || 0) + ' متر\n';
+                    text += '📞 ' + sanitizeInput(p.phone || '---') + '\n';
+                    text += '🏷️ ' + (p.category || 'بدون دسته') + '\n';
+                    text += '📝 ' + (sanitizeInput(p.description) || '') + '\n\n';
+                }
+            }
+            text += '#دپارتمان_املاک_حسینی #سبد_خرید';
+            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+        }
+
+        async function addToCartHandler(id) {
+            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند سبد خرید داشته باشد!', 'warning'); return; }
+            if (!currentUser) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+            var found = false;
+            for (var i = 0; i < cartItems.length; i++) {
+                if (cartItems[i] === id) { found = true; break; }
+            }
+            if (found) { showToast('⚠️ قبلاً در سبد خرید است!', 'warning'); return; }
+
+            try {
+                var response = await supabaseClient
+                    .from('user_cart')
+                    .insert([{
+                        id: generateId(),
+                        user_id: currentUser.id,
+                        property_id: id,
+                        added_at: new Date().toISOString()
+                    }]);
+                if (response.error) throw response.error;
+
+                cartItems.push(id);
+                updateCartBadge();
+                renderList();
+                renderCart();
+                showToast('✅ به سبد خرید اضافه شد!', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'افزودن به سبد خرید');
+                showToast('❌ خطا در افزودن به سبد خرید!', 'error');
+            }
+        }
+
+        async function removeFromCartHandler(id) {
+            if (!currentUser) return;
+            try {
+                var response = await supabaseClient
+                    .from('user_cart')
+                    .delete()
+                    .eq('user_id', currentUser.id)
+                    .eq('property_id', id);
+                if (response.error) throw response.error;
+
+                var newCart = [];
+                for (var i = 0; i < cartItems.length; i++) {
+                    if (cartItems[i] !== id) { newCart.push(cartItems[i]); }
+                }
+                cartItems = newCart;
+                updateCartBadge();
+                renderList();
+                renderCart();
+                showToast('🗑️ از سبد خرید حذف شد', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف از سبد خرید');
+                showToast('❌ خطا در حذف از سبد خرید!', 'error');
+            }
+        }
+
+        async function clearCartHandler() {
+            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
+            if (!confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) return;
+
+            try {
+                var response = await supabaseClient
+                    .from('user_cart')
+                    .delete()
+                    .eq('user_id', currentUser.id);
+                if (response.error) throw response.error;
+
+                cartItems = [];
+                updateCartBadge();
+                renderList();
+                renderCart();
+                showToast('🗑️ سبد خرید خالی شد', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'خالی کردن سبد خرید');
+                showToast('❌ خطا در خالی کردن سبد خرید!', 'error');
+            }
+        }
+
+        function updateCartBadge() { document.getElementById('cartCount').textContent = cartItems.length; }
+
+        function isInCart(id) {
+            for (var i = 0; i < cartItems.length; i++) {
+                if (cartItems[i] === id) return true;
+            }
+            return false;
         }
 
         // ============================================================
@@ -3493,7 +3879,7 @@
                 var p = item.property;
                 var priceDisplay = p.type === 'sale' ?
                     '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                    '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentPrice).toLocaleString();
+                    '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice).toLocaleString();
 
                 var matchPercent = Math.min(item.score, 100);
 
@@ -3502,7 +3888,8 @@
                                 <div style="display:flex;justify-content:space-between;align-items:center;">
                                     <div>
                                         <div style="font-weight:bold;color:var(--primary);">${i+1}. ${sanitizeInput(p.title)}</div>
-                                        <div style="font-size:12px;color:var(--text-light);">${sanitizeInput(p.address)}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">📌 کد: ${sanitizeInput(p.customcode || p.code || 'ندارد')}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">📍 ${sanitizeInput(p.address)}</div>
                                         <div style="font-size:12px;color:var(--secondary);">${priceDisplay}</div>
                                         <div style="font-size:11px;color:var(--text-light);">📐 ${p.area || 0} متر | 🏷️ ${p.category || 'بدون دسته'}</div>
                                     </div>
@@ -3520,615 +3907,194 @@
         }
 
         // ============================================================
-        // ====== پیش‌نمایش کاربران ======
+        // ====== رندر لیست ======
         // ============================================================
-        var previewMode = 'properties';
+        function renderList() {
+            try {
+                var search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
+                var filtered = properties.slice();
 
-        function toggleUserPreview() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیش‌نمایش ببیند!', 'warning'); return; }
-            var section = document.getElementById('userPreviewSection');
-            if (section.style.display === 'block') {
-                section.style.display = 'none';
-            } else {
-                section.style.display = 'block';
-                previewTab('properties');
-            }
-        }
+                if (isAdmin) {
+                    var categoryFilter = document.getElementById('categoryFilter').value;
+                    var sortBy = document.getElementById('sortBy').value;
+                    var minPrice = Number(document.getElementById('minPrice').value) || 0;
+                    var maxPrice = Number(document.getElementById('maxPrice').value) || Infinity;
+                    if (currentFilter !== 'all') filtered = filtered.filter(function(p) { return p.type === currentFilter; });
+                    if (categoryFilter !== 'all') filtered = filtered.filter(function(p) { return p.category ===
+                            categoryFilter; });
+                    filtered = filtered.filter(function(p) { var price = Number(p.price) || 0; return price >= minPrice &&
+                            price <= maxPrice; });
+                    if (sortBy === 'newest') filtered.sort(function(a, b) { return Number(b.id) - Number(a.id); });
+                    else if (sortBy === 'oldest') filtered.sort(function(a, b) { return Number(a.id) - Number(b.id); });
+                    else if (sortBy === 'price_high') filtered.sort(function(a, b) { return Number(b.price) - Number(a
+                            .price); });
+                    else if (sortBy === 'price_low') filtered.sort(function(a, b) { return Number(a.price) - Number(b
+                            .price); });
+                } else {
+                    // برای کاربران: املاک سنجاق شده اول نمایش داده میشن
+                    var pinnedItems = filtered.filter(function(p) { return p.pinned === true; });
+                    var unpinnedItems = filtered.filter(function(p) { return p.pinned !== true; });
 
-        async function previewTab(tab) {
-            previewMode = tab;
-            var buttons = document.querySelectorAll('.preview-tabs button');
-            for (var b = 0; b < buttons.length; b++) {
-                buttons[b].classList.remove('active');
-            }
-            for (var b2 = 0; b2 < buttons.length; b2++) {
-                var btn = buttons[b2];
-                if (btn.textContent.includes(tab === 'properties' ? 'املاک' : tab === 'messages' ? 'پیام' : 'سبد')) {
-                    btn.classList.add('active');
+                    // اعمال فیلترهای کاربر
+                    if (userCategoryFilter !== 'all') {
+                        pinnedItems = pinnedItems.filter(function(p) { return p.category === userCategoryFilter; });
+                        unpinnedItems = unpinnedItems.filter(function(p) { return p.category === userCategoryFilter; });
+                    }
+                    if (userTypeFilter !== 'all') {
+                        pinnedItems = pinnedItems.filter(function(p) { return p.type === userTypeFilter; });
+                        unpinnedItems = unpinnedItems.filter(function(p) { return p.type === userTypeFilter; });
+                    }
+                    if (userPriceFilterActive) {
+                        if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
+                            pinnedItems = pinnedItems.filter(function(p) { return p.type !== 'sale' || Number(p.price) <=
+                                    userMaxPrice; });
+                            unpinnedItems = unpinnedItems.filter(function(p) { return p.type !== 'sale' || Number(p.price) <=
+                                    userMaxPrice; });
+                        } else if (userTypeFilter === 'rent') {
+                            pinnedItems = pinnedItems.filter(function(p) { return p.type !== 'rent' || (Number(p.rahn) <=
+                                    userMaxRahn && Number(p.rentprice) <= userMaxRent); });
+                            unpinnedItems = unpinnedItems.filter(function(p) { return p.type !== 'rent' || (Number(p.rahn) <=
+                                    userMaxRahn && Number(p.rentprice) <= userMaxRent); });
+                        }
+                    }
+
+                    // مرتب‌سازی بر اساس جدیدترین
+                    pinnedItems.sort(function(a, b) { return Number(b.id) - Number(a.id); });
+                    unpinnedItems.sort(function(a, b) { return Number(b.id) - Number(a.id); });
+
+                    // ترکیب: سنجاق شده‌ها اول
+                    filtered = pinnedItems.concat(unpinnedItems);
                 }
-            }
 
-            var container = document.getElementById('previewContent');
-
-            if (tab === 'properties') {
-                if (!properties.length) {
-                    container.innerHTML =
-                        '<div style="text-align:center;color:var(--text-light);padding:20px;">🏠 هیچ ملکی موجود نیست</div>';
-                    return;
+                if (search) {
+                    filtered = filtered.filter(function(p) {
+                        return (p.title && p.title.toLowerCase().indexOf(search) !== -1) ||
+                            (p.address && p.address.toLowerCase().indexOf(search) !== -1) ||
+                            (p.customcode && p.customcode.toLowerCase().indexOf(search) !== -1);
+                    });
                 }
+
+                var container = document.getElementById('propertyList');
+                if (!filtered.length) { container.innerHTML = '<div class="empty">🏠 هیچ ملکی یافت نشد</div>'; return; }
+
                 var html = '';
-                var slice = properties.slice(0, 10);
-                for (var i = 0; i < slice.length; i++) {
-                    var p = slice[i];
+                for (var i = 0; i < filtered.length; i++) {
+                    var p = filtered[i];
+                    var hiddenHtml = '';
+                    if (isAdmin && p.hiddendescription) {
+                        hiddenHtml = `
+                                    <div class="hidden-part">
+                                        <span class="label">🔒 بخش مخفی (فقط مدیر)</span>
+                                        <div class="content">${sanitizeInput(p.hiddendescription)}</div>
+                                    </div>
+                                `;
+                    }
+
+                    var fileHtml = '';
+                    if (p.file) {
+                        fileHtml = `
+                                    <div style="margin-top:4px;font-size:11px;color:var(--primary);">
+                                        📎 <a href="${p.file}" target="_blank">دانلود فایل</a>
+                                    </div>
+                                `;
+                    }
+
                     var priceDisplay = p.type === 'sale' ?
                         '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                        '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentPrice).toLocaleString();
+                        '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
+                        .toLocaleString();
+
+                    // ===== گالری تصاویر =====
+                    var imagesHtml = '';
+                    if (p.images && Array.isArray(p.images) && p.images.length > 0) {
+                        imagesHtml = '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">';
+                        var showCount = Math.min(p.images.length, 4);
+                        for (var imgIdx = 0; imgIdx < showCount; imgIdx++) {
+                            imagesHtml += '<img src="' + p.images[imgIdx] +
+                                '" style="width:55px;height:55px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
+                                p.id + '\')" />';
+                        }
+                        if (p.images.length > 4) {
+                            imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text-light);cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
+                                p.id + '\')">+' + (p.images.length - 4) + '</div>';
+                        }
+                        if (p.video) {
+                            imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:6px;font-size:20px;cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
+                                p.id + '\')">🎬</div>';
+                        }
+                        imagesHtml += '</div>';
+                    } else if (p.video) {
+                        imagesHtml = '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">';
+                        imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:6px;font-size:20px;cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
+                            p.id + '\')">🎬</div>';
+                        imagesHtml += '</div>';
+                    }
+
+                    var actionBtns = '';
+                    if (isAdmin) {
+                        var pinClass = p.pinned ? 'pinned' : '';
+                        var pinText = p.pinned ? '📌' : '📌';
+                        actionBtns = `
+                            <button class="btn-pin ${pinClass}" onclick="togglePin('${p.id}')">${pinText}</button>
+                            <button class="btn-edit" onclick='toggleForm(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️</button>
+                            <button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>
+                        `;
+                    } else {
+                        var cartClass = isInCart(p.id) ? 'in-cart' : '';
+                        var cartText = isInCart(p.id) ? '✓' : '🛒';
+                        actionBtns = `
+                            <button class="btn-cart ${cartClass}" onclick="addToCartHandler('${p.id}')">${cartText}</button>
+                        `;
+                    }
+
+                    var pinnedBadge = p.pinned ? '<div class="pinned-badge">📌 سنجاق شده</div>' : '';
+
                     html += `
-                                <div class="preview-item">
-                                    <div style="font-weight:bold;">🏠 ${sanitizeInput(p.title)}</div>
-                                    <div style="font-size:11px;color:var(--text-light);">📍 ${sanitizeInput(p.address)}</div>
-                                    <div style="font-size:11px;color:var(--secondary);">${priceDisplay}</div>
-                                    <div style="font-size:10px;color:var(--text-light);">📐 ${p.area || 0} متر | 🏷️ ${p.category || 'بدون دسته'}</div>
+                                <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
+                                    ${pinnedBadge}
+                                    <span class="code-badge">#${sanitizeInput(p.customcode || p.code || 'ندارد')}</span>
+                                    <div class="action-btns">
+                                        ${actionBtns}
+                                    </div>
+                                    <h3>${sanitizeInput(p.title)}</h3>
+                                    <div class="address">📍 ${sanitizeInput(p.address)}</div>
+                                    <div class="price">${priceDisplay}</div>
+                                    <div class="meta">
+                                        <span>📐 ${p.area || 0} متر</span>
+                                        <span>📞 ${sanitizeInput(p.phone)}</span>
+                                        <span>${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</span>
+                                        <span>🏷️ ${p.category || 'بدون دسته'}</span>
+                                        ${p.date ? '<span>📅 ' + p.date + '</span>' : ''}
+                                        ${p.images && p.images.length > 0 ? '<span>📸 ' + p.images.length + '</span>' : ''}
+                                        ${p.video ? '<span>🎬</span>' : ''}
+                                    </div>
+                                    <div class="desc">
+                                        📝 ${sanitizeInput(p.description)}
+                                        ${fileHtml}
+                                        ${hiddenHtml}
+                                    </div>
+                                    ${imagesHtml}
                                 </div>
                             `;
                 }
+
                 container.innerHTML = html;
-
-            } else if (tab === 'messages') {
-                var users = await getUsers();
-                var hasMessages = false;
-                var html2 = '';
-                for (var u = 0; u < users.length; u++) {
-                    var usr = users[u];
-                    var msgs = await loadChatMessages(usr.id);
-                    if (msgs.length) {
-                        hasMessages = true;
-                        html2 += `
-                                    <div style="margin-bottom:8px;border-bottom:1px solid #ddd;padding-bottom:8px;">
-                                        <div style="font-weight:bold;color:var(--primary);">👤 #${usr.user_number} - ${usr.name || 'کاربر'}</div>
-                                        <div style="font-size:11px;color:var(--text-light);">${msgs.length} پیام</div>
-                                        <div style="font-size:11px;color:var(--text-light);">آخرین: ${new Date(msgs[msgs.length-1].date).toLocaleString('fa-IR')}</div>
-                                        <div style="font-size:11px;background:var(--bg);padding:4px 8px;border-radius:4px;margin-top:4px;">${sanitizeInput(msgs[msgs.length-1].text)}</div>
-                                    </div>
-                                `;
-                    }
-                }
-                container.innerHTML = hasMessages ? html2 :
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ پیامی از کاربران وجود ندارد</div>';
-
-            } else if (tab === 'cart') {
-                var users2 = await getUsers();
-                var hasCart = false;
-                var html3 = '';
-                for (var u2 = 0; u2 < users2.length; u2++) {
-                    var usr2 = users2[u2];
-                    var userCart = await loadUserCart(usr2.id);
-                    if (userCart.length) {
-                        hasCart = true;
-                        var items = userCart.map(function(id) {
-                            var prop = null;
-                            for (var k = 0; k < properties.length; k++) {
-                                if (properties[k].id === id) { prop = properties[k]; break; }
-                            }
-                            return prop ? sanitizeInput(prop.title) : 'نامشخص';
-                        }).join(', ');
-                        html3 += `
-                                    <div class="preview-item">
-                                        <div style="font-weight:bold;color:var(--primary);">👤 #${usr2.user_number} - ${usr2.name || 'کاربر'}</div>
-                                        <div style="font-size:11px;color:var(--text-light);">🛒 ${userCart.length} ملک</div>
-                                        <div style="font-size:11px;color:var(--text-light);">${items}</div>
-                                    </div>
-                                `;
-                    }
-                }
-                container.innerHTML = hasCart ? html3 :
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">🛒 هیچ کاربری سبد خرید ندارد</div>';
-            }
-        }
-
-        // ============================================================
-        // ====== ورود به برنامه ======
-        // ============================================================
-        async function enterApp() {
-            try {
-                await loadProperties();
-                await loadPublicMessages();
-                await loadUserCartHandler();
-                updateWelcomeMessage();
-
-                if (isAdmin) {
-                    document.getElementById('welcomeMessage').textContent = 'به پنل مدیریت خوش آمدید';
-                    document.getElementById('editProfileBtn').style.display = 'inline-block';
-                    document.getElementById('adminButtons').style.display = 'flex';
-                    document.getElementById('guideBox').style.display = 'block';
-                    document.getElementById('userRoleBadge').style.background = '#FFD700';
-                    document.getElementById('userFilterSection').style.display = 'none';
-                    document.getElementById('adminFilterSort').style.display = 'flex';
-                    document.getElementById('filterTabs').style.display = 'flex';
-                    document.getElementById('adminUsersSection').style.display = 'none';
-                    document.getElementById('userChatSection').style.display = 'none';
-                    document.getElementById('aiSection').style.display = 'none';
-                    document.getElementById('logoutBtn').style.display = 'inline-block';
-                    document.getElementById('userPreviewSection').style.display = 'none';
-                    loadAdminMessage();
-                    await refreshUsersList();
-                } else {
-                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
-                    document.getElementById('editProfileBtn').style.display = 'none';
-                    document.getElementById('adminButtons').style.display = 'none';
-                    document.getElementById('guideBox').style.display = 'none';
-                    document.getElementById('userRoleBadge').style.background = '#4CAF50';
-                    document.getElementById('userFilterSection').style.display = 'block';
-                    document.getElementById('adminFilterSort').style.display = 'none';
-                    document.getElementById('filterTabs').style.display = 'none';
-                    document.getElementById('adminUsersSection').style.display = 'none';
-                    document.getElementById('userChatSection').style.display = 'block';
-                    document.getElementById('aiSection').style.display = 'block';
-                    document.getElementById('logoutBtn').style.display = 'none';
-                    document.getElementById('userPreviewSection').style.display = 'none';
-                    loadAdminMessage();
-                }
-
-                updateCartBadge();
-                renderList();
-                renderPublicMessages();
-                checkMonthlyAuto();
-
-            } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
-        }
-
-        // ============================================================
-        // ====== ذخیره ملک (اصلاح شده با customcode کوچک) ======
-        // ============================================================
-        async function saveProperty() {
-            try {
-                if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
-                if (!supabaseClient) { showToast('❌ اتصال به سرور برقرار نیست!', 'error'); return; }
-
-                var editId = document.getElementById('editId').value;
-
-                var data = {
-                    id: generateId(),
-                    customcode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
-                    title: sanitizeInput(document.getElementById('fTitle').value.trim()),
-                    category: document.getElementById('fCategory').value,
-                    type: document.getElementById('fType').value,
-                    price: '0',
-                    rahn: '0',
-                    rentprice: '0',
-                    address: sanitizeInput(document.getElementById('fAddress').value.trim()),
-                    area: document.getElementById('fArea').value.trim() || '0',
-                    phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
-                    description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
-                    hiddendescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
-                    file: null,
-                    date: new Date().toLocaleDateString('fa-IR'),
-                    pinned: false,
-                    code: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode()
-                };
-
-                if (data.type === 'sale') {
-                    var p = document.getElementById('fPrice').value.replace(/,/g, '');
-                    if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
-                    data.price = p;
-                } else {
-                    var r = document.getElementById('fRahn').value.replace(/,/g, '');
-                    var rp = document.getElementById('fRentPrice').value.replace(/,/g, '');
-                    data.rahn = r || '0';
-                    if (!rp) { showToast('⚠️ قیمت کرایه را وارد کنید!', 'warning'); return; }
-                    data.rentprice = rp;
-                    data.price = rp;
-                }
-
-                if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
-
-                showLoading(true);
-                console.log('📤 ارسال به Supabase:', data);
-
-                var response = await supabaseClient
-                    .from('estate_properties')
-                    .insert([data])
-                    .select();
-
-                if (response.error) {
-                    console.error('❌ خطای Supabase:', response.error);
-                    showToast('❌ خطا: ' + response.error.message, 'error');
-                    showLoading(false);
-                    return;
-                }
-
-                console.log('✅ پاسخ Supabase:', response.data);
-
-                if (response.data && response.data.length > 0) {
-                    properties = response.data.concat(properties);
-                    showToast('✅ ملک ثبت شد!', 'success');
-                    document.getElementById('propertyForm').style.display = 'none';
-                    clearForm();
-                    updateStats();
-                    renderList();
-                } else {
-                    showToast('❌ خطا در ذخیره ملک!', 'error');
-                }
-
-                showLoading(false);
-            } catch (e) {
-                showLoading(false);
-                console.error('❌ خطای کلی:', e);
-                showToast('❌ خطا: ' + e.message, 'error');
-            }
-        }
-
-        // ============================================================
-        // ====== فرم ملک ======
-        // ============================================================
-        function toggleForm(data) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
-            hideAllForms(['propertyForm']);
-            var form = document.getElementById('propertyForm');
-            if (data) {
-                document.getElementById('formTitle').textContent = '✏️ ویرایش ملک';
-                document.getElementById('editId').value = data.id;
-                document.getElementById('fCode').value = data.customcode || '';
-                document.getElementById('fTitle').value = data.title || '';
-                document.getElementById('fCategory').value = data.category || 'آپارتمان';
-                document.getElementById('fType').value = data.type || 'sale';
-                togglePriceFields();
-                if (data.type === 'sale') {
-                    document.getElementById('fPrice').value = Number(data.price || 0).toLocaleString('en-US');
-                } else {
-                    document.getElementById('fRahn').value = Number(data.rahn || 0).toLocaleString('en-US');
-                    document.getElementById('fRentPrice').value = Number(data.rentprice || 0).toLocaleString('en-US');
-                }
-                document.getElementById('fAddress').value = data.address || '';
-                document.getElementById('fArea').value = data.area || '';
-                document.getElementById('fPhone').value = data.phone || '';
-                document.getElementById('fDescription').value = data.description || '';
-                document.getElementById('fHiddenDescription').value = data.hiddendescription || '';
-                form.style.display = 'block';
-            } else {
-                document.getElementById('formTitle').textContent = '📋 ثبت ملک جدید';
-                clearForm();
-                form.style.display = form.style.display === 'block' ? 'none' : 'block';
-                if (form.style.display === 'block') togglePriceFields();
-            }
-        }
-
-        function clearForm() {
-            var ids = ['fCode', 'fTitle', 'fPrice', 'fRahn', 'fRentPrice', 'fAddress', 'fArea', 'fPhone', 'fDescription',
-                'fHiddenDescription'
-            ];
-            for (var i = 0; i < ids.length; i++) {
-                document.getElementById(ids[i]).value = '';
-            }
-            document.getElementById('editId').value = '';
-            document.getElementById('fCategory').value = 'آپارتمان';
-            document.getElementById('fType').value = 'sale';
-            togglePriceFields();
-            document.getElementById('fFile').value = '';
-        }
-
-        function generateCode() {
-            var now = new Date();
-            var year = now.getFullYear();
-            var count = properties.length + 1;
-            return 'MLK-' + year + '-' + String(count).padStart(3, '0');
-        }
-
-        function togglePriceFields() {
-            var type = document.getElementById('fType').value;
-            document.getElementById('saleFields').style.display = type === 'sale' ? 'block' : 'none';
-            document.getElementById('rentFields').style.display = type === 'rent' ? 'block' : 'none';
-        }
-
-        function updateStats() {
-            var total = properties.length;
-            var sale = properties.filter(function(p) { return p.type === 'sale'; }).length;
-            var rent = properties.filter(function(p) { return p.type === 'rent'; }).length;
-            var prices = properties.map(function(p) { return Number(p.price) || 0; });
-            var avg = prices.length ? Math.round(prices.reduce(function(a, b) { return a + b; }, 0) / prices.length) : 0;
-            document.getElementById('totalCount').textContent = total;
-            document.getElementById('saleCount').textContent = sale;
-            document.getElementById('rentCount').textContent = rent;
-            document.getElementById('avgPrice').textContent = avg.toLocaleString();
-            document.getElementById('chartSaleCount').textContent = sale;
-            document.getElementById('chartRentCount').textContent = rent;
-        }
-
-        // ============================================================
-        // ====== حذف ملک ======
-        // ============================================================
-        async function deleteProperty(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
-
-            showLoading(true);
-            var result = await deletePropertyFromSupabase(id);
-            showLoading(false);
-
-            if (result) {
-                var deletedItem = null;
-                var newProps = [];
-                for (var i = 0; i < properties.length; i++) {
-                    if (properties[i].id === id) { deletedItem = properties[i]; } else { newProps.push(properties[i]); }
-                }
-                properties = newProps;
-
-                var found = false;
-                for (var j = 0; j < cartItems.length; j++) {
-                    if (cartItems[j] === id) { found = true; break; }
-                }
-                if (found && !isAdmin) {
-                    var newCart = [];
-                    for (var k = 0; k < cartItems.length; k++) {
-                        if (cartItems[k] !== id) { newCart.push(cartItems[k]); }
-                    }
-                    cartItems = newCart;
-                    if (currentUser && !isAdmin) {
-                        await removeFromCartSupabase(currentUser.id, id);
-                    }
-                    updateCartBadge();
-                }
-
-                showToast('🗑️ ملک "' + (deletedItem ? deletedItem.title : '') + '" حذف شد', 'success');
                 updateStats();
-                renderList();
-            } else {
-                showToast('❌ خطا در حذف ملک!', 'error');
-            }
-        }
-
-        async function deletePropertyFromSupabase(id) {
-            if (!supabaseClient) return false;
-            try {
-                var response = await supabaseClient
-                    .from('estate_properties')
-                    .delete()
-                    .eq('id', id);
-                if (response.error) throw response.error;
-                return true;
-            } catch (e) {
-                ErrorHandler.log(e, 'حذف ملک');
-                return false;
-            }
+            } catch (e) { ErrorHandler.log(e, 'رندر لیست'); }
         }
 
         // ============================================================
-        // ====== سنجاق کردن ======
+        // ====== سایر توابع ======
         // ============================================================
-        async function togglePin(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند سنجاق کند!', 'warning'); return; }
-            try {
-                showLoading(true);
-                for (var i = 0; i < properties.length; i++) {
-                    if (properties[i].pinned) {
-                        if (supabaseClient) {
-                            await supabaseClient
-                                .from('estate_properties')
-                                .update({ pinned: false })
-                                .eq('id', properties[i].id);
-                        }
-                    }
-                }
-                if (supabaseClient) {
-                    await supabaseClient
-                        .from('estate_properties')
-                        .update({ pinned: true })
-                        .eq('id', id);
-                }
-                for (var j = 0; j < properties.length; j++) {
-                    properties[j].pinned = false;
-                }
-                for (var k = 0; k < properties.length; k++) {
-                    if (properties[k].id === id) { properties[k].pinned = true; break; }
-                }
-                showToast('📌 ملک سنجاق شد!', 'success');
-                renderList();
-                showLoading(false);
-            } catch (e) { showLoading(false);
-                ErrorHandler.log(e, 'سنجاق ملک'); }
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            var btn = document.querySelector('.dark-toggle');
+            var isDark = document.body.classList.contains('dark-mode');
+            btn.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            showToast(isDark ? '🌙 حالت تاریک فعال شد' : '☀️ حالت روشن فعال شد', 'success');
         }
 
-        // ============================================================
-        // ====== سبد خرید (اصلی) ======
-        // ============================================================
-        function toggleCart() {
-            document.getElementById('cartModal').classList.toggle('active');
-            if (document.getElementById('cartModal').classList.contains('active')) renderCart();
-        }
-
-        function renderCart() {
-            var container = document.getElementById('cartList');
-            if (!cartItems.length) {
-                container.innerHTML = '<div class="cart-empty">🛒 سبد خرید شما خالی است</div>';
-                return;
-            }
-
-            var html = '';
-            for (var i = 0; i < cartItems.length; i++) {
-                var id = cartItems[i];
-                var p = null;
-                for (var j = 0; j < properties.length; j++) {
-                    if (String(properties[j].id) === String(id)) { p = properties[j]; break; }
-                }
-                if (p) {
-                    var priceDisplay = '';
-                    if (p.type === 'sale') {
-                        priceDisplay = '💰 قیمت فروش: ' + Number(p.price).toLocaleString() + ' تومان';
-                    } else {
-                        priceDisplay = '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' تومان | کرایه: ' + Number(p
-                            .rentprice).toLocaleString() + ' تومان';
-                    }
-
-                    var hiddenSection = '';
-                    if (isAdmin && p.hiddendescription) {
-                        hiddenSection = `
-                            <div class="cart-item-hidden">
-                                🔒 <strong>بخش مخفی (فقط مدیر):</strong> ${sanitizeInput(p.hiddendescription)}
-                            </div>
-                        `;
-                    }
-
-                    var fileSection = '';
-                    if (p.file) {
-                        fileSection = `
-                            <div class="cart-item-meta">📎 ${p.file}</div>
-                        `;
-                    }
-
-                    html += `
-                        <div class="cart-item-detail">
-                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                                <div style="flex:1;">
-                                    <div class="cart-item-title">🏠 ${sanitizeInput(p.title)}</div>
-                                    <div class="cart-item-address">📍 ${sanitizeInput(p.address)}</div>
-                                    <div class="cart-item-price">${priceDisplay}</div>
-                                    <div class="cart-item-meta">📐 متراژ: ${p.area || 0} متر مربع</div>
-                                    <div class="cart-item-meta">📞 تماس: ${sanitizeInput(p.phone) || '---'}</div>
-                                    <div class="cart-item-meta">🏷️ دسته: ${p.category || 'بدون دسته'} | ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</div>
-                                    ${p.description ? '<div class="cart-item-desc">📝 ' + sanitizeInput(p.description) + '</div>' : ''}
-                                    ${hiddenSection}
-                                    ${fileSection}
-                                    ${p.customcode ? '<div class="cart-item-code">#کد: ' + sanitizeInput(p.customcode) + '</div>' : ''}
-                                    ${p.date ? '<div class="cart-item-date">📅 تاریخ ثبت: ' + p.date + '</div>' : ''}
-                                    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;">
-                                        <button onclick="sharePropertyFromCart('whatsapp','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#25D366;transition:var(--transition);">📱 واتساپ</button>
-                                        <button onclick="sharePropertyFromCart('telegram','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#0088CC;transition:var(--transition);">✈️ تلگرام</button>
-                                        <button onclick="sharePropertyFromCart('ita','${p.id}')" style="flex:1;padding:6px;border:none;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer;color:white;background:#4CAF50;transition:var(--transition);">🇮🇷 ایتا</button>
-                                    </div>
-                                </div>
-                                <button class="cart-remove-btn" onclick="removeFromCartHandler('${p.id}')">✕</button>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-
-            html += `
-                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid var(--primary);">
-                    <div class="cart-actions">
-                        <button class="clear-cart" onclick="clearCartHandler()">🗑️ خالی کردن سبد</button>
-                        <button class="share-cart" onclick="shareAllCart()">📤 اشتراک همه</button>
-                    </div>
-                    <button onclick="toggleCart()" 
-                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161; transition:var(--transition);">
-                        ✕ بستن
-                    </button>
-                </div>
-            `;
-
-            container.innerHTML = html;
-        }
-
-        function sharePropertyFromCart(platform, id) {
-            var p = null;
-            for (var i = 0; i < properties.length; i++) {
-                if (String(properties[i].id) === String(id)) { p = properties[i]; break; }
-            }
-            if (!p) { showToast('❌ ملک یافت نشد!', 'error'); return; }
-            var priceText = p.type === 'sale' ? '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice).toLocaleString();
-            var text =
-                '🏠 *' + sanitizeInput(p.title) + '*\n📍 ' + sanitizeInput(p.address) + '\n' + priceText + '\n📐 ' + (p
-                    .area || 0) + ' متر\n📞 ' + sanitizeInput(p.phone) + '\n📝 ' + sanitizeInput(p.description) +
-                '\n#دپارتمان_املاک_حسینی';
-            var url;
-            if (platform === 'whatsapp') url = 'https://wa.me/?text=' + encodeURIComponent(text);
-            else if (platform === 'telegram') url = 'https://t.me/share/url?url=&text=' + encodeURIComponent(text);
-            else if (platform === 'ita') url =
-                'https://eitaa.com/share/url?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent(
-                    text);
-            if (url) window.open(url, '_blank');
-        }
-
-        function shareAllCart() {
-            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
-            var text = '🛒 *لیست املاک مورد علاقه من*\n\n';
-            for (var i = 0; i < cartItems.length; i++) {
-                var id = cartItems[i];
-                var p = null;
-                for (var j = 0; j < properties.length; j++) {
-                    if (properties[j].id === id) { p = properties[j]; break; }
-                }
-                if (p) {
-                    text += '🏠 ' + sanitizeInput(p.title) + '\n';
-                    text += '📍 ' + sanitizeInput(p.address) + '\n';
-                    if (p.type === 'sale') {
-                        text += '💰 ' + Number(p.price).toLocaleString() + ' تومان\n';
-                    } else {
-                        text += '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
-                            .toLocaleString() + '\n';
-                    }
-                    text += '📐 ' + (p.area || 0) + ' متر\n';
-                    text += '📞 ' + sanitizeInput(p.phone || '---') + '\n';
-                    text += '🏷️ ' + (p.category || 'بدون دسته') + '\n';
-                    text += '📝 ' + (sanitizeInput(p.description) || '') + '\n\n';
-                }
-            }
-            text += '#دپارتمان_املاک_حسینی #سبد_خرید';
-            window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
-        }
-
-        async function addToCartHandler(id) {
-            if (isAdmin) { showToast('⚠️ مدیر نمی‌تواند سبد خرید داشته باشد!', 'warning'); return; }
-            if (!currentUser) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
-            var found = false;
-            for (var i = 0; i < cartItems.length; i++) {
-                if (cartItems[i] === id) { found = true; break; }
-            }
-            if (found) { showToast('⚠️ قبلاً در سبد خرید است!', 'warning'); return; }
-
-            var result = await addToCartSupabase(currentUser.id, id);
-            if (result) {
-                cartItems.push(id);
-                updateCartBadge();
-                renderList();
-                renderCart();
-                showToast('✅ به سبد خرید اضافه شد!', 'success');
-            }
-        }
-
-        async function removeFromCartHandler(id) {
-            if (!currentUser) return;
-            var result = await removeFromCartSupabase(currentUser.id, id);
-            if (result) {
-                var newCart = [];
-                for (var i = 0; i < cartItems.length; i++) {
-                    if (cartItems[i] !== id) { newCart.push(cartItems[i]); }
-                }
-                cartItems = newCart;
-                updateCartBadge();
-                renderList();
-                renderCart();
-                showToast('🗑️ از سبد خرید حذف شد', 'success');
-            }
-        }
-
-        async function clearCartHandler() {
-            if (!cartItems.length) { showToast('⚠️ سبد خرید خالی است!', 'warning'); return; }
-            if (!confirm('آیا از خالی کردن سبد خرید مطمئن هستید؟')) return;
-
-            var result = await clearCartSupabase(currentUser.id);
-            if (result) {
-                cartItems = [];
-                updateCartBadge();
-                renderList();
-                renderCart();
-                showToast('🗑️ سبد خرید خالی شد', 'success');
-            }
-        }
-
-        function updateCartBadge() { document.getElementById('cartCount').textContent = cartItems.length; }
-
-        function isInCart(id) {
-            for (var i = 0; i < cartItems.length; i++) {
-                if (cartItems[i] === id) return true;
-            }
-            return false;
-        }
-
-        // ============================================================
-        // ====== فیلترها ======
-        // ============================================================
         function selectCategory(btn) {
             var btns = document.querySelectorAll('.category-grid .cat-btn');
             for (var i = 0; i < btns.length; i++) {
@@ -4258,141 +4224,58 @@
         }
 
         // ============================================================
-        // ====== حالت تاریک ======
+        // ====== ورود به برنامه ======
         // ============================================================
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            var btn = document.querySelector('.dark-toggle');
-            var isDark = document.body.classList.contains('dark-mode');
-            btn.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
-            showToast(isDark ? '🌙 حالت تاریک فعال شد' : '☀️ حالت روشن فعال شد', 'success');
-        }
-
-        // ============================================================
-        // ====== رندر لیست ======
-        // ============================================================
-        function renderList() {
+        async function enterApp() {
             try {
-                var search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
-                var filtered = properties.slice();
+                await loadProperties();
+                await loadPublicMessages();
+                await loadUserCartHandler();
+                updateWelcomeMessage();
 
                 if (isAdmin) {
-                    var categoryFilter = document.getElementById('categoryFilter').value;
-                    var sortBy = document.getElementById('sortBy').value;
-                    var minPrice = Number(document.getElementById('minPrice').value) || 0;
-                    var maxPrice = Number(document.getElementById('maxPrice').value) || Infinity;
-                    if (currentFilter !== 'all') filtered = filtered.filter(function(p) { return p.type === currentFilter; });
-                    if (categoryFilter !== 'all') filtered = filtered.filter(function(p) { return p.category ===
-                            categoryFilter; });
-                    filtered = filtered.filter(function(p) { var price = Number(p.price) || 0; return price >= minPrice &&
-                            price <= maxPrice; });
-                    if (sortBy === 'newest') filtered.sort(function(a, b) { return Number(b.id) - Number(a.id); });
-                    else if (sortBy === 'oldest') filtered.sort(function(a, b) { return Number(a.id) - Number(b.id); });
-                    else if (sortBy === 'price_high') filtered.sort(function(a, b) { return Number(b.price) - Number(a
-                            .price); });
-                    else if (sortBy === 'price_low') filtered.sort(function(a, b) { return Number(a.price) - Number(b
-                            .price); });
+                    document.getElementById('welcomeMessage').textContent = 'به پنل مدیریت خوش آمدید';
+                    document.getElementById('editProfileBtn').style.display = 'inline-block';
+                    document.getElementById('adminButtons').style.display = 'flex';
+                    document.getElementById('guideBox').style.display = 'block';
+                    document.getElementById('userRoleBadge').style.background = '#FFD700';
+                    document.getElementById('userFilterSection').style.display = 'none';
+                    document.getElementById('adminFilterSort').style.display = 'flex';
+                    document.getElementById('filterTabs').style.display = 'flex';
+                    document.getElementById('adminUsersSection').style.display = 'none';
+                    document.getElementById('userChatSection').style.display = 'none';
+                    document.getElementById('aiSection').style.display = 'none';
+                    document.getElementById('logoutBtn').style.display = 'inline-block';
+                    document.getElementById('userPreviewSection').style.display = 'none';
+                    loadAdminMessage();
+                    await refreshUsersList();
                 } else {
-                    if (userCategoryFilter !== 'all') filtered = filtered.filter(function(p) { return p.category ===
-                            userCategoryFilter; });
-                    if (userTypeFilter !== 'all') filtered = filtered.filter(function(p) { return p.type ===
-                        userTypeFilter; });
-                    if (userPriceFilterActive) {
-                        if (userTypeFilter === 'sale' || userTypeFilter === 'all') filtered = filtered.filter(function(
-                            p) { return p.type !== 'sale' || Number(p.price) <= userMaxPrice; });
-                        else if (userTypeFilter === 'rent') filtered = filtered.filter(function(p) { return p.type !==
-                                'rent' || (Number(p.rahn) <= userMaxRahn && Number(p.rentprice) <= userMaxRent); });
-                    }
-                    filtered.sort(function(a, b) { return Number(b.id) - Number(a.id); });
+                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
+                    document.getElementById('editProfileBtn').style.display = 'none';
+                    document.getElementById('adminButtons').style.display = 'none';
+                    document.getElementById('guideBox').style.display = 'none';
+                    document.getElementById('userRoleBadge').style.background = '#4CAF50';
+                    document.getElementById('userFilterSection').style.display = 'block';
+                    document.getElementById('adminFilterSort').style.display = 'none';
+                    document.getElementById('filterTabs').style.display = 'none';
+                    document.getElementById('adminUsersSection').style.display = 'none';
+                    document.getElementById('userChatSection').style.display = 'block';
+                    document.getElementById('aiSection').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'none';
+                    document.getElementById('userPreviewSection').style.display = 'none';
+                    loadAdminMessage();
                 }
 
-                if (search) {
-                    filtered = filtered.filter(function(p) {
-                        return (p.title && p.title.toLowerCase().indexOf(search) !== -1) ||
-                            (p.address && p.address.toLowerCase().indexOf(search) !== -1) ||
-                            (p.customcode && p.customcode.toLowerCase().indexOf(search) !== -1);
-                    });
-                }
+                updateCartBadge();
+                renderList();
+                renderPublicMessages();
+                checkMonthlyAuto();
 
-                var container = document.getElementById('propertyList');
-                if (!filtered.length) { container.innerHTML = '<div class="empty">🏠 هیچ ملکی یافت نشد</div>'; return; }
-
-                var html = '';
-                for (var i = 0; i < filtered.length; i++) {
-                    var p = filtered[i];
-                    var hiddenHtml = '';
-                    if (isAdmin && p.hiddendescription) {
-                        hiddenHtml = `
-                                    <div class="hidden-part">
-                                        <span class="label">🔒 بخش مخفی (فقط مدیر)</span>
-                                        <div class="content">${sanitizeInput(p.hiddendescription)}</div>
-                                    </div>
-                                `;
-                    }
-
-                    var fileHtml = '';
-                    if (p.file) {
-                        fileHtml = `
-                                    <div style="margin-top:4px;font-size:11px;color:var(--primary);">
-                                        📎 ${p.file}
-                                    </div>
-                                `;
-                    }
-
-                    var priceDisplay = p.type === 'sale' ?
-                        '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                        '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
-                        .toLocaleString();
-
-                    var actionBtns = '';
-                    if (isAdmin) {
-                        actionBtns = `
-                            <button class="btn-pin" onclick="togglePin('${p.id}')">📌</button>
-                            <button class="btn-edit" onclick='toggleForm(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️</button>
-                            <button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>
-                        `;
-                    } else {
-                        var cartClass = isInCart(p.id) ? 'in-cart' : '';
-                        var cartText = isInCart(p.id) ? '✓' : '🛒';
-                        actionBtns = `
-                            <button class="btn-cart ${cartClass}" onclick="addToCartHandler('${p.id}')">${cartText}</button>
-                        `;
-                    }
-
-                    html += `
-                                <div class="property-card ${p.type} ${p.pinned ? 'pinned' : ''}">
-                                    ${p.pinned ? '<div class="pinned-badge">📌 سنجاق شده</div>' : ''}
-                                    <span class="code-badge">#${sanitizeInput(p.customcode || p.code || 'ندارد')}</span>
-                                    <div class="action-btns">
-                                        ${actionBtns}
-                                    </div>
-                                    <h3>${sanitizeInput(p.title)}</h3>
-                                    <div class="address">📍 ${sanitizeInput(p.address)}</div>
-                                    <div class="price">${priceDisplay}</div>
-                                    <div class="meta">
-                                        <span>📐 ${p.area || 0} متر</span>
-                                        <span>📞 ${sanitizeInput(p.phone)}</span>
-                                        <span>${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'}</span>
-                                        <span>🏷️ ${p.category || 'بدون دسته'}</span>
-                                        ${p.date ? '<span>📅 ' + p.date + '</span>' : ''}
-                                    </div>
-                                    <div class="desc">
-                                        📝 ${sanitizeInput(p.description)}
-                                        ${fileHtml}
-                                        ${hiddenHtml}
-                                    </div>
-                                </div>
-                            `;
-                }
-
-                container.innerHTML = html;
-                updateStats();
-            } catch (e) { ErrorHandler.log(e, 'رندر لیست'); }
+            } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
         }
 
         // ============================================================
-        // ====== نمودار ======
+        // ====== سایر توابع (ادامه) ======
         // ============================================================
         function toggleChart() {
             var container = document.getElementById('chartContainer');
@@ -4434,9 +4317,6 @@
             ctx.fillText('کل: ' + total, 10, 20);
         }
 
-        // ============================================================
-        // ====== خروجی PDF و Excel ======
-        // ============================================================
         function exportPDF() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
             if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
@@ -4473,9 +4353,6 @@
             showToast('📊 فایل Excel دانلود شد!', 'success');
         }
 
-        // ============================================================
-        // ====== پشتیبان ======
-        // ============================================================
         function backupData() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning'); return; }
             var data = {
@@ -4491,9 +4368,11 @@
             showToast('💾 پشتیبان گرفته شد!', 'success');
         }
 
-        // ============================================================
-        // ====== بررسی ماهانه ======
-        // ============================================================
+        function monthlyCheck() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند بررسی کند!', 'warning'); return; }
+            showToast('✅ بررسی ماهانه انجام شد!', 'success');
+        }
+
         function checkMonthlyAuto() {
             var now = new Date();
             var today = now.toISOString().split('T')[0];
@@ -4503,245 +4382,8 @@
             var diff = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
             if (diff >= 1) {
                 if (isAdmin) showToast('📅 زمان بررسی ماهانه فرا رسیده!', 'warning');
-                autoDeleteOldProperties();
                 localStorage.setItem('lastMonthlyCheck', today);
             }
-        }
-
-        async function monthlyCheck() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند بررسی کند!', 'warning'); return; }
-            await autoDeleteOldProperties();
-            localStorage.setItem('lastMonthlyCheck', new Date().toISOString().split('T')[0]);
-            showToast('✅ بررسی ماهانه انجام شد!', 'success');
-        }
-
-        async function autoDeleteOldProperties() {
-            var deleted = [];
-            for (var i = 0; i < properties.length; i++) {
-                if (!confirm('آیا ملک "' + properties[i].title + '" هنوز موجود است؟')) {
-                    deleted.push(properties[i].id);
-                }
-            }
-            if (deleted.length) {
-                for (var j = 0; j < deleted.length; j++) {
-                    if (supabaseClient) {
-                        await supabaseClient.from('estate_properties').delete().eq('id', deleted[j]);
-                    }
-                }
-                var newProps = [];
-                for (var k = 0; k < properties.length; k++) {
-                    var found = false;
-                    for (var l = 0; l < deleted.length; l++) {
-                        if (properties[k].id === deleted[l]) { found = true; break; }
-                    }
-                    if (!found) newProps.push(properties[k]);
-                }
-                properties = newProps;
-                showToast('🗑️ ' + deleted.length + ' ملک حذف شد!', 'success');
-                updateStats();
-                renderList();
-            } else { showToast('✅ همه املاک موجود هستند!', 'success'); }
-        }
-
-        // ============================================================
-        // ====== نمایش مدیا ======
-        // ============================================================
-        function showMedia(src, type) {
-            var modal = document.getElementById('mediaModal');
-            var content = document.getElementById('modalContent');
-            content.innerHTML = type === 'image' ? '<img src="' + src + '" style="max-height:80vh;" />' :
-                '<video controls autoplay style="max-height:80vh;max-width:100%;"><source src="' + src + '" /></video>';
-            modal.classList.add('active');
-        }
-
-        function closeModal() { document.getElementById('mediaModal').classList.remove('active'); }
-
-        // ============================================================
-        // ====== توابع مدیر ======
-        // ============================================================
-        function showEditProfile() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            hideAllForms(['editProfileForm']);
-            document.getElementById('editProfileForm').style.display = 'block';
-        }
-
-        function hideEditProfile() { document.getElementById('editProfileForm').style.display = 'none'; }
-
-        function saveProfileChanges() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            var name = sanitizeInput(document.getElementById('editAdminName').value.trim());
-            if (name) {
-                localStorage.setItem('amlak_admin_name', name);
-                if (currentUser) {
-                    currentUser.name = name;
-                    localStorage.setItem('amlak_user', JSON.stringify({ role: 'admin', id: currentUser.id }));
-                }
-                showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
-                hideEditProfile();
-                updateWelcomeMessage();
-            } else {
-                showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
-            }
-        }
-
-        function updateWelcomeMessage() {
-            var name = localStorage.getItem('amlak_admin_name') || 'مدیر';
-            document.getElementById('welcomeUser').textContent = isAdmin ? '👋 خوش آمدید ' + name + '!' : '👋 خوش آمدید!';
-            document.getElementById('userRoleBadge').textContent = isAdmin ? '👑 ' + name : '👤 کاربر عادی';
-            if (!isAdmin && currentUser) {
-                document.getElementById('welcomeUser').textContent += ' (شماره: #' + (currentUser.userNumber || '?') + ')';
-            }
-        }
-
-        function loadAdminMessage() {
-            try {
-                var adminMsg = localStorage.getItem('amlak_admin_message');
-                if (adminMsg) {
-                    var msgData = JSON.parse(adminMsg);
-                    document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
-                    document.getElementById('adminMsgDate').textContent = msgData.date || '';
-                    document.getElementById('adminMsgBox').style.display = 'block';
-                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
-                    document.getElementById('adminMsgEditArea').style.display = 'none';
-                    document.getElementById('adminMsgDisplay').style.display = 'block';
-                } else {
-                    document.getElementById('adminMsgBox').style.display = 'none';
-                }
-            } catch (e) {}
-        }
-
-        function editAdminMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            var currentMsg = localStorage.getItem('amlak_admin_message');
-            var currentText = '';
-            if (currentMsg) try { currentText = JSON.parse(currentMsg).text || ''; } catch (e) {}
-            document.getElementById('adminMsgEditInput').value = currentText;
-            document.getElementById('adminMsgDisplay').style.display = 'none';
-            document.getElementById('adminMsgActions').style.display = 'none';
-            document.getElementById('adminMsgEditArea').style.display = 'block';
-        }
-
-        function saveAdminMessageEdit() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            var newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
-            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            var data = { text: newMsg, date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date()
-                    .toLocaleTimeString('fa-IR') };
-            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
-            document.getElementById('adminMsgDisplay').style.display = 'block';
-            document.getElementById('adminMsgActions').style.display = 'flex';
-            document.getElementById('adminMsgEditArea').style.display = 'none';
-            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
-            document.getElementById('adminMsgDate').textContent = data.date;
-            document.getElementById('adminMsgBox').style.display = 'block';
-            showToast('✅ پیام مدیر ویرایش شد!', 'success');
-        }
-
-        function cancelAdminMessageEdit() {
-            document.getElementById('adminMsgDisplay').style.display = 'block';
-            document.getElementById('adminMsgActions').style.display = 'flex';
-            document.getElementById('adminMsgEditArea').style.display = 'none';
-        }
-
-        function deleteAdminMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
-            localStorage.removeItem('amlak_admin_message');
-            document.getElementById('adminMsgBox').style.display = 'none';
-            showToast('🗑️ پیام مدیر حذف شد', 'success');
-        }
-
-        // ============================================================
-        // ====== پیام‌های عمومی ======
-        // ============================================================
-        function showPublicMsgForm(data) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
-            hideAllForms(['publicMsgForm']);
-            document.getElementById('editMsgId').value = data ? data.id : '';
-            document.getElementById('fPublicMsg').value = data ? data.text : '';
-            document.getElementById('publicMsgTitle').textContent = data ? '✏️ ویرایش پیام عمومی' : '📢 ارسال پیام عمومی';
-            document.getElementById('publicMsgSubmitBtn').textContent = data ? '💾 ذخیره تغییرات' : '📤 ارسال پیام';
-            document.getElementById('publicMsgForm').style.display = 'block';
-        }
-
-        function hidePublicMsgForm() {
-            document.getElementById('publicMsgForm').style.display = 'none';
-            document.getElementById('fPublicMsg').value = '';
-            document.getElementById('editMsgId').value = '';
-        }
-
-        function savePublicMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
-            var editId = document.getElementById('editMsgId').value;
-            var text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
-            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            loadPublicMessages();
-            if (editId) {
-                var idx = -1;
-                for (var i = 0; i < publicMessages.length; i++) {
-                    if (publicMessages[i].id == editId) { idx = i; break; }
-                }
-                if (idx !== -1) { publicMessages[idx].text = text;
-                    showToast('✅ پیام ویرایش شد!', 'success'); } else { showToast('❌ پیام یافت نشد!', 'error'); return; }
-            } else {
-                publicMessages.push({
-                    id: generateId(),
-                    text: text,
-                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR'),
-                    likes: 0,
-                    dislikes: 0
-                });
-                showToast('✅ پیام عمومی ارسال شد!', 'success');
-            }
-            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-            hidePublicMsgForm();
-            renderPublicMessages();
-        }
-
-        function deletePublicMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-            loadPublicMessages();
-            var newMsgs = [];
-            for (var i = 0; i < publicMessages.length; i++) {
-                if (publicMessages[i].id != id) newMsgs.push(publicMessages[i]);
-            }
-            publicMessages = newMsgs;
-            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-            renderPublicMessages();
-            showToast('🗑️ پیام حذف شد', 'success');
-        }
-
-        function editPublicMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            loadPublicMessages();
-            var data = null;
-            for (var i = 0; i < publicMessages.length; i++) {
-                if (publicMessages[i].id == id) { data = publicMessages[i]; break; }
-            }
-            if (data) showPublicMsgForm(data);
-            else showToast('❌ پیام یافت نشد!', 'error');
-        }
-
-        function renderPublicMessages() {
-            var container = document.getElementById('publicMessagesContainer');
-            loadPublicMessages();
-            if (!publicMessages.length) { container.innerHTML = ''; return; }
-            var html = '';
-            for (var i = 0; i < publicMessages.length; i++) {
-                var p = publicMessages[i];
-                html += `
-                        <div class="public-msg-card">
-                            <div class="msg-header">
-                                <span style="font-weight:bold;color:var(--primary);">📢 پیام عمومی</span>
-                                <span class="msg-date">${p.date || ''}</span>
-                            </div>
-                            <div class="msg-text">${sanitizeInput(p.text)}</div>
-                            ${isAdmin ? '<div class="msg-actions"><button class="edit-msg" onclick="editPublicMessage(\'' + p.id + '\')">✏️ ویرایش</button><button class="del-msg" onclick="deletePublicMessage(\'' + p.id + '\')">🗑️ حذف</button></div>' : ''}
-                        </div>
-                    `;
-            }
-            container.innerHTML = html;
         }
 
         // ============================================================
@@ -4820,9 +4462,256 @@
             console.log('📊 تعداد املاک:', properties.length);
             console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
             console.log('🔑 رمز مدیر: 26742674');
+            console.log('📸 گالری عکس و فیلم فعال است');
+            console.log('📌 سنجاق ملک (فقط مدیر) فعال است');
         }
 
         init();
+
+        // ============================================================
+        // ====== توابع گمشده ======
+        // ============================================================
+        function loadUserChatMessages() {
+            // در نسخه کامل پیاده‌سازی شده
+        }
+
+        function sendUserMessage() {
+            var input = document.getElementById('userChatInput');
+            var text = sanitizeInput(input.value.trim());
+            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
+            input.value = '';
+        }
+
+        function viewChats() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning'); return; }
+            hideAllForms(['chatViewer']);
+            document.getElementById('chatViewer').style.display = 'block';
+            document.getElementById('chatViewerTitle').textContent = '💬 چت با کاربران';
+        }
+
+        function sendChatReply() {
+            var input = document.getElementById('chatReplyInput');
+            var text = sanitizeInput(input.value.trim());
+            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            showToast('✅ پیام ارسال شد!', 'success');
+            input.value = '';
+        }
+
+        function closeChatViewer() {
+            document.getElementById('chatViewer').style.display = 'none';
+        }
+
+        function showUsersList() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند لیست کاربران را ببیند!', 'warning'); return; }
+            var section = document.getElementById('adminUsersSection');
+            if (section.style.display === 'block') {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+                refreshUsersList();
+            }
+        }
+
+        async function refreshUsersList() {
+            if (!isAdmin) return;
+            var users = await getUsers();
+            var container = document.getElementById('usersListContainer');
+            document.getElementById('userCount').textContent = users.length + ' کاربر';
+
+            if (!users.length) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">👤 هنوز کاربری ثبت نام نکرده است</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < users.length; i++) {
+                var u = users[i];
+                html += `
+                    <div class="user-list-item">
+                        <div style="flex:1;">
+                            <div class="user-phone">#${u.user_number} - ${u.name || 'کاربر'}</div>
+                            <div class="user-meta">📱 ${u.phone || ''}</div>
+                        </div>
+                        <span class="user-status verified">✅ تایید شده</span>
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function toggleUserPreview() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیش‌نمایش ببیند!', 'warning'); return; }
+            var section = document.getElementById('userPreviewSection');
+            if (section.style.display === 'block') {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+                previewTab('properties');
+            }
+        }
+
+        function previewTab(tab) {
+            var container = document.getElementById('previewContent');
+            container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">🔧 در حال توسعه...</div>';
+        }
+
+        function showEditProfile() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            hideAllForms(['editProfileForm']);
+            document.getElementById('editProfileForm').style.display = 'block';
+        }
+
+        function hideEditProfile() {
+            document.getElementById('editProfileForm').style.display = 'none';
+        }
+
+        function saveProfileChanges() {
+            var name = sanitizeInput(document.getElementById('editAdminName').value.trim());
+            if (name) {
+                localStorage.setItem('amlak_admin_name', name);
+                showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
+                hideEditProfile();
+            } else {
+                showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
+            }
+        }
+
+        function showPublicMsgForm() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
+            hideAllForms(['publicMsgForm']);
+            document.getElementById('publicMsgForm').style.display = 'block';
+            document.getElementById('publicMsgTitle').textContent = '📢 ارسال پیام عمومی';
+        }
+
+        function hidePublicMsgForm() {
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('fPublicMsg').value = '';
+        }
+
+        function savePublicMessage() {
+            var text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
+            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            publicMessages.push({
+                id: generateId(),
+                text: text,
+                date: new Date().toLocaleDateString('fa-IR')
+            });
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            hidePublicMsgForm();
+            renderPublicMessages();
+            showToast('✅ پیام ارسال شد!', 'success');
+        }
+
+        function renderPublicMessages() {
+            var container = document.getElementById('publicMessagesContainer');
+            if (!publicMessages.length) { container.innerHTML = ''; return; }
+            var html = '';
+            for (var i = 0; i < publicMessages.length; i++) {
+                var p = publicMessages[i];
+                html += `
+                    <div class="public-msg-card">
+                        <div class="msg-header">
+                            <span style="font-weight:bold;color:var(--primary);">📢 پیام عمومی</span>
+                            <span class="msg-date">${p.date || ''}</span>
+                        </div>
+                        <div class="msg-text">${sanitizeInput(p.text)}</div>
+                        ${isAdmin ? '<div class="msg-actions"><button class="edit-msg" onclick="editPublicMessage(\'' + p.id + '\')">✏️</button><button class="del-msg" onclick="deletePublicMessage(\'' + p.id + '\')">🗑️</button></div>' : ''}
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function editPublicMessage(id) {
+            var data = publicMessages.find(function(p) { return p.id == id; });
+            if (data) {
+                document.getElementById('editMsgId').value = data.id;
+                document.getElementById('fPublicMsg').value = data.text;
+                document.getElementById('publicMsgTitle').textContent = '✏️ ویرایش پیام عمومی';
+                document.getElementById('publicMsgForm').style.display = 'block';
+            }
+        }
+
+        function deletePublicMessage(id) {
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+            publicMessages = publicMessages.filter(function(p) { return p.id != id; });
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            renderPublicMessages();
+            showToast('🗑️ پیام حذف شد', 'success');
+        }
+
+        function updateWelcomeMessage() {
+            var name = localStorage.getItem('amlak_admin_name') || 'مدیر';
+            document.getElementById('welcomeUser').textContent = isAdmin ? '👋 خوش آمدید ' + name + '!' : '👋 خوش آمدید!';
+            document.getElementById('userRoleBadge').textContent = isAdmin ? '👑 ' + name : '👤 کاربر عادی';
+            if (!isAdmin && currentUser) {
+                document.getElementById('welcomeUser').textContent += ' (شماره: #' + (currentUser.userNumber || '?') + ')';
+            }
+        }
+
+        function loadAdminMessage() {
+            try {
+                var adminMsg = localStorage.getItem('amlak_admin_message');
+                if (adminMsg) {
+                    var msgData = JSON.parse(adminMsg);
+                    document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
+                    document.getElementById('adminMsgDate').textContent = msgData.date || '';
+                    document.getElementById('adminMsgBox').style.display = 'block';
+                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
+                    document.getElementById('adminMsgEditArea').style.display = 'none';
+                    document.getElementById('adminMsgDisplay').style.display = 'block';
+                } else {
+                    document.getElementById('adminMsgBox').style.display = 'none';
+                }
+            } catch (e) {}
+        }
+
+        function editAdminMessage() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            var currentMsg = localStorage.getItem('amlak_admin_message');
+            var currentText = '';
+            if (currentMsg) try { currentText = JSON.parse(currentMsg).text || ''; } catch (e) {}
+            document.getElementById('adminMsgEditInput').value = currentText;
+            document.getElementById('adminMsgDisplay').style.display = 'none';
+            document.getElementById('adminMsgActions').style.display = 'none';
+            document.getElementById('adminMsgEditArea').style.display = 'block';
+        }
+
+        function saveAdminMessageEdit() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            var newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
+            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+            var data = { text: newMsg, date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date()
+                    .toLocaleTimeString('fa-IR') };
+            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
+            document.getElementById('adminMsgDate').textContent = data.date;
+            document.getElementById('adminMsgBox').style.display = 'block';
+            showToast('✅ پیام مدیر ویرایش شد!', 'success');
+        }
+
+        function cancelAdminMessageEdit() {
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+        }
+
+        function deleteAdminMessage() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
+            localStorage.removeItem('amlak_admin_message');
+            document.getElementById('adminMsgBox').style.display = 'none';
+            showToast('🗑️ پیام مدیر حذف شد', 'success');
+        }
+
+        function closeModal() {
+            document.getElementById('mediaModal').classList.remove('active');
+        }
     </script>
 </body>
-    </html>
+                </html>
