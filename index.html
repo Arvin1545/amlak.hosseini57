@@ -2302,7 +2302,6 @@
     </style>
 </head>
 <body>
-
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
@@ -3586,7 +3585,6 @@
             // اگر هیچ ملکی پیدا نشد، همه املاک رو نشون بده با درصد تطابق کمتر
             if (filtered.length === 0) {
                 filtered = properties.slice();
-                // همه رو با امتیاز پایین نمایش بده
                 filtered = filtered.map(function(p) {
                     return { property: p, score: 10 };
                 });
@@ -4480,7 +4478,10 @@
                 console.log('✅ Supabase متصل شد!');
             } else {
                 console.warn('⚠️ Supabase لود نشد!');
-                showToast('⚠️ اتصال به سرور برقرار نیست!', 'warning');
+                showToast('⚠️ اتصال به سرور برقرار نیست! لطفاً اینترنت خود را بررسی کنید.', 'error');
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                return;
             }
 
             await getAdminCount();
