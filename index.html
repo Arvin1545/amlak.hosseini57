@@ -3318,7 +3318,7 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک (ویرایش یا جدید) ======
+        // ====== ذخیره ملک (ویرایش یا جدید) با آپلود عکس و فیلم ======
         // ============================================================
         async function saveProperty() {
             try {
@@ -3330,7 +3330,7 @@
 
                 showLoading(true);
 
-                // ===== جمع‌آوری داده‌ها =====
+                // ===== جمع‌آوری داده‌های متنی =====
                 var data = {
                     title: sanitizeInput(document.getElementById('fTitle').value.trim()),
                     category: document.getElementById('fCategory').value,
@@ -3361,7 +3361,7 @@
 
                 if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
 
-                // ===== کد ملک =====
+                // ===== کد ملک (فقط برای جدید) =====
                 if (!isEdit) {
                     data.id = generateId();
                     data.customcode = sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode();
@@ -3372,68 +3372,71 @@
                     data.file = null;
                 }
 
-                // ===== آپلود فایل‌ها (فقط برای جدید) =====
-                if (!isEdit) {
-                    // آپلود فایل ضمیمه
-                    var fileInput = document.getElementById('fFile');
-                    if (fileInput.files && fileInput.files.length > 0) {
-                        var file = fileInput.files[0];
-                        var fileExt = file.name.split('.').pop();
-                        var fileName = Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + fileExt;
-                        var { data: uploadData, error: uploadError } = await supabaseClient.storage
-                            .from('property_files')
-                            .upload('files/' + fileName, file);
-                        if (!uploadError) {
-                            var { data: urlData } = supabaseClient.storage
-                                .from('property_files')
-                                .getPublicUrl('files/' + fileName);
-                            data.file = urlData.publicUrl;
-                        }
-                    }
+                // ============================================================
+                // ===== آپلود فایل‌ها (هم برای جدید و هم برای ویرایش) =====
+                // ============================================================
 
-                    // آپلود عکس‌ها
-                    var imageUrls = [];
-                    var imagesInput = document.getElementById('fImages');
-                    if (imagesInput.files && imagesInput.files.length > 0) {
-                        for (var i = 0; i < imagesInput.files.length; i++) {
-                            var imgFile = imagesInput.files[i];
-                            var imgExt = imgFile.name.split('.').pop();
-                            var imgName = Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 8) + '.' + imgExt;
-                            var { data: imgUpload, error: imgError } = await supabaseClient.storage
-                                .from('property_files')
-                                .upload('images/' + imgName, imgFile);
-                            if (!imgError) {
-                                var { data: imgUrlData } = supabaseClient.storage
-                                    .from('property_files')
-                                    .getPublicUrl('images/' + imgName);
-                                imageUrls.push(imgUrlData.publicUrl);
-                            }
-                        }
-                        data.images = imageUrls;
-                    }
-
-                    // آپلود فیلم
-                    var videoInput = document.getElementById('fVideo');
-                    if (videoInput.files && videoInput.files.length > 0) {
-                        var videoFile = videoInput.files[0];
-                        var videoExt = videoFile.name.split('.').pop();
-                        var videoName = Date.now() + '_video_' + Math.random().toString(36).slice(2, 8) + '.' + videoExt;
-                        var { data: videoUpload, error: videoError } = await supabaseClient.storage
+                // 1. آپلود فایل ضمیمه
+                var fileInput = document.getElementById('fFile');
+                if (fileInput.files && fileInput.files.length > 0) {
+                    var file = fileInput.files[0];
+                    var fileExt = file.name.split('.').pop();
+                    var fileName = Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + fileExt;
+                    var { data: uploadData, error: uploadError } = await supabaseClient.storage
+                        .from('property_files')
+                        .upload('files/' + fileName, file);
+                    if (!uploadError) {
+                        var { data: urlData } = supabaseClient.storage
                             .from('property_files')
-                            .upload('videos/' + videoName, videoFile);
-                        if (!videoError) {
-                            var { data: videoUrlData } = supabaseClient.storage
-                                .from('property_files')
-                                .getPublicUrl('videos/' + videoName);
-                            data.video = videoUrlData.publicUrl;
-                        }
+                            .getPublicUrl('files/' + fileName);
+                        data.file = urlData.publicUrl;
                     }
                 }
 
+                // 2. آپلود عکس‌ها
+                var imageUrls = [];
+                var imagesInput = document.getElementById('fImages');
+                if (imagesInput.files && imagesInput.files.length > 0) {
+                    for (var i = 0; i < imagesInput.files.length; i++) {
+                        var imgFile = imagesInput.files[i];
+                        var imgExt = imgFile.name.split('.').pop();
+                        var imgName = Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 8) + '.' + imgExt;
+                        var { data: imgUpload, error: imgError } = await supabaseClient.storage
+                            .from('property_files')
+                            .upload('images/' + imgName, imgFile);
+                        if (!imgError) {
+                            var { data: imgUrlData } = supabaseClient.storage
+                                .from('property_files')
+                                .getPublicUrl('images/' + imgName);
+                            imageUrls.push(imgUrlData.publicUrl);
+                        }
+                    }
+                    data.images = imageUrls;
+                }
+
+                // 3. آپلود فیلم
+                var videoInput = document.getElementById('fVideo');
+                if (videoInput.files && videoInput.files.length > 0) {
+                    var videoFile = videoInput.files[0];
+                    var videoExt = videoFile.name.split('.').pop();
+                    var videoName = Date.now() + '_video_' + Math.random().toString(36).slice(2, 8) + '.' + videoExt;
+                    var { data: videoUpload, error: videoError } = await supabaseClient.storage
+                        .from('property_files')
+                        .upload('videos/' + videoName, videoFile);
+                    if (!videoError) {
+                        var { data: videoUrlData } = supabaseClient.storage
+                            .from('property_files')
+                            .getPublicUrl('videos/' + videoName);
+                        data.video = videoUrlData.publicUrl;
+                    }
+                }
+
+                // ============================================================
                 // ===== ذخیره در Supabase =====
+                // ============================================================
                 var response;
                 if (isEdit) {
-                    // ===== ویرایش (UPDATE) - فقط داده‌های متنی =====
+                    // ===== ویرایش (UPDATE) =====
                     var updateData = {
                         title: data.title,
                         category: data.category,
@@ -3446,7 +3449,10 @@
                         phone: data.phone,
                         description: data.description,
                         hiddendescription: data.hiddendescription,
-                        date: data.date
+                        date: data.date,
+                        file: data.file || null,
+                        images: data.images || [],
+                        video: data.video || null
                     };
                     response = await supabaseClient
                         .from('estate_properties')
@@ -3582,7 +3588,6 @@
                 });
             }
 
-            // اگر هیچ ملکی پیدا نشد، همه املاک رو نشون بده با درصد تطابق کمتر
             if (filtered.length === 0) {
                 filtered = properties.slice();
                 filtered = filtered.map(function(p) {
@@ -4541,6 +4546,7 @@
             console.log('📌 سنجاق ملک (فقط مدیر) فعال است');
             console.log('🤖 هوش مصنوعی پیشنهاد ملک فعال است');
             console.log('✏️ ویرایش ملک و پیام فعال است');
+            console.log('📤 آپلود عکس و فیلم در ویرایش فعال است');
         }
 
         init();
