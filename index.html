@@ -3276,7 +3276,6 @@
             try {
                 showLoading(true);
 
-                // پیدا کردن ملک
                 var property = null;
                 var index = -1;
                 for (var i = 0; i < properties.length; i++) {
@@ -3292,10 +3291,8 @@
                     return;
                 }
 
-                // تغییر وضعیت سنجاق
                 var newPinnedState = !property.pinned;
 
-                // بروزرسانی در Supabase
                 var response = await supabaseClient
                     .from('estate_properties')
                     .update({ pinned: newPinnedState })
@@ -3308,12 +3305,10 @@
                     return;
                 }
 
-                // بروزرسانی در آرایه properties
                 properties[index].pinned = newPinnedState;
 
                 showToast(newPinnedState ? '📌 ملک سنجاق شد!' : '📌 سنجاق ملک برداشته شد!', 'success');
 
-                // رندر مجدد لیست
                 renderList();
                 showLoading(false);
             } catch (e) {
@@ -3324,100 +3319,29 @@
         }
 
         // ============================================================
-        // ====== ذخیره ملک (با آپلود عکس و فیلم) ======
+        // ====== ذخیره ملک (ویرایش یا جدید) ======
         // ============================================================
         async function saveProperty() {
             try {
                 if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
                 if (!supabaseClient) { showToast('❌ اتصال به سرور برقرار نیست!', 'error'); return; }
 
+                var editId = document.getElementById('editId').value;
+                var isEdit = editId && editId.length > 0;
+
                 showLoading(true);
 
-                var editId = document.getElementById('editId').value;
-
-                // ===== آپلود فایل ضمیمه =====
-                var fileUrl = null;
-                var fileInput = document.getElementById('fFile');
-                if (fileInput.files && fileInput.files.length > 0) {
-                    var file = fileInput.files[0];
-                    var fileExt = file.name.split('.').pop();
-                    var fileName = Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + fileExt;
-
-                    var { data: uploadData, error: uploadError } = await supabaseClient.storage
-                        .from('property_files')
-                        .upload('files/' + fileName, file);
-
-                    if (!uploadError) {
-                        var { data: urlData } = supabaseClient.storage
-                            .from('property_files')
-                            .getPublicUrl('files/' + fileName);
-                        fileUrl = urlData.publicUrl;
-                    }
-                }
-
-                // ===== آپلود عکس‌ها =====
-                var imageUrls = [];
-                var imagesInput = document.getElementById('fImages');
-                if (imagesInput.files && imagesInput.files.length > 0) {
-                    for (var i = 0; i < imagesInput.files.length; i++) {
-                        var imgFile = imagesInput.files[i];
-                        var imgExt = imgFile.name.split('.').pop();
-                        var imgName = Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 8) + '.' + imgExt;
-
-                        var { data: imgUpload, error: imgError } = await supabaseClient.storage
-                            .from('property_files')
-                            .upload('images/' + imgName, imgFile);
-
-                        if (!imgError) {
-                            var { data: imgUrlData } = supabaseClient.storage
-                                .from('property_files')
-                                .getPublicUrl('images/' + imgName);
-                            imageUrls.push(imgUrlData.publicUrl);
-                        }
-                    }
-                }
-
-                // ===== آپلود فیلم =====
-                var videoUrl = null;
-                var videoInput = document.getElementById('fVideo');
-                if (videoInput.files && videoInput.files.length > 0) {
-                    var videoFile = videoInput.files[0];
-                    var videoExt = videoFile.name.split('.').pop();
-                    var videoName = Date.now() + '_video_' + Math.random().toString(36).slice(2, 8) + '.' + videoExt;
-
-                    var { data: videoUpload, error: videoError } = await supabaseClient.storage
-                        .from('property_files')
-                        .upload('videos/' + videoName, videoFile);
-
-                    if (!videoError) {
-                        var { data: videoUrlData } = supabaseClient.storage
-                            .from('property_files')
-                            .getPublicUrl('videos/' + videoName);
-                        videoUrl = videoUrlData.publicUrl;
-                    }
-                }
-
-                // ===== اطلاعات ملک =====
+                // ===== جمع‌آوری داده‌ها =====
                 var data = {
-                    id: generateId(),
-                    customcode: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode(),
                     title: sanitizeInput(document.getElementById('fTitle').value.trim()),
                     category: document.getElementById('fCategory').value,
                     type: document.getElementById('fType').value,
-                    price: '0',
-                    rahn: '0',
-                    rentprice: '0',
                     address: sanitizeInput(document.getElementById('fAddress').value.trim()),
                     area: document.getElementById('fArea').value.trim() || '0',
                     phone: sanitizeInput(document.getElementById('fPhone').value.trim()) || '---',
                     description: sanitizeInput(document.getElementById('fDescription').value.trim()) || 'بدون توضیحات',
                     hiddendescription: sanitizeInput(document.getElementById('fHiddenDescription').value.trim()) || '',
-                    file: fileUrl,
-                    images: imageUrls,
-                    video: videoUrl,
-                    date: new Date().toLocaleDateString('fa-IR'),
-                    pinned: false,
-                    code: sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode()
+                    date: new Date().toLocaleDateString('fa-IR')
                 };
 
                 // ===== قیمت‌ها =====
@@ -3425,6 +3349,8 @@
                     var p = document.getElementById('fPrice').value.replace(/,/g, '');
                     if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
                     data.price = p;
+                    data.rahn = '0';
+                    data.rentprice = '0';
                 } else {
                     var r = document.getElementById('fRahn').value.replace(/,/g, '');
                     var rp = document.getElementById('fRentPrice').value.replace(/,/g, '');
@@ -3436,12 +3362,103 @@
 
                 if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
 
-                console.log('📤 ارسال به Supabase:', data);
+                // ===== کد ملک =====
+                if (!isEdit) {
+                    data.id = generateId();
+                    data.customcode = sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode();
+                    data.code = data.customcode;
+                    data.pinned = false;
+                    data.images = [];
+                    data.video = null;
+                    data.file = null;
+                }
 
-                var response = await supabaseClient
-                    .from('estate_properties')
-                    .insert([data])
-                    .select();
+                // ===== آپلود فایل‌ها (فقط برای جدید) =====
+                if (!isEdit) {
+                    // آپلود فایل ضمیمه
+                    var fileInput = document.getElementById('fFile');
+                    if (fileInput.files && fileInput.files.length > 0) {
+                        var file = fileInput.files[0];
+                        var fileExt = file.name.split('.').pop();
+                        var fileName = Date.now() + '_' + Math.random().toString(36).slice(2, 8) + '.' + fileExt;
+                        var { data: uploadData, error: uploadError } = await supabaseClient.storage
+                            .from('property_files')
+                            .upload('files/' + fileName, file);
+                        if (!uploadError) {
+                            var { data: urlData } = supabaseClient.storage
+                                .from('property_files')
+                                .getPublicUrl('files/' + fileName);
+                            data.file = urlData.publicUrl;
+                        }
+                    }
+
+                    // آپلود عکس‌ها
+                    var imageUrls = [];
+                    var imagesInput = document.getElementById('fImages');
+                    if (imagesInput.files && imagesInput.files.length > 0) {
+                        for (var i = 0; i < imagesInput.files.length; i++) {
+                            var imgFile = imagesInput.files[i];
+                            var imgExt = imgFile.name.split('.').pop();
+                            var imgName = Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 8) + '.' + imgExt;
+                            var { data: imgUpload, error: imgError } = await supabaseClient.storage
+                                .from('property_files')
+                                .upload('images/' + imgName, imgFile);
+                            if (!imgError) {
+                                var { data: imgUrlData } = supabaseClient.storage
+                                    .from('property_files')
+                                    .getPublicUrl('images/' + imgName);
+                                imageUrls.push(imgUrlData.publicUrl);
+                            }
+                        }
+                        data.images = imageUrls;
+                    }
+
+                    // آپلود فیلم
+                    var videoInput = document.getElementById('fVideo');
+                    if (videoInput.files && videoInput.files.length > 0) {
+                        var videoFile = videoInput.files[0];
+                        var videoExt = videoFile.name.split('.').pop();
+                        var videoName = Date.now() + '_video_' + Math.random().toString(36).slice(2, 8) + '.' + videoExt;
+                        var { data: videoUpload, error: videoError } = await supabaseClient.storage
+                            .from('property_files')
+                            .upload('videos/' + videoName, videoFile);
+                        if (!videoError) {
+                            var { data: videoUrlData } = supabaseClient.storage
+                                .from('property_files')
+                                .getPublicUrl('videos/' + videoName);
+                            data.video = videoUrlData.publicUrl;
+                        }
+                    }
+                }
+
+                // ===== ذخیره در Supabase =====
+                var response;
+                if (isEdit) {
+                    // ===== ویرایش (UPDATE) - فقط داده‌های متنی =====
+                    var updateData = {
+                        title: data.title,
+                        category: data.category,
+                        type: data.type,
+                        price: data.price,
+                        rahn: data.rahn,
+                        rentprice: data.rentprice,
+                        address: data.address,
+                        area: data.area,
+                        phone: data.phone,
+                        description: data.description,
+                        hiddendescription: data.hiddendescription,
+                        date: data.date
+                    };
+                    response = await supabaseClient
+                        .from('estate_properties')
+                        .update(updateData)
+                        .eq('id', editId);
+                } else {
+                    // ===== جدید (INSERT) =====
+                    response = await supabaseClient
+                        .from('estate_properties')
+                        .insert([data]);
+                }
 
                 if (response.error) {
                     console.error('❌ خطای Supabase:', response.error);
@@ -3450,25 +3467,215 @@
                     return;
                 }
 
-                console.log('✅ پاسخ Supabase:', response.data);
-
-                if (response.data && response.data.length > 0) {
-                    properties = response.data.concat(properties);
-                    showToast('✅ ملک ثبت شد!', 'success');
-                    document.getElementById('propertyForm').style.display = 'none';
-                    clearForm();
-                    updateStats();
-                    renderList();
+                // ===== بروزرسانی لیست محلی =====
+                if (isEdit) {
+                    for (var i = 0; i < properties.length; i++) {
+                        if (properties[i].id === editId) {
+                            properties[i] = { ...properties[i], ...data };
+                            break;
+                        }
+                    }
+                    showToast('✅ ملک ویرایش شد!', 'success');
                 } else {
-                    showToast('❌ خطا در ذخیره ملک!', 'error');
+                    await loadProperties();
+                    showToast('✅ ملک جدید ثبت شد!', 'success');
                 }
 
+                document.getElementById('propertyForm').style.display = 'none';
+                clearForm();
+                updateStats();
+                renderList();
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
                 console.error('❌ خطای کلی:', e);
                 showToast('❌ خطا: ' + e.message, 'error');
             }
+        }
+
+        // ============================================================
+        // ====== ویرایش پیام مدیر ======
+        // ============================================================
+        function editAdminMessage() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            var currentMsg = localStorage.getItem('amlak_admin_message');
+            var currentText = '';
+            if (currentMsg) {
+                try { currentText = JSON.parse(currentMsg).text || ''; } catch (e) {}
+            }
+            document.getElementById('adminMsgEditInput').value = currentText;
+            document.getElementById('adminMsgDisplay').style.display = 'none';
+            document.getElementById('adminMsgActions').style.display = 'none';
+            document.getElementById('adminMsgEditArea').style.display = 'block';
+        }
+
+        function saveAdminMessageEdit() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            var newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
+            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+
+            var data = {
+                text: newMsg,
+                date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
+            };
+            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
+
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
+            document.getElementById('adminMsgDate').textContent = data.date;
+            document.getElementById('adminMsgBox').style.display = 'block';
+            showToast('✅ پیام مدیر ویرایش شد!', 'success');
+        }
+
+        function cancelAdminMessageEdit() {
+            document.getElementById('adminMsgDisplay').style.display = 'block';
+            document.getElementById('adminMsgActions').style.display = 'flex';
+            document.getElementById('adminMsgEditArea').style.display = 'none';
+        }
+
+        function deleteAdminMessage() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
+            localStorage.removeItem('amlak_admin_message');
+            document.getElementById('adminMsgBox').style.display = 'none';
+            showToast('🗑️ پیام مدیر حذف شد', 'success');
+        }
+
+        // ============================================================
+        // ====== هوش مصنوعی ======
+        // ============================================================
+        function getAISuggestions() {
+            var budget = parseInt(document.getElementById('aiBudget').value) || 0;
+            var type = document.getElementById('aiType').value;
+            var category = document.getElementById('aiCategory').value;
+            var minArea = parseInt(document.getElementById('aiMinArea').value) || 0;
+
+            if (!budget && !minArea) {
+                showToast('⚠️ لطفاً حداقل بودجه یا متراژ را وارد کنید!', 'warning');
+                return;
+            }
+
+            if (!properties.length) {
+                showToast('⚠️ هیچ ملکی برای پیشنهاد وجود ندارد!', 'warning');
+                return;
+            }
+
+            var filtered = properties.slice();
+
+            if (type !== 'all') {
+                filtered = filtered.filter(function(p) { return p.type === type; });
+            }
+
+            if (category !== 'all') {
+                filtered = filtered.filter(function(p) { return p.category === category; });
+            }
+
+            if (minArea > 0) {
+                filtered = filtered.filter(function(p) { return (parseInt(p.area) || 0) >= minArea; });
+            }
+
+            if (budget > 0) {
+                filtered = filtered.filter(function(p) {
+                    var price = parseInt(p.price) || 0;
+                    return price <= budget;
+                });
+            }
+
+            // اگر هیچ ملکی پیدا نشد، همه املاک رو نشون بده با درصد تطابق کمتر
+            if (filtered.length === 0) {
+                filtered = properties.slice();
+                // همه رو با امتیاز پایین نمایش بده
+                filtered = filtered.map(function(p) {
+                    return { property: p, score: 10 };
+                });
+            } else {
+                filtered = filtered.map(function(p) {
+                    var score = 0;
+                    var price = parseInt(p.price) || 0;
+                    var area = parseInt(p.area) || 0;
+
+                    if (budget > 0 && price > 0) {
+                        var ratio = price / budget;
+                        if (ratio <= 1) {
+                            score += (1 - ratio) * 50;
+                        } else {
+                            score += Math.max(0, 10 - (ratio - 1) * 20);
+                        }
+                    }
+
+                    if (minArea > 0 && area > 0) {
+                        var ratio2 = area / minArea;
+                        if (ratio2 >= 1) {
+                            score += Math.min(ratio2, 2) * 25;
+                        } else {
+                            score += Math.max(0, 10 - (1 - ratio2) * 30);
+                        }
+                    }
+
+                    if (type !== 'all' && p.type === type) {
+                        score += 15;
+                    }
+
+                    if (category !== 'all' && p.category === category) {
+                        score += 10;
+                    }
+
+                    var date = new Date(p.date);
+                    var daysOld = (Date.now() - date.getTime()) / (1000 * 60 * 60 * 24);
+                    if (daysOld < 30) {
+                        score += Math.max(0, 20 - daysOld);
+                    }
+
+                    return { property: p, score: Math.round(Math.min(score, 100)) };
+                });
+            }
+
+            filtered.sort(function(a, b) { return b.score - a.score; });
+
+            var container = document.getElementById('aiResults');
+            if (!filtered.length) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">😕 هیچ ملکی برای پیشنهاد وجود ندارد</div>';
+                return;
+            }
+
+            var html = '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px;">' + filtered.length +
+                ' ملک پیدا شد</div>';
+            var slice = filtered.slice(0, 10);
+            for (var i = 0; i < slice.length; i++) {
+                var item = slice[i];
+                var p = item.property;
+                var priceDisplay = p.type === 'sale' ?
+                    '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
+                    '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice).toLocaleString();
+
+                var matchPercent = Math.min(item.score, 100);
+
+                html += `
+                            <div class="ai-result-item">
+                                <div style="display:flex;justify-content:space-between;align-items:center;">
+                                    <div>
+                                        <div style="font-weight:bold;color:var(--primary);">${i+1}. ${sanitizeInput(p.title)}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">📌 کد: ${sanitizeInput(p.customcode || p.code || 'ندارد')}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">📍 ${sanitizeInput(p.address)}</div>
+                                        <div style="font-size:12px;color:var(--secondary);">${priceDisplay}</div>
+                                        <div style="font-size:11px;color:var(--text-light);">📐 ${p.area || 0} متر | 🏷️ ${p.category || 'بدون دسته'}</div>
+                                        ${p.images && p.images.length > 0 ? '<div style="font-size:10px;color:var(--text-light);">📸 ' + p.images.length + ' عکس</div>' : ''}
+                                        ${p.video ? '<div style="font-size:10px;color:var(--text-light);">🎬 فیلم</div>' : ''}
+                                    </div>
+                                    <div style="text-align:center;">
+                                        <div class="match-score">${matchPercent}% مطابقت</div>
+                                        <button class="add-to-cart-btn" onclick="addToCartHandler('${p.id}')">🛒</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+            }
+
+            container.innerHTML = html;
+            showToast('🤖 ' + filtered.length + ' ملک پیشنهادی پیدا شد!', 'success');
         }
 
         // ============================================================
@@ -3572,7 +3779,6 @@
                 }
                 properties = newProps;
 
-                // حذف از سبد خرید
                 var found = false;
                 for (var j = 0; j < cartItems.length; j++) {
                     if (cartItems[j] === id) { found = true; break; }
@@ -3787,126 +3993,6 @@
         }
 
         // ============================================================
-        // ====== هوش مصنوعی ======
-        // ============================================================
-        function getAISuggestions() {
-            var budget = parseInt(document.getElementById('aiBudget').value) || 0;
-            var type = document.getElementById('aiType').value;
-            var category = document.getElementById('aiCategory').value;
-            var minArea = parseInt(document.getElementById('aiMinArea').value) || 0;
-
-            if (!budget && !minArea) {
-                showToast('⚠️ لطفاً حداقل بودجه یا متراژ را وارد کنید!', 'warning');
-                return;
-            }
-
-            if (!properties.length) {
-                showToast('⚠️ هیچ ملکی برای پیشنهاد وجود ندارد!', 'warning');
-                return;
-            }
-
-            var filtered = properties.slice();
-
-            if (type !== 'all') {
-                filtered = filtered.filter(function(p) { return p.type === type; });
-            }
-
-            if (category !== 'all') {
-                filtered = filtered.filter(function(p) { return p.category === category; });
-            }
-
-            if (minArea > 0) {
-                filtered = filtered.filter(function(p) { return (parseInt(p.area) || 0) >= minArea; });
-            }
-
-            if (budget > 0) {
-                filtered = filtered.filter(function(p) {
-                    var price = parseInt(p.price) || 0;
-                    return price <= budget;
-                });
-            }
-
-            filtered = filtered.map(function(p) {
-                var score = 0;
-                var price = parseInt(p.price) || 0;
-                var area = parseInt(p.area) || 0;
-
-                if (budget > 0 && price > 0) {
-                    var ratio = price / budget;
-                    if (ratio <= 1) {
-                        score += (1 - ratio) * 50;
-                    }
-                }
-
-                if (minArea > 0 && area > 0) {
-                    var ratio2 = area / minArea;
-                    if (ratio2 >= 1) {
-                        score += Math.min(ratio2, 2) * 25;
-                    }
-                }
-
-                if (type !== 'all' && p.type === type) {
-                    score += 15;
-                }
-
-                if (category !== 'all' && p.category === category) {
-                    score += 10;
-                }
-
-                var date = new Date(p.date);
-                var daysOld = (Date.now() - date.getTime()) / (1000 * 60 * 60 * 24);
-                if (daysOld < 30) {
-                    score += 20 - daysOld;
-                }
-
-                return { property: p, score: Math.round(score) };
-            });
-
-            filtered.sort(function(a, b) { return b.score - a.score; });
-
-            var container = document.getElementById('aiResults');
-            if (!filtered.length) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">😕 هیچ ملکی با شرایط شما پیدا نشد</div>';
-                return;
-            }
-
-            var html = '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px;">' + filtered.length +
-                ' ملک پیدا شد</div>';
-            var slice = filtered.slice(0, 10);
-            for (var i = 0; i < slice.length; i++) {
-                var item = slice[i];
-                var p = item.property;
-                var priceDisplay = p.type === 'sale' ?
-                    '💰 ' + Number(p.price).toLocaleString() + ' تومان' :
-                    '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice).toLocaleString();
-
-                var matchPercent = Math.min(item.score, 100);
-
-                html += `
-                            <div class="ai-result-item">
-                                <div style="display:flex;justify-content:space-between;align-items:center;">
-                                    <div>
-                                        <div style="font-weight:bold;color:var(--primary);">${i+1}. ${sanitizeInput(p.title)}</div>
-                                        <div style="font-size:12px;color:var(--text-light);">📌 کد: ${sanitizeInput(p.customcode || p.code || 'ندارد')}</div>
-                                        <div style="font-size:12px;color:var(--text-light);">📍 ${sanitizeInput(p.address)}</div>
-                                        <div style="font-size:12px;color:var(--secondary);">${priceDisplay}</div>
-                                        <div style="font-size:11px;color:var(--text-light);">📐 ${p.area || 0} متر | 🏷️ ${p.category || 'بدون دسته'}</div>
-                                    </div>
-                                    <div style="text-align:center;">
-                                        <div class="match-score">${matchPercent}% مطابقت</div>
-                                        <button class="add-to-cart-btn" onclick="addToCartHandler('${p.id}')">🛒</button>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-            }
-
-            container.innerHTML = html;
-            showToast('🤖 ' + filtered.length + ' ملک پیشنهادی پیدا شد!', 'success');
-        }
-
-        // ============================================================
         // ====== رندر لیست ======
         // ============================================================
         function renderList() {
@@ -3931,11 +4017,9 @@
                     else if (sortBy === 'price_low') filtered.sort(function(a, b) { return Number(a.price) - Number(b
                             .price); });
                 } else {
-                    // برای کاربران: املاک سنجاق شده اول نمایش داده میشن
                     var pinnedItems = filtered.filter(function(p) { return p.pinned === true; });
                     var unpinnedItems = filtered.filter(function(p) { return p.pinned !== true; });
 
-                    // اعمال فیلترهای کاربر
                     if (userCategoryFilter !== 'all') {
                         pinnedItems = pinnedItems.filter(function(p) { return p.category === userCategoryFilter; });
                         unpinnedItems = unpinnedItems.filter(function(p) { return p.category === userCategoryFilter; });
@@ -3958,11 +4042,9 @@
                         }
                     }
 
-                    // مرتب‌سازی بر اساس جدیدترین
                     pinnedItems.sort(function(a, b) { return Number(b.id) - Number(a.id); });
                     unpinnedItems.sort(function(a, b) { return Number(b.id) - Number(a.id); });
 
-                    // ترکیب: سنجاق شده‌ها اول
                     filtered = pinnedItems.concat(unpinnedItems);
                 }
 
@@ -4004,7 +4086,6 @@
                         '🔑 رهن: ' + Number(p.rahn).toLocaleString() + ' | کرایه: ' + Number(p.rentprice)
                         .toLocaleString();
 
-                    // ===== گالری تصاویر =====
                     var imagesHtml = '';
                     if (p.images && Array.isArray(p.images) && p.images.length > 0) {
                         imagesHtml = '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">';
@@ -4390,13 +4471,10 @@
         // ====== شروع برنامه ======
         // ============================================================
         async function init() {
-            // نمایش لودینگ
             document.getElementById('loadingOverlay').classList.remove('hidden');
 
-            // منتظر موندن برای لود Supabase
             await waitForSupabase();
 
-            // بررسی اینکه Supabase لود شده یا نه
             if (typeof supabase !== 'undefined') {
                 supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
                 console.log('✅ Supabase متصل شد!');
@@ -4405,11 +4483,9 @@
                 showToast('⚠️ اتصال به سرور برقرار نیست!', 'warning');
             }
 
-            // دریافت تعداد مدیران
             await getAdminCount();
             updateAdminLoginButton();
 
-            // بررسی کاربر ذخیره شده
             var savedUser = JSON.parse(localStorage.getItem('amlak_user'));
             if (savedUser && supabaseClient) {
                 if (savedUser.role === 'admin') {
@@ -4447,14 +4523,12 @@
                 document.getElementById('loginOverlay').classList.remove('hidden');
             }
 
-            // حالت تاریک
             if (localStorage.getItem('darkMode') === 'true') {
                 document.body.classList.add('dark-mode');
                 var btn = document.querySelector('.dark-toggle');
                 if (btn) btn.textContent = '☀️';
             }
 
-            // مخفی کردن لودینگ
             document.getElementById('loadingOverlay').classList.add('hidden');
 
             console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
@@ -4464,6 +4538,8 @@
             console.log('🔑 رمز مدیر: 26742674');
             console.log('📸 گالری عکس و فیلم فعال است');
             console.log('📌 سنجاق ملک (فقط مدیر) فعال است');
+            console.log('🤖 هوش مصنوعی پیشنهاد ملک فعال است');
+            console.log('✏️ ویرایش ملک و پیام فعال است');
         }
 
         init();
@@ -4471,9 +4547,7 @@
         // ============================================================
         // ====== توابع گمشده ======
         // ============================================================
-        function loadUserChatMessages() {
-            // در نسخه کامل پیاده‌سازی شده
-        }
+        function loadUserChatMessages() {}
 
         function sendUserMessage() {
             var input = document.getElementById('userChatInput');
@@ -4642,15 +4716,6 @@
             showToast('🗑️ پیام حذف شد', 'success');
         }
 
-        function updateWelcomeMessage() {
-            var name = localStorage.getItem('amlak_admin_name') || 'مدیر';
-            document.getElementById('welcomeUser').textContent = isAdmin ? '👋 خوش آمدید ' + name + '!' : '👋 خوش آمدید!';
-            document.getElementById('userRoleBadge').textContent = isAdmin ? '👑 ' + name : '👤 کاربر عادی';
-            if (!isAdmin && currentUser) {
-                document.getElementById('welcomeUser').textContent += ' (شماره: #' + (currentUser.userNumber || '?') + ')';
-            }
-        }
-
         function loadAdminMessage() {
             try {
                 var adminMsg = localStorage.getItem('amlak_admin_message');
@@ -4668,45 +4733,13 @@
             } catch (e) {}
         }
 
-        function editAdminMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            var currentMsg = localStorage.getItem('amlak_admin_message');
-            var currentText = '';
-            if (currentMsg) try { currentText = JSON.parse(currentMsg).text || ''; } catch (e) {}
-            document.getElementById('adminMsgEditInput').value = currentText;
-            document.getElementById('adminMsgDisplay').style.display = 'none';
-            document.getElementById('adminMsgActions').style.display = 'none';
-            document.getElementById('adminMsgEditArea').style.display = 'block';
-        }
-
-        function saveAdminMessageEdit() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            var newMsg = sanitizeInput(document.getElementById('adminMsgEditInput').value.trim());
-            if (!newMsg) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            var data = { text: newMsg, date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date()
-                    .toLocaleTimeString('fa-IR') };
-            localStorage.setItem('amlak_admin_message', JSON.stringify(data));
-            document.getElementById('adminMsgDisplay').style.display = 'block';
-            document.getElementById('adminMsgActions').style.display = 'flex';
-            document.getElementById('adminMsgEditArea').style.display = 'none';
-            document.getElementById('adminMessage').textContent = '📢 ' + newMsg;
-            document.getElementById('adminMsgDate').textContent = data.date;
-            document.getElementById('adminMsgBox').style.display = 'block';
-            showToast('✅ پیام مدیر ویرایش شد!', 'success');
-        }
-
-        function cancelAdminMessageEdit() {
-            document.getElementById('adminMsgDisplay').style.display = 'block';
-            document.getElementById('adminMsgActions').style.display = 'flex';
-            document.getElementById('adminMsgEditArea').style.display = 'none';
-        }
-
-        function deleteAdminMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف پیام مدیر مطمئن هستید؟')) return;
-            localStorage.removeItem('amlak_admin_message');
-            document.getElementById('adminMsgBox').style.display = 'none';
-            showToast('🗑️ پیام مدیر حذف شد', 'success');
+        function updateWelcomeMessage() {
+            var name = localStorage.getItem('amlak_admin_name') || 'مدیر';
+            document.getElementById('welcomeUser').textContent = isAdmin ? '👋 خوش آمدید ' + name + '!' : '👋 خوش آمدید!';
+            document.getElementById('userRoleBadge').textContent = isAdmin ? '👑 ' + name : '👤 کاربر عادی';
+            if (!isAdmin && currentUser) {
+                document.getElementById('welcomeUser').textContent += ' (شماره: #' + (currentUser.userNumber || '?') + ')';
+            }
         }
 
         function closeModal() {
@@ -4714,4 +4747,4 @@
         }
     </script>
 </body>
-                </html>
+    </html>
