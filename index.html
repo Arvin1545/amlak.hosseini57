@@ -2400,6 +2400,7 @@
                     <option value="all">همه</option>
                     <option value="زمین مسکونی">زمین مسکونی</option>
                     <option value="زمین تجاری">زمین تجاری</option>
+                    <option value="زمین کارگاهی">زمین کارگاهی</option>
                     <option value="آپارتمان">آپارتمان</option>
                     <option value="مغازه">مغازه</option>
                     <option value="خانه">خانه</option>
@@ -2455,7 +2456,6 @@
                 <li><span class="badge-icon">💾</span> پشتیبان‌گیری</li>
                 <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی</li>
                 <li><span class="badge-icon">💬</span> چت با کاربران</li>
-                <li><span class="badge-icon orange">📅</span> بررسی ماهانه</li>
                 <li><span class="badge-icon">👥</span> مشاهده لیست کاربران</li>
                 <li><span class="badge-icon purple">🤖</span> پیش‌نمایش کاربران</li>
             </ul>
@@ -2474,6 +2474,7 @@
             <div class="category-grid" id="categoryGrid">
                 <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)"><span class="icon">🏡</span> زمین مسکونی</button>
                 <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)"><span class="icon">🏢</span> زمین تجاری</button>
+                <button class="cat-btn" data-cat="زمین کارگاهی" onclick="selectCategory(this)"><span class="icon">🏭</span> زمین کارگاهی</button>
                 <button class="cat-btn" data-cat="آپارتمان" onclick="selectCategory(this)"><span class="icon">🏢</span> آپارتمان</button>
                 <button class="cat-btn" data-cat="مغازه" onclick="selectCategory(this)"><span class="icon">🛍️</span> مغازه</button>
                 <button class="cat-btn" data-cat="خانه" onclick="selectCategory(this)"><span class="icon">🏠</span> خانه</button>
@@ -2519,7 +2520,6 @@
             <button class="btn btn-teal" onclick="exportExcel()">📊 Excel</button>
             <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
             <button class="btn btn-secondary" onclick="viewChats()">💬 چت</button>
-            <button class="btn btn-warning" onclick="monthlyCheck()">📅 بررسی</button>
             <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
             <button class="btn btn-primary" onclick="showUsersList()">👥 کاربران</button>
             <button class="btn btn-purple" onclick="toggleUserPreview()">👁️ پیش‌نمایش</button>
@@ -2536,6 +2536,7 @@
             <select id="fCategory">
                 <option value="زمین مسکونی">🏡 زمین مسکونی</option>
                 <option value="زمین تجاری">🏢 زمین تجاری</option>
+                <option value="زمین کارگاهی">🏭 زمین کارگاهی</option>
                 <option value="آپارتمان">🏢 آپارتمان</option>
                 <option value="مغازه">🛍️ مغازه</option>
                 <option value="خانه">🏠 خانه</option>
@@ -2631,6 +2632,7 @@
                 <option value="all">همه دسته‌ها</option>
                 <option value="زمین مسکونی">زمین مسکونی</option>
                 <option value="زمین تجاری">زمین تجاری</option>
+                <option value="زمین کارگاهی">زمین کارگاهی</option>
                 <option value="آپارتمان">آپارتمان</option>
                 <option value="مغازه">مغازه</option>
                 <option value="خانه">خانه</option>
@@ -3856,8 +3858,8 @@
                                     ${p.description ? '<div class="cart-item-desc">📝 ' + sanitizeInput(p.description) + '</div>' : ''}
                                     ${p.images && p.images.length > 0 ? '<div style="font-size:11px;color:var(--text-light);">📸 ' + p.images.length + ' عکس</div>' : ''}
                                     ${p.video ? '<div style="font-size:11px;color:var(--text-light);">🎬 فیلم</div>' : ''}
+                                    <button class="btn btn-danger" onclick="removeFromCartHandler('${p.id}')" style="padding:4px 12px;font-size:11px;border:none;border-radius:6px;cursor:pointer;color:white;margin-top:4px;">🗑️ حذف از سبد</button>
                                 </div>
-                                <button class="cart-remove-btn" onclick="removeFromCartHandler('${p.id}')">✕</button>
                             </div>
                         </div>
                     `;
@@ -4353,7 +4355,6 @@
                 updateCartBadge();
                 renderList();
                 renderPublicMessages();
-                checkMonthlyAuto();
 
             } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
         }
@@ -4452,24 +4453,6 @@
             showToast('💾 پشتیبان گرفته شد!', 'success');
         }
 
-        function monthlyCheck() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند بررسی کند!', 'warning'); return; }
-            showToast('✅ بررسی ماهانه انجام شد!', 'success');
-        }
-
-        function checkMonthlyAuto() {
-            var now = new Date();
-            var today = now.toISOString().split('T')[0];
-            var last = localStorage.getItem('lastMonthlyCheck');
-            if (!last) { localStorage.setItem('lastMonthlyCheck', today); return; }
-            var lastDate = new Date(last);
-            var diff = (now.getFullYear() - lastDate.getFullYear()) * 12 + (now.getMonth() - lastDate.getMonth());
-            if (diff >= 1) {
-                if (isAdmin) showToast('📅 زمان بررسی ماهانه فرا رسیده!', 'warning');
-                localStorage.setItem('lastMonthlyCheck', today);
-            }
-        }
-
         // ============================================================
         // ====== شروع برنامه ======
         // ============================================================
@@ -4547,6 +4530,9 @@
             console.log('🤖 هوش مصنوعی پیشنهاد ملک فعال است');
             console.log('✏️ ویرایش ملک و پیام فعال است');
             console.log('📤 آپلود عکس و فیلم در ویرایش فعال است');
+            console.log('🏭 دسته‌بندی زمین کارگاهی اضافه شد');
+            console.log('🗑️ حذف جداگانه از سبد خرید فعال شد');
+            console.log('💬 چت کاربر با مدیر و ویرایش پیام فعال است');
         }
 
         init();
@@ -4554,14 +4540,134 @@
         // ============================================================
         // ====== توابع گمشده ======
         // ============================================================
-        function loadUserChatMessages() {}
+        function loadUserChatMessages() {
+            var container = document.getElementById('userChatMessagesContainer');
+            if (!container) return;
+
+            // بارگذاری پیام‌های کاربر از Supabase
+            if (currentUser && !isAdmin) {
+                loadChatMessages(currentUser.id).then(function(messages) {
+                    if (!messages.length) {
+                        container.innerHTML =
+                            '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                        return;
+                    }
+
+                    var html = '';
+                    for (var i = 0; i < messages.length; i++) {
+                        var msg = messages[i];
+                        var isUser = msg.sender === 'user';
+                        var senderName = isUser ? 'شما' : 'مدیر';
+                        var msgClass = isUser ? 'user-msg' : 'admin-msg';
+                        var time = new Date(msg.date).toLocaleString('fa-IR');
+
+                        var actionsHtml = '';
+                        if (isUser) {
+                            actionsHtml = `
+                                <div class="msg-actions">
+                                    <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
+                                    <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
+                                </div>
+                            `;
+                        }
+
+                        html += `
+                            <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
+                                <div class="msg-header">
+                                    <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
+                                    <span class="msg-time">${time}</span>
+                                </div>
+                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
+                                ${actionsHtml}
+                                <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
+                                    <textarea id="userEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
+                                    <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
+                                    <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    container.innerHTML = html;
+                    container.scrollTop = container.scrollHeight;
+                });
+            }
+        }
+
+        function startUserEditMessage(messageId) {
+            document.getElementById('userEditArea-' + messageId).style.display = 'block';
+            document.getElementById('userEditInput-' + messageId).focus();
+        }
+
+        function cancelUserEditMessage(messageId) {
+            document.getElementById('userEditArea-' + messageId).style.display = 'none';
+        }
+
+        async function saveUserEditMessage(messageId) {
+            var input = document.getElementById('userEditInput-' + messageId);
+            var newText = input.value.trim();
+            if (!newText) {
+                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
+                return;
+            }
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .update({
+                        text: sanitizeInput(newText),
+                        edited: true,
+                        edit_date: new Date().toISOString()
+                    })
+                    .eq('id', messageId)
+                    .eq('user_id', currentUser.id);
+
+                if (response.error) throw response.error;
+
+                showToast('✅ پیام ویرایش شد!', 'success');
+                await loadUserChatMessages();
+            } catch (e) {
+                ErrorHandler.log(e, 'ویرایش پیام');
+                showToast('❌ خطا در ویرایش پیام!', 'error');
+            }
+        }
+
+        async function deleteUserMessage(messageId) {
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .delete()
+                    .eq('id', messageId)
+                    .eq('user_id', currentUser.id);
+
+                if (response.error) throw response.error;
+
+                showToast('🗑️ پیام حذف شد', 'success');
+                await loadUserChatMessages();
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف پیام');
+                showToast('❌ خطا در حذف پیام!', 'error');
+            }
+        }
 
         function sendUserMessage() {
             var input = document.getElementById('userChatInput');
             var text = sanitizeInput(input.value.trim());
             if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-            input.value = '';
+
+            // ارسال پیام به Supabase
+            sendMessageToSupabase(currentUser.id, text).then(function(msg) {
+                if (msg) {
+                    showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
+                    input.value = '';
+                    loadUserChatMessages();
+                    addNotification('admin', '💬 پیام جدید از کاربر', text);
+                } else {
+                    showToast('❌ خطا در ارسال پیام!', 'error');
+                }
+            });
         }
 
         function viewChats() {
@@ -4569,18 +4675,145 @@
             hideAllForms(['chatViewer']);
             document.getElementById('chatViewer').style.display = 'block';
             document.getElementById('chatViewerTitle').textContent = '💬 چت با کاربران';
+            renderChatUsersList();
+        }
+
+        async function renderChatUsersList() {
+            var container = document.getElementById('chatUserList');
+            var users = await getUsers();
+
+            var usersWithChat = [];
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                var msgs = await loadChatMessages(user.id);
+                if (msgs.length > 0) {
+                    usersWithChat.push({ user: user, messages: msgs });
+                }
+            }
+
+            if (usersWithChat.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-light);padding:15px;">💬 هنوز پیامی از کاربران دریافت نشده است</div>';
+                return;
+            }
+
+            var html = '';
+            for (var j = 0; j < usersWithChat.length; j++) {
+                var u = usersWithChat[j];
+                var lastMsg = u.messages[u.messages.length - 1];
+                var unreadCount = 0;
+                for (var k = 0; k < u.messages.length; k++) {
+                    if (u.messages[k].sender === 'user' && !u.messages[k].read) unreadCount++;
+                }
+                html += `
+                            <div class="chat-user-item" onclick="selectChatUser('${u.user.id}')">
+                                <div class="user-info">
+                                    <div class="user-name">👤 #${u.user.user_number} - ${u.user.name || 'کاربر'}</div>
+                                    <div class="user-preview">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
+                                </div>
+                                ${unreadCount > 0 ? '<span class="user-badge unread">' + unreadCount + ' جدید</span>' : '<span class="user-badge">' + u.messages.length + '</span>'}
+                            </div>
+                        `;
+            }
+            container.innerHTML = html;
+        }
+
+        async function selectChatUser(userId) {
+            currentChatUserId = userId;
+            await renderChatMessagesWithUser(userId);
+        }
+
+        async function renderChatMessagesWithUser(userId) {
+            var container = document.getElementById('chatMessagesContainer');
+            var messages = await loadChatMessages(userId);
+            var users = await getUsers();
+            var user = null;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].id === userId) { user = users[i]; break; }
+            }
+
+            if (messages.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
+                return;
+            }
+
+            // علامت‌گذاری به عنوان خوانده شده
+            await supabaseClient
+                .from('chat_messages')
+                .update({ read: true })
+                .eq('user_id', userId)
+                .eq('sender', 'user')
+                .eq('read', false);
+
+            var html =
+                '<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با #' + (user ?
+                    user.user_number : '') + ' - ' + (user ? user.name : 'کاربر') + '</div>';
+
+            for (var j = 0; j < messages.length; j++) {
+                var msg = messages[j];
+                var isUser = msg.sender === 'user';
+                var senderName = isUser ? (user ? user.name : 'کاربر') : 'مدیر';
+                var senderClass = isUser ? 'user-sender' : 'admin-sender';
+                var msgClass = isUser ? 'user-msg' : 'admin-msg';
+                var time = new Date(msg.date).toLocaleString('fa-IR');
+
+                var fileHtml = '';
+                if (msg.file) {
+                    fileHtml = '<div class="msg-file"><a href="' + msg.file + '" target="_blank">📎 دانلود فایل</a></div>';
+                }
+
+                var editHtml = '';
+                if (msg.edited) {
+                    editHtml = '<span style="font-size:9px;color:var(--text-light);">(ویرایش شده)</span>';
+                }
+
+                html += `
+                            <div class="chat-message-item ${msgClass}" id="msg-${msg.id}">
+                                <div class="msg-header">
+                                    <span class="msg-sender ${senderClass}">${senderName}</span>
+                                    <span class="msg-time">${time} ${editHtml}</span>
+                                </div>
+                                <div class="msg-text">${sanitizeInput(msg.text)}</div>
+                                ${fileHtml}
+                            </div>
+                        `;
+            }
+
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
         }
 
         function sendChatReply() {
+            if (!isAdmin || !currentChatUserId) { showToast('⚠️ خطا در ارسال!', 'warning'); return; }
             var input = document.getElementById('chatReplyInput');
             var text = sanitizeInput(input.value.trim());
             if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-            showToast('✅ پیام ارسال شد!', 'success');
-            input.value = '';
+
+            var fileInput = document.getElementById('chatFileInput');
+            var fileUrl = null;
+            if (fileInput.files && fileInput.files.length > 0) {
+                fileUrl = '📎 ' + fileInput.files[0].name;
+                fileInput.value = '';
+            }
+
+            sendMessageToSupabase(currentChatUserId, text, fileUrl).then(function(msg) {
+                if (msg) {
+                    input.value = '';
+                    renderChatMessagesWithUser(currentChatUserId);
+                    renderChatUsersList();
+                    showToast('✅ پیام ارسال شد!', 'success');
+                    loadUserChatMessages();
+                    addNotification(currentChatUserId, '💬 پاسخ مدیر', text);
+                } else {
+                    showToast('❌ خطا در ارسال پیام!', 'error');
+                }
+            });
         }
 
         function closeChatViewer() {
             document.getElementById('chatViewer').style.display = 'none';
+            currentChatUserId = null;
         }
 
         function showUsersList() {
@@ -4754,4 +4987,4 @@
         }
     </script>
 </body>
-    </html>
+                </html>
