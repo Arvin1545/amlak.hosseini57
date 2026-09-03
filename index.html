@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* تمام استایل‌ها مانند قبل */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -1673,6 +1674,7 @@
             background: #C2185B;
         }
 
+        /* تغییرات برای پیام‌های عمومی مدیر */
         .public-msg-card {
             background: var(--primary-light);
             padding: 12px;
@@ -1719,6 +1721,16 @@
         }
         .public-msg-card .msg-actions .edit-msg {
             background: #FFA000;
+        }
+        /* غیرفعال کردن واکنش‌ها و پاسخ برای پیام‌های عمومی مدیر */
+        .public-msg-card .msg-reply {
+            display: none !important;
+        }
+        .public-msg-card .msg-reactions {
+            display: none !important;
+        }
+        .public-msg-card .msg-actions .reply-btn {
+            display: none !important;
         }
 
         .chart-container {
@@ -2791,26 +2803,27 @@
         }
 
         // ============================================================
-        // ====== صبر برای لود Supabase ======
+        // ====== ذخیره و بازیابی پیام‌های چت در localStorage ======
         // ============================================================
-        function waitForSupabase() {
-            return new Promise(function(resolve) {
-                if (typeof supabase !== 'undefined') {
-                    resolve();
-                    return;
-                }
-                var attempts = 0;
-                var checkInterval = setInterval(function() {
-                    attempts++;
-                    if (typeof supabase !== 'undefined') {
-                        clearInterval(checkInterval);
-                        resolve();
-                    } else if (attempts > 50) {
-                        clearInterval(checkInterval);
-                        resolve();
-                    }
-                }, 200);
-            });
+        function getChatStorageKey(userId) {
+            return 'amlak_chat_messages_' + userId;
+        }
+
+        function saveChatMessagesToLocalStorage(userId, messages) {
+            try {
+                localStorage.setItem(getChatStorageKey(userId), JSON.stringify(messages));
+            } catch (e) {
+                console.error('خطا در ذخیره پیام‌های چت:', e);
+            }
+        }
+
+        function loadChatMessagesFromLocalStorage(userId) {
+            try {
+                var data = localStorage.getItem(getChatStorageKey(userId));
+                return data ? JSON.parse(data) : [];
+            } catch (e) {
+                return [];
+            }
         }
 
         // ============================================================
@@ -3108,24 +3121,40 @@
         }
 
         // ============================================================
-        // ====== توابع چت ======
+        // ====== توابع چت (با ذخیره در localStorage) ======
         // ============================================================
         async function loadChatMessages(userId) {
-            if (!supabaseClient) return [];
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .select('*')
-                    .eq('user_id', userId)
-                    .order('date', { ascending: true });
-                if (response.error) return [];
-                return response.data || [];
-            } catch (e) { return []; }
+            // ابتدا از localStorage بارگذاری کن
+            var localMessages = loadChatMessagesFromLocalStorage(userId);
+
+            // اگر کاربر اینترنت داشت، از دیتابیس هم بارگذاری کن
+            if (supabaseClient) {
+                try {
+                    var response = await supabaseClient
+                        .from('chat_messages')
+                        .select('*')
+                        .eq('user_id', userId)
+                        .order('date', { ascending: true });
+                    if (!response.error && response.data) {
+                        // اگر پیام‌های دیتابیس بیشتر بود، آنها را با محلی ادغام کن
+                        if (response.data.length > localMessages.length) {
+                            localMessages = response.data;
+                            saveChatMessagesToLocalStorage(userId, localMessages);
+                        }
+                        return localMessages;
+                    }
+                } catch (e) {
+                    console.warn('خطا در بارگذاری از دیتابیس، استفاده از localStorage:', e);
+                }
+            }
+
+            return localMessages;
         }
 
         async function sendMessageToSupabase(userId, text, file) {
             file = file || null;
             if (!supabaseClient) return null;
+
             try {
                 var msg = {
                     id: generateId(),
@@ -3139,14 +3168,38 @@
                     read: false
                 };
 
+                // ذخیره در دیتابیس
                 var response = await supabaseClient
                     .from('chat_messages')
                     .insert([msg])
                     .select();
 
                 if (response.error) return null;
+
+                // ذخیره در localStorage
+                var existing = loadChatMessagesFromLocalStorage(userId);
+                existing.push(msg);
+                saveChatMessagesToLocalStorage(userId, existing);
+
                 return response.data[0];
-            } catch (e) { return null; }
+            } catch (e) {
+                // اگر خطایی در دیتابیس بود، فقط در localStorage ذخیره کن
+                var msg = {
+                    id: generateId(),
+                    user_id: userId,
+                    sender: isAdmin ? 'admin' : 'user',
+                    text: sanitizeInput(text),
+                    file: file,
+                    date: new Date().toISOString(),
+                    edited: false,
+                    edit_date: null,
+                    read: false
+                };
+                var existing = loadChatMessagesFromLocalStorage(userId);
+                existing.push(msg);
+                saveChatMessagesToLocalStorage(userId, existing);
+                return msg;
+            }
         }
 
         async function addNotification(userId, title, body) {
@@ -4425,6 +4478,9 @@
                                 <button class="del-msg" onclick="deletePublicMessage('${p.id}')">🗑️</button>
                             </div>
                         ` : ''}
+                        <!-- واکنش‌ها و دکمه پاسخ برای کاربران مخفی و غیرفعال -->
+                        <div class="msg-reply" style="display:none !important;"></div>
+                        <div class="msg-reactions" style="display:none !important;"></div>
                     </div>
                 `;
             }
@@ -4455,7 +4511,7 @@
         }
 
         // ============================================================
-        // ====== چت کاربر (با ذخیره در Supabase) ======
+        // ====== چت کاربر (با ذخیره در localStorage) ======
         // ============================================================
         function loadUserChatMessages() {
             if (!currentUser || isAdmin) return;
@@ -4463,40 +4519,55 @@
             var container = document.getElementById('userChatMessagesContainer');
             if (!container) return;
 
-            // بارگذاری پیام‌ها از دیتابیس
-            loadChatMessages(currentUser.id).then(function(messages) {
-                chatMessages = messages;
+            // بارگذاری از localStorage
+            var messages = loadChatMessagesFromLocalStorage(currentUser.id);
+            chatMessages = messages;
 
-                if (!messages.length) {
-                    container.innerHTML =
-                        '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
-                    return;
-                }
+            // اگر اینترنت داشت، از دیتابیس هم بروزرسانی کن
+            if (supabaseClient) {
+                loadChatMessages(currentUser.id).then(function(dbMessages) {
+                    if (dbMessages.length > messages.length) {
+                        chatMessages = dbMessages;
+                        saveChatMessagesToLocalStorage(currentUser.id, dbMessages);
+                        renderChatMessages(container);
+                    }
+                });
+            }
 
-                var html = '';
-                for (var i = 0; i < messages.length; i++) {
-                    var msg = messages[i];
-                    var isUser = msg.sender === 'user';
-                    var senderName = isUser ? 'شما' : 'مدیر';
-                    var msgClass = isUser ? 'user-msg' : 'admin-msg';
-                    var time = new Date(msg.date).toLocaleString('fa-IR');
+            renderChatMessages(container);
+        }
 
-                    var actionsHtml = '';
-                    if (isUser) {
-                        actionsHtml = `
+        function renderChatMessages(container) {
+            if (!chatMessages.length) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < chatMessages.length; i++) {
+                var msg = chatMessages[i];
+                var isUser = msg.sender === 'user';
+                var senderName = isUser ? 'شما' : 'مدیر';
+                var msgClass = isUser ? 'user-msg' : 'admin-msg';
+                var time = new Date(msg.date).toLocaleString('fa-IR');
+
+                var actionsHtml = '';
+                if (isUser) {
+                    actionsHtml = `
                             <div class="msg-actions">
                                 <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
                                 <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
                             </div>
                         `;
-                    }
+                }
 
-                    var editHtml = '';
-                    if (msg.edited) {
-                        editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
-                    }
+                var editHtml = '';
+                if (msg.edited) {
+                    editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
+                }
 
-                    html += `
+                html += `
                         <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
                             <div class="msg-header">
                                 <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
@@ -4511,11 +4582,10 @@
                             </div>
                         </div>
                     `;
-                }
+            }
 
-                container.innerHTML = html;
-                container.scrollTop = container.scrollHeight;
-            });
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
         }
 
         function sendUserMessage() {
@@ -4538,7 +4608,10 @@
                 if (msg) {
                     showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
                     input.value = '';
-                    loadUserChatMessages();
+                    // بارگذاری مجدد از localStorage
+                    chatMessages = loadChatMessagesFromLocalStorage(currentUser.id);
+                    var container = document.getElementById('userChatMessagesContainer');
+                    renderChatMessages(container);
                     addNotification('admin', '💬 پیام جدید از کاربر', text);
                 } else {
                     showToast('❌ خطا در ارسال پیام!', 'error');
@@ -4566,21 +4639,41 @@
             showLoading(true);
 
             try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .update({
-                        text: sanitizeInput(newText),
-                        edited: true,
-                        edit_date: new Date().toISOString()
-                    })
-                    .eq('id', messageId)
-                    .eq('user_id', currentUser.id);
+                // ابتدا در localStorage ویرایش کن
+                var messages = loadChatMessagesFromLocalStorage(currentUser.id);
+                var found = false;
+                for (var i = 0; i < messages.length; i++) {
+                    if (messages[i].id === messageId) {
+                        messages[i].text = sanitizeInput(newText);
+                        messages[i].edited = true;
+                        messages[i].edit_date = new Date().toISOString();
+                        found = true;
+                        break;
+                    }
+                }
+                if (found) {
+                    saveChatMessagesToLocalStorage(currentUser.id, messages);
+                    chatMessages = messages;
+                    var container = document.getElementById('userChatMessagesContainer');
+                    renderChatMessages(container);
+                }
 
-                if (response.error) throw response.error;
+                // اگر اینترنت داشت، در دیتابیس هم بروزرسانی کن
+                if (supabaseClient) {
+                    var response = await supabaseClient
+                        .from('chat_messages')
+                        .update({
+                            text: sanitizeInput(newText),
+                            edited: true,
+                            edit_date: new Date().toISOString()
+                        })
+                        .eq('id', messageId)
+                        .eq('user_id', currentUser.id);
+                    if (response.error) throw response.error;
+                }
 
                 showToast('✅ پیام ویرایش شد!', 'success');
                 showLoading(false);
-                loadUserChatMessages();
             } catch (e) {
                 showLoading(false);
                 ErrorHandler.log(e, 'ویرایش پیام');
@@ -4594,17 +4687,31 @@
             showLoading(true);
 
             try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .delete()
-                    .eq('id', messageId)
-                    .eq('user_id', currentUser.id);
+                // حذف از localStorage
+                var messages = loadChatMessagesFromLocalStorage(currentUser.id);
+                var newMessages = [];
+                for (var i = 0; i < messages.length; i++) {
+                    if (messages[i].id !== messageId) {
+                        newMessages.push(messages[i]);
+                    }
+                }
+                saveChatMessagesToLocalStorage(currentUser.id, newMessages);
+                chatMessages = newMessages;
+                var container = document.getElementById('userChatMessagesContainer');
+                renderChatMessages(container);
 
-                if (response.error) throw response.error;
+                // حذف از دیتابیس اگر اینترنت داشت
+                if (supabaseClient) {
+                    var response = await supabaseClient
+                        .from('chat_messages')
+                        .delete()
+                        .eq('id', messageId)
+                        .eq('user_id', currentUser.id);
+                    if (response.error) throw response.error;
+                }
 
                 showToast('🗑️ پیام حذف شد', 'success');
                 showLoading(false);
-                loadUserChatMessages();
             } catch (e) {
                 showLoading(false);
                 ErrorHandler.log(e, 'حذف پیام');
@@ -4633,7 +4740,7 @@
             var usersWithChat = [];
             for (var i = 0; i < users.length; i++) {
                 var user = users[i];
-                var msgs = await loadChatMessages(user.id);
+                var msgs = loadChatMessagesFromLocalStorage(user.id);
                 if (msgs.length > 0) {
                     usersWithChat.push({ user: user, messages: msgs });
                 }
@@ -4673,7 +4780,17 @@
 
         async function renderChatMessagesWithUser(userId) {
             var container = document.getElementById('chatMessagesContainer');
-            var messages = await loadChatMessages(userId);
+            var messages = loadChatMessagesFromLocalStorage(userId);
+
+            // اگر اینترنت داشت از دیتابیس بارگذاری کن
+            if (supabaseClient) {
+                var dbMessages = await loadChatMessages(userId);
+                if (dbMessages.length > messages.length) {
+                    messages = dbMessages;
+                    saveChatMessagesToLocalStorage(userId, dbMessages);
+                }
+            }
+
             var users = await getUsers();
             var user = null;
             for (var i = 0; i < users.length; i++) {
@@ -4687,12 +4804,14 @@
             }
 
             // علامت‌گذاری به عنوان خوانده شده
-            await supabaseClient
-                .from('chat_messages')
-                .update({ read: true })
-                .eq('user_id', userId)
-                .eq('sender', 'user')
-                .eq('read', false);
+            if (supabaseClient) {
+                await supabaseClient
+                    .from('chat_messages')
+                    .update({ read: true })
+                    .eq('user_id', userId)
+                    .eq('sender', 'user')
+                    .eq('read', false);
+            }
 
             var html =
                 '<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با #' + (user ?
@@ -4761,7 +4880,6 @@
                     renderChatMessagesWithUser(currentChatUserId);
                     renderChatUsersList();
                     showToast('✅ پیام ارسال شد!', 'success');
-                    // اعلان به کاربر
                     addNotification(currentChatUserId, '💬 پاسخ مدیر', text);
                 } else {
                     showToast('❌ خطا در ارسال پیام!', 'error');
@@ -5056,7 +5174,7 @@
             console.log('🗑️ حذف جداگانه از سبد خرید فعال شد');
             console.log('💬 چت کاربر با مدیر و ویرایش پیام فعال است');
             console.log('📢 پیام عمومی فقط مدیر ارسال میکند');
-            console.log('💾 پیام‌های چت در Supabase ذخیره میشوند');
+            console.log('💾 پیام‌های چت در localStorage ذخیره میشوند');
         }
 
         // اجرا بعد از لود کامل
@@ -5067,4 +5185,4 @@
         }
     </script>
 </body>
-    </html>
+                </html>
