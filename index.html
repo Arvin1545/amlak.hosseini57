@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* [همه استایل‌ها مثل قبل] */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -2959,7 +2958,7 @@
                 showLoading(false);
                 showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
                 await enterApp();
-                loadUserChatMessages();
+                loadUserChatMessages(); // بارگذاری تاریخچه چت برای کاربر
             } catch (e) {
                 showLoading(false);
                 ErrorHandler.log(e, 'ورود کاربر');
@@ -4357,6 +4356,11 @@
                 renderList();
                 renderPublicMessages();
 
+                // ===== برای کاربر: بارگذاری تاریخچه چت =====
+                if (!isAdmin && currentUser) {
+                    loadUserChatMessages();
+                }
+
             } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
         }
 
@@ -5059,7 +5063,7 @@
             console.log('📢 پیام عمومی فقط مدیر ارسال میکند');
             console.log('💾 پیام‌های چت در Supabase ذخیره میشوند');
             console.log('👁️ کاربر تاریخچه چت را مثل مدیر می‌بیند');
-            console.log('📢 پیام‌های عمومی فقط نمایشی (بدون پاسخ)');
+            console.log('📢 پیام‌های عمومی برای همه کاربران نمایش داده میشود (فقط نمایشی)');
         }
 
         // اجرا بعد از لود کامل
