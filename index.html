@@ -4350,13 +4350,14 @@
                     document.getElementById('logoutBtn').style.display = 'none';
                     document.getElementById('userPreviewSection').style.display = 'none';
                     loadAdminMessage();
-                    // بارگذاری تاریخچه چت برای کاربر
                     loadUserChatMessages();
                 }
 
+                // نمایش پیام‌های عمومی برای همه کاربران (مدیر و کاربر عادی)
+                renderPublicMessages();
+
                 updateCartBadge();
                 renderList();
-                renderPublicMessages();
 
             } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
         }
@@ -4428,18 +4429,24 @@
             for (var i = 0; i < publicMessages.length; i++) {
                 var p = publicMessages[i];
                 html += `
-                    <div class="public-msg-card">
-                        <div class="msg-header">
-                            <span style="font-weight:bold;color:var(--primary);">📢 پیام عمومی</span>
-                            <span class="msg-date">${p.date || ''}</span>
+                    <div class="public-msg-card" style="border-right: 5px solid #FFD700; background: var(--primary-light); padding: 14px; border-radius: 12px; margin-bottom: 12px;">
+                        <div class="msg-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: bold; color: var(--primary); font-size: 14px;">📢 پیام رسمی از مدیریت</span>
+                            <span class="msg-date" style="font-size: 11px; color: var(--text-light);">${p.date || ''}</span>
                         </div>
-                        <div class="msg-text">${sanitizeInput(p.text)}</div>
+                        <div class="msg-text" style="font-size: 15px; line-height: 1.8; padding: 6px 0; color: var(--text);">
+                            ${sanitizeInput(p.text)}
+                        </div>
                         ${isAdmin ? `
-                            <div class="msg-actions">
-                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')">✏️</button>
-                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')">🗑️</button>
+                            <div class="msg-actions" style="margin-top: 8px; display: flex; gap: 6px;">
+                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')" style="padding: 4px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; background: #FFA000; transition: var(--transition);">✏️ ویرایش</button>
+                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')" style="padding: 4px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; background: var(--danger); transition: var(--transition);">🗑️ حذف</button>
                             </div>
-                        ` : ''}
+                        ` : `
+                            <div style="font-size: 11px; color: var(--text-light); margin-top: 4px; padding: 4px 8px; background: rgba(255,215,0,0.1); border-radius: 6px; border-right: 3px solid #FFD700;">
+                                📌 این پیام رسمی از طرف مدیریت است | کاربران نمی‌توانند پاسخ دهند
+                            </div>
+                        `}
                     </div>
                 `;
             }
@@ -5153,6 +5160,7 @@
             console.log('💾 پیام‌های چت در Supabase ذخیره میشوند');
             console.log('👁️ کاربر تاریخچه چت را مثل مدیر می‌بیند');
             console.log('✏️ مدیر می‌تواند پیام‌های خود را در چت ویرایش/حذف کند');
+            console.log('📢 پیام‌های عمومی برای همه کاربران نمایش داده میشود');
         }
 
         if (document.readyState === 'loading') {
@@ -5162,4 +5170,4 @@
         }
     </script>
 </body>
-    </html>
+                </html>
