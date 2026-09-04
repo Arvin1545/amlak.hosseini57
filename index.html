@@ -7,7 +7,23 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* ===== تمام استایل‌ها ===== */
+        :root {
+            --primary: #1565C0;
+            --primary-dark: #0D47A1;
+            --primary-light: #E3F2FD;
+            --secondary: #2E7D32;
+            --accent: #FFD700;
+            --danger: #C62828;
+            --warning: #E65100;
+            --purple: #6A1B9A;
+            --bg: #f0f2f5;
+            --card-bg: #ffffff;
+            --text: #1a1a2e;
+            --text-light: #666;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         * {
             margin: 0;
             padding: 0;
@@ -15,24 +31,28 @@
             font-family: 'Tahoma', 'Segoe UI', sans-serif;
         }
         body {
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 12px;
             max-width: 500px;
             margin: 0 auto;
             padding-bottom: 80px;
-            color: #1a1a2e;
-            transition: all 0.3s;
+            transition: var(--transition);
+            color: var(--text);
         }
         body.dark-mode {
-            background: #1a1a2e;
-            color: #eee;
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text: #eee;
+            --text-light: #aaa;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            --primary-light: #0f3460;
         }
         body.dark-mode .header {
             background: linear-gradient(135deg, #0f3460, #16213e);
         }
         body.dark-mode .property-card {
-            background: #16213e;
-            color: #eee;
+            background: var(--card-bg);
+            color: var(--text);
         }
         body.dark-mode .property-card h3 {
             color: #4fc3f7;
@@ -46,7 +66,7 @@
             color: #ccc;
         }
         body.dark-mode .form {
-            background: #16213e;
+            background: var(--card-bg);
             border-color: #0f3460;
         }
         body.dark-mode .form input,
@@ -60,8 +80,8 @@
             color: #aaa;
         }
         body.dark-mode .stats div {
-            background: #16213e;
-            color: #eee;
+            background: var(--card-bg);
+            color: var(--text);
         }
         body.dark-mode .stats span {
             color: #4fc3f7;
@@ -83,7 +103,7 @@
             color: #eee;
         }
         body.dark-mode .filter-tabs button {
-            background: #16213e;
+            background: var(--card-bg);
             color: #aaa;
             border-color: #0f3460;
         }
@@ -93,7 +113,7 @@
             border-color: #4fc3f7;
         }
         body.dark-mode .search-box {
-            background: #16213e;
+            background: var(--card-bg);
             color: #eee;
             border-color: #0f3460;
         }
@@ -101,7 +121,7 @@
             color: #666;
         }
         body.dark-mode .category-grid .cat-btn {
-            background: #16213e;
+            background: var(--card-bg);
             color: #aaa;
             border-color: #0f3460;
         }
@@ -111,7 +131,7 @@
             border-color: #4fc3f7;
         }
         body.dark-mode .type-grid .type-btn {
-            background: #16213e;
+            background: var(--card-bg);
             color: #aaa;
             border-color: #0f3460;
         }
@@ -131,7 +151,7 @@
             color: #aaa;
         }
         body.dark-mode .price-filter-box input {
-            background: #16213e;
+            background: var(--card-bg);
             color: #eee;
             border-color: #1a1a2e;
         }
@@ -146,12 +166,12 @@
             color: #aaa;
         }
         body.dark-mode .toast {
-            background: #16213e !important;
+            background: var(--card-bg) !important;
             color: #eee !important;
         }
         body.dark-mode .cart-content {
-            background: #16213e !important;
-            color: #eee !important;
+            background: var(--card-bg) !important;
+            color: var(--text) !important;
         }
         body.dark-mode .cart-item-detail {
             border-bottom-color: #0f3460 !important;
@@ -160,9 +180,13 @@
             background: #0f3460 !important;
             color: #ccc !important;
         }
+        body.dark-mode .cart-item-hidden {
+            background: #1a1a2e !important;
+            color: #ce93d8 !important;
+        }
         body.dark-mode .login-box {
-            background: #16213e !important;
-            color: #eee !important;
+            background: var(--card-bg) !important;
+            color: var(--text) !important;
         }
         body.dark-mode .login-box p {
             color: #aaa !important;
@@ -177,7 +201,7 @@
             border-color: #1a1a2e !important;
         }
         body.dark-mode .chat-message-item {
-            background: #16213e !important;
+            background: var(--card-bg) !important;
         }
         body.dark-mode .chat-message-item .msg-text {
             color: #eee !important;
@@ -194,7 +218,7 @@
             border-right-color: #4CAF50 !important;
         }
         body.dark-mode .user-list-item {
-            background: #16213e !important;
+            background: var(--card-bg) !important;
             border-color: #0f3460 !important;
         }
         body.dark-mode .user-list-item .user-phone {
@@ -220,21 +244,21 @@
             color: #b388ff;
         }
         body.dark-mode .user-preview-section {
-            background: #16213e;
+            background: var(--card-bg);
             border-color: #4fc3f7;
         }
         body.dark-mode .user-preview-section h3 {
             color: #4fc3f7;
         }
         body.dark-mode .chart-container {
-            background: #16213e;
+            background: var(--card-bg);
         }
         body.dark-mode .chart-container h4 {
             color: #4fc3f7;
         }
         body.dark-mode .modal-content {
-            background: #16213e !important;
-            color: #eee !important;
+            background: var(--card-bg) !important;
+            color: var(--text) !important;
         }
         body.dark-mode .gallery-modal {
             background: rgba(0, 0, 0, 0.92) !important;
@@ -255,30 +279,7 @@
         body.dark-mode .gallery-counter {
             color: #aaa !important;
         }
-        body.dark-mode .property-card.pinned {
-            background: #1a1a2e;
-            border-color: #FFD700;
-        }
-        body.dark-mode .property-card .desc .hidden-part {
-            background: #1a1a2e;
-            border-color: #6A1B9A;
-        }
-        body.dark-mode .property-card .desc .hidden-part .label {
-            color: #ce93d8;
-            background: #0f3460;
-        }
-        body.dark-mode .error-box {
-            background: #1a1a2e;
-            border-color: #C62828;
-            color: #FF6B6B;
-        }
-        body.dark-mode .error-box .error-detail {
-            color: #aaa;
-        }
-        body.dark-mode .debug-info {
-            background: #0f3460;
-            color: #A5D6A7;
-        }
+
         .gallery-modal {
             position: fixed;
             top: 0;
@@ -343,7 +344,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
+            transition: var(--transition);
             z-index: 10;
         }
         .gallery-close:hover {
@@ -361,7 +362,7 @@
             border: none;
             padding: 12px 18px;
             border-radius: 50%;
-            transition: all 0.3s;
+            transition: var(--transition);
             z-index: 10;
         }
         .gallery-nav:hover {
@@ -392,10 +393,10 @@
             overflow: hidden;
             flex-shrink: 0;
             border: 3px solid transparent;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .gallery-thumb-wrapper.active {
-            border-color: #FFD700;
+            border-color: var(--accent);
         }
         .gallery-thumb-wrapper:hover {
             transform: scale(1.05);
@@ -431,16 +432,21 @@
             margin-top: 8px;
             text-align: center;
         }
+
         .property-card.pinned {
-            border: 3px solid #FFD700;
+            border: 3px solid var(--accent);
             background: #FFFDE7;
+        }
+        body.dark-mode .property-card.pinned {
+            background: #1a1a2e;
+            border-color: var(--accent);
         }
         .property-card .pinned-badge {
             position: absolute;
             top: -5px;
             right: 50%;
             transform: translateX(50%);
-            background: #FFD700;
+            background: var(--accent);
             color: #333;
             padding: 2px 14px;
             border-radius: 20px;
@@ -448,11 +454,12 @@
             font-weight: bold;
             box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
         }
+
         .header {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             padding: 20px;
-            border-radius: 16px;
+            border-radius: var(--radius);
             text-align: center;
             margin-bottom: 14px;
             box-shadow: 0 4px 20px rgba(21, 101, 192, 0.3);
@@ -484,7 +491,7 @@
             z-index: 1;
         }
         .header h1 span {
-            color: #FFD700;
+            color: var(--accent);
         }
         .header p {
             opacity: 0.9;
@@ -507,13 +514,14 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s;
+            transition: var(--transition);
             backdrop-filter: blur(4px);
         }
         .dark-toggle:hover {
             background: rgba(255, 255, 255, 0.25);
             transform: scale(1.05);
         }
+
         .stats {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -521,12 +529,12 @@
             margin-bottom: 12px;
         }
         .stats div {
-            background: white;
+            background: var(--card-bg);
             padding: 10px 6px;
             border-radius: 12px;
             text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
         }
         .stats div:hover {
             transform: translateY(-2px);
@@ -535,12 +543,13 @@
             display: block;
             font-size: 18px;
             font-weight: bold;
-            color: #1565C0;
+            color: var(--primary);
         }
         .stats label {
             font-size: 9px;
-            color: #666;
+            color: var(--text-light);
         }
+
         .btn {
             padding: 10px 14px;
             border: none;
@@ -548,7 +557,7 @@
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             color: white;
             text-align: center;
             display: inline-flex;
@@ -564,22 +573,22 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         .btn-primary {
-            background: #1565C0;
+            background: var(--primary);
         }
         .btn-success {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .btn-warning {
-            background: #E65100;
+            background: var(--warning);
         }
         .btn-danger {
-            background: #C62828;
+            background: var(--danger);
         }
         .btn-secondary {
             background: #616161;
         }
         .btn-purple {
-            background: #6A1B9A;
+            background: var(--purple);
         }
         .btn-teal {
             background: #00695C;
@@ -603,18 +612,19 @@
             box-shadow: none;
         }
         .btn-logout {
-            background: #C62828;
+            background: var(--danger);
             padding: 6px 16px;
             border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
             color: white;
             border: none;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .btn-logout:hover {
             transform: scale(1.05);
         }
+
         .btn-group {
             display: flex;
             flex-wrap: wrap;
@@ -627,11 +637,12 @@
             padding: 10px 6px;
             font-size: 11px;
         }
+
         .form {
-            background: white;
+            background: var(--card-bg);
             padding: 16px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             display: none;
             margin-bottom: 14px;
             animation: slideDown 0.3s ease;
@@ -647,14 +658,14 @@
             }
         }
         .form h3 {
-            color: #1565C0;
+            color: var(--primary);
             margin-bottom: 12px;
             text-align: center;
             font-size: 16px;
         }
         .form label {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
             display: block;
             margin-bottom: 3px;
         }
@@ -667,14 +678,14 @@
             border: 2px solid #e0e0e0;
             border-radius: 10px;
             font-size: 13px;
-            transition: all 0.3s;
-            background: white;
-            color: #1a1a2e;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
         }
         .form input:focus,
         .form select:focus,
         .form textarea:focus {
-            border-color: #1565C0;
+            border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
         }
@@ -688,18 +699,16 @@
             padding: 12px;
             font-size: 14px;
         }
-        .form .required {
-            color: #C62828;
-        }
+
         .property-card {
-            background: white;
+            background: var(--card-bg);
             padding: 14px;
-            border-radius: 16px;
+            border-radius: var(--radius);
             margin-bottom: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-            border-right: 5px solid #1565C0;
+            box-shadow: var(--shadow);
+            border-right: 5px solid var(--primary);
             position: relative;
-            transition: all 0.3s;
+            transition: var(--transition);
             animation: fadeInUp 0.4s ease;
         }
         @keyframes fadeInUp {
@@ -717,16 +726,16 @@
             box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
         }
         .property-card.sale {
-            border-right-color: #E65100;
+            border-right-color: var(--warning);
         }
         .property-card.rent {
-            border-right-color: #C62828;
+            border-right-color: var(--danger);
         }
         .property-card .code-badge {
             position: absolute;
             top: 8px;
             left: 8px;
-            background: #1565C0;
+            background: var(--primary);
             color: white;
             padding: 2px 10px;
             border-radius: 20px;
@@ -749,7 +758,7 @@
             font-size: 12px;
             cursor: pointer;
             color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .property-card .action-btns button:hover {
             transform: scale(1.1);
@@ -758,14 +767,14 @@
             background: #FFA000;
         }
         .property-card .btn-delete {
-            background: #C62828;
+            background: var(--danger);
         }
         .property-card .btn-pin {
-            background: #FFD700;
+            background: var(--accent);
             color: #333;
         }
         .property-card .btn-pin.pinned {
-            background: #C62828;
+            background: var(--danger);
             color: white;
         }
         .property-card .btn-cart {
@@ -777,25 +786,25 @@
             height: 28px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .property-card .btn-cart.in-cart {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .property-card .btn-cart:hover {
             transform: scale(1.1);
         }
         .property-card h3 {
-            color: #1565C0;
+            color: var(--primary);
             margin: 4px 0;
             font-size: 16px;
         }
         .property-card .address {
-            color: #666;
+            color: var(--text-light);
             font-size: 12px;
         }
         .property-card .price {
-            color: #2E7D32;
+            color: var(--secondary);
             font-weight: bold;
             font-size: 16px;
         }
@@ -805,20 +814,20 @@
             gap: 6px;
             margin-top: 4px;
             font-size: 11px;
-            color: #666;
+            color: var(--text-light);
         }
         .property-card .meta span {
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 2px 10px;
             border-radius: 20px;
         }
         .property-card .desc {
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 8px;
             border-radius: 8px;
             margin-top: 6px;
             font-size: 12px;
-            color: #1a1a2e;
+            color: var(--text);
         }
         .property-card .desc .hidden-part {
             background: #fff3cd;
@@ -827,6 +836,10 @@
             border-radius: 6px;
             display: block;
             margin-top: 4px;
+        }
+        body.dark-mode .property-card .desc .hidden-part {
+            background: #1a1a2e;
+            border-color: #6A1B9A;
         }
         .property-card .desc .hidden-part .label {
             font-size: 10px;
@@ -837,9 +850,14 @@
             display: inline-block;
             margin-bottom: 2px;
         }
-        .property-card .desc .hidden-part .content {
-            color: #1a1a2e;
+        body.dark-mode .property-card .desc .hidden-part .label {
+            color: #ce93d8;
+            background: #0f3460;
         }
+        .property-card .desc .hidden-part .content {
+            color: var(--text);
+        }
+
         .cart-modal {
             position: fixed;
             top: 0;
@@ -867,7 +885,7 @@
             display: flex;
         }
         .cart-content {
-            background: white;
+            background: var(--card-bg);
             border-radius: 20px;
             padding: 24px;
             max-width: 500px;
@@ -875,7 +893,7 @@
             max-height: 90vh;
             overflow-y: auto;
             animation: slideUp 0.3s ease;
-            color: #1a1a2e;
+            color: var(--text);
         }
         @keyframes slideUp {
             from {
@@ -888,7 +906,7 @@
             }
         }
         .cart-content h3 {
-            color: #1565C0;
+            color: var(--primary);
             text-align: center;
             margin-bottom: 16px;
             display: flex;
@@ -897,14 +915,14 @@
             font-size: 18px;
         }
         .cart-content h3 button {
-            background: #C62828;
+            background: var(--danger);
             color: white;
             border: none;
             padding: 6px 16px;
             border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .cart-content h3 button:hover {
             transform: scale(1.05);
@@ -918,30 +936,30 @@
         }
         .cart-item-title {
             font-weight: bold;
-            color: #1565C0;
+            color: var(--primary);
             font-size: 16px;
         }
         .cart-item-address {
             font-size: 13px;
-            color: #1a1a2e;
+            color: var(--text);
             margin-top: 4px;
         }
         .cart-item-price {
             font-size: 14px;
-            color: #2E7D32;
+            color: var(--secondary);
             font-weight: bold;
             margin-top: 4px;
         }
         .cart-item-meta {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
             margin-top: 2px;
         }
         .cart-item-desc {
             font-size: 12px;
-            color: #1a1a2e;
+            color: var(--text);
             margin-top: 4px;
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 6px 10px;
             border-radius: 6px;
         }
@@ -956,16 +974,16 @@
         }
         .cart-item-code {
             font-size: 11px;
-            color: #666;
+            color: var(--text-light);
             margin-top: 2px;
         }
         .cart-item-date {
             font-size: 11px;
-            color: #666;
+            color: var(--text-light);
             margin-top: 2px;
         }
         .cart-remove-btn {
-            background: #C62828;
+            background: var(--danger);
             color: white;
             border: none;
             border-radius: 50%;
@@ -973,7 +991,7 @@
             height: 32px;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             flex-shrink: 0;
             margin-right: 10px;
         }
@@ -982,7 +1000,7 @@
         }
         .cart-empty {
             text-align: center;
-            color: #666;
+            color: var(--text-light);
             padding: 40px 0;
             font-size: 16px;
         }
@@ -1000,13 +1018,13 @@
             font-weight: bold;
             cursor: pointer;
             color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .cart-actions button:hover {
             transform: translateY(-2px);
         }
         .cart-actions .clear-cart {
-            background: #C62828;
+            background: var(--danger);
         }
         .cart-actions .share-cart {
             background: #25D366;
@@ -1020,6 +1038,7 @@
             font-weight: bold;
             margin-right: 4px;
         }
+
         .search-box {
             width: 100%;
             padding: 12px 16px;
@@ -1027,22 +1046,23 @@
             border-radius: 12px;
             font-size: 13px;
             margin-bottom: 12px;
-            transition: all 0.3s;
-            background: white;
-            color: #1a1a2e;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
         }
         .search-box:focus {
-            border-color: #1565C0;
+            border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
         }
+
         .toast {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
             padding: 12px 24px;
             border-radius: 12px;
             font-size: 13px;
@@ -1055,21 +1075,22 @@
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
         .toast.error {
-            background: #C62828;
+            background: var(--danger);
             color: white;
         }
         .toast.success {
-            background: #2E7D32;
+            background: var(--secondary);
             color: white;
         }
         .toast.warning {
-            background: #E65100;
+            background: var(--warning);
             color: white;
         }
         .toast.info {
-            background: #1565C0;
+            background: var(--primary);
             color: white;
         }
+
         .login-overlay {
             position: fixed;
             top: 0;
@@ -1088,7 +1109,7 @@
             display: none;
         }
         .login-box {
-            background: white;
+            background: var(--card-bg);
             padding: 32px;
             border-radius: 24px;
             max-width: 400px;
@@ -1096,21 +1117,22 @@
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             animation: slideUp 0.4s ease;
-            color: #1a1a2e;
+            color: var(--text);
         }
         .login-box h2 {
-            color: #1565C0;
+            color: var(--primary);
             margin-bottom: 8px;
             font-size: 24px;
         }
         .login-box h2 span {
-            color: #FFD700;
+            color: var(--accent);
         }
         .login-box p {
-            color: #666;
+            color: var(--text-light);
             font-size: 13px;
             margin-bottom: 20px;
         }
+
         .login-buttons {
             display: flex;
             flex-direction: column;
@@ -1122,7 +1144,7 @@
             padding: 16px;
             font-size: 16px;
             border-radius: 14px;
-            transition: all 0.3s;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
@@ -1135,7 +1157,7 @@
             height: 200%;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
             opacity: 0;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .login-buttons .btn:hover::after {
             opacity: 1;
@@ -1145,7 +1167,7 @@
             box-shadow: 0 4px 20px rgba(76, 175, 80, 0.4);
         }
         .btn-admin-login {
-            background: linear-gradient(135deg, #1565C0, #0D47A1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             box-shadow: 0 4px 20px rgba(21, 101, 192, 0.4);
         }
         .btn-admin-login.disabled {
@@ -1160,10 +1182,10 @@
         }
         .login-hint {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
             margin-top: 14px;
             padding: 10px;
-            background: #f0f2f5;
+            background: var(--bg);
             border-radius: 8px;
         }
         .password-input {
@@ -1175,32 +1197,33 @@
             font-size: 14px;
             text-align: center;
             direction: ltr;
-            transition: all 0.3s;
-            background: white;
-            color: #1a1a2e;
+            transition: var(--transition);
+            background: var(--card-bg);
+            color: var(--text);
         }
         .password-input:focus {
-            border-color: #1565C0;
+            border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
         }
         #adminLoginArea .admin-login-label {
             font-size: 13px;
-            color: #666;
+            color: var(--text-light);
             margin-bottom: 6px;
             display: block;
         }
         .admin-full-msg {
             background: #FFF3E0;
-            border: 2px solid #E65100;
+            border: 2px solid var(--warning);
             border-radius: 12px;
             padding: 14px;
             margin-top: 14px;
             text-align: center;
-            color: #E65100;
+            color: var(--warning);
             font-weight: bold;
             font-size: 14px;
         }
+
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -1226,7 +1249,7 @@
             width: 48px;
             height: 48px;
             border: 4px solid #e0e0e0;
-            border-top: 4px solid #1565C0;
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -1239,43 +1262,20 @@
             }
         }
         .loading-text {
-            color: #1565C0;
+            color: var(--primary);
             font-size: 14px;
             font-weight: bold;
         }
-        .loading-error {
-            color: #C62828;
-            font-size: 13px;
-            max-width: 90%;
-            text-align: center;
-            word-wrap: break-word;
-            background: #FFEBEE;
-            padding: 10px 16px;
-            border-radius: 8px;
-            border: 1px solid #C62828;
-            display: none;
-        }
-        .loading-success {
-            color: #2E7D32;
-            font-size: 13px;
-            max-width: 90%;
-            text-align: center;
-            word-wrap: break-word;
-            background: #E8F5E9;
-            padding: 10px 16px;
-            border-radius: 8px;
-            border: 1px solid #2E7D32;
-            display: none;
-        }
+
         .empty {
             text-align: center;
-            color: #666;
+            color: var(--text-light);
             padding: 40px 0;
             font-size: 16px;
         }
         .admin-badge {
             display: inline-block;
-            background: #FFD700;
+            background: var(--accent);
             color: #333;
             padding: 2px 12px;
             border-radius: 20px;
@@ -1290,20 +1290,20 @@
             border-radius: 8px;
             font-size: 11px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .edit-profile-btn:hover {
             transform: scale(1.05);
         }
         .clear-filter-btn {
-            background: #C62828;
+            background: var(--danger);
             color: white;
             border: none;
             padding: 6px 14px;
             border-radius: 8px;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .clear-filter-btn:hover {
             transform: scale(1.05);
@@ -1320,20 +1320,20 @@
             padding: 8px 4px;
             border: 2px solid #ddd;
             border-radius: 10px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
             font-size: 11px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .filter-tabs button:hover {
-            border-color: #1565C0;
+            border-color: var(--primary);
         }
         .filter-tabs button.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         .filter-sort {
             display: flex;
@@ -1349,13 +1349,13 @@
             border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 12px;
-            background: white;
-            color: #1a1a2e;
-            transition: all 0.3s;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
         }
         .filter-sort select:focus,
         .filter-sort input:focus {
-            border-color: #1565C0;
+            border-color: var(--primary);
             outline: none;
         }
         .welcome-box {
@@ -1364,13 +1364,20 @@
             border-radius: 12px;
             margin-bottom: 12px;
             text-align: center;
-            border-right: 5px solid #2E7D32;
+            border-right: 5px solid var(--secondary);
+        }
+        body.dark-mode .welcome-box {
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            border-color: #4fc3f7;
         }
         .welcome-box h3 {
             color: #1B5E20;
         }
+        body.dark-mode .welcome-box h3 {
+            color: #4fc3f7;
+        }
         .welcome-box p {
-            color: #1a1a2e;
+            color: var(--text);
             font-size: 13px;
         }
         .admin-msg-box {
@@ -1378,15 +1385,19 @@
             padding: 10px 14px;
             border-radius: 10px;
             margin-bottom: 12px;
-            border-right: 5px solid #E65100;
+            border-right: 5px solid var(--warning);
             display: none;
+        }
+        body.dark-mode .admin-msg-box {
+            background: #0f3460;
+            border-color: #4fc3f7;
         }
         .admin-msg-box p {
             font-size: 13px;
-            color: #1a1a2e;
+            color: var(--text);
         }
         .admin-msg-box small {
-            color: #666;
+            color: var(--text-light);
             font-size: 11px;
         }
         .admin-msg-box .msg-actions {
@@ -1401,13 +1412,13 @@
             font-size: 11px;
             cursor: pointer;
             color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .admin-msg-box .msg-actions button:hover {
             transform: scale(1.05);
         }
         .admin-msg-box .msg-actions .del-msg {
-            background: #C62828;
+            background: var(--danger);
         }
         .admin-msg-box .msg-actions .edit-msg {
             background: #FFA000;
@@ -1423,8 +1434,8 @@
             font-size: 12px;
             resize: vertical;
             min-height: 60px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
         }
         .admin-msg-edit-area button {
             padding: 4px 14px;
@@ -1434,17 +1445,18 @@
             cursor: pointer;
             color: white;
             margin-top: 4px;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .admin-msg-edit-area button:hover {
             transform: scale(1.05);
         }
         .admin-msg-edit-area .save-msg {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .admin-msg-edit-area .cancel-msg {
             background: #616161;
         }
+
         .category-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -1455,22 +1467,22 @@
             padding: 12px 4px;
             border: 3px solid #e0e0e0;
             border-radius: 14px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             text-align: center;
         }
         .category-grid .cat-btn:hover {
-            border-color: #1565C0;
+            border-color: var(--primary);
             transform: translateY(-2px);
         }
         .category-grid .cat-btn.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         .category-grid .cat-btn .icon {
             font-size: 22px;
@@ -1487,21 +1499,21 @@
             padding: 12px;
             border: 3px solid #e0e0e0;
             border-radius: 14px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
             font-size: 13px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             text-align: center;
         }
         .type-grid .type-btn:hover {
             transform: translateY(-2px);
         }
         .type-grid .type-btn.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         .type-grid .type-btn.sale {
             border-color: #E65100;
@@ -1527,10 +1539,15 @@
             text-align: center;
             border-right: 4px solid #FFB300;
             font-size: 13px;
-            color: #1a1a2e;
+            color: var(--text);
+        }
+        body.dark-mode .selection-info {
+            background: #0f3460;
+            border-color: #4fc3f7;
+            color: #aaa;
         }
         .selection-info strong {
-            color: #1565C0;
+            color: var(--primary);
         }
         .price-filter-box {
             background: #E8EAF6;
@@ -1539,9 +1556,12 @@
             margin-bottom: 12px;
             border-right: 4px solid #3F51B5;
         }
+        body.dark-mode .price-filter-box {
+            background: #0f3460;
+        }
         .price-filter-box label {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
             display: block;
             margin-bottom: 4px;
         }
@@ -1552,8 +1572,8 @@
             border-radius: 10px;
             font-size: 13px;
             margin-bottom: 8px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
         }
         .price-filter-box input:focus {
             border-color: #3F51B5;
@@ -1569,21 +1589,22 @@
             cursor: pointer;
             color: white;
             background: #3F51B5;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .price-filter-box .btn:hover {
             transform: translateY(-2px);
         }
         .price-filter-box .btn-clear {
-            background: #C62828;
+            background: var(--danger);
             margin-top: 6px;
         }
         .price-filter-box .price-info {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
             text-align: center;
             margin-bottom: 8px;
         }
+
         .guide-box {
             background: #FFF8E1;
             border: 2px solid #FFB300;
@@ -1592,18 +1613,25 @@
             margin-bottom: 12px;
             display: none;
         }
+        body.dark-mode .guide-box {
+            background: #0f3460;
+            border-color: #4fc3f7;
+        }
         .guide-box h4 {
-            color: #E65100;
+            color: var(--warning);
             margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
         }
+        body.dark-mode .guide-box h4 {
+            color: #4fc3f7;
+        }
         .guide-box ul {
             list-style: none;
             padding: 0;
             font-size: 12px;
-            color: #1a1a2e;
+            color: var(--text);
         }
         .guide-box ul li {
             padding: 4px 0;
@@ -1617,7 +1645,7 @@
         }
         .guide-box .badge-icon {
             display: inline-block;
-            background: #1565C0;
+            background: var(--primary);
             color: white;
             padding: 0 6px;
             border-radius: 4px;
@@ -1626,30 +1654,34 @@
             text-align: center;
         }
         .guide-box .badge-icon.green {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .guide-box .badge-icon.orange {
-            background: #E65100;
+            background: var(--warning);
         }
         .guide-box .badge-icon.red {
-            background: #C62828;
+            background: var(--danger);
         }
         .guide-box .badge-icon.gold {
-            background: #FFD700;
+            background: var(--accent);
             color: #333;
         }
         .guide-box .badge-icon.purple {
-            background: #6A1B9A;
+            background: var(--purple);
         }
         .guide-box .badge-icon.pink {
             background: #C2185B;
         }
+
         .public-msg-card {
-            background: #E3F2FD;
+            background: var(--primary-light);
             padding: 12px;
             border-radius: 12px;
             margin-bottom: 10px;
-            border-right: 5px solid #1565C0;
+            border-right: 5px solid var(--primary);
+        }
+        body.dark-mode .public-msg-card {
+            background: #0f3460;
         }
         .public-msg-card .msg-header {
             display: flex;
@@ -1658,11 +1690,11 @@
         }
         .public-msg-card .msg-header .msg-date {
             font-size: 11px;
-            color: #666;
+            color: var(--text-light);
         }
         .public-msg-card .msg-text {
             font-size: 14px;
-            color: #1a1a2e;
+            color: var(--text);
             margin-top: 4px;
         }
         .public-msg-card .msg-actions {
@@ -1677,33 +1709,35 @@
             font-size: 11px;
             cursor: pointer;
             color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .public-msg-card .msg-actions button:hover {
             transform: scale(1.05);
         }
         .public-msg-card .msg-actions .del-msg {
-            background: #C62828;
+            background: var(--danger);
         }
         .public-msg-card .msg-actions .edit-msg {
             background: #FFA000;
         }
+
         .chart-container {
-            background: white;
+            background: var(--card-bg);
             padding: 16px;
-            border-radius: 16px;
+            border-radius: var(--radius);
             margin: 12px 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            box-shadow: var(--shadow);
             display: none;
         }
         .chart-container h4 {
             text-align: center;
-            color: #1565C0;
+            color: var(--primary);
         }
         .chart-container canvas {
             max-width: 100%;
             max-height: 200px;
         }
+
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -1722,8 +1756,8 @@
             display: flex;
         }
         .modal-content {
-            background: white;
-            border-radius: 16px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 20px;
             max-width: 95%;
             max-height: 90%;
@@ -1736,21 +1770,25 @@
             max-width: 100%;
             border-radius: 12px;
         }
+
         .chat-message-item {
-            background: white;
+            background: var(--card-bg);
             padding: 10px 14px;
             border-radius: 10px;
             margin-bottom: 8px;
-            border-right: 4px solid #1565C0;
+            border-right: 4px solid var(--primary);
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
         }
         .chat-message-item.admin-msg {
             border-right-color: #4fc3f7;
-            background: #E3F2FD;
+            background: var(--primary-light);
         }
         .chat-message-item.user-msg {
             border-right-color: #4CAF50;
             background: #E8F5E9;
+        }
+        body.dark-mode .chat-message-item.user-msg {
+            background: #1a1a2e;
         }
         .chat-message-item .msg-header {
             display: flex;
@@ -1761,7 +1799,7 @@
         .chat-message-item .msg-sender {
             font-weight: bold;
             font-size: 12px;
-            color: #1565C0;
+            color: var(--primary);
         }
         .chat-message-item .msg-sender.admin-sender {
             color: #4fc3f7;
@@ -1771,18 +1809,18 @@
         }
         .chat-message-item .msg-time {
             font-size: 10px;
-            color: #666;
+            color: var(--text-light);
         }
         .chat-message-item .msg-text {
             font-size: 13px;
-            color: #1a1a2e;
+            color: var(--text);
             word-wrap: break-word;
         }
         .chat-message-item .msg-file {
             margin-top: 4px;
         }
         .chat-message-item .msg-file a {
-            color: #1565C0;
+            color: var(--primary);
             text-decoration: none;
             font-size: 12px;
             display: inline-flex;
@@ -1803,14 +1841,14 @@
             border-radius: 4px;
             font-size: 10px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             color: white;
         }
         .chat-message-item .msg-actions .edit-msg-btn {
             background: #FFA000;
         }
         .chat-message-item .msg-actions .delete-msg-btn {
-            background: #C62828;
+            background: var(--danger);
         }
         .chat-message-item .msg-actions button:hover {
             transform: scale(1.05);
@@ -1826,8 +1864,8 @@
             font-size: 12px;
             resize: vertical;
             min-height: 40px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
         }
         .chat-message-item .msg-edit-area button {
             padding: 4px 12px;
@@ -1837,14 +1875,15 @@
             cursor: pointer;
             color: white;
             margin-top: 4px;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .chat-message-item .msg-edit-area .save-edit-btn {
-            background: #2E7D32;
+            background: var(--secondary);
         }
         .chat-message-item .msg-edit-area .cancel-edit-btn {
             background: #616161;
         }
+
         .chat-user-item {
             display: flex;
             justify-content: space-between;
@@ -1852,11 +1891,11 @@
             padding: 10px;
             border-bottom: 1px solid #e0e0e0;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             border-radius: 8px;
         }
         .chat-user-item:hover {
-            background: #E3F2FD;
+            background: var(--primary-light);
         }
         .chat-user-item .user-info {
             display: flex;
@@ -1864,15 +1903,15 @@
         }
         .chat-user-item .user-name {
             font-weight: bold;
-            color: #1565C0;
+            color: var(--primary);
             font-size: 14px;
         }
         .chat-user-item .user-preview {
             font-size: 11px;
-            color: #666;
+            color: var(--text-light);
         }
         .chat-user-item .user-badge {
-            background: #2E7D32;
+            background: var(--secondary);
             color: white;
             padding: 2px 10px;
             border-radius: 20px;
@@ -1880,18 +1919,19 @@
             font-weight: bold;
         }
         .chat-user-item .user-badge.unread {
-            background: #C62828;
+            background: var(--danger);
         }
+
         .file-input-wrapper {
-            background: #f0f2f5;
+            background: var(--bg);
             padding: 8px;
             border-radius: 10px;
             margin-bottom: 10px;
             border: 2px dashed #bbb;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .file-input-wrapper:hover {
-            border-color: #1565C0;
+            border-color: var(--primary);
         }
         .file-input-wrapper input {
             margin-bottom: 2px;
@@ -1899,19 +1939,20 @@
         }
         .file-input-wrapper small {
             font-size: 10px;
-            color: #666;
+            color: var(--text-light);
         }
+
         .user-chat-section {
-            background: white;
+            background: var(--card-bg);
             padding: 16px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
             margin-bottom: 14px;
-            border: 2px solid #E3F2FD;
+            border: 2px solid var(--primary-light);
             display: none;
         }
         .user-chat-section h3 {
-            color: #1565C0;
+            color: var(--primary);
             margin-bottom: 12px;
             text-align: center;
             font-size: 16px;
@@ -1921,7 +1962,7 @@
             overflow-y: auto;
             margin-bottom: 10px;
             padding: 8px;
-            background: #f0f2f5;
+            background: var(--bg);
             border-radius: 10px;
             min-height: 100px;
         }
@@ -1935,17 +1976,17 @@
             border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 13px;
-            background: white;
-            color: #1a1a2e;
-            transition: all 0.3s;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
         }
         .user-chat-section .chat-input-area input:focus {
-            border-color: #1565C0;
+            border-color: var(--primary);
             outline: none;
             box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.1);
         }
         .user-chat-section .chat-input-area input::placeholder {
-            color: #666;
+            color: var(--text-light);
         }
         .user-chat-section .chat-input-area button {
             padding: 10px 18px;
@@ -1953,9 +1994,9 @@
             border-radius: 10px;
             font-size: 16px;
             cursor: pointer;
-            background: #1565C0;
+            background: var(--primary);
             color: white;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .user-chat-section .chat-input-area button:hover {
             transform: scale(1.05);
@@ -1964,22 +2005,51 @@
         .user-chat-section .chat-input-area button:active {
             transform: scale(0.95);
         }
+        .user-chat-section .chat-message-item {
+            margin-bottom: 6px;
+        }
+        .user-chat-section .chat-message-item .msg-actions .edit-msg-btn {
+            background: #FFA000;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+        .user-chat-section .chat-message-item .msg-actions .delete-msg-btn {
+            background: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
         .ai-suggestion-section {
             background: linear-gradient(135deg, #E8EAF6, #C5CAE9);
-            border: 2px solid #6A1B9A;
-            border-radius: 16px;
+            border: 2px solid var(--purple);
+            border-radius: var(--radius);
             padding: 16px;
             margin-bottom: 14px;
             display: none;
         }
+        body.dark-mode .ai-suggestion-section {
+            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+            border-color: #7c4dff;
+        }
         .ai-suggestion-section h3 {
-            color: #6A1B9A;
+            color: var(--purple);
             text-align: center;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+        }
+        body.dark-mode .ai-suggestion-section h3 {
+            color: #b388ff;
         }
         .ai-suggestion-section .ai-form {
             display: flex;
@@ -1988,7 +2058,7 @@
         }
         .ai-suggestion-section .ai-form label {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
         }
         .ai-suggestion-section .ai-form input,
         .ai-suggestion-section .ai-form select {
@@ -1996,17 +2066,17 @@
             border: 2px solid #ddd;
             border-radius: 10px;
             font-size: 13px;
-            background: white;
-            color: #1a1a2e;
-            transition: all 0.3s;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
         }
         .ai-suggestion-section .ai-form input:focus,
         .ai-suggestion-section .ai-form select:focus {
-            border-color: #6A1B9A;
+            border-color: var(--purple);
             outline: none;
         }
         .ai-suggestion-section .ai-form .btn-ai {
-            background: linear-gradient(135deg, #6A1B9A, #4A148C);
+            background: linear-gradient(135deg, var(--purple), #4A148C);
             color: white;
             padding: 12px;
             border: none;
@@ -2014,7 +2084,7 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .ai-suggestion-section .ai-form .btn-ai:hover {
             transform: translateY(-2px);
@@ -2026,16 +2096,16 @@
             overflow-y: auto;
         }
         .ai-suggestion-section .ai-result-item {
-            background: white;
+            background: var(--card-bg);
             padding: 10px;
             border-radius: 8px;
             margin-bottom: 6px;
-            border-right: 4px solid #6A1B9A;
+            border-right: 4px solid var(--purple);
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
         }
         .ai-suggestion-section .ai-result-item .match-score {
             font-size: 10px;
-            color: #6A1B9A;
+            color: var(--purple);
             font-weight: bold;
         }
         .ai-suggestion-section .ai-result-item .add-to-cart-btn {
@@ -2047,27 +2117,35 @@
             cursor: pointer;
             color: white;
             background: #FF8F00;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .ai-suggestion-section .ai-result-item .add-to-cart-btn:hover {
             transform: scale(1.05);
         }
+
         .user-preview-section {
-            background: white;
-            border: 2px solid #1565C0;
-            border-radius: 16px;
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
             padding: 16px;
             margin-bottom: 14px;
             display: none;
         }
+        body.dark-mode .user-preview-section {
+            background: var(--card-bg);
+            border-color: #4fc3f7;
+        }
         .user-preview-section h3 {
-            color: #1565C0;
+            color: var(--primary);
             text-align: center;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
+        }
+        body.dark-mode .user-preview-section h3 {
+            color: #4fc3f7;
         }
         .user-preview-section .preview-tabs {
             display: flex;
@@ -2079,40 +2157,41 @@
             padding: 8px;
             border: 2px solid #ddd;
             border-radius: 8px;
-            background: white;
-            color: #1a1a2e;
+            background: var(--card-bg);
+            color: var(--text);
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         .user-preview-section .preview-tabs button.active {
-            border-color: #1565C0;
-            background: #E3F2FD;
-            color: #1565C0;
+            border-color: var(--primary);
+            background: var(--primary-light);
+            color: var(--primary);
         }
         .user-preview-section .preview-tabs button:hover {
-            border-color: #1565C0;
+            border-color: var(--primary);
         }
         .user-preview-section .preview-content {
             max-height: 400px;
             overflow-y: auto;
             padding: 8px;
-            background: #f0f2f5;
+            background: var(--bg);
             border-radius: 8px;
         }
         .user-preview-section .preview-content .preview-item {
-            background: white;
+            background: var(--card-bg);
             padding: 8px 12px;
             border-radius: 6px;
             margin-bottom: 4px;
-            border-right: 3px solid #2E7D32;
+            border-right: 3px solid var(--secondary);
             font-size: 12px;
         }
+
         .admin-users-section {
-            background: white;
-            border: 2px solid #1565C0;
-            border-radius: 16px;
+            background: var(--card-bg);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius);
             padding: 16px;
             margin-bottom: 14px;
             display: none;
@@ -2124,12 +2203,12 @@
             margin-bottom: 10px;
         }
         .admin-users-section .section-header h4 {
-            color: #1565C0;
+            color: var(--primary);
             font-size: 14px;
         }
         .admin-users-section .user-count {
             font-size: 12px;
-            color: #666;
+            color: var(--text-light);
         }
         .user-list-item {
             display: flex;
@@ -2144,12 +2223,12 @@
         }
         .user-list-item .user-phone {
             font-weight: bold;
-            color: #1565C0;
+            color: var(--primary);
             font-size: 13px;
         }
         .user-list-item .user-meta {
             font-size: 11px;
-            color: #666;
+            color: var(--text-light);
         }
         .user-list-item .user-status {
             font-size: 11px;
@@ -2158,11 +2237,11 @@
         }
         .user-list-item .user-status.verified {
             background: #E8F5E9;
-            color: #2E7D32;
+            color: var(--secondary);
         }
         .user-list-item .user-status.pending {
             background: #FFF3E0;
-            color: #E65100;
+            color: var(--warning);
         }
         .user-list-item .user-actions {
             display: flex;
@@ -2175,68 +2254,27 @@
             height: 28px;
             font-size: 12px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: var(--transition);
             color: white;
         }
         .user-list-item .user-actions .contact-user {
-            background: #1565C0;
+            background: var(--primary);
         }
         .user-list-item .user-actions .delete-user {
-            background: #C62828;
+            background: var(--danger);
         }
         .user-list-item .user-actions button:hover {
             transform: scale(1.1);
         }
-        .error-box {
-            background: #FFEBEE;
-            border: 2px solid #C62828;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            color: #C62828;
-            font-size: 13px;
-            display: none;
+        body.dark-mode .user-list-item .user-status.verified {
+            background: #0f3460;
+            color: #4fc3f7;
         }
-        .error-box .error-title {
-            font-weight: bold;
-            font-size: 15px;
-            margin-bottom: 6px;
+        body.dark-mode .user-list-item .user-status.pending {
+            background: #0f3460;
+            color: #FFB300;
         }
-        .error-box .error-detail {
-            font-size: 12px;
-            color: #666;
-            margin-top: 4px;
-            word-wrap: break-word;
-        }
-        .btn-retry {
-            background: #1565C0;
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            margin-top: 8px;
-        }
-        .btn-retry:hover {
-            background: #0D47A1;
-        }
-        .debug-info {
-            background: #263238;
-            color: #A5D6A7;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 11px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-top: 8px;
-            display: none;
-            text-align: left;
-            direction: ltr;
-        }
+
         @media (max-width: 400px) {
             .stats {
                 grid-template-columns: repeat(2, 1fr);
@@ -2263,116 +2301,335 @@
         }
     </style>
 </head>
-<body><!-- ===== لودینگ ===== -->
-<div class="loading-overlay" id="loadingOverlay">
-    <div class="spinner"></div>
-    <div class="loading-text" id="loadingText">⏳ در حال اتصال به سرور...</div>
-    <div class="loading-error" id="loadingError"></div>
-    <div class="loading-success" id="loadingSuccess"></div>
-</div>
-
-<!-- ===== گالری ===== -->
-<div class="gallery-modal" id="galleryModal">
-    <div class="gallery-content" onclick="event.stopPropagation()">
-        <button class="gallery-close" onclick="closeGallery()">✕</button>
-        <div class="gallery-main-container" id="galleryMainContainer">
-            <button class="gallery-nav prev" onclick="galleryPrev(event)">‹</button>
-            <button class="gallery-nav next" onclick="galleryNext(event)">›</button>
-            <div id="galleryMain"></div>
-        </div>
-        <div class="gallery-counter" id="galleryCounter"></div>
-        <div class="gallery-thumbs" id="galleryThumbs"></div>
-    </div>
-</div>
-
-<!-- ===== ورود ===== -->
-<div class="login-overlay" id="loginOverlay">
-    <div class="login-box">
-        <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
-        <p id="loginSubText">به سامانه دپارتمان املاک حسینی خوش آمدید</p>
-
-        <div class="login-buttons" id="loginButtons">
-            <button class="btn btn-user-login" onclick="loginAsUser()">👤 ورود به عنوان کاربر عادی</button>
-            <button class="btn btn-admin-login" id="adminLoginBtn" onclick="showAdminLogin()">👑 ورود به عنوان مدیر</button>
-        </div>
-
-        <div id="adminLoginArea">
-            <label class="admin-login-label">🔑 لطفاً رمز عبور مدیر را وارد کنید</label>
-            <input type="password" id="adminPasswordInput" placeholder="رمز عبور مدیر" class="password-input">
-            <button class="btn" onclick="loginAdmin()" style="background:#1565C0; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white;">✅ تایید</button>
-            <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px;">❌ انصراف</button>
-        </div>
-
-        <div id="adminFullMsg" style="display:none;" class="admin-full-msg">
-            ⚠️ ظرفیت مدیران تکمیل شده است (۴ مدیر)
-        </div>
-
-        <div class="login-hint" id="loginHint">👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند</div>
-    </div>
-</div>
-
-<!-- ===== برنامه اصلی ===== -->
-<div id="mainApp" style="display:none;">
-    <div class="header">
-        <div class="header-top">
-            <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
-            <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
-        </div>
-        <p id="welcomeUser">خوش آمدید</p>
+<body>
+    <div class="loading-overlay hidden" id="loadingOverlay">
+        <div class="spinner"></div>
+        <div class="loading-text">⏳ در حال اتصال به سرور...</div>
     </div>
 
-    <!-- خطاهای برنامه -->
-    <div class="error-box" id="errorBox">
-        <div class="error-title" id="errorTitle">⚠️ خطا</div>
-        <div class="error-detail" id="errorDetail"></div>
-        <button class="btn-retry" onclick="retryConnection()">🔄 تلاش مجدد</button>
-        <div class="debug-info" id="debugInfo"></div>
-    </div>
-
-    <div class="welcome-box" id="welcomeBox">
-        <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
-        <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
-    </div>
-
-    <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
-        <div id="adminMsgDisplay">
-            <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
-            <small id="adminMsgDate"></small>
-        </div>
-        <div id="adminMsgEditArea" class="admin-msg-edit-area" style="display:none;">
-            <textarea id="adminMsgEditInput" placeholder="متن جدید پیام مدیر..."></textarea>
-            <button class="save-msg" onclick="saveAdminMessageEdit()">💾 ذخیره</button>
-            <button class="cancel-msg" onclick="cancelAdminMessageEdit()">❌ انصراف</button>
-        </div>
-        <div class="msg-actions" id="adminMsgActions" style="display:none;">
-            <button class="edit-msg" onclick="editAdminMessage()">✏️ ویرایش</button>
-            <button class="del-msg" onclick="deleteAdminMessage()">🗑️ حذف</button>
+    <div class="gallery-modal" id="galleryModal">
+        <div class="gallery-content" onclick="event.stopPropagation()">
+            <button class="gallery-close" onclick="closeGallery()">✕</button>
+            <div class="gallery-main-container" id="galleryMainContainer">
+                <button class="gallery-nav prev" onclick="galleryPrev(event)">‹</button>
+                <button class="gallery-nav next" onclick="galleryNext(event)">›</button>
+                <div id="galleryMain"></div>
+            </div>
+            <div class="gallery-counter" id="galleryCounter"></div>
+            <div class="gallery-thumbs" id="galleryThumbs"></div>
         </div>
     </div>
 
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
-        <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
-        <div>
-            <button class="btn-gold" onclick="toggleCart()" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#FF8F00,#E65100);margin-right:4px;box-shadow:0 2px 10px rgba(255,143,0,0.3);">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
-            <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش</button>
-            <button class="btn-logout" id="logoutBtn" onclick="logout()" style="display:none;">🚪 خروج</button>
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
+            <p id="loginSubText">به سامانه دپارتمان املاک حسینی خوش آمدید</p>
+
+            <div class="login-buttons" id="loginButtons">
+                <button class="btn btn-user-login" onclick="loginAsUser()">👤 ورود به عنوان کاربر عادی</button>
+                <button class="btn btn-admin-login" id="adminLoginBtn" onclick="showAdminLogin()">👑 ورود به عنوان مدیر</button>
+            </div>
+
+            <div id="adminLoginArea" style="display:none; margin-top:10px;">
+                <label class="admin-login-label">🔑 لطفاً رمز عبور مدیر را وارد کنید</label>
+                <input type="password" id="adminPasswordInput" placeholder="رمز عبور مدیر" class="password-input">
+                <button class="btn" onclick="loginAdmin()" style="background:var(--primary); width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; transition:var(--transition);">✅ تایید</button>
+                <button class="btn" onclick="hideAdminLogin()" style="background:#616161; width:100%; padding:14px; border:none; border-radius:12px; font-size:16px; font-weight:bold; cursor:pointer; color:white; margin-top:6px; transition:var(--transition);">❌ انصراف</button>
+            </div>
+
+            <div id="adminFullMsg" style="display:none;" class="admin-full-msg">
+                ⚠️ ظرفیت مدیران تکمیل شده است (۴ مدیر)
+            </div>
+
+            <div class="login-hint" id="loginHint">👤 کاربران عادی بدون نیاز به اطلاعات وارد می‌شوند</div>
         </div>
     </div>
 
-    <div class="ai-suggestion-section" id="aiSection">
-        <h3>🤖 پیشنهاد هوشمند ملک</h3>
-        <div class="ai-form">
-            <label>💰 بودجه شما (تومان)</label>
-            <input type="number" id="aiBudget" placeholder="مثال: 500000000" />
-            <label>🏷️ نوع ملک</label>
-            <select id="aiType">
-                <option value="all">همه</option>
-                <option value="sale">فروش</option>
-                <option value="rent">اجاره</option>
+    <div id="mainApp" style="display:none;">
+        <div class="header">
+            <div class="header-top">
+                <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
+                <button class="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+            </div>
+            <p id="welcomeUser">خوش آمدید</p>
+        </div>
+
+        <div class="welcome-box" id="welcomeBox">
+            <h3>👋 به دپارتمان املاک حسینی خوش آمدید</h3>
+            <p id="welcomeMessage">بهترین املاک منطقه را اینجا پیدا کنید</p>
+        </div>
+
+        <div class="admin-msg-box" id="adminMsgBox" style="display:none;">
+            <div id="adminMsgDisplay">
+                <p id="adminMessage">📢 پیام مدیر: خوش آمدید</p>
+                <small id="adminMsgDate"></small>
+            </div>
+            <div id="adminMsgEditArea" class="admin-msg-edit-area" style="display:none;">
+                <textarea id="adminMsgEditInput" placeholder="متن جدید پیام مدیر..."></textarea>
+                <button class="save-msg" onclick="saveAdminMessageEdit()">💾 ذخیره</button>
+                <button class="cancel-msg" onclick="cancelAdminMessageEdit()">❌ انصراف</button>
+            </div>
+            <div class="msg-actions" id="adminMsgActions" style="display:none;">
+                <button class="edit-msg" onclick="editAdminMessage()">✏️ ویرایش</button>
+                <button class="del-msg" onclick="deleteAdminMessage()">🗑️ حذف</button>
+            </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
+            <span id="userRoleBadge" class="admin-badge">👤 کاربر</span>
+            <div>
+                <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#FF8F00,#E65100);margin-right:4px;box-shadow:0 2px 10px rgba(255,143,0,0.3);transition:var(--transition);" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
+                <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش</button>
+                <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:none;">🚪 خروج</button>
+            </div>
+        </div>
+
+        <div class="ai-suggestion-section" id="aiSection">
+            <h3>🤖 پیشنهاد هوشمند ملک</h3>
+            <div class="ai-form">
+                <label>💰 بودجه شما (تومان)</label>
+                <input type="number" id="aiBudget" placeholder="مثال: 500000000" />
+                <label>🏷️ نوع ملک</label>
+                <select id="aiType">
+                    <option value="all">همه</option>
+                    <option value="sale">فروش</option>
+                    <option value="rent">اجاره</option>
+                </select>
+                <label>🏠 دسته‌بندی</label>
+                <select id="aiCategory">
+                    <option value="all">همه</option>
+                    <option value="زمین مسکونی">زمین مسکونی</option>
+                    <option value="زمین تجاری">زمین تجاری</option>
+                    <option value="زمین کارگاهی">زمین کارگاهی</option>
+                    <option value="آپارتمان">آپارتمان</option>
+                    <option value="مغازه">مغازه</option>
+                    <option value="خانه">خانه</option>
+                    <option value="باغ">باغ</option>
+                </select>
+                <label>📐 حداقل متراژ</label>
+                <input type="number" id="aiMinArea" placeholder="مثال: 80" />
+                <button class="btn-ai" onclick="getAISuggestions()">🔍 جستجوی هوشمند</button>
+            </div>
+            <div class="ai-results" id="aiResults"></div>
+        </div>
+
+        <div class="user-preview-section" id="userPreviewSection">
+            <h3>👁️ پیش‌نمایش کاربران</h3>
+            <div class="preview-tabs">
+                <button class="active" onclick="previewTab('properties')">🏠 املاک</button>
+                <button onclick="previewTab('messages')">💬 پیام‌ها</button>
+                <button onclick="previewTab('cart')">🛒 سبد خرید</button>
+            </div>
+            <div class="preview-content" id="previewContent"></div>
+        </div>
+
+        <div class="admin-users-section" id="adminUsersSection">
+            <div class="section-header">
+                <h4>👥 لیست کاربران</h4>
+                <span class="user-count" id="userCount">۰ کاربر</span>
+            </div>
+            <div id="usersListContainer">
+                <div style="text-align:center;color:var(--text-light);padding:20px;">در حال بارگذاری...</div>
+            </div>
+            <button class="btn btn-secondary" onclick="refreshUsersList()" style="width:100%;margin-top:8px;">🔄 بروزرسانی</button>
+        </div>
+
+        <div class="form" id="editProfileForm">
+            <h3>✏️ ویرایش اطلاعات مدیر</h3>
+            <label>نام مدیر</label>
+            <input type="text" id="editAdminName" placeholder="نام خود را وارد کنید..." />
+            <label>رمز عبور جدید</label>
+            <input type="password" id="editAdminPassword" placeholder="رمز عبور جدید را وارد کنید..." />
+            <button class="btn btn-success" onclick="saveProfileChanges()">💾 ذخیره تغییرات</button>
+            <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
+        </div>
+
+        <div class="guide-box" id="guideBox" style="display:none;">
+            <h4>📖 دفترچه راهنمای مدیر</h4>
+            <ul>
+                <li><span class="badge-icon">➕</span> افزودن ملک جدید</li>
+                <li><span class="badge-icon green">✏️</span> ویرایش اطلاعات ملک</li>
+                <li><span class="badge-icon red">✕</span> حذف ملک</li>
+                <li><span class="badge-icon gold">📌</span> سنجاق کردن ملک</li>
+                <li><span class="badge-icon purple">📊</span> مشاهده نمودار</li>
+                <li><span class="badge-icon orange">📄</span> خروجی گزارش</li>
+                <li><span class="badge-icon">💾</span> پشتیبان‌گیری</li>
+                <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی</li>
+                <li><span class="badge-icon">💬</span> چت با کاربران</li>
+                <li><span class="badge-icon">👥</span> مشاهده لیست کاربران</li>
+                <li><span class="badge-icon purple">🤖</span> پیش‌نمایش کاربران</li>
+            </ul>
+        </div>
+
+        <div id="userFilterSection">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+                <span style="font-size:14px;font-weight:bold;color:var(--primary);">🔍 فیلتر املاک</span>
+                <button class="clear-filter-btn" onclick="clearUserFilters()">🗑️ پاک کردن</button>
+            </div>
+            <div class="selection-info" id="filterInfo">
+                <span>یک دسته‌بندی و نوع را انتخاب کنید</span>
+            </div>
+
+            <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:4px;">دسته‌بندی ملک:</label>
+            <div class="category-grid" id="categoryGrid">
+                <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)"><span class="icon">🏡</span> زمین مسکونی</button>
+                <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)"><span class="icon">🏢</span> زمین تجاری</button>
+                <button class="cat-btn" data-cat="زمین کارگاهی" onclick="selectCategory(this)"><span class="icon">🏭</span> زمین کارگاهی</button>
+                <button class="cat-btn" data-cat="آپارتمان" onclick="selectCategory(this)"><span class="icon">🏢</span> آپارتمان</button>
+                <button class="cat-btn" data-cat="مغازه" onclick="selectCategory(this)"><span class="icon">🛍️</span> مغازه</button>
+                <button class="cat-btn" data-cat="خانه" onclick="selectCategory(this)"><span class="icon">🏠</span> خانه</button>
+                <button class="cat-btn" data-cat="باغ" onclick="selectCategory(this)"><span class="icon">🌳</span> باغ</button>
+                <button class="cat-btn" data-cat="all" onclick="selectCategory(this)"><span class="icon">📋</span> همه</button>
+            </div>
+
+            <label style="font-size:12px;color:var(--text-light);display:block;margin-bottom:4px;">نوع معامله:</label>
+            <div class="type-grid" id="typeGrid">
+                <button class="type-btn sale" data-type="sale" onclick="selectType(this)">💰 فروش</button>
+                <button class="type-btn rent" data-type="rent" onclick="selectType(this)">🔑 اجاره</button>
+                <button class="type-btn" data-type="all" onclick="selectType(this)" style="border-color:var(--primary);">📋 همه</button>
+            </div>
+
+            <div class="price-filter-box" id="priceFilterBox">
+                <div class="price-info" id="priceFilterInfo">💰 محدوده قیمت مورد نظر خود را وارد کنید</div>
+                <div id="salePriceFilter">
+                    <label>حداکثر قیمت (تومان)</label>
+                    <input type="number" id="userMaxPrice" placeholder="مثال: 500000000" />
+                </div>
+                <div id="rentPriceFilter" style="display:none;">
+                    <label>حداکثر رهن (تومان)</label>
+                    <input type="number" id="userMaxRahn" placeholder="مثال: 30000000" />
+                    <label>حداکثر کرایه (تومان)</label>
+                    <input type="number" id="userMaxRent" placeholder="مثال: 1500000" />
+                </div>
+                <button class="btn" onclick="applyUserPriceFilter()">✅ اعمال فیلتر قیمت</button>
+                <button class="btn btn-clear" onclick="clearUserPriceFilter()">🗑️ حذف فیلتر قیمت</button>
+            </div>
+        </div>
+
+        <div class="stats" id="statsContainer">
+            <div><span id="totalCount">0</span><label>کل</label></div>
+            <div><span id="saleCount">0</span><label>فروش</label></div>
+            <div><span id="rentCount">0</span><label>اجاره</label></div>
+            <div><span id="avgPrice">0</span><label>میانگین</label></div>
+        </div>
+
+        <div class="btn-group" id="adminButtons" style="display:none;">
+            <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
+            <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام</button>
+            <button class="btn btn-purple" onclick="toggleChart()">📊 نمودار</button>
+            <button class="btn btn-teal" onclick="exportExcel()">📊 Excel</button>
+            <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
+            <button class="btn btn-secondary" onclick="viewChats()">💬 چت</button>
+            <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
+            <button class="btn btn-primary" onclick="showUsersList()">👥 کاربران</button>
+            <button class="btn btn-purple" onclick="toggleUserPreview()">👁️ پیش‌نمایش</button>
+        </div>
+
+        <div class="form" id="propertyForm">
+            <h3 id="formTitle">📋 ثبت ملک جدید</h3>
+            <input type="hidden" id="editId" value="" />
+            <label>عنوان ملک <span class="required">*</span></label>
+            <input type="text" id="fTitle" placeholder="مثال: آپارتمان لوکس" />
+            <label>کد ملک (اختیاری)</label>
+            <input type="text" id="fCode" placeholder="مثال: MLK-001" />
+            <label>دسته‌بندی ملک <span class="required">*</span></label>
+            <select id="fCategory">
+                <option value="زمین مسکونی">🏡 زمین مسکونی</option>
+                <option value="زمین تجاری">🏢 زمین تجاری</option>
+                <option value="زمین کارگاهی">🏭 زمین کارگاهی</option>
+                <option value="آپارتمان">🏢 آپارتمان</option>
+                <option value="مغازه">🛍️ مغازه</option>
+                <option value="خانه">🏠 خانه</option>
+                <option value="باغ">🌳 باغ</option>
             </select>
-            <label>🏠 دسته‌بندی</label>
-            <select id="aiCategory">
-                <option value="all">همه</option>
+            <label>نوع معامله <span class="required">*</span></label>
+            <select id="fType" onchange="togglePriceFields()">
+                <option value="sale">💰 فروش</option>
+                <option value="rent">🔑 اجاره</option>
+            </select>
+            <div id="saleFields">
+                <label>قیمت فروش (تومان) <span class="required">*</span></label>
+                <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" oninput="formatPrice(this)" />
+            </div>
+            <div id="rentFields" style="display:none;">
+                <label>قیمت رهن (تومان) <span class="required">*</span></label>
+                <input type="text" id="fRahn" placeholder="مثال: 50,000,000" oninput="formatPrice(this)" />
+                <label>قیمت کرایه (تومان) <span class="required">*</span></label>
+                <input type="text" id="fRentPrice" placeholder="مثال: 2,000,000" oninput="formatPrice(this)" />
+            </div>
+            <label>آدرس <span class="required">*</span></label>
+            <input type="text" id="fAddress" placeholder="آدرس کامل" />
+            <label>متراژ (متر مربع)</label>
+            <input type="number" id="fArea" placeholder="مثال: 120" />
+            <label>شماره تماس</label>
+            <input type="text" id="fPhone" placeholder="مثال: 09123456789" />
+            <label>توضیحات عمومی</label>
+            <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
+            <label>🔒 بخش مخفی (فقط مدیر)</label>
+            <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:var(--purple);"></textarea>
+            <small style="color:var(--purple);font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است</small>
+
+            <div class="file-input-wrapper">
+                <label>📎 فایل ضمیمه (مدارک، عکس، و...) - فقط مدیر</label>
+                <input type="file" id="fFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip,.rar" />
+                <small>فایل‌های مجاز: PDF, DOC, DOCX, JPG, PNG, ZIP, RAR</small>
+            </div>
+
+            <div class="file-input-wrapper">
+                <label>📸 عکس‌ها (حداکثر ۲۰ عدد)</label>
+                <input type="file" id="fImages" accept="image/*" multiple />
+                <small>با Ctrl یا Shift چندتا انتخاب کن</small>
+            </div>
+            <div class="file-input-wrapper">
+                <label>🎬 فیلم (یک عدد)</label>
+                <input type="file" id="fVideo" accept="video/*" />
+            </div>
+            <button class="btn btn-success" onclick="saveProperty()">💾 ذخیره</button>
+            <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
+        </div>
+
+        <div class="form" id="publicMsgForm">
+            <h3 id="publicMsgTitle">📢 ارسال پیام عمومی</h3>
+            <input type="hidden" id="editMsgId" value="" />
+            <label>متن پیام <span class="required">*</span></label>
+            <textarea id="fPublicMsg" placeholder="متن پیام خود را وارد کنید..." style="min-height:80px;"></textarea>
+            <button class="btn btn-pink" id="publicMsgSubmitBtn" onclick="savePublicMessage()">📤 ارسال پیام</button>
+            <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
+        </div>
+
+        <div class="user-chat-section" id="userChatSection">
+            <h3>💬 ارسال پیام به مدیر</h3>
+            <div class="chat-messages" id="userChatMessagesContainer">
+                <div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>
+            </div>
+            <div class="chat-input-area">
+                <input type="text" id="userChatInput" placeholder="متن پیام خود را بنویسید..." dir="rtl" />
+                <button onclick="sendUserMessage()" title="ارسال پیام">📤</button>
+            </div>
+            <div style="font-size:10px;color:var(--text-light);margin-top:6px;text-align:center;">
+                پیام شما به مدیر ارسال می‌شود و پاسخ مدیر را در همین بخش مشاهده خواهید کرد
+            </div>
+        </div>
+
+        <div class="form" id="chatViewer" style="display:none;">
+            <h3 id="chatViewerTitle">💬 چت با کاربران</h3>
+            <div id="chatUserList" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
+            <div id="chatMessagesContainer" style="max-height:400px;overflow-y:auto;margin-bottom:10px;padding:8px;background:var(--bg);border-radius:10px;"></div>
+            <div style="margin-top:6px;">
+                <textarea id="chatReplyInput" placeholder="پاسخ خود را بنویسید..." style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;min-height:60px;resize:vertical;background:var(--card-bg);color:var(--text);"></textarea>
+                <div class="file-input-wrapper" style="margin-top:6px;">
+                    <label>📎 ضمیمه فایل</label>
+                    <input type="file" id="chatFileInput" />
+                    <small>فایل خود را انتخاب کنید</small>
+                </div>
+                <button class="btn btn-purple" onclick="sendChatReply()" style="margin-top:6px;">📤 ارسال پاسخ</button>
+            </div>
+            <button class="btn btn-secondary" onclick="closeChatViewer()" style="margin-top:6px;">❌ بستن</button>
+        </div>
+
+        <div class="filter-sort" id="adminFilterSort">
+            <select id="categoryFilter" onchange="renderList()">
+                <option value="all">همه دسته‌ها</option>
                 <option value="زمین مسکونی">زمین مسکونی</option>
                 <option value="زمین تجاری">زمین تجاری</option>
                 <option value="زمین کارگاهی">زمین کارگاهی</option>
@@ -2381,287 +2638,58 @@
                 <option value="خانه">خانه</option>
                 <option value="باغ">باغ</option>
             </select>
-            <label>📐 حداقل متراژ</label>
-            <input type="number" id="aiMinArea" placeholder="مثال: 80" />
-            <button class="btn-ai" onclick="getAISuggestions()">🔍 جستجوی هوشمند</button>
-        </div>
-        <div class="ai-results" id="aiResults"></div>
-    </div>
-
-    <div class="user-preview-section" id="userPreviewSection">
-        <h3>👁️ پیش‌نمایش کاربران</h3>
-        <div class="preview-tabs">
-            <button class="active" onclick="previewTab('properties')">🏠 املاک</button>
-            <button onclick="previewTab('messages')">💬 پیام‌ها</button>
-            <button onclick="previewTab('cart')">🛒 سبد خرید</button>
-        </div>
-        <div class="preview-content" id="previewContent"></div>
-    </div>
-
-    <div class="admin-users-section" id="adminUsersSection">
-        <div class="section-header">
-            <h4>👥 لیست کاربران</h4>
-            <span class="user-count" id="userCount">۰ کاربر</span>
-        </div>
-        <div id="usersListContainer">
-            <div style="text-align:center;color:#666;padding:20px;">در حال بارگذاری...</div>
-        </div>
-        <button class="btn btn-secondary" onclick="refreshUsersList()" style="width:100%;margin-top:8px;">🔄 بروزرسانی</button>
-    </div>
-
-    <div class="form" id="editProfileForm">
-        <h3>✏️ ویرایش اطلاعات مدیر</h3>
-        <label>نام مدیر</label>
-        <input type="text" id="editAdminName" placeholder="نام خود را وارد کنید..." />
-        <label>رمز عبور جدید</label>
-        <input type="password" id="editAdminPassword" placeholder="رمز عبور جدید را وارد کنید..." />
-        <button class="btn btn-success" onclick="saveProfileChanges()">💾 ذخیره تغییرات</button>
-        <button class="btn btn-secondary" onclick="hideEditProfile()">❌ انصراف</button>
-    </div>
-
-    <div class="guide-box" id="guideBox" style="display:none;">
-        <h4>📖 دفترچه راهنمای مدیر</h4>
-        <ul>
-            <li><span class="badge-icon">➕</span> افزودن ملک جدید</li>
-            <li><span class="badge-icon green">✏️</span> ویرایش اطلاعات ملک</li>
-            <li><span class="badge-icon red">✕</span> حذف ملک</li>
-            <li><span class="badge-icon gold">📌</span> سنجاق کردن ملک</li>
-            <li><span class="badge-icon purple">📊</span> مشاهده نمودار</li>
-            <li><span class="badge-icon orange">📄</span> خروجی گزارش</li>
-            <li><span class="badge-icon">💾</span> پشتیبان‌گیری</li>
-            <li><span class="badge-icon pink">📢</span> ارسال پیام عمومی</li>
-            <li><span class="badge-icon">💬</span> چت با کاربران</li>
-            <li><span class="badge-icon">👥</span> مشاهده لیست کاربران</li>
-            <li><span class="badge-icon purple">🤖</span> پیش‌نمایش کاربران</li>
-        </ul>
-    </div>
-
-    <div id="userFilterSection">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
-            <span style="font-size:14px;font-weight:bold;color:#1565C0;">🔍 فیلتر املاک</span>
-            <button class="clear-filter-btn" onclick="clearUserFilters()">🗑️ پاک کردن</button>
-        </div>
-        <div class="selection-info" id="filterInfo">
-            <span>یک دسته‌بندی و نوع را انتخاب کنید</span>
+            <select id="sortBy" onchange="renderList()">
+                <option value="newest">جدیدترین</option>
+                <option value="oldest">قدیمی‌ترین</option>
+                <option value="price_high">گران‌ترین</option>
+                <option value="price_low">ارزان‌ترین</option>
+            </select>
+            <input type="number" id="minPrice" placeholder="حداقل قیمت" oninput="renderList()" />
+            <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" />
         </div>
 
-        <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">دسته‌بندی ملک:</label>
-        <div class="category-grid" id="categoryGrid">
-            <button class="cat-btn" data-cat="زمین مسکونی" onclick="selectCategory(this)"><span class="icon">🏡</span> زمین مسکونی</button>
-            <button class="cat-btn" data-cat="زمین تجاری" onclick="selectCategory(this)"><span class="icon">🏢</span> زمین تجاری</button>
-            <button class="cat-btn" data-cat="زمین کارگاهی" onclick="selectCategory(this)"><span class="icon">🏭</span> زمین کارگاهی</button>
-            <button class="cat-btn" data-cat="آپارتمان" onclick="selectCategory(this)"><span class="icon">🏢</span> آپارتمان</button>
-            <button class="cat-btn" data-cat="مغازه" onclick="selectCategory(this)"><span class="icon">🛍️</span> مغازه</button>
-            <button class="cat-btn" data-cat="خانه" onclick="selectCategory(this)"><span class="icon">🏠</span> خانه</button>
-            <button class="cat-btn" data-cat="باغ" onclick="selectCategory(this)"><span class="icon">🌳</span> باغ</button>
-            <button class="cat-btn" data-cat="all" onclick="selectCategory(this)"><span class="icon">📋</span> همه</button>
-        </div>
-
-        <label style="font-size:12px;color:#666;display:block;margin-bottom:4px;">نوع معامله:</label>
-        <div class="type-grid" id="typeGrid">
-            <button class="type-btn sale" data-type="sale" onclick="selectType(this)">💰 فروش</button>
-            <button class="type-btn rent" data-type="rent" onclick="selectType(this)">🔑 اجاره</button>
-            <button class="type-btn" data-type="all" onclick="selectType(this)" style="border-color:#1565C0;">📋 همه</button>
-        </div>
-
-        <div class="price-filter-box" id="priceFilterBox">
-            <div class="price-info" id="priceFilterInfo">💰 محدوده قیمت مورد نظر خود را وارد کنید</div>
-            <div id="salePriceFilter">
-                <label>حداکثر قیمت (تومان)</label>
-                <input type="number" id="userMaxPrice" placeholder="مثال: 500000000" />
+        <div class="chart-container" id="chartContainer" style="display:none;">
+            <h4>📊 آمار املاک</h4>
+            <canvas id="chartCanvas"></canvas>
+            <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--text-light);">
+                <span style="color:#E65100;">🟧 فروش: <span id="chartSaleCount">0</span></span> &nbsp;|&nbsp;
+                <span style="color:#C62828;">🟥 اجاره: <span id="chartRentCount">0</span></span>
             </div>
-            <div id="rentPriceFilter" style="display:none;">
-                <label>حداکثر رهن (تومان)</label>
-                <input type="number" id="userMaxRahn" placeholder="مثال: 30000000" />
-                <label>حداکثر کرایه (تومان)</label>
-                <input type="number" id="userMaxRent" placeholder="مثال: 1500000" />
+        </div>
+
+        <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
+
+        <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
+
+        <div class="filter-tabs" id="filterTabs">
+            <button class="active" onclick="setFilter('all', this)">همه</button>
+            <button onclick="setFilter('sale', this)">💰 فروش</button>
+            <button onclick="setFilter('rent', this)">🔑 اجاره</button>
+        </div>
+
+        <div id="propertyList"></div>
+
+        <div class="cart-modal" id="cartModal">
+            <div class="cart-content">
+                <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
+                <div id="cartList"></div>
             </div>
-            <button class="btn" onclick="applyUserPriceFilter()">✅ اعمال فیلتر قیمت</button>
-            <button class="btn btn-clear" onclick="clearUserPriceFilter()">🗑️ حذف فیلتر قیمت</button>
-        </div>
-    </div>
-
-    <div class="stats" id="statsContainer">
-        <div><span id="totalCount">0</span><label>کل</label></div>
-        <div><span id="saleCount">0</span><label>فروش</label></div>
-        <div><span id="rentCount">0</span><label>اجاره</label></div>
-        <div><span id="avgPrice">0</span><label>میانگین</label></div>
-    </div>
-
-    <div class="btn-group" id="adminButtons" style="display:none;">
-        <button class="btn btn-primary" onclick="toggleForm()">➕ افزودن</button>
-        <button class="btn btn-pink" onclick="showPublicMsgForm()">📢 پیام</button>
-        <button class="btn btn-purple" onclick="toggleChart()">📊 نمودار</button>
-        <button class="btn btn-teal" onclick="exportExcel()">📊 Excel</button>
-        <button class="btn btn-success" onclick="exportPDF()">📄 PDF</button>
-        <button class="btn btn-secondary" onclick="viewChats()">💬 چت</button>
-        <button class="btn btn-info" onclick="backupData()">💾 پشتیبان</button>
-        <button class="btn btn-primary" onclick="showUsersList()">👥 کاربران</button>
-        <button class="btn btn-purple" onclick="toggleUserPreview()">👁️ پیش‌نمایش</button>
-    </div>
-
-    <div class="form" id="propertyForm">
-        <h3 id="formTitle">📋 ثبت ملک جدید</h3>
-        <input type="hidden" id="editId" value="" />
-        <label>عنوان ملک <span class="required">*</span></label>
-        <input type="text" id="fTitle" placeholder="مثال: آپارتمان لوکس" />
-        <label>کد ملک (اختیاری)</label>
-        <input type="text" id="fCode" placeholder="مثال: MLK-001" />
-        <label>دسته‌بندی ملک <span class="required">*</span></label>
-        <select id="fCategory">
-            <option value="زمین مسکونی">🏡 زمین مسکونی</option>
-            <option value="زمین تجاری">🏢 زمین تجاری</option>
-            <option value="زمین کارگاهی">🏭 زمین کارگاهی</option>
-            <option value="آپارتمان">🏢 آپارتمان</option>
-            <option value="مغازه">🛍️ مغازه</option>
-            <option value="خانه">🏠 خانه</option>
-            <option value="باغ">🌳 باغ</option>
-        </select>
-        <label>نوع معامله <span class="required">*</span></label>
-        <select id="fType" onchange="togglePriceFields()">
-            <option value="sale">💰 فروش</option>
-            <option value="rent">🔑 اجاره</option>
-        </select>
-        <div id="saleFields">
-            <label>قیمت فروش (تومان) <span class="required">*</span></label>
-            <input type="text" id="fPrice" placeholder="مثال: 2,500,000,000" oninput="formatPrice(this)" />
-        </div>
-        <div id="rentFields" style="display:none;">
-            <label>قیمت رهن (تومان) <span class="required">*</span></label>
-            <input type="text" id="fRahn" placeholder="مثال: 50,000,000" oninput="formatPrice(this)" />
-            <label>قیمت کرایه (تومان) <span class="required">*</span></label>
-            <input type="text" id="fRentPrice" placeholder="مثال: 2,000,000" oninput="formatPrice(this)" />
-        </div>
-        <label>آدرس <span class="required">*</span></label>
-        <input type="text" id="fAddress" placeholder="آدرس کامل" />
-        <label>متراژ (متر مربع)</label>
-        <input type="number" id="fArea" placeholder="مثال: 120" />
-        <label>شماره تماس</label>
-        <input type="text" id="fPhone" placeholder="مثال: 09123456789" />
-        <label>توضیحات عمومی</label>
-        <textarea id="fDescription" placeholder="توضیحات کامل ملک..." style="min-height:60px;"></textarea>
-        <label>🔒 بخش مخفی (فقط مدیر)</label>
-        <textarea id="fHiddenDescription" placeholder="اطلاعات محرمانه (فقط مدیر می‌بیند)..." style="min-height:40px;border-color:#6A1B9A;"></textarea>
-        <small style="color:#6A1B9A;font-size:11px;">این بخش فقط برای مدیر قابل مشاهده است</small>
-
-        <div class="file-input-wrapper">
-            <label>📎 فایل ضمیمه (مدارک، عکس، و...) - فقط مدیر</label>
-            <input type="file" id="fFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.zip,.rar" />
-            <small>فایل‌های مجاز: PDF, DOC, DOCX, JPG, PNG, ZIP, RAR</small>
         </div>
 
-        <div class="file-input-wrapper">
-            <label>📸 عکس‌ها (حداکثر ۲۰ عدد)</label>
-            <input type="file" id="fImages" accept="image/*" multiple />
-            <small>با Ctrl یا Shift چندتا انتخاب کن</small>
+        <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
+            <div class="modal-content" id="modalContent"></div>
         </div>
-        <div class="file-input-wrapper">
-            <label>🎬 فیلم (یک عدد)</label>
-            <input type="file" id="fVideo" accept="video/*" />
-        </div>
-        <button class="btn btn-success" onclick="saveProperty()">💾 ذخیره</button>
-        <button class="btn btn-secondary" onclick="toggleForm()">❌ انصراف</button>
+
+        <div class="toast" id="toast"></div>
     </div>
 
-    <div class="form" id="publicMsgForm">
-        <h3 id="publicMsgTitle">📢 ارسال پیام عمومی</h3>
-        <input type="hidden" id="editMsgId" value="" />
-        <label>متن پیام <span class="required">*</span></label>
-        <textarea id="fPublicMsg" placeholder="متن پیام خود را وارد کنید..." style="min-height:80px;"></textarea>
-        <button class="btn btn-pink" id="publicMsgSubmitBtn" onclick="savePublicMessage()">📤 ارسال پیام</button>
-        <button class="btn btn-secondary" onclick="hidePublicMsgForm()">❌ انصراف</button>
-    </div>
-
-    <div class="user-chat-section" id="userChatSection">
-        <h3>💬 ارسال پیام به مدیر</h3>
-        <div class="chat-messages" id="userChatMessagesContainer">
-            <div style="text-align:center;color:#666;padding:20px;">💬 هنوز پیامی ارسال نشده است</div>
-        </div>
-        <div class="chat-input-area">
-            <input type="text" id="userChatInput" placeholder="متن پیام خود را بنویسید..." dir="rtl" />
-            <button onclick="sendUserMessage()" title="ارسال پیام">📤</button>
-        </div>
-        <div style="font-size:10px;color:#666;margin-top:6px;text-align:center;">
-            پیام شما به مدیر ارسال می‌شود و پاسخ مدیر را در همین بخش مشاهده خواهید کرد
-        </div>
-    </div>
-
-    <div class="form" id="chatViewer" style="display:none;">
-        <h3 id="chatViewerTitle">💬 چت با کاربران</h3>
-        <div id="chatUserList" style="max-height:300px;overflow-y:auto;margin-bottom:10px;"></div>
-        <div id="chatMessagesContainer" style="max-height:400px;overflow-y:auto;margin-bottom:10px;padding:8px;background:#f0f2f5;border-radius:10px;"></div>
-        <div style="margin-top:6px;">
-            <textarea id="chatReplyInput" placeholder="پاسخ خود را بنویسید..." style="width:100%;padding:10px;border:2px solid #ddd;border-radius:10px;font-size:13px;min-height:60px;resize:vertical;background:white;color:#1a1a2e;"></textarea>
-            <div class="file-input-wrapper" style="margin-top:6px;">
-                <label>📎 ضمیمه فایل</label>
-                <input type="file" id="chatFileInput" />
-                <small>فایل خود را انتخاب کنید</small>
-            </div>
-            <button class="btn btn-purple" onclick="sendChatReply()" style="margin-top:6px;">📤 ارسال پاسخ</button>
-        </div>
-        <button class="btn btn-secondary" onclick="closeChatViewer()" style="margin-top:6px;">❌ بستن</button>
-    </div>
-
-    <div class="filter-sort" id="adminFilterSort">
-        <select id="categoryFilter" onchange="renderList()">
-            <option value="all">همه دسته‌ها</option>
-            <option value="زمین مسکونی">زمین مسکونی</option>
-            <option value="زمین تجاری">زمین تجاری</option>
-            <option value="زمین کارگاهی">زمین کارگاهی</option>
-            <option value="آپارتمان">آپارتمان</option>
-            <option value="مغازه">مغازه</option>
-            <option value="خانه">خانه</option>
-            <option value="باغ">باغ</option>
-        </select>
-        <select id="sortBy" onchange="renderList()">
-            <option value="newest">جدیدترین</option>
-            <option value="oldest">قدیمی‌ترین</option>
-            <option value="price_high">گران‌ترین</option>
-            <option value="price_low">ارزان‌ترین</option>
-        </select>
-        <input type="number" id="minPrice" placeholder="حداقل قیمت" oninput="renderList()" />
-        <input type="number" id="maxPrice" placeholder="حداکثر قیمت" oninput="renderList()" />
-    </div>
-
-    <div class="chart-container" id="chartContainer" style="display:none;">
-        <h4>📊 آمار املاک</h4>
-        <canvas id="chartCanvas"></canvas>
-        <div style="text-align:center;margin-top:8px;font-size:12px;color:#666;">
-            <span style="color:#E65100;">🟧 فروش: <span id="chartSaleCount">0</span></span> &nbsp;|&nbsp;
-            <span style="color:#C62828;">🟥 اجاره: <span id="chartRentCount">0</span></span>
-        </div>
-    </div>
-
-    <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
-
-    <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
-
-    <div class="filter-tabs" id="filterTabs">
-        <button class="active" onclick="setFilter('all', this)">همه</button>
-        <button onclick="setFilter('sale', this)">💰 فروش</button>
-        <button onclick="setFilter('rent', this)">🔑 اجاره</button>
-    </div>
-
-    <div id="propertyList"></div>
-
-    <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
-            <h3>🛒 سبد خرید <button onclick="toggleCart()">✕ بستن</button></h3>
-            <div id="cartList"></div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="mediaModal" onclick="if(event.target===this)closeModal()">
-        <div class="modal-content" id="modalContent"></div>
-    </div>
-
-    <div class="toast" id="toast"></div>
-</div>    <script>
+    <script>
         // ============================================================
         // ====== تنظیمات ======
         // ============================================================
         const ADMIN_PASSWORD = '26742674';
         const MAX_ADMINS = 4;
+
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
 
@@ -2682,97 +2710,50 @@
         let currentChatUserId = null;
         let usersList = [];
         let adminCount = 0;
+
+        // ===== گالری =====
         let galleryItems = [];
         let galleryCurrentIndex = 0;
         let galleryPropertyId = null;
 
         // ============================================================
-        // ====== مدیریت خطا و نمایش ======
+        // ====== مدیریت خطا ======
         // ============================================================
-
-        function showToast(msg, type) {
-            type = type || 'info';
-            var t = document.getElementById('toast');
-            if (!t) return;
-            t.textContent = msg;
-            t.className = 'toast ' + type;
-            t.style.display = 'block';
-            clearTimeout(t._hide);
-            t._hide = setTimeout(function() { t.style.display = 'none';
-                t.className = 'toast'; }, 5000);
-        }
-
-        function showLoading(show, text) {
-            text = text || '⏳ در حال اتصال به سرور...';
-            var el = document.getElementById('loadingOverlay');
-            if (!el) return;
-            var textEl = document.getElementById('loadingText');
-            var errorEl = document.getElementById('loadingError');
-            var successEl = document.getElementById('loadingSuccess');
-
-            if (show) {
-                el.classList.remove('hidden');
-                if (textEl) textEl.textContent = text;
-                if (errorEl) { errorEl.style.display = 'none';
-                    errorEl.textContent = ''; }
-                if (successEl) { successEl.style.display = 'none';
-                    successEl.textContent = ''; }
-            } else {
-                el.classList.add('hidden');
+        const ErrorHandler = {
+            log: function(error, context, showToast = true) {
+                const errorMsg = error?.message || error || 'خطای ناشناخته';
+                console.error('❌ خطا در:', context);
+                console.error('📝 پیام:', errorMsg);
+                if (showToast) {
+                    this.showToast('❌ ' + context + ': ' + errorMsg, 'error');
+                }
+                return errorMsg;
+            },
+            showToast: function(msg, type = 'info') {
+                const t = document.getElementById('toast');
+                if (!t) return;
+                t.textContent = msg;
+                t.className = 'toast ' + type;
+                t.style.display = 'block';
+                clearTimeout(t._hide);
+                t._hide = setTimeout(function() { t.style.display = 'none';
+                    t.className = 'toast'; }, 5000);
+            },
+            showLoading: function(show) {
+                const el = document.getElementById('loadingOverlay');
+                if (!el) return;
+                if (show) el.classList.remove('hidden');
+                else el.classList.add('hidden');
             }
-        }
+        };
 
-        function showError(title, detail, showDebug) {
-            showDebug = showDebug || false;
-            var box = document.getElementById('errorBox');
-            var titleEl = document.getElementById('errorTitle');
-            var detailEl = document.getElementById('errorDetail');
-            var debugEl = document.getElementById('debugInfo');
+        function showToast(msg, type) { ErrorHandler.showToast(msg, type || 'info'); }
 
-            if (box) box.style.display = 'block';
-            if (titleEl) titleEl.textContent = '⚠️ ' + title;
-            if (detailEl) detailEl.textContent = detail;
-
-            if (showDebug && debugEl) {
-                debugEl.style.display = 'block';
-                debugEl.textContent = '📋 اطلاعات خطا:\n' +
-                    'زمان: ' + new Date().toLocaleString() + '\n' +
-                    'جزئیات: ' + detail;
-            }
-            showLoading(false);
-        }
-
-        function showLoadingError(message) {
-            var el = document.getElementById('loadingError');
-            var textEl = document.getElementById('loadingText');
-            if (el) {
-                el.style.display = 'block';
-                el.textContent = '❌ ' + message;
-            }
-            if (textEl) textEl.textContent = '⚠️ خطا در اتصال';
-        }
-
-        function showLoadingSuccess(message) {
-            var el = document.getElementById('loadingSuccess');
-            var textEl = document.getElementById('loadingText');
-            if (el) {
-                el.style.display = 'block';
-                el.textContent = '✅ ' + message;
-            }
-            if (textEl) textEl.textContent = '✅ متصل شد!';
-        }
-
-        function retryConnection() {
-            showLoading(true, '🔄 تلاش مجدد...');
-            document.getElementById('loadingError').style.display = 'none';
-            document.getElementById('loadingSuccess').style.display = 'none';
-            setTimeout(function() { init(); }, 500);
-        }
+        function showLoading(show) { ErrorHandler.showLoading(show); }
 
         // ============================================================
         // ====== توابع کمکی ======
         // ============================================================
-
         function sanitizeInput(text) {
             if (!text) return '';
             return String(text)
@@ -2786,9 +2767,9 @@
 
         function formatPrice(input) {
             try {
-                var value = input.value.replace(/[^0-9]/g, '');
+                let value = input.value.replace(/[^0-9]/g, '');
                 if (value === '') { input.value = ''; return; }
-                var number = parseInt(value);
+                let number = parseInt(value);
                 if (!isNaN(number)) { input.value = number.toLocaleString('en-US'); }
             } catch (e) {}
         }
@@ -2809,23 +2790,32 @@
             }
         }
 
-        function togglePriceFields() {
-            var type = document.getElementById('fType').value;
-            document.getElementById('saleFields').style.display = type === 'sale' ? 'block' : 'none';
-            document.getElementById('rentFields').style.display = type === 'rent' ? 'block' : 'none';
-        }
-
-        function generateCode() {
-            var now = new Date();
-            var year = now.getFullYear();
-            var count = properties.length + 1;
-            return 'MLK-' + year + '-' + String(count).padStart(3, '0');
+        // ============================================================
+        // ====== صبر برای لود Supabase ======
+        // ============================================================
+        function waitForSupabase() {
+            return new Promise(function(resolve) {
+                if (typeof supabase !== 'undefined') {
+                    resolve();
+                    return;
+                }
+                var attempts = 0;
+                var checkInterval = setInterval(function() {
+                    attempts++;
+                    if (typeof supabase !== 'undefined') {
+                        clearInterval(checkInterval);
+                        resolve();
+                    } else if (attempts > 50) {
+                        clearInterval(checkInterval);
+                        resolve();
+                    }
+                }, 200);
+            });
         }
 
         // ============================================================
         // ====== توابع Supabase ======
         // ============================================================
-
         async function getSetting(key) {
             if (!supabaseClient) return null;
             try {
@@ -2931,7 +2921,6 @@
         // ============================================================
         // ====== توابع ورود ======
         // ============================================================
-
         async function checkAdminLimitAndUpdateUI() {
             await getAdminCount();
             updateAdminLoginButton();
@@ -2940,15 +2929,17 @@
 
         async function loginAsUser() {
             try {
-                showLoading(true, '👤 ورود به عنوان کاربر...');
+                showLoading(true);
                 if (!supabaseClient) {
-                    showLoadingError('اتصال به سرور برقرار نیست!');
+                    showToast('❌ اتصال به سرور برقرار نیست!', 'error');
+                    showLoading(false);
                     return;
                 }
 
                 var user = await registerUser('کاربر');
                 if (!user) {
-                    showLoadingError('خطا در ثبت کاربر!');
+                    showToast('❌ خطا در ثبت کاربر!', 'error');
+                    showLoading(false);
                     return;
                 }
 
@@ -2963,12 +2954,15 @@
 
                 document.getElementById('loginOverlay').classList.add('hidden');
                 document.getElementById('mainApp').style.display = 'block';
+
                 showLoading(false);
                 showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
                 await enterApp();
+                loadUserChatMessages();
             } catch (e) {
                 showLoading(false);
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'ورود کاربر');
+                showToast('❌ خطا در ورود!', 'error');
             }
         }
 
@@ -3003,7 +2997,7 @@
                 }
 
                 if (password === ADMIN_PASSWORD) {
-                    showLoading(true, '👑 ورود به عنوان مدیر...');
+                    showLoading(true);
 
                     isAdmin = true;
                     var adminId = 'admin_' + Date.now().toString(36);
@@ -3031,7 +3025,8 @@
                 }
             } catch (e) {
                 showLoading(false);
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'ورود مدیر');
+                showToast('❌ خطا در ورود!', 'error');
             }
         }
 
@@ -3051,7 +3046,6 @@
         // ============================================================
         // ====== خروج ======
         // ============================================================
-
         async function logout() {
             try {
                 localStorage.removeItem('amlak_user');
@@ -3062,17 +3056,16 @@
                 hideAdminLogin();
                 await checkAdminLimitAndUpdateUI();
                 showToast('🚪 خروج موفق', 'success');
-            } catch (e) { showToast('❌ خطا در خروج', 'error'); }
+            } catch (e) { ErrorHandler.log(e, 'خروج'); }
         }
 
         // ============================================================
         // ====== بارگذاری داده‌ها ======
         // ============================================================
-
         async function loadProperties() {
             if (!supabaseClient) { properties = []; return; }
             try {
-                showLoading(true, '📊 بارگذاری املاک...');
+                showLoading(true);
                 var response = await supabaseClient
                     .from('estate_properties')
                     .select('*')
@@ -3084,14 +3077,11 @@
                 } else {
                     properties = [];
                 }
-                showLoading(false);
             } catch (e) {
-                showLoading(false);
-                showToast('❌ خطا در بارگذاری املاک: ' + e.message, 'error');
+                ErrorHandler.log(e, 'بارگذاری املاک');
                 properties = [];
-            }
-            updateStats();
-            renderList();
+            } finally { showLoading(false);
+                updateStats(); }
         }
 
         async function loadPublicMessages() {
@@ -3115,13 +3105,11 @@
             } else {
                 cartItems = [];
             }
-            updateCartBadge();
         }
 
         // ============================================================
         // ====== توابع چت ======
         // ============================================================
-
         async function loadChatMessages(userId) {
             if (!supabaseClient) return [];
             try {
@@ -3181,7 +3169,6 @@
         // ============================================================
         // ====== گالری ======
         // ============================================================
-
         function openGallery(propertyId) {
             var property = null;
             for (var i = 0; i < properties.length; i++) {
@@ -3279,9 +3266,8 @@
         }
 
         // ============================================================
-        // ====== سنجاق ======
+        // ====== سنجاق (Pin/Unpin) ======
         // ============================================================
-
         async function togglePin(id) {
             if (!isAdmin) {
                 showToast('⚠️ فقط مدیر می‌تواند سنجاق کند!', 'warning');
@@ -3290,6 +3276,7 @@
 
             try {
                 showLoading(true);
+
                 var property = null;
                 var index = -1;
                 for (var i = 0; i < properties.length; i++) {
@@ -3313,25 +3300,28 @@
                     .eq('id', id);
 
                 if (response.error) {
+                    console.error('❌ خطا در سنجاق:', response.error);
                     showToast('❌ خطا در سنجاق!', 'error');
                     showLoading(false);
                     return;
                 }
 
                 properties[index].pinned = newPinnedState;
+
                 showToast(newPinnedState ? '📌 ملک سنجاق شد!' : '📌 سنجاق ملک برداشته شد!', 'success');
+
                 renderList();
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'سنجاق ملک');
+                showToast('❌ خطا در سنجاق!', 'error');
             }
         }
 
         // ============================================================
-        // ====== ذخیره ملک ======
+        // ====== ذخیره ملک (ویرایش یا جدید) با آپلود عکس و فیلم ======
         // ============================================================
-
         async function saveProperty() {
             try {
                 if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
@@ -3342,6 +3332,7 @@
 
                 showLoading(true);
 
+                // ===== جمع‌آوری داده‌های متنی =====
                 var data = {
                     title: sanitizeInput(document.getElementById('fTitle').value.trim()),
                     category: document.getElementById('fCategory').value,
@@ -3354,6 +3345,7 @@
                     date: new Date().toLocaleDateString('fa-IR')
                 };
 
+                // ===== قیمت‌ها =====
                 if (data.type === 'sale') {
                     var p = document.getElementById('fPrice').value.replace(/,/g, '');
                     if (!p) { showToast('⚠️ قیمت فروش را وارد کنید!', 'warning'); return; }
@@ -3371,6 +3363,7 @@
 
                 if (!data.title || !data.address) { showToast('⚠️ عنوان و آدرس الزامی است!', 'warning'); return; }
 
+                // ===== کد ملک (فقط برای جدید) =====
                 if (!isEdit) {
                     data.id = generateId();
                     data.customcode = sanitizeInput(document.getElementById('fCode').value.trim()) || generateCode();
@@ -3381,7 +3374,11 @@
                     data.file = null;
                 }
 
-                // ===== آپلود فایل‌ها =====
+                // ============================================================
+                // ===== آپلود فایل‌ها (هم برای جدید و هم برای ویرایش) =====
+                // ============================================================
+
+                // 1. آپلود فایل ضمیمه
                 var fileInput = document.getElementById('fFile');
                 if (fileInput.files && fileInput.files.length > 0) {
                     var file = fileInput.files[0];
@@ -3398,6 +3395,7 @@
                     }
                 }
 
+                // 2. آپلود عکس‌ها
                 var imageUrls = [];
                 var imagesInput = document.getElementById('fImages');
                 if (imagesInput.files && imagesInput.files.length > 0) {
@@ -3418,6 +3416,7 @@
                     data.images = imageUrls;
                 }
 
+                // 3. آپلود فیلم
                 var videoInput = document.getElementById('fVideo');
                 if (videoInput.files && videoInput.files.length > 0) {
                     var videoFile = videoInput.files[0];
@@ -3434,8 +3433,12 @@
                     }
                 }
 
+                // ============================================================
+                // ===== ذخیره در Supabase =====
+                // ============================================================
                 var response;
                 if (isEdit) {
+                    // ===== ویرایش (UPDATE) =====
                     var updateData = {
                         title: data.title,
                         category: data.category,
@@ -3458,17 +3461,20 @@
                         .update(updateData)
                         .eq('id', editId);
                 } else {
+                    // ===== جدید (INSERT) =====
                     response = await supabaseClient
                         .from('estate_properties')
                         .insert([data]);
                 }
 
                 if (response.error) {
+                    console.error('❌ خطای Supabase:', response.error);
                     showToast('❌ خطا: ' + response.error.message, 'error');
                     showLoading(false);
                     return;
                 }
 
+                // ===== بروزرسانی لیست محلی =====
                 if (isEdit) {
                     for (var i = 0; i < properties.length; i++) {
                         if (properties[i].id === editId) {
@@ -3489,30 +3495,14 @@
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
+                console.error('❌ خطای کلی:', e);
                 showToast('❌ خطا: ' + e.message, 'error');
             }
-        }
-
-        function clearForm() {
-            var ids = ['fCode', 'fTitle', 'fPrice', 'fRahn', 'fRentPrice', 'fAddress', 'fArea', 'fPhone', 'fDescription',
-                'fHiddenDescription'
-            ];
-            for (var i = 0; i < ids.length; i++) {
-                document.getElementById(ids[i]).value = '';
-            }
-            document.getElementById('editId').value = '';
-            document.getElementById('fCategory').value = 'آپارتمان';
-            document.getElementById('fType').value = 'sale';
-            togglePriceFields();
-            document.getElementById('fFile').value = '';
-            document.getElementById('fImages').value = '';
-            document.getElementById('fVideo').value = '';
         }
 
         // ============================================================
         // ====== ویرایش پیام مدیر ======
         // ============================================================
-
         function editAdminMessage() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
             var currentMsg = localStorage.getItem('amlak_admin_message');
@@ -3563,7 +3553,6 @@
         // ============================================================
         // ====== هوش مصنوعی ======
         // ============================================================
-
         function getAISuggestions() {
             var budget = parseInt(document.getElementById('aiBudget').value) || 0;
             var type = document.getElementById('aiType').value;
@@ -3653,11 +3642,11 @@
             var container = document.getElementById('aiResults');
             if (!filtered.length) {
                 container.innerHTML =
-                    '<div style="text-align:center;color:#666;padding:20px;">😕 هیچ ملکی برای پیشنهاد وجود ندارد</div>';
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">😕 هیچ ملکی برای پیشنهاد وجود ندارد</div>';
                 return;
             }
 
-            var html = '<div style="font-size:12px;color:#666;margin-bottom:8px;">' + filtered.length +
+            var html = '<div style="font-size:12px;color:var(--text-light);margin-bottom:8px;">' + filtered.length +
                 ' ملک پیدا شد</div>';
             var slice = filtered.slice(0, 10);
             for (var i = 0; i < slice.length; i++) {
@@ -3673,13 +3662,13 @@
                             <div class="ai-result-item">
                                 <div style="display:flex;justify-content:space-between;align-items:center;">
                                     <div>
-                                        <div style="font-weight:bold;color:#1565C0;">${i+1}. ${sanitizeInput(p.title)}</div>
-                                        <div style="font-size:12px;color:#666;">📌 کد: ${sanitizeInput(p.customcode || p.code || 'ندارد')}</div>
-                                        <div style="font-size:12px;color:#666;">📍 ${sanitizeInput(p.address)}</div>
-                                        <div style="font-size:12px;color:#2E7D32;">${priceDisplay}</div>
-                                        <div style="font-size:11px;color:#666;">📐 ${p.area || 0} متر | 🏷️ ${p.category || 'بدون دسته'}</div>
-                                        ${p.images && p.images.length > 0 ? '<div style="font-size:10px;color:#666;">📸 ' + p.images.length + ' عکس</div>' : ''}
-                                        ${p.video ? '<div style="font-size:10px;color:#666;">🎬 فیلم</div>' : ''}
+                                        <div style="font-weight:bold;color:var(--primary);">${i+1}. ${sanitizeInput(p.title)}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">📌 کد: ${sanitizeInput(p.customcode || p.code || 'ندارد')}</div>
+                                        <div style="font-size:12px;color:var(--text-light);">📍 ${sanitizeInput(p.address)}</div>
+                                        <div style="font-size:12px;color:var(--secondary);">${priceDisplay}</div>
+                                        <div style="font-size:11px;color:var(--text-light);">📐 ${p.area || 0} متر | 🏷️ ${p.category || 'بدون دسته'}</div>
+                                        ${p.images && p.images.length > 0 ? '<div style="font-size:10px;color:var(--text-light);">📸 ' + p.images.length + ' عکس</div>' : ''}
+                                        ${p.video ? '<div style="font-size:10px;color:var(--text-light);">🎬 فیلم</div>' : ''}
                                     </div>
                                     <div style="text-align:center;">
                                         <div class="match-score">${matchPercent}% مطابقت</div>
@@ -3697,7 +3686,6 @@
         // ============================================================
         // ====== فرم ملک ======
         // ============================================================
-
         function toggleForm(data) {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ملک اضافه کند!', 'warning'); return; }
             hideAllForms(['propertyForm']);
@@ -3730,10 +3718,52 @@
             }
         }
 
+        function clearForm() {
+            var ids = ['fCode', 'fTitle', 'fPrice', 'fRahn', 'fRentPrice', 'fAddress', 'fArea', 'fPhone', 'fDescription',
+                'fHiddenDescription'
+            ];
+            for (var i = 0; i < ids.length; i++) {
+                document.getElementById(ids[i]).value = '';
+            }
+            document.getElementById('editId').value = '';
+            document.getElementById('fCategory').value = 'آپارتمان';
+            document.getElementById('fType').value = 'sale';
+            togglePriceFields();
+            document.getElementById('fFile').value = '';
+            document.getElementById('fImages').value = '';
+            document.getElementById('fVideo').value = '';
+        }
+
+        function generateCode() {
+            var now = new Date();
+            var year = now.getFullYear();
+            var count = properties.length + 1;
+            return 'MLK-' + year + '-' + String(count).padStart(3, '0');
+        }
+
+        function togglePriceFields() {
+            var type = document.getElementById('fType').value;
+            document.getElementById('saleFields').style.display = type === 'sale' ? 'block' : 'none';
+            document.getElementById('rentFields').style.display = type === 'rent' ? 'block' : 'none';
+        }
+
+        function updateStats() {
+            var total = properties.length;
+            var sale = properties.filter(function(p) { return p.type === 'sale'; }).length;
+            var rent = properties.filter(function(p) { return p.type === 'rent'; }).length;
+            var prices = properties.map(function(p) { return Number(p.price) || 0; });
+            var avg = prices.length ? Math.round(prices.reduce(function(a, b) { return a + b; }, 0) / prices.length) : 0;
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('saleCount').textContent = sale;
+            document.getElementById('rentCount').textContent = rent;
+            document.getElementById('avgPrice').textContent = avg.toLocaleString();
+            document.getElementById('chartSaleCount').textContent = sale;
+            document.getElementById('chartRentCount').textContent = rent;
+        }
+
         // ============================================================
         // ====== حذف ملک ======
         // ============================================================
-
         async function deleteProperty(id) {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
             if (!confirm('آیا از حذف این ملک مطمئن هستید؟')) return;
@@ -3780,28 +3810,14 @@
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'حذف ملک');
+                showToast('❌ خطا در حذف ملک!', 'error');
             }
-        }
-
-        function updateStats() {
-            var total = properties.length;
-            var sale = properties.filter(function(p) { return p.type === 'sale'; }).length;
-            var rent = properties.filter(function(p) { return p.type === 'rent'; }).length;
-            var prices = properties.map(function(p) { return Number(p.price) || 0; });
-            var avg = prices.length ? Math.round(prices.reduce(function(a, b) { return a + b; }, 0) / prices.length) : 0;
-            document.getElementById('totalCount').textContent = total;
-            document.getElementById('saleCount').textContent = sale;
-            document.getElementById('rentCount').textContent = rent;
-            document.getElementById('avgPrice').textContent = avg.toLocaleString();
-            document.getElementById('chartSaleCount').textContent = sale;
-            document.getElementById('chartRentCount').textContent = rent;
         }
 
         // ============================================================
         // ====== سبد خرید ======
         // ============================================================
-
         function toggleCart() {
             document.getElementById('cartModal').classList.toggle('active');
             if (document.getElementById('cartModal').classList.contains('active')) renderCart();
@@ -3840,9 +3856,9 @@
                                     <div class="cart-item-meta">📐 متراژ: ${p.area || 0} متر مربع</div>
                                     <div class="cart-item-meta">📞 تماس: ${sanitizeInput(p.phone) || '---'}</div>
                                     ${p.description ? '<div class="cart-item-desc">📝 ' + sanitizeInput(p.description) + '</div>' : ''}
-                                    ${p.images && p.images.length > 0 ? '<div style="font-size:11px;color:#666;">📸 ' + p.images.length + ' عکس</div>' : ''}
-                                    ${p.video ? '<div style="font-size:11px;color:#666;">🎬 فیلم</div>' : ''}
-                                    <button class="btn btn-danger" onclick="removeFromCartHandler('${p.id}')" style="padding:4px 12px;font-size:11px;border:none;border-radius:6px;cursor:pointer;color:white;margin-top:4px;background:#C62828;">🗑️ حذف از سبد</button>
+                                    ${p.images && p.images.length > 0 ? '<div style="font-size:11px;color:var(--text-light);">📸 ' + p.images.length + ' عکس</div>' : ''}
+                                    ${p.video ? '<div style="font-size:11px;color:var(--text-light);">🎬 فیلم</div>' : ''}
+                                    <button class="btn btn-danger" onclick="removeFromCartHandler('${p.id}')" style="padding:4px 12px;font-size:11px;border:none;border-radius:6px;cursor:pointer;color:white;margin-top:4px;">🗑️ حذف از سبد</button>
                                 </div>
                             </div>
                         </div>
@@ -3851,13 +3867,13 @@
             }
 
             html += `
-                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid #1565C0;">
+                <div style="margin-top: 16px; padding-top: 12px; border-top: 3px solid var(--primary);">
                     <div class="cart-actions">
-                        <button class="clear-cart" onclick="clearCartHandler()" style="background:#C62828;">🗑️ خالی کردن سبد</button>
-                        <button class="share-cart" onclick="shareAllCart()" style="background:#25D366;">📤 اشتراک همه</button>
+                        <button class="clear-cart" onclick="clearCartHandler()">🗑️ خالی کردن سبد</button>
+                        <button class="share-cart" onclick="shareAllCart()">📤 اشتراک همه</button>
                     </div>
                     <button onclick="toggleCart()" 
-                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161;">
+                            style="width:100%; margin-top:8px; padding:10px; border:none; border-radius:10px; font-size:13px; font-weight:bold; cursor:pointer; color:white; background:#616161; transition:var(--transition);">
                         ✕ بستن
                     </button>
                 </div>
@@ -3920,7 +3936,8 @@
                 renderCart();
                 showToast('✅ به سبد خرید اضافه شد!', 'success');
             } catch (e) {
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'افزودن به سبد خرید');
+                showToast('❌ خطا در افزودن به سبد خرید!', 'error');
             }
         }
 
@@ -3944,7 +3961,8 @@
                 renderCart();
                 showToast('🗑️ از سبد خرید حذف شد', 'success');
             } catch (e) {
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'حذف از سبد خرید');
+                showToast('❌ خطا در حذف از سبد خرید!', 'error');
             }
         }
 
@@ -3965,7 +3983,8 @@
                 renderCart();
                 showToast('🗑️ سبد خرید خالی شد', 'success');
             } catch (e) {
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'خالی کردن سبد خرید');
+                showToast('❌ خطا در خالی کردن سبد خرید!', 'error');
             }
         }
 
@@ -3981,7 +4000,6 @@
         // ============================================================
         // ====== رندر لیست ======
         // ============================================================
-
         function renderList() {
             try {
                 var search = sanitizeInput(document.getElementById('searchBox').value.toLowerCase());
@@ -4062,7 +4080,7 @@
                     var fileHtml = '';
                     if (p.file) {
                         fileHtml = `
-                                    <div style="margin-top:4px;font-size:11px;color:#1565C0;">
+                                    <div style="margin-top:4px;font-size:11px;color:var(--primary);">
                                         📎 <a href="${p.file}" target="_blank">دانلود فایل</a>
                                     </div>
                                 `;
@@ -4079,21 +4097,21 @@
                         var showCount = Math.min(p.images.length, 4);
                         for (var imgIdx = 0; imgIdx < showCount; imgIdx++) {
                             imagesHtml += '<img src="' + p.images[imgIdx] +
-                                '" style="width:55px;height:55px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid #E3F2FD;" onclick="openGallery(\'' +
+                                '" style="width:55px;height:55px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
                                 p.id + '\')" />';
                         }
                         if (p.images.length > 4) {
-                            imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-radius:6px;font-size:12px;color:#666;cursor:pointer;border:2px solid #E3F2FD;" onclick="openGallery(\'' +
+                            imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:6px;font-size:12px;color:var(--text-light);cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
                                 p.id + '\')">+' + (p.images.length - 4) + '</div>';
                         }
                         if (p.video) {
-                            imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-radius:6px;font-size:20px;cursor:pointer;border:2px solid #E3F2FD;" onclick="openGallery(\'' +
+                            imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:6px;font-size:20px;cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
                                 p.id + '\')">🎬</div>';
                         }
                         imagesHtml += '</div>';
                     } else if (p.video) {
                         imagesHtml = '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:6px;">';
-                        imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:#f0f2f5;border-radius:6px;font-size:20px;cursor:pointer;border:2px solid #E3F2FD;" onclick="openGallery(\'' +
+                        imagesHtml += '<div style="width:55px;height:55px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:6px;font-size:20px;cursor:pointer;border:2px solid var(--primary-light);" onclick="openGallery(\'' +
                             p.id + '\')">🎬</div>';
                         imagesHtml += '</div>';
                     }
@@ -4103,15 +4121,15 @@
                         var pinClass = p.pinned ? 'pinned' : '';
                         var pinText = p.pinned ? '📌' : '📌';
                         actionBtns = `
-                            <button class="btn-pin ${pinClass}" onclick="togglePin('${p.id}')" style="background:${p.pinned ? '#C62828' : '#FFD700'};color:${p.pinned ? 'white' : '#333'};border:none;border-radius:50%;width:28px;height:28px;font-size:12px;cursor:pointer;">${pinText}</button>
-                            <button class="btn-edit" onclick='toggleForm(${JSON.stringify(p).replace(/'/g, "\\'")})' style="background:#FFA000;border:none;border-radius:50%;width:28px;height:28px;font-size:12px;cursor:pointer;color:white;">✏️</button>
-                            <button class="btn-delete" onclick="deleteProperty('${p.id}')" style="background:#C62828;border:none;border-radius:50%;width:28px;height:28px;font-size:12px;cursor:pointer;color:white;">✕</button>
+                            <button class="btn-pin ${pinClass}" onclick="togglePin('${p.id}')">${pinText}</button>
+                            <button class="btn-edit" onclick='toggleForm(${JSON.stringify(p).replace(/'/g, "\\'")})'>✏️</button>
+                            <button class="btn-delete" onclick="deleteProperty('${p.id}')">✕</button>
                         `;
                     } else {
                         var cartClass = isInCart(p.id) ? 'in-cart' : '';
                         var cartText = isInCart(p.id) ? '✓' : '🛒';
                         actionBtns = `
-                            <button class="btn-cart ${cartClass}" onclick="addToCartHandler('${p.id}')" style="background:${isInCart(p.id) ? '#2E7D32' : '#FF8F00'};color:white;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;">${cartText}</button>
+                            <button class="btn-cart ${cartClass}" onclick="addToCartHandler('${p.id}')">${cartText}</button>
                         `;
                     }
 
@@ -4148,25 +4166,33 @@
 
                 container.innerHTML = html;
                 updateStats();
-            } catch (e) { showToast('❌ خطا در رندر: ' + e.message, 'error'); }
+            } catch (e) { ErrorHandler.log(e, 'رندر لیست'); }
         }
 
         // ============================================================
-        // ====== توابع فیلتر ======
+        // ====== سایر توابع ======
         // ============================================================
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            var btn = document.querySelector('.dark-toggle');
+            var isDark = document.body.classList.contains('dark-mode');
+            btn.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            showToast(isDark ? '🌙 حالت تاریک فعال شد' : '☀️ حالت روشن فعال شد', 'success');
+        }
 
         function selectCategory(btn) {
             var btns = document.querySelectorAll('.category-grid .cat-btn');
             for (var i = 0; i < btns.length; i++) {
                 btns[i].classList.remove('active');
                 btns[i].style.borderColor = '#e0e0e0';
-                btns[i].style.background = 'white';
-                btns[i].style.color = '#1a1a2e';
+                btns[i].style.background = 'var(--card-bg)';
+                btns[i].style.color = 'var(--text)';
             }
             btn.classList.add('active');
-            btn.style.borderColor = '#1565C0';
-            btn.style.background = '#E3F2FD';
-            btn.style.color = '#1565C0';
+            btn.style.borderColor = 'var(--primary)';
+            btn.style.background = 'var(--primary-light)';
+            btn.style.color = 'var(--primary)';
             userCategoryFilter = btn.dataset.cat;
             updateFilterInfo();
             renderList();
@@ -4177,12 +4203,12 @@
             for (var i = 0; i < btns.length; i++) {
                 btns[i].classList.remove('active');
                 btns[i].style.borderColor = '';
-                btns[i].style.background = 'white';
-                btns[i].style.color = '#1a1a2e';
+                btns[i].style.background = 'var(--card-bg)';
+                btns[i].style.color = 'var(--text)';
             }
             btn.classList.add('active');
-            btn.style.background = '#E3F2FD';
-            btn.style.color = '#1565C0';
+            btn.style.background = 'var(--primary-light)';
+            btn.style.color = 'var(--primary)';
             userTypeFilter = btn.dataset.type;
             if (userTypeFilter === 'sale') {
                 document.getElementById('salePriceFilter').style.display = 'block';
@@ -4221,15 +4247,15 @@
             for (var i = 0; i < btns1.length; i++) {
                 btns1[i].classList.remove('active');
                 btns1[i].style.borderColor = '#e0e0e0';
-                btns1[i].style.background = 'white';
-                btns1[i].style.color = '#1a1a2e';
+                btns1[i].style.background = 'var(--card-bg)';
+                btns1[i].style.color = 'var(--text)';
             }
             var btns2 = document.querySelectorAll('.type-grid .type-btn');
             for (var j = 0; j < btns2.length; j++) {
                 btns2[j].classList.remove('active');
                 btns2[j].style.borderColor = '';
-                btns2[j].style.background = 'white';
-                btns2[j].style.color = '#1a1a2e';
+                btns2[j].style.background = 'var(--card-bg)';
+                btns2[j].style.color = 'var(--text)';
             }
             userCategoryFilter = 'all';
             userTypeFilter = 'all';
@@ -4284,9 +4310,58 @@
         }
 
         // ============================================================
+        // ====== ورود به برنامه ======
+        // ============================================================
+        async function enterApp() {
+            try {
+                await loadProperties();
+                await loadPublicMessages();
+                await loadUserCartHandler();
+                updateWelcomeMessage();
+
+                if (isAdmin) {
+                    document.getElementById('welcomeMessage').textContent = 'به پنل مدیریت خوش آمدید';
+                    document.getElementById('editProfileBtn').style.display = 'inline-block';
+                    document.getElementById('adminButtons').style.display = 'flex';
+                    document.getElementById('guideBox').style.display = 'block';
+                    document.getElementById('userRoleBadge').style.background = '#FFD700';
+                    document.getElementById('userFilterSection').style.display = 'none';
+                    document.getElementById('adminFilterSort').style.display = 'flex';
+                    document.getElementById('filterTabs').style.display = 'flex';
+                    document.getElementById('adminUsersSection').style.display = 'none';
+                    document.getElementById('userChatSection').style.display = 'none';
+                    document.getElementById('aiSection').style.display = 'none';
+                    document.getElementById('logoutBtn').style.display = 'inline-block';
+                    document.getElementById('userPreviewSection').style.display = 'none';
+                    loadAdminMessage();
+                    await refreshUsersList();
+                } else {
+                    document.getElementById('welcomeMessage').textContent = 'به دپارتمان املاک حسینی خوش آمدید';
+                    document.getElementById('editProfileBtn').style.display = 'none';
+                    document.getElementById('adminButtons').style.display = 'none';
+                    document.getElementById('guideBox').style.display = 'none';
+                    document.getElementById('userRoleBadge').style.background = '#4CAF50';
+                    document.getElementById('userFilterSection').style.display = 'block';
+                    document.getElementById('adminFilterSort').style.display = 'none';
+                    document.getElementById('filterTabs').style.display = 'none';
+                    document.getElementById('adminUsersSection').style.display = 'none';
+                    document.getElementById('userChatSection').style.display = 'block';
+                    document.getElementById('aiSection').style.display = 'block';
+                    document.getElementById('logoutBtn').style.display = 'none';
+                    document.getElementById('userPreviewSection').style.display = 'none';
+                    loadAdminMessage();
+                }
+
+                updateCartBadge();
+                renderList();
+                renderPublicMessages();
+
+            } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
+        }
+
+        // ============================================================
         // ====== پیام‌های عمومی ======
         // ============================================================
-
         function showPublicMsgForm() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
             hideAllForms(['publicMsgForm']);
@@ -4340,14 +4415,14 @@
                 html += `
                     <div class="public-msg-card">
                         <div class="msg-header">
-                            <span style="font-weight:bold;color:#1565C0;">📢 پیام عمومی</span>
+                            <span style="font-weight:bold;color:var(--primary);">📢 پیام عمومی</span>
                             <span class="msg-date">${p.date || ''}</span>
                         </div>
                         <div class="msg-text">${sanitizeInput(p.text)}</div>
                         ${isAdmin ? `
                             <div class="msg-actions">
-                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')" style="padding:4px 12px;border:none;border-radius:6px;font-size:11px;cursor:pointer;color:white;background:#FFA000;">✏️</button>
-                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')" style="padding:4px 12px;border:none;border-radius:6px;font-size:11px;cursor:pointer;color:white;background:#C62828;">🗑️</button>
+                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')">✏️</button>
+                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')">🗑️</button>
                             </div>
                         ` : ''}
                     </div>
@@ -4380,21 +4455,21 @@
         }
 
         // ============================================================
-        // ====== چت کاربر ======
+        // ====== چت کاربر (با ذخیره در Supabase) ======
         // ============================================================
-
         function loadUserChatMessages() {
             if (!currentUser || isAdmin) return;
 
             var container = document.getElementById('userChatMessagesContainer');
             if (!container) return;
 
+            // بارگذاری پیام‌ها از دیتابیس
             loadChatMessages(currentUser.id).then(function(messages) {
                 chatMessages = messages;
 
                 if (!messages.length) {
                     container.innerHTML =
-                        '<div style="text-align:center;color:#666;padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                        '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
                     return;
                 }
 
@@ -4410,15 +4485,15 @@
                     if (isUser) {
                         actionsHtml = `
                             <div class="msg-actions">
-                                <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')" style="background:#FFA000;color:white;border:none;border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer;">✏️ ویرایش</button>
-                                <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')" style="background:#C62828;color:white;border:none;border-radius:4px;padding:2px 8px;font-size:10px;cursor:pointer;">🗑️</button>
+                                <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
+                                <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
                             </div>
                         `;
                     }
 
                     var editHtml = '';
                     if (msg.edited) {
-                        editHtml = ' <span style="font-size:10px;color:#666;">(ویرایش شده)</span>';
+                        editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
                     }
 
                     html += `
@@ -4431,8 +4506,8 @@
                             ${actionsHtml}
                             <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
                                 <textarea id="userEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
-                                <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')" style="background:#2E7D32;color:white;border:none;border-radius:4px;padding:4px 12px;font-size:11px;cursor:pointer;margin-top:4px;">💾 ذخیره</button>
-                                <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')" style="background:#616161;color:white;border:none;border-radius:4px;padding:4px 12px;font-size:11px;cursor:pointer;margin-top:4px;">❌ انصراف</button>
+                                <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
+                                <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
                             </div>
                         </div>
                     `;
@@ -4508,7 +4583,8 @@
                 loadUserChatMessages();
             } catch (e) {
                 showLoading(false);
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'ویرایش پیام');
+                showToast('❌ خطا در ویرایش پیام!', 'error');
             }
         }
 
@@ -4531,14 +4607,14 @@
                 loadUserChatMessages();
             } catch (e) {
                 showLoading(false);
-                showToast('❌ خطا: ' + e.message, 'error');
+                ErrorHandler.log(e, 'حذف پیام');
+                showToast('❌ خطا در حذف پیام!', 'error');
             }
         }
 
         // ============================================================
         // ====== چت مدیر ======
         // ============================================================
-
         function viewChats() {
             if (!isAdmin) {
                 showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning');
@@ -4565,7 +4641,7 @@
 
             if (usersWithChat.length === 0) {
                 container.innerHTML =
-                    '<div style="text-align:center;color:#666;padding:15px;">💬 هنوز پیامی از کاربران دریافت نشده است</div>';
+                    '<div style="text-align:center;color:var(--text-light);padding:15px;">💬 هنوز پیامی از کاربران دریافت نشده است</div>';
                 return;
             }
 
@@ -4606,10 +4682,11 @@
 
             if (messages.length === 0) {
                 container.innerHTML =
-                    '<div style="text-align:center;color:#666;padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
                 return;
             }
 
+            // علامت‌گذاری به عنوان خوانده شده
             await supabaseClient
                 .from('chat_messages')
                 .update({ read: true })
@@ -4618,7 +4695,7 @@
                 .eq('read', false);
 
             var html =
-                '<div style="padding:8px;background:#E3F2FD;border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:#1565C0;">👤 چت با #' + (user ?
+                '<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با #' + (user ?
                     user.user_number : '') + ' - ' + (user ? user.name : 'کاربر') + '</div>';
 
             for (var j = 0; j < messages.length; j++) {
@@ -4636,7 +4713,7 @@
 
                 var editHtml = '';
                 if (msg.edited) {
-                    editHtml = ' <span style="font-size:10px;color:#666;">(ویرایش شده)</span>';
+                    editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
                 }
 
                 html += `
@@ -4684,6 +4761,7 @@
                     renderChatMessagesWithUser(currentChatUserId);
                     renderChatUsersList();
                     showToast('✅ پیام ارسال شد!', 'success');
+                    // اعلان به کاربر
                     addNotification(currentChatUserId, '💬 پاسخ مدیر', text);
                 } else {
                     showToast('❌ خطا در ارسال پیام!', 'error');
@@ -4699,16 +4777,6 @@
         // ============================================================
         // ====== سایر توابع ======
         // ============================================================
-
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            var btn = document.querySelector('.dark-toggle');
-            var isDark = document.body.classList.contains('dark-mode');
-            btn.textContent = isDark ? '☀️' : '🌙';
-            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
-            showToast(isDark ? '🌙 حالت تاریک فعال شد' : '☀️ حالت روشن فعال شد', 'success');
-        }
-
         function toggleChart() {
             var container = document.getElementById('chartContainer');
             container.style.display = container.style.display === 'none' ? 'block' : 'none';
@@ -4819,7 +4887,7 @@
 
             if (!users.length) {
                 container.innerHTML =
-                    '<div style="text-align:center;color:#666;padding:20px;">👤 هنوز کاربری ثبت نام نکرده است</div>';
+                    '<div style="text-align:center;color:var(--text-light);padding:20px;">👤 هنوز کاربری ثبت نام نکرده است</div>';
                 return;
             }
 
@@ -4852,7 +4920,7 @@
 
         function previewTab(tab) {
             var container = document.getElementById('previewContent');
-            container.innerHTML = '<div style="text-align:center;color:#666;padding:20px;">🔧 در حال توسعه...</div>';
+            container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">🔧 در حال توسعه...</div>';
         }
 
         function showEditProfile() {
@@ -4907,140 +4975,96 @@
         }
 
         // ============================================================
-        // ====== تابع اصلی (با مدیریت خطا) ======
+        // ====== شروع برنامه ======
         // ============================================================
-
-        async function waitForSupabase() {
-            return new Promise(function(resolve) {
-                if (typeof supabase !== 'undefined') {
-                    resolve();
-                    return;
-                }
-                var attempts = 0;
-                var checkInterval = setInterval(function() {
-                    attempts++;
-                    if (typeof supabase !== 'undefined') {
-                        clearInterval(checkInterval);
-                        resolve();
-                    } else if (attempts > 30) {
-                        clearInterval(checkInterval);
-                        resolve();
-                    }
-                }, 200);
-            });
-        }
-
         async function init() {
-            try {
-                showLoading(true, '🔍 بررسی اتصال به سرور...');
+            document.getElementById('loadingOverlay').classList.remove('hidden');
 
-                await waitForSupabase();
+            // تلاش برای اتصال به Supabase
+            await waitForSupabase();
 
-                if (typeof supabase === 'undefined') {
-                    showLoadingError('کتابخانه Supabase لود نشد!');
-                    console.error('❌ supabase is undefined');
-                    return;
-                }
+            if (typeof supabase !== 'undefined') {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('✅ Supabase متصل شد!');
+            } else {
+                console.warn('⚠️ Supabase لود نشد!');
+                showToast('⚠️ اتصال به سرور برقرار نیست! لطفاً اینترنت خود را بررسی کنید.', 'error');
+                document.getElementById('loadingOverlay').classList.add('hidden');
+                document.getElementById('loginOverlay').classList.remove('hidden');
+                return;
+            }
 
-                try {
-                    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-                    console.log('✅ کلاینت Supabase ساخته شد');
+            await getAdminCount();
+            updateAdminLoginButton();
 
-                    var { data, error } = await supabaseClient
-                        .from('estate_properties')
-                        .select('count')
-                        .limit(1);
-
-                    if (error) {
-                        console.error('❌ خطای دیتابیس:', error);
-                        showLoadingError('خطا در دیتابیس: ' + error.message);
-                        return;
+            var savedUser = JSON.parse(localStorage.getItem('amlak_user'));
+            if (savedUser && supabaseClient) {
+                if (savedUser.role === 'admin') {
+                    isAdmin = true;
+                    currentUser = {
+                        role: 'admin',
+                        id: savedUser.id,
+                        name: 'مدیر'
+                    };
+                    document.getElementById('loginOverlay').classList.add('hidden');
+                    document.getElementById('mainApp').style.display = 'block';
+                    await enterApp();
+                } else {
+                    var users = await getUsers();
+                    var user = null;
+                    for (var i = 0; i < users.length; i++) {
+                        if (users[i].id === savedUser.id) { user = users[i]; break; }
                     }
-
-                    showLoadingSuccess('اتصال به دیتابیس برقرار شد!');
-                    console.log('✅ اتصال به Supabase برقرار شد!');
-
-                } catch (e) {
-                    console.error('❌ خطا در اتصال:', e);
-                    showLoadingError('خطا در اتصال: ' + e.message);
-                    return;
-                }
-
-                await getAdminCount();
-                updateAdminLoginButton();
-
-                var savedUser = JSON.parse(localStorage.getItem('amlak_user') || 'null');
-
-                if (savedUser) {
-                    if (savedUser.role === 'admin') {
-                        isAdmin = true;
+                    if (user) {
+                        isAdmin = false;
                         currentUser = {
-                            role: 'admin',
-                            id: savedUser.id,
-                            name: 'مدیر'
+                            role: 'user',
+                            id: user.id,
+                            userNumber: user.user_number,
+                            name: user.name
                         };
                         document.getElementById('loginOverlay').classList.add('hidden');
                         document.getElementById('mainApp').style.display = 'block';
-                        showLoading(false);
                         await enterApp();
                     } else {
-                        var users = await getUsers();
-                        var user = null;
-                        for (var i = 0; i < users.length; i++) {
-                            if (users[i].id === savedUser.id) { user = users[i]; break; }
-                        }
-                        if (user) {
-                            isAdmin = false;
-                            currentUser = {
-                                role: 'user',
-                                id: user.id,
-                                userNumber: user.user_number,
-                                name: user.name
-                            };
-                            document.getElementById('loginOverlay').classList.add('hidden');
-                            document.getElementById('mainApp').style.display = 'block';
-                            showLoading(false);
-                            await enterApp();
-                        } else {
-                            document.getElementById('loginOverlay').classList.remove('hidden');
-                            showLoading(false);
-                        }
+                        document.getElementById('loginOverlay').classList.remove('hidden');
                     }
-                } else {
-                    document.getElementById('loginOverlay').classList.remove('hidden');
-                    showLoading(false);
                 }
-
-                if (localStorage.getItem('darkMode') === 'true') {
-                    document.body.classList.add('dark-mode');
-                    var btn = document.querySelector('.dark-toggle');
-                    if (btn) btn.textContent = '☀️';
-                }
-
-                console.log('✅ برنامه با موفقیت بارگذاری شد!');
-                console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
-                console.log('📊 تعداد املاک:', properties.length);
-
-            } catch (e) {
-                console.error('❌ خطا در init:', e);
-                showLoadingError('خطا: ' + e.message);
-                showError('خطا در بارگذاری برنامه', e.message, true);
+            } else {
+                document.getElementById('loginOverlay').classList.remove('hidden');
             }
+
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                var btn = document.querySelector('.dark-toggle');
+                if (btn) btn.textContent = '☀️';
+            }
+
+            document.getElementById('loadingOverlay').classList.add('hidden');
+
+            console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
+            console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
+            console.log('📊 تعداد املاک:', properties.length);
+            console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
+            console.log('🔑 رمز مدیر: 26742674');
+            console.log('📸 گالری عکس و فیلم فعال است');
+            console.log('📌 سنجاق ملک (فقط مدیر) فعال است');
+            console.log('🤖 هوش مصنوعی پیشنهاد ملک فعال است');
+            console.log('✏️ ویرایش ملک و پیام فعال است');
+            console.log('📤 آپلود عکس و فیلم در ویرایش فعال است');
+            console.log('🏭 دسته‌بندی زمین کارگاهی اضافه شد');
+            console.log('🗑️ حذف جداگانه از سبد خرید فعال شد');
+            console.log('💬 چت کاربر با مدیر و ویرایش پیام فعال است');
+            console.log('📢 پیام عمومی فقط مدیر ارسال میکند');
+            console.log('💾 پیام‌های چت در Supabase ذخیره میشوند');
         }
 
-        // ============================================================
-        // ====== شروع برنامه ======
-        // ============================================================
-
+        // اجرا بعد از لود کامل
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('🚀 شروع برنامه (DOMContentLoaded)...');
-                setTimeout(init, 500);
-            });
+            document.addEventListener('DOMContentLoaded', init);
         } else {
-            console.log('🚀 شروع فوری برنامه...');
-            setTimeout(init, 500);
+            init();
         }
     </script>
 </body>
-    </html>
+                    </html>
