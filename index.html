@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* تمام استایل‌ها مثل قبل */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -1678,7 +1679,7 @@
             padding: 12px;
             border-radius: 12px;
             margin-bottom: 10px;
-            border-right: 5px solid var(--primary);
+            border-right: 5px solid #FFD700;
         }
         body.dark-mode .public-msg-card {
             background: #0f3460;
@@ -3086,7 +3087,12 @@
 
         async function loadPublicMessages() {
             try {
-                publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages') || '[]');
+                var stored = localStorage.getItem('amlak_public_messages');
+                if (stored) {
+                    publicMessages = JSON.parse(stored);
+                } else {
+                    publicMessages = [];
+                }
             } catch (e) { publicMessages = []; }
         }
 
@@ -4353,7 +4359,7 @@
                     loadUserChatMessages();
                 }
 
-                // نمایش پیام‌های عمومی برای همه کاربران (مدیر و کاربر عادی)
+                // ===== نمایش پیام‌های عمومی برای همه =====
                 renderPublicMessages();
 
                 updateCartBadge();
@@ -4415,7 +4421,12 @@
 
             // بارگذاری مجدد از localStorage
             try {
-                publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages') || '[]');
+                var stored = localStorage.getItem('amlak_public_messages');
+                if (stored) {
+                    publicMessages = JSON.parse(stored);
+                } else {
+                    publicMessages = [];
+                }
             } catch (e) {
                 publicMessages = [];
             }
@@ -5161,6 +5172,31 @@
             console.log('👁️ کاربر تاریخچه چت را مثل مدیر می‌بیند');
             console.log('✏️ مدیر می‌تواند پیام‌های خود را در چت ویرایش/حذف کند');
             console.log('📢 پیام‌های عمومی برای همه کاربران نمایش داده میشود');
+
+            // ===== گوش دادن به تغییرات localStorage برای پیام‌های عمومی =====
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'amlak_public_messages') {
+                    if (document.getElementById('mainApp').style.display === 'block') {
+                        loadPublicMessages();
+                        renderPublicMessages();
+                        showToast('📢 پیام عمومی جدید از مدیریت!', 'info');
+                    }
+                }
+            });
+
+            // ===== بررسی دوره‌ای برای پیام‌های عمومی (هر 3 ثانیه) =====
+            setInterval(function() {
+                if (document.getElementById('mainApp').style.display === 'block') {
+                    var stored = localStorage.getItem('amlak_public_messages');
+                    var currentHash = stored ? JSON.stringify(JSON.parse(stored)) : '[]';
+                    var oldHash = JSON.stringify(publicMessages);
+                    if (currentHash !== oldHash) {
+                        loadPublicMessages();
+                        renderPublicMessages();
+                        showToast('📢 پیام عمومی جدید!', 'info');
+                    }
+                }
+            }, 3000);
         }
 
         if (document.readyState === 'loading') {
@@ -5170,4 +5206,4 @@
         }
     </script>
 </body>
-                </html>
+    </html>
