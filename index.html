@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
-        /* تمام استایل‌ها مثل قبل */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -2658,7 +2657,8 @@
             </div>
         </div>
 
-        <div id="publicMessagesContainer" style="margin-bottom:12px;"></div>
+        <!-- ===== بخش نمایش پیام‌های عمومی ===== -->
+        <div id="publicMessagesContainer" style="margin-bottom:12px; display:block;"></div>
 
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
 
@@ -4325,6 +4325,9 @@
                 await loadUserCartHandler();
                 updateWelcomeMessage();
 
+                // ===== نمایش container پیام‌های عمومی برای همه =====
+                document.getElementById('publicMessagesContainer').style.display = 'block';
+
                 if (isAdmin) {
                     document.getElementById('welcomeMessage').textContent = 'به پنل مدیریت خوش آمدید';
                     document.getElementById('editProfileBtn').style.display = 'inline-block';
@@ -4417,9 +4420,15 @@
         // ===== تابع اصلی نمایش پیام‌های عمومی =====
         function renderPublicMessages() {
             var container = document.getElementById('publicMessagesContainer');
-            if (!container) return;
+            if (!container) {
+                console.error('❌ publicMessagesContainer پیدا نشد!');
+                return;
+            }
 
-            // بارگذاری مجدد از localStorage
+            // نمایش container
+            container.style.display = 'block';
+
+            // بارگذاری از localStorage
             try {
                 var stored = localStorage.getItem('amlak_public_messages');
                 if (stored) {
@@ -4431,8 +4440,10 @@
                 publicMessages = [];
             }
 
+            console.log('📊 تعداد پیام‌های عمومی:', publicMessages.length);
+
             if (!publicMessages.length) {
-                container.innerHTML = '';
+                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:10px;font-size:13px;">📢 هنوز پیام عمومی ارسال نشده است</div>';
                 return;
             }
 
@@ -4455,13 +4466,14 @@
                             </div>
                         ` : `
                             <div style="font-size: 11px; color: var(--text-light); margin-top: 4px; padding: 4px 8px; background: rgba(255,215,0,0.1); border-radius: 6px; border-right: 3px solid #FFD700;">
-                                📌 این پیام رسمی از طرف مدیریت است | کاربران نمی‌توانند پاسخ دهند
+                                📌 این پیام رسمی از طرف مدیریت است
                             </div>
                         `}
                     </div>
                 `;
             }
             container.innerHTML = html;
+            console.log('✅ پیام‌های عمومی نمایش داده شدند!');
         }
 
         function editPublicMessage(id) {
@@ -5188,12 +5200,15 @@
             setInterval(function() {
                 if (document.getElementById('mainApp').style.display === 'block') {
                     var stored = localStorage.getItem('amlak_public_messages');
-                    var currentHash = stored ? JSON.stringify(JSON.parse(stored)) : '[]';
-                    var oldHash = JSON.stringify(publicMessages);
-                    if (currentHash !== oldHash) {
-                        loadPublicMessages();
-                        renderPublicMessages();
-                        showToast('📢 پیام عمومی جدید!', 'info');
+                    if (stored) {
+                        try {
+                            var newMessages = JSON.parse(stored);
+                            if (JSON.stringify(newMessages) !== JSON.stringify(publicMessages)) {
+                                publicMessages = newMessages;
+                                renderPublicMessages();
+                                showToast('📢 پیام عمومی جدید!', 'info');
+                            }
+                        } catch (e) {}
                     }
                 }
             }, 3000);
