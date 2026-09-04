@@ -7,6 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ============================================================
+           استایل‌های کامل (همه کدهای CSS)
+           ============================================================ */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -2302,6 +2305,9 @@
     </style>
 </head>
 <body>
+    <!-- ============================================================
+    HTML کامل (همه بخش‌های برنامه)
+    ============================================================ -->
     <div class="loading-overlay hidden" id="loadingOverlay">
         <div class="spinner"></div>
         <div class="loading-text">⏳ در حال اتصال به سرور...</div>
@@ -2657,7 +2663,11 @@
             </div>
         </div>
 
-        <!-- ===== بخش نمایش پیام‌های عمومی ===== -->
+        <!-- ===== بخش نمایش پیام‌های عمومی برای همه کاربران ===== -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; margin-top:10px;">
+            <span style="font-size:14px;font-weight:bold;color:var(--primary);">📢 پیام‌های عمومی</span>
+            <button onclick="refreshPublicMessages()" style="padding:4px 12px; border:none; border-radius:6px; background:var(--primary); color:white; cursor:pointer; font-size:11px; transition:var(--transition);">🔄 بروزرسانی</button>
+        </div>
         <div id="publicMessagesContainer" style="margin-bottom:12px; display:block;"></div>
 
         <input class="search-box" id="searchBox" placeholder="🔍 جستجو در املاک..." oninput="renderList()" />
@@ -3085,15 +3095,23 @@
                 updateStats(); }
         }
 
-        async function loadPublicMessages() {
+        // ===== تابع بارگذاری پیام‌ها از localStorage =====
+        function loadPublicMessagesFromStorage() {
             try {
                 var stored = localStorage.getItem('amlak_public_messages');
-                if (stored) {
+                if (stored && stored !== 'null' && stored !== 'undefined') {
                     publicMessages = JSON.parse(stored);
                 } else {
                     publicMessages = [];
                 }
-            } catch (e) { publicMessages = []; }
+            } catch (e) {
+                publicMessages = [];
+            }
+            return publicMessages;
+        }
+
+        async function loadPublicMessages() {
+            loadPublicMessagesFromStorage();
         }
 
         async function loadUserCartHandler() {
@@ -4316,17 +4334,783 @@
         }
 
         // ============================================================
+        // ====== توابع چت کاربر ======
+        // ============================================================
+        async function loadUserChatMessages() {
+            if (!currentUser) return;
+            try {
+                var messages = await loadChatMessages(currentUser.id);
+                chatMessages = messages;
+                renderUserChatMessages();
+            } catch (e) { ErrorHandler.log(e, 'بارگذاری چت'); }
+        }
+
+        function renderUserChatMessages() {
+            var container = document.getElementById('userChatMessagesContainer');
+            if (!container) return;
+
+            if (!chatMessages || chatMessages.length === 0) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < chatMessages.length; i++) {
+                var msg = chatMessages[i];
+                var isAdmin = msg.sender === 'admin';
+                var cls = isAdmin ? 'admin-msg' : 'user-msg';
+                var senderName = isAdmin ? '👑 مدیر' : '👤 شما';
+                var senderCls = isAdmin ? 'admin-sender' : 'user-sender';
+
+                html += `
+                    <div class="chat-message-item ${cls}">
+                        <div class="msg-header">
+                            <span class="msg-sender ${senderCls}">${senderName}</span>
+                            <span class="msg-time">${new Date(msg.date).toLocaleString('fa-IR')}</span>
+                        </div>
+                        <div class="msg-text">${sanitizeInput(msg.text)}</div>
+                        ${msg.file ? `<div class="msg-file"><a href="${msg.file}" target="_blank">📎 دانلود فایل</a></div>` : ''}
+                        ${!isAdmin ? `
+                            <div class="msg-actions">
+                                <button class="edit-msg-btn" onclick="editUserMessage('${msg.id}')">✏️</button>
+                                <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendUserMessage() {
+            if (!currentUser) { showToast('⚠️ لطفاً وارد شوید!', 'warning'); return; }
+            var input = document.getElementById('userChatInput');
+            var text = input.value.trim();
+            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
+
+            try {
+                var msg = await sendMessageToSupabase(currentUser.id, text, null);
+                if (msg) {
+                    chatMessages.push(msg);
+                    renderUserChatMessages();
+                    input.value = '';
+                    showToast('✅ پیام ارسال شد!', 'success');
+                } else {
+                    showToast('❌ خطا در ارسال پیام!', 'error');
+                }
+            } catch (e) {
+                ErrorHandler.log(e, 'ارسال پیام کاربر');
+                showToast('❌ خطا در ارسال!', 'error');
+            }
+        }
+
+        async function editUserMessage(id) {
+            if (!currentUser) return;
+            var msg = null;
+            for (var i = 0; i < chatMessages.length; i++) {
+                if (chatMessages[i].id === id) { msg = chatMessages[i]; break; }
+            }
+            if (!msg) return;
+
+            var newText = prompt('متن جدید:', msg.text);
+            if (newText === null) return;
+            newText = newText.trim();
+            if (!newText) { showToast('⚠️ متن را وارد کنید!', 'warning'); return; }
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .update({ text: sanitizeInput(newText), edited: true, edit_date: new Date().toISOString() })
+                    .eq('id', id);
+                if (response.error) throw response.error;
+
+                msg.text = sanitizeInput(newText);
+                msg.edited = true;
+                renderUserChatMessages();
+                showToast('✅ پیام ویرایش شد!', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'ویرایش پیام');
+                showToast('❌ خطا در ویرایش!', 'error');
+            }
+        }
+
+        async function deleteUserMessage(id) {
+            if (!currentUser) return;
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .delete()
+                    .eq('id', id);
+                if (response.error) throw response.error;
+
+                chatMessages = chatMessages.filter(function(m) { return m.id !== id; });
+                renderUserChatMessages();
+                showToast('🗑️ پیام حذف شد', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف پیام');
+                showToast('❌ خطا در حذف!', 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== توابع چت مدیر ======
+        // ============================================================
+        async function viewChats() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            hideAllForms(['chatViewer']);
+            var viewer = document.getElementById('chatViewer');
+            viewer.style.display = viewer.style.display === 'block' ? 'none' : 'block';
+            if (viewer.style.display === 'block') {
+                await loadChatUsers();
+            }
+        }
+
+        async function loadChatUsers() {
+            if (!isAdmin) return;
+            try {
+                var users = await getUsers();
+                usersList = users;
+                var container = document.getElementById('chatUserList');
+                var html = '';
+                for (var i = 0; i < users.length; i++) {
+                    var u = users[i];
+                    var msgCount = 0;
+                    try {
+                        var msgs = await loadChatMessages(u.id);
+                        msgCount = msgs.length;
+                    } catch (e) {}
+                    html += `
+                        <div class="chat-user-item" onclick="selectChatUser('${u.id}')">
+                            <div class="user-info">
+                                <div class="user-name">${sanitizeInput(u.name)}</div>
+                                <div class="user-preview">${u.phone} | ${msgCount} پیام</div>
+                            </div>
+                            <span class="user-badge ${msgCount > 0 ? 'unread' : ''}">${msgCount}</span>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html || '<div style="text-align:center;padding:20px;">👤 هیچ کاربری یافت نشد</div>';
+                document.getElementById('userCount').textContent = users.length + ' کاربر';
+            } catch (e) {
+                ErrorHandler.log(e, 'بارگذاری کاربران');
+            }
+        }
+
+        async function selectChatUser(userId) {
+            currentChatUserId = userId;
+            var messages = await loadChatMessages(userId);
+            var container = document.getElementById('chatMessagesContainer');
+            var html = '';
+            for (var i = 0; i < messages.length; i++) {
+                var msg = messages[i];
+                var isAdmin = msg.sender === 'admin';
+                var cls = isAdmin ? 'admin-msg' : 'user-msg';
+                var senderName = isAdmin ? '👑 مدیر' : '👤 ' + (sanitizeInput(usersList.find(u => u.id === userId)?.name || 'کاربر'));
+                var senderCls = isAdmin ? 'admin-sender' : 'user-sender';
+
+                html += `
+                    <div class="chat-message-item ${cls}">
+                        <div class="msg-header">
+                            <span class="msg-sender ${senderCls}">${senderName}</span>
+                            <span class="msg-time">${new Date(msg.date).toLocaleString('fa-IR')}</span>
+                        </div>
+                        <div class="msg-text">${sanitizeInput(msg.text)}</div>
+                        ${msg.file ? `<div class="msg-file"><a href="${msg.file}" target="_blank">📎 دانلود فایل</a></div>` : ''}
+                        ${isAdmin ? `
+                            <div class="msg-actions">
+                                <button class="edit-msg-btn" onclick="editAdminChatMessage('${msg.id}')">✏️</button>
+                                <button class="delete-msg-btn" onclick="deleteAdminChatMessage('${msg.id}')">🗑️</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+            container.innerHTML = html || '<div style="text-align:center;padding:20px;">💬 پیامی وجود ندارد</div>';
+            container.scrollTop = container.scrollHeight;
+            document.getElementById('chatViewerTitle').textContent = '💬 چت با ' + (sanitizeInput(usersList.find(u => u.id === userId)
+                ?.name || 'کاربر'));
+            document.getElementById('chatReplyInput').value = '';
+        }
+
+        async function sendChatReply() {
+            if (!isAdmin || !currentChatUserId) { showToast('⚠️ لطفاً یک کاربر را انتخاب کنید!', 'warning'); return; }
+            var text = document.getElementById('chatReplyInput').value.trim();
+            if (!text) { showToast('⚠️ متن پاسخ را وارد کنید!', 'warning'); return; }
+
+            var file = null;
+            var fileInput = document.getElementById('chatFileInput');
+            if (fileInput.files && fileInput.files.length > 0) {
+                var file = fileInput.files[0];
+                var fileExt = file.name.split('.').pop();
+                var fileName = Date.now() + '_chat_' + Math.random().toString(36).slice(2, 8) + '.' + fileExt;
+                var { data: uploadData, error: uploadError } = await supabaseClient.storage
+                    .from('property_files')
+                    .upload('chat/' + fileName, file);
+                if (!uploadError) {
+                    var { data: urlData } = supabaseClient.storage
+                        .from('property_files')
+                        .getPublicUrl('chat/' + fileName);
+                    file = urlData.publicUrl;
+                }
+            }
+
+            try {
+                var msg = await sendMessageToSupabase(currentChatUserId, text, file);
+                if (msg) {
+                    await addNotification(currentChatUserId, 'پاسخ مدیر', 'مدیر به پیام شما پاسخ داد: ' + text.substring(0, 50));
+                    await selectChatUser(currentChatUserId);
+                    document.getElementById('chatReplyInput').value = '';
+                    document.getElementById('chatFileInput').value = '';
+                    showToast('✅ پاسخ ارسال شد!', 'success');
+                } else {
+                    showToast('❌ خطا در ارسال پاسخ!', 'error');
+                }
+            } catch (e) {
+                ErrorHandler.log(e, 'ارسال پاسخ مدیر');
+                showToast('❌ خطا در ارسال!', 'error');
+            }
+        }
+
+        async function editAdminChatMessage(id) {
+            if (!isAdmin) return;
+            var msg = null;
+            var messages = await loadChatMessages(currentChatUserId);
+            for (var i = 0; i < messages.length; i++) {
+                if (messages[i].id === id) { msg = messages[i]; break; }
+            }
+            if (!msg) return;
+
+            var newText = prompt('متن جدید:', msg.text);
+            if (newText === null) return;
+            newText = newText.trim();
+            if (!newText) { showToast('⚠️ متن را وارد کنید!', 'warning'); return; }
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .update({ text: sanitizeInput(newText), edited: true, edit_date: new Date().toISOString() })
+                    .eq('id', id);
+                if (response.error) throw response.error;
+                await selectChatUser(currentChatUserId);
+                showToast('✅ پیام ویرایش شد!', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'ویرایش پیام چت');
+                showToast('❌ خطا در ویرایش!', 'error');
+            }
+        }
+
+        async function deleteAdminChatMessage(id) {
+            if (!isAdmin) return;
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .delete()
+                    .eq('id', id);
+                if (response.error) throw response.error;
+                await selectChatUser(currentChatUserId);
+                showToast('🗑️ پیام حذف شد', 'success');
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف پیام چت');
+                showToast('❌ خطا در حذف!', 'error');
+            }
+        }
+
+        function closeChatViewer() {
+            document.getElementById('chatViewer').style.display = 'none';
+        }
+
+        // ============================================================
+        // ====== توابع پیش‌نمایش کاربر ======
+        // ============================================================
+        function toggleUserPreview() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            var section = document.getElementById('userPreviewSection');
+            section.style.display = section.style.display === 'block' ? 'none' : 'block';
+            if (section.style.display === 'block') {
+                previewTab('properties');
+            }
+        }
+
+        function previewTab(tab) {
+            var container = document.getElementById('previewContent');
+            var tabs = document.querySelectorAll('.preview-tabs button');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+            var activeTab = null;
+            for (var j = 0; j < tabs.length; j++) {
+                if (tabs[j].textContent.includes(tab === 'properties' ? 'املاک' : tab === 'messages' ? 'پیام' : 'سبد')) {
+                    activeTab = tabs[j];
+                    break;
+                }
+            }
+            if (activeTab) activeTab.classList.add('active');
+
+            var html = '';
+            if (tab === 'properties') {
+                html = '<div style="padding:10px;color:var(--text-light);">🏠 نمایش ' + properties.length + ' ملک</div>';
+                for (var i = 0; i < Math.min(properties.length, 10); i++) {
+                    var p = properties[i];
+                    html += `<div class="preview-item">${sanitizeInput(p.title)} - ${p.type === 'sale' ? '💰 فروش' : '🔑 اجاره'} - ${Number(p.price).toLocaleString()} تومان</div>`;
+                }
+                if (properties.length === 0) html += '<div style="text-align:center;padding:20px;">📭 هیچ ملکی وجود ندارد</div>';
+            } else if (tab === 'messages') {
+                var msgs = [];
+                for (var i = 0; i < usersList.length; i++) {
+                    var ms = await loadChatMessages(usersList[i].id);
+                    for (var j = 0; j < ms.length; j++) {
+                        msgs.push({ user: usersList[i].name, msg: ms[j] });
+                    }
+                }
+                msgs.sort(function(a, b) { return new Date(b.msg.date) - new Date(a.msg.date); });
+                html = '<div style="padding:10px;color:var(--text-light);">💬 نمایش ' + msgs.length + ' پیام</div>';
+                for (var i = 0; i < Math.min(msgs.length, 10); i++) {
+                    var m = msgs[i];
+                    html += `<div class="preview-item">👤 ${sanitizeInput(m.user)}: ${sanitizeInput(m.msg.text.substring(0, 50))}...</div>`;
+                }
+                if (msgs.length === 0) html += '<div style="text-align:center;padding:20px;">💬 پیامی وجود ندارد</div>';
+            } else if (tab === 'cart') {
+                html = '<div style="padding:10px;color:var(--text-light);">🛒 سبد خرید کاربران</div>';
+                var cartItemsAll = [];
+                for (var i = 0; i < usersList.length; i++) {
+                    var uid = usersList[i].id;
+                    var cart = [];
+                    try {
+                        var response = await supabaseClient
+                            .from('user_cart')
+                            .select('property_id')
+                            .eq('user_id', uid);
+                        if (!response.error) {
+                            cart = response.data.map(function(item) { return item.property_id; });
+                        }
+                    } catch (e) {}
+                    for (var j = 0; j < cart.length; j++) {
+                        var prop = null;
+                        for (var k = 0; k < properties.length; k++) {
+                            if (properties[k].id === cart[j]) { prop = properties[k]; break; }
+                        }
+                        if (prop) {
+                            cartItemsAll.push({ user: usersList[i].name, property: prop });
+                        }
+                    }
+                }
+                for (var i = 0; i < Math.min(cartItemsAll.length, 10); i++) {
+                    var c = cartItemsAll[i];
+                    html += `<div class="preview-item">👤 ${sanitizeInput(c.user)}: 🏠 ${sanitizeInput(c.property.title)}</div>`;
+                }
+                if (cartItemsAll.length === 0) html += '<div style="text-align:center;padding:20px;">🛒 سبد خرید خالی است</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        // ============================================================
+        // ====== توابع مدیر ======
+        // ============================================================
+        function showEditProfile() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            hideAllForms(['editProfileForm']);
+            var form = document.getElementById('editProfileForm');
+            form.style.display = form.style.display === 'block' ? 'none' : 'block';
+            document.getElementById('editAdminName').value = currentUser?.name || 'مدیر';
+        }
+
+        function hideEditProfile() {
+            document.getElementById('editProfileForm').style.display = 'none';
+        }
+
+        async function saveProfileChanges() {
+            if (!isAdmin) return;
+            var name = document.getElementById('editAdminName').value.trim();
+            var password = document.getElementById('editAdminPassword').value.trim();
+
+            if (name) {
+                currentUser.name = name;
+                localStorage.setItem('amlak_user', JSON.stringify({ role: 'admin', id: currentUser.id }));
+                document.getElementById('welcomeUser').textContent = 'خوش آمدید ' + name;
+                showToast('✅ نام مدیر بروزرسانی شد!', 'success');
+            }
+
+            if (password) {
+                try {
+                    // ذخیره رمز جدید (در localStorage برای سادگی)
+                    localStorage.setItem('amlak_admin_password_' + currentUser.id, password);
+                    showToast('✅ رمز عبور بروزرسانی شد!', 'success');
+                } catch (e) {}
+            }
+
+            hideEditProfile();
+        }
+
+        function loadAdminMessage() {
+            var data = localStorage.getItem('amlak_admin_message');
+            if (data) {
+                try {
+                    var parsed = JSON.parse(data);
+                    document.getElementById('adminMessage').textContent = '📢 ' + parsed.text;
+                    document.getElementById('adminMsgDate').textContent = parsed.date || '';
+                    document.getElementById('adminMsgBox').style.display = 'block';
+                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
+                } catch (e) {}
+            }
+        }
+
+        function updateWelcomeMessage() {
+            if (isAdmin) {
+                document.getElementById('welcomeUser').textContent = '👑 ' + (currentUser?.name || 'مدیر') + ' خوش آمدید';
+            } else {
+                document.getElementById('welcomeUser').textContent = '👤 ' + (currentUser?.name || 'کاربر') + ' خوش آمدید';
+            }
+        }
+
+        async function showUsersList() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            var section = document.getElementById('adminUsersSection');
+            section.style.display = section.style.display === 'block' ? 'none' : 'block';
+            if (section.style.display === 'block') {
+                await refreshUsersList();
+            }
+        }
+
+        async function refreshUsersList() {
+            if (!isAdmin) return;
+            try {
+                var users = await getUsers();
+                usersList = users;
+                var container = document.getElementById('usersListContainer');
+                var html = '';
+                for (var i = 0; i < users.length; i++) {
+                    var u = users[i];
+                    var isVerified = u.verified !== false;
+                    html += `
+                        <div class="user-list-item">
+                            <div>
+                                <div class="user-phone">${sanitizeInput(u.phone)}</div>
+                                <div class="user-meta">${sanitizeInput(u.name)} | #${u.user_number}</div>
+                                <div class="user-meta">📅 ${new Date(u.date).toLocaleDateString('fa-IR')}</div>
+                            </div>
+                            <div>
+                                <span class="user-status ${isVerified ? 'verified' : 'pending'}">${isVerified ? '✅ تایید شده' : '⏳ در انتظار'}</span>
+                                <div class="user-actions" style="margin-top:4px;">
+                                    <button class="contact-user" onclick="startChatWithUser('${u.id}')">💬</button>
+                                    <button class="delete-user" onclick="deleteUser('${u.id}')">🗑️</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html || '<div style="text-align:center;padding:20px;">👤 هیچ کاربری یافت نشد</div>';
+                document.getElementById('userCount').textContent = users.length + ' کاربر';
+            } catch (e) {
+                ErrorHandler.log(e, 'بارگذاری کاربران');
+            }
+        }
+
+        function startChatWithUser(userId) {
+            viewChats();
+            setTimeout(function() {
+                selectChatUser(userId);
+            }, 300);
+        }
+
+        async function deleteUser(userId) {
+            if (!isAdmin) return;
+            if (!confirm('آیا از حذف این کاربر مطمئن هستید؟')) return;
+
+            try {
+                var response = await supabaseClient
+                    .from('users')
+                    .delete()
+                    .eq('id', userId);
+                if (response.error) throw response.error;
+                showToast('🗑️ کاربر حذف شد', 'success');
+                await refreshUsersList();
+            } catch (e) {
+                ErrorHandler.log(e, 'حذف کاربر');
+                showToast('❌ خطا در حذف کاربر!', 'error');
+            }
+        }
+
+        // ============================================================
+        // ====== توابع نمودار ======
+        // ============================================================
+        function toggleChart() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            var container = document.getElementById('chartContainer');
+            container.style.display = container.style.display === 'block' ? 'none' : 'block';
+            if (container.style.display === 'block') {
+                drawChart();
+            }
+        }
+
+        function drawChart() {
+            var canvas = document.getElementById('chartCanvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var width = canvas.parentElement.clientWidth - 32;
+            var height = 200;
+            canvas.width = width * 2;
+            canvas.height = height * 2;
+            canvas.style.width = width + 'px';
+            canvas.style.height = height + 'px';
+            ctx.scale(2, 2);
+
+            var sale = properties.filter(function(p) { return p.type === 'sale'; }).length;
+            var rent = properties.filter(function(p) { return p.type === 'rent'; }).length;
+            var total = sale + rent || 1;
+
+            ctx.clearRect(0, 0, width, height);
+
+            var colors = ['#E65100', '#C62828'];
+            var data = [sale, rent];
+            var labels = ['فروش', 'اجاره'];
+            var totalItems = data.reduce(function(a, b) { return a + b; }, 0) || 1;
+
+            var startAngle = -Math.PI / 2;
+            var centerX = width / 2;
+            var centerY = height / 2;
+            var radius = Math.min(width, height) / 2 - 20;
+
+            for (var i = 0; i < data.length; i++) {
+                var sliceAngle = (data[i] / totalItems) * 2 * Math.PI;
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
+                ctx.closePath();
+                ctx.fillStyle = colors[i];
+                ctx.fill();
+                startAngle += sliceAngle;
+            }
+
+            ctx.fillStyle = '#333';
+            ctx.font = '12px Tahoma';
+            ctx.textAlign = 'center';
+            ctx.fillText('فروش: ' + sale + ' | اجاره: ' + rent, centerX, height - 5);
+
+            ctx.fillStyle = '#666';
+            ctx.font = '10px Tahoma';
+            ctx.fillText('📊 آمار املاک', centerX, 15);
+        }
+
+        // ============================================================
+        // ====== توابع خروجی ======
+        // ============================================================
+        function exportExcel() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            if (!properties.length) { showToast('⚠️ هیچ ملکی برای خروجی وجود ندارد!', 'warning'); return; }
+
+            var csv = 'عنوان,دسته,نوع,قیمت,آدرس,متراژ,تاریخ\n';
+            for (var i = 0; i < properties.length; i++) {
+                var p = properties[i];
+                csv += '"' + sanitizeInput(p.title) + '","' + p.category + '","' + (p.type === 'sale' ? 'فروش' : 'اجاره') +
+                    '","' + Number(p.price).toLocaleString() + '","' + sanitizeInput(p.address) + '","' + (p.area || 0) +
+                    '","' + p.date + '"\n';
+            }
+            var blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'املاک_حسینی_' + new Date().toLocaleDateString('fa-IR') + '.csv';
+            link.click();
+            showToast('📊 فایل Excel دانلود شد!', 'success');
+        }
+
+        function exportPDF() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            if (!properties.length) { showToast('⚠️ هیچ ملکی برای خروجی وجود ندارد!', 'warning'); return; }
+
+            var html = '<html><head><meta charset="utf-8"><style>body{font-family:Tahoma;padding:20px;}h2{color:#1565C0;}table{width:100%;border-collapse:collapse;}th{background:#1565C0;color:white;padding:8px;}td{padding:6px;border:1px solid #ddd;}tr:nth-child(even){background:#f5f5f5;}</style></head><body>';
+            html += '<h2>📄 گزارش املاک دپارتمان حسینی</h2>';
+            html += '<p>تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '</p>';
+            html += '<table><tr><th>عنوان</th><th>دسته</th><th>نوع</th><th>قیمت</th><th>آدرس</th><th>متراژ</th></tr>';
+            for (var i = 0; i < properties.length; i++) {
+                var p = properties[i];
+                html += '<tr><td>' + sanitizeInput(p.title) + '</td><td>' + p.category + '</td><td>' + (p.type === 'sale' ?
+                    'فروش' : 'اجاره') + '</td><td>' + Number(p.price).toLocaleString() + '</td><td>' + sanitizeInput(p
+                    .address) + '</td><td>' + (p.area || 0) + '</td></tr>';
+            }
+            html += '</table></body></html>';
+
+            var win = window.open('', '_blank');
+            win.document.write(html);
+            win.document.close();
+            win.print();
+            showToast('📄 خروجی PDF ارسال شد!', 'success');
+        }
+
+        function backupData() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر!', 'warning'); return; }
+            var data = {
+                properties: properties,
+                messages: publicMessages,
+                users: usersList,
+                backupDate: new Date().toISOString()
+            };
+            var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'پشتیبان_املاک_' + new Date().toLocaleDateString('fa-IR') + '.json';
+            link.click();
+            showToast('💾 پشتیبان تهیه شد!', 'success');
+        }
+
+        // ============================================================
+        // ====== پیام‌های عمومی (اصلاح شده) ======
+        // ============================================================
+        function showPublicMsgForm() {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
+            hideAllForms(['publicMsgForm']);
+            document.getElementById('publicMsgForm').style.display = 'block';
+            document.getElementById('publicMsgTitle').textContent = '📢 ارسال پیام عمومی';
+            document.getElementById('editMsgId').value = '';
+            document.getElementById('fPublicMsg').value = '';
+        }
+
+        function hidePublicMsgForm() {
+            document.getElementById('publicMsgForm').style.display = 'none';
+            document.getElementById('fPublicMsg').value = '';
+            document.getElementById('editMsgId').value = '';
+        }
+
+        function savePublicMessage() {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning');
+                return;
+            }
+
+            var editId = document.getElementById('editMsgId').value;
+            var text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
+            if (!text) {
+                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
+                return;
+            }
+
+            if (editId) {
+                for (var i = 0; i < publicMessages.length; i++) {
+                    if (publicMessages[i].id === editId) {
+                        publicMessages[i].text = text;
+                        break;
+                    }
+                }
+                showToast('✅ پیام ویرایش شد!', 'success');
+            } else {
+                publicMessages.push({
+                    id: generateId(),
+                    text: text,
+                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
+                });
+                showToast('✅ پیام عمومی ارسال شد!', 'success');
+            }
+
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            hidePublicMsgForm();
+            renderPublicMessages();
+            showToast('📢 پیام عمومی برای همه کاربران ارسال شد!', 'success');
+        }
+
+        // ===== تابع اصلی نمایش پیام‌های عمومی (اصلاح شده برای همه) =====
+        function renderPublicMessages() {
+            var container = document.getElementById('publicMessagesContainer');
+            if (!container) {
+                console.error('❌ publicMessagesContainer پیدا نشد!');
+                return;
+            }
+
+            container.style.display = 'block';
+
+            try {
+                var stored = localStorage.getItem('amlak_public_messages');
+                if (stored && stored !== 'null' && stored !== 'undefined') {
+                    publicMessages = JSON.parse(stored);
+                } else {
+                    publicMessages = [];
+                }
+            } catch (e) {
+                publicMessages = [];
+            }
+
+            if (!publicMessages || publicMessages.length === 0) {
+                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:10px;font-size:13px;">📢 هنوز پیام عمومی ارسال نشده است</div>';
+                return;
+            }
+
+            var html = '';
+            for (var i = 0; i < publicMessages.length; i++) {
+                var p = publicMessages[i];
+                var msgText = p.text || 'بدون متن';
+                var msgDate = p.date || new Date().toLocaleDateString('fa-IR');
+
+                html += `
+                    <div class="public-msg-card" style="border-right: 5px solid #FFD700; background: var(--primary-light); padding: 14px; border-radius: 12px; margin-bottom: 12px;">
+                        <div class="msg-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <span style="font-weight: bold; color: var(--primary); font-size: 14px;">📢 پیام رسمی از مدیریت</span>
+                            <span class="msg-date" style="font-size: 11px; color: var(--text-light);">${msgDate}</span>
+                        </div>
+                        <div class="msg-text" style="font-size: 15px; line-height: 1.8; padding: 6px 0; color: var(--text);">
+                            ${sanitizeInput(msgText)}
+                        </div>
+                        ${isAdmin ? `
+                            <div class="msg-actions" style="margin-top: 8px; display: flex; gap: 6px;">
+                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')" style="padding: 4px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; background: #FFA000; transition: var(--transition);">✏️ ویرایش</button>
+                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')" style="padding: 4px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; background: var(--danger); transition: var(--transition);">🗑️ حذف</button>
+                            </div>
+                        ` : `
+                            <div style="font-size: 11px; color: var(--text-light); margin-top: 4px; padding: 4px 8px; background: rgba(255,215,0,0.1); border-radius: 6px; border-right: 3px solid #FFD700;">
+                                📌 این پیام رسمی از طرف مدیریت است
+                            </div>
+                        `}
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        function refreshPublicMessages() {
+            renderPublicMessages();
+            showToast('🔄 پیام‌ها بروزرسانی شدند', 'info');
+        }
+
+        function editPublicMessage(id) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            for (var i = 0; i < publicMessages.length; i++) {
+                if (publicMessages[i].id === id) {
+                    document.getElementById('editMsgId').value = id;
+                    document.getElementById('fPublicMsg').value = publicMessages[i].text;
+                    document.getElementById('publicMsgTitle').textContent = '✏️ ویرایش پیام عمومی';
+                    document.getElementById('publicMsgForm').style.display = 'block';
+                    break;
+                }
+            }
+        }
+
+        function deletePublicMessage(id) {
+            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+
+            publicMessages = publicMessages.filter(function(p) { return p.id !== id; });
+            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+            renderPublicMessages();
+            showToast('🗑️ پیام حذف شد', 'success');
+        }
+
+        // ============================================================
         // ====== ورود به برنامه ======
         // ============================================================
         async function enterApp() {
             try {
                 await loadProperties();
-                await loadPublicMessages();
+                loadPublicMessagesFromStorage();
                 await loadUserCartHandler();
                 updateWelcomeMessage();
 
                 // ===== نمایش container پیام‌های عمومی برای همه =====
-                document.getElementById('publicMessagesContainer').style.display = 'block';
+                var container = document.getElementById('publicMessagesContainer');
+                if (container) {
+                    container.style.display = 'block';
+                }
 
                 if (isAdmin) {
                     document.getElementById('welcomeMessage').textContent = 'به پنل مدیریت خوش آمدید';
@@ -4368,735 +5152,10 @@
                 updateCartBadge();
                 renderList();
 
-            } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
-        }
-
-        // ============================================================
-        // ====== پیام‌های عمومی ======
-        // ============================================================
-        function showPublicMsgForm() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
-            hideAllForms(['publicMsgForm']);
-            document.getElementById('publicMsgForm').style.display = 'block';
-            document.getElementById('publicMsgTitle').textContent = '📢 ارسال پیام عمومی';
-            document.getElementById('editMsgId').value = '';
-            document.getElementById('fPublicMsg').value = '';
-        }
-
-        function hidePublicMsgForm() {
-            document.getElementById('publicMsgForm').style.display = 'none';
-            document.getElementById('fPublicMsg').value = '';
-            document.getElementById('editMsgId').value = '';
-        }
-
-        function savePublicMessage() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning'); return; }
-            var editId = document.getElementById('editMsgId').value;
-            var text = sanitizeInput(document.getElementById('fPublicMsg').value.trim());
-            if (!text) { showToast('⚠️ متن پیام را وارد کنید!', 'warning'); return; }
-
-            if (editId) {
-                for (var i = 0; i < publicMessages.length; i++) {
-                    if (publicMessages[i].id === editId) {
-                        publicMessages[i].text = text;
-                        break;
-                    }
-                }
-                showToast('✅ پیام ویرایش شد!', 'success');
-            } else {
-                publicMessages.push({
-                    id: generateId(),
-                    text: text,
-                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
-                });
-                showToast('✅ پیام عمومی ارسال شد!', 'success');
-            }
-
-            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-            hidePublicMsgForm();
-            renderPublicMessages();
-        }
-
-        // ===== تابع اصلی نمایش پیام‌های عمومی =====
-        function renderPublicMessages() {
-            var container = document.getElementById('publicMessagesContainer');
-            if (!container) {
-                console.error('❌ publicMessagesContainer پیدا نشد!');
-                return;
-            }
-
-            // نمایش container
-            container.style.display = 'block';
-
-            // بارگذاری از localStorage
-            try {
-                var stored = localStorage.getItem('amlak_public_messages');
-                if (stored) {
-                    publicMessages = JSON.parse(stored);
-                } else {
-                    publicMessages = [];
-                }
             } catch (e) {
-                publicMessages = [];
+                console.error('❌ خطا در enterApp:', e);
+                ErrorHandler.log(e, 'ورود به برنامه');
             }
-
-            console.log('📊 تعداد پیام‌های عمومی:', publicMessages.length);
-
-            if (!publicMessages.length) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:10px;font-size:13px;">📢 هنوز پیام عمومی ارسال نشده است</div>';
-                return;
-            }
-
-            var html = '';
-            for (var i = 0; i < publicMessages.length; i++) {
-                var p = publicMessages[i];
-                html += `
-                    <div class="public-msg-card" style="border-right: 5px solid #FFD700; background: var(--primary-light); padding: 14px; border-radius: 12px; margin-bottom: 12px;">
-                        <div class="msg-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                            <span style="font-weight: bold; color: var(--primary); font-size: 14px;">📢 پیام رسمی از مدیریت</span>
-                            <span class="msg-date" style="font-size: 11px; color: var(--text-light);">${p.date || ''}</span>
-                        </div>
-                        <div class="msg-text" style="font-size: 15px; line-height: 1.8; padding: 6px 0; color: var(--text);">
-                            ${sanitizeInput(p.text)}
-                        </div>
-                        ${isAdmin ? `
-                            <div class="msg-actions" style="margin-top: 8px; display: flex; gap: 6px;">
-                                <button class="edit-msg" onclick="editPublicMessage('${p.id}')" style="padding: 4px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; background: #FFA000; transition: var(--transition);">✏️ ویرایش</button>
-                                <button class="del-msg" onclick="deletePublicMessage('${p.id}')" style="padding: 4px 12px; border: none; border-radius: 6px; font-size: 11px; cursor: pointer; color: white; background: var(--danger); transition: var(--transition);">🗑️ حذف</button>
-                            </div>
-                        ` : `
-                            <div style="font-size: 11px; color: var(--text-light); margin-top: 4px; padding: 4px 8px; background: rgba(255,215,0,0.1); border-radius: 6px; border-right: 3px solid #FFD700;">
-                                📌 این پیام رسمی از طرف مدیریت است
-                            </div>
-                        `}
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-            console.log('✅ پیام‌های عمومی نمایش داده شدند!');
-        }
-
-        function editPublicMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            for (var i = 0; i < publicMessages.length; i++) {
-                if (publicMessages[i].id === id) {
-                    document.getElementById('editMsgId').value = id;
-                    document.getElementById('fPublicMsg').value = publicMessages[i].text;
-                    document.getElementById('publicMsgTitle').textContent = '✏️ ویرایش پیام عمومی';
-                    document.getElementById('publicMsgForm').style.display = 'block';
-                    break;
-                }
-            }
-        }
-
-        function deletePublicMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-
-            publicMessages = publicMessages.filter(function(p) { return p.id !== id; });
-            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-            renderPublicMessages();
-            showToast('🗑️ پیام حذف شد', 'success');
-        }
-
-        // ============================================================
-        // ====== چت کاربر (با ذخیره در Supabase) ======
-        // ============================================================
-        function loadUserChatMessages() {
-            if (!currentUser || isAdmin) return;
-
-            var container = document.getElementById('userChatMessagesContainer');
-            if (!container) return;
-
-            loadChatMessages(currentUser.id).then(function(messages) {
-                chatMessages = messages;
-
-                if (!messages.length) {
-                    container.innerHTML =
-                        '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
-                    return;
-                }
-
-                var html = '';
-                for (var i = 0; i < messages.length; i++) {
-                    var msg = messages[i];
-                    var isUser = msg.sender === 'user';
-                    var senderName = isUser ? 'شما' : 'مدیر';
-                    var msgClass = isUser ? 'user-msg' : 'admin-msg';
-                    var time = new Date(msg.date).toLocaleString('fa-IR');
-
-                    var actionsHtml = '';
-                    if (isUser) {
-                        actionsHtml = `
-                            <div class="msg-actions">
-                                <button class="edit-msg-btn" onclick="startUserEditMessage('${msg.id}')">✏️ ویرایش</button>
-                                <button class="delete-msg-btn" onclick="deleteUserMessage('${msg.id}')">🗑️</button>
-                            </div>
-                        `;
-                    }
-
-                    var editHtml = '';
-                    if (msg.edited) {
-                        editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
-                    }
-
-                    html += `
-                        <div class="chat-message-item ${msgClass}" id="user-msg-${msg.id}">
-                            <div class="msg-header">
-                                <span class="msg-sender ${isUser ? 'user-sender' : 'admin-sender'}">${senderName}</span>
-                                <span class="msg-time">${time}${editHtml}</span>
-                            </div>
-                            <div class="msg-text">${sanitizeInput(msg.text)}</div>
-                            ${actionsHtml}
-                            <div class="msg-edit-area" id="userEditArea-${msg.id}" style="display:none;">
-                                <textarea id="userEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
-                                <button class="save-edit-btn" onclick="saveUserEditMessage('${msg.id}')">💾 ذخیره</button>
-                                <button class="cancel-edit-btn" onclick="cancelUserEditMessage('${msg.id}')">❌ انصراف</button>
-                            </div>
-                        </div>
-                    `;
-                }
-
-                container.innerHTML = html;
-                container.scrollTop = container.scrollHeight;
-            });
-        }
-
-        function sendUserMessage() {
-            if (!currentUser || isAdmin) {
-                showToast('⚠️ فقط کاربران می‌توانند پیام بفرستند!', 'warning');
-                return;
-            }
-
-            var input = document.getElementById('userChatInput');
-            var text = sanitizeInput(input.value.trim());
-            if (!text) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            showLoading(true);
-
-            sendMessageToSupabase(currentUser.id, text).then(function(msg) {
-                showLoading(false);
-                if (msg) {
-                    showToast('✅ پیام شما به مدیر ارسال شد!', 'success');
-                    input.value = '';
-                    loadUserChatMessages();
-                    addNotification('admin', '💬 پیام جدید از کاربر', text);
-                } else {
-                    showToast('❌ خطا در ارسال پیام!', 'error');
-                }
-            });
-        }
-
-        function startUserEditMessage(messageId) {
-            document.getElementById('userEditArea-' + messageId).style.display = 'block';
-            document.getElementById('userEditInput-' + messageId).focus();
-        }
-
-        function cancelUserEditMessage(messageId) {
-            document.getElementById('userEditArea-' + messageId).style.display = 'none';
-        }
-
-        async function saveUserEditMessage(messageId) {
-            var input = document.getElementById('userEditInput-' + messageId);
-            var newText = input.value.trim();
-            if (!newText) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            showLoading(true);
-
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .update({
-                        text: sanitizeInput(newText),
-                        edited: true,
-                        edit_date: new Date().toISOString()
-                    })
-                    .eq('id', messageId)
-                    .eq('user_id', currentUser.id);
-
-                if (response.error) throw response.error;
-
-                showToast('✅ پیام ویرایش شد!', 'success');
-                showLoading(false);
-                loadUserChatMessages();
-            } catch (e) {
-                showLoading(false);
-                ErrorHandler.log(e, 'ویرایش پیام');
-                showToast('❌ خطا در ویرایش پیام!', 'error');
-            }
-        }
-
-        async function deleteUserMessage(messageId) {
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-
-            showLoading(true);
-
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .delete()
-                    .eq('id', messageId)
-                    .eq('user_id', currentUser.id);
-
-                if (response.error) throw response.error;
-
-                showToast('🗑️ پیام حذف شد', 'success');
-                showLoading(false);
-                loadUserChatMessages();
-            } catch (e) {
-                showLoading(false);
-                ErrorHandler.log(e, 'حذف پیام');
-                showToast('❌ خطا در حذف پیام!', 'error');
-            }
-        }
-
-        // ============================================================
-        // ====== چت مدیر ======
-        // ============================================================
-        function viewChats() {
-            if (!isAdmin) {
-                showToast('⚠️ فقط مدیر می‌تواند چت کند!', 'warning');
-                return;
-            }
-            hideAllForms(['chatViewer']);
-            document.getElementById('chatViewer').style.display = 'block';
-            document.getElementById('chatViewerTitle').textContent = '💬 چت با کاربران';
-            renderChatUsersList();
-        }
-
-        async function renderChatUsersList() {
-            var container = document.getElementById('chatUserList');
-            var users = await getUsers();
-
-            var usersWithChat = [];
-            for (var i = 0; i < users.length; i++) {
-                var user = users[i];
-                var msgs = await loadChatMessages(user.id);
-                if (msgs.length > 0) {
-                    usersWithChat.push({ user: user, messages: msgs });
-                }
-            }
-
-            if (usersWithChat.length === 0) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:15px;">💬 هنوز پیامی از کاربران دریافت نشده است</div>';
-                return;
-            }
-
-            var html = '';
-            for (var j = 0; j < usersWithChat.length; j++) {
-                var u = usersWithChat[j];
-                var lastMsg = u.messages[u.messages.length - 1];
-                var unreadCount = 0;
-                for (var k = 0; k < u.messages.length; k++) {
-                    if (u.messages[k].sender === 'user' && !u.messages[k].read) unreadCount++;
-                }
-                html += `
-                    <div class="chat-user-item" onclick="selectChatUser('${u.user.id}')">
-                        <div class="user-info">
-                            <div class="user-name">👤 #${u.user.user_number} - ${u.user.name || 'کاربر'}</div>
-                            <div class="user-preview">${lastMsg ? sanitizeInput(lastMsg.text).substring(0,30) : 'بدون پیام'}</div>
-                        </div>
-                        ${unreadCount > 0 ? '<span class="user-badge unread">' + unreadCount + ' جدید</span>' : '<span class="user-badge">' + u.messages.length + '</span>'}
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
-
-        async function selectChatUser(userId) {
-            currentChatUserId = userId;
-            await renderChatMessagesWithUser(userId);
-        }
-
-        async function renderChatMessagesWithUser(userId) {
-            var container = document.getElementById('chatMessagesContainer');
-            var messages = await loadChatMessages(userId);
-            var users = await getUsers();
-            var user = null;
-            for (var i = 0; i < users.length; i++) {
-                if (users[i].id === userId) { user = users[i]; break; }
-            }
-
-            if (messages.length === 0) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هیچ پیامی در این چت وجود ندارد</div>';
-                return;
-            }
-
-            await supabaseClient
-                .from('chat_messages')
-                .update({ read: true })
-                .eq('user_id', userId)
-                .eq('sender', 'user')
-                .eq('read', false);
-
-            var html =
-                '<div style="padding:8px;background:var(--primary-light);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:bold;color:var(--primary);">👤 چت با #' + (user ?
-                    user.user_number : '') + ' - ' + (user ? user.name : 'کاربر') + '</div>';
-
-            for (var j = 0; j < messages.length; j++) {
-                var msg = messages[j];
-                var isUser = msg.sender === 'user';
-                var isAdminSender = msg.sender === 'admin';
-                var senderName = isUser ? (user ? user.name : 'کاربر') : 'مدیر';
-                var senderClass = isUser ? 'user-sender' : 'admin-sender';
-                var msgClass = isUser ? 'user-msg' : 'admin-msg';
-                var time = new Date(msg.date).toLocaleString('fa-IR');
-
-                var fileHtml = '';
-                if (msg.file) {
-                    fileHtml = '<div class="msg-file"><a href="' + msg.file + '" target="_blank">📎 دانلود فایل</a></div>';
-                }
-
-                var editHtml = '';
-                if (msg.edited) {
-                    editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
-                }
-
-                var actionsHtml = '';
-                if (isAdminSender && isAdmin) {
-                    actionsHtml = `
-                        <div class="msg-actions">
-                            <button class="edit-msg-btn" onclick="startAdminEditMessage('${msg.id}')">✏️ ویرایش</button>
-                            <button class="delete-msg-btn" onclick="deleteAdminMessageChat('${msg.id}')">🗑️</button>
-                        </div>
-                    `;
-                }
-
-                html += `
-                    <div class="chat-message-item ${msgClass}" id="msg-${msg.id}">
-                        <div class="msg-header">
-                            <span class="msg-sender ${senderClass}">${senderName}</span>
-                            <span class="msg-time">${time}${editHtml}</span>
-                        </div>
-                        <div class="msg-text">${sanitizeInput(msg.text)}</div>
-                        ${fileHtml}
-                        ${actionsHtml}
-                        <div class="msg-edit-area" id="adminEditArea-${msg.id}" style="display:none;">
-                            <textarea id="adminEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
-                            <button class="save-edit-btn" onclick="saveAdminEditMessage('${msg.id}')">💾 ذخیره</button>
-                            <button class="cancel-edit-btn" onclick="cancelAdminEditMessage('${msg.id}')">❌ انصراف</button>
-                        </div>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-            container.scrollTop = container.scrollHeight;
-        }
-
-        // ===== توابع ویرایش/حذف پیام مدیر در چت =====
-        function startAdminEditMessage(messageId) {
-            document.getElementById('adminEditArea-' + messageId).style.display = 'block';
-            document.getElementById('adminEditInput-' + messageId).focus();
-        }
-
-        function cancelAdminEditMessage(messageId) {
-            document.getElementById('adminEditArea-' + messageId).style.display = 'none';
-        }
-
-        async function saveAdminEditMessage(messageId) {
-            var input = document.getElementById('adminEditInput-' + messageId);
-            var newText = input.value.trim();
-            if (!newText) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            showLoading(true);
-
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .update({
-                        text: sanitizeInput(newText),
-                        edited: true,
-                        edit_date: new Date().toISOString()
-                    })
-                    .eq('id', messageId);
-
-                if (response.error) throw response.error;
-
-                showToast('✅ پیام ویرایش شد!', 'success');
-                showLoading(false);
-                renderChatMessagesWithUser(currentChatUserId);
-            } catch (e) {
-                showLoading(false);
-                ErrorHandler.log(e, 'ویرایش پیام مدیر');
-                showToast('❌ خطا در ویرایش پیام!', 'error');
-            }
-        }
-
-        async function deleteAdminMessageChat(messageId) {
-            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
-
-            showLoading(true);
-
-            try {
-                var response = await supabaseClient
-                    .from('chat_messages')
-                    .delete()
-                    .eq('id', messageId);
-
-                if (response.error) throw response.error;
-
-                showToast('🗑️ پیام حذف شد', 'success');
-                showLoading(false);
-                renderChatMessagesWithUser(currentChatUserId);
-                renderChatUsersList();
-            } catch (e) {
-                showLoading(false);
-                ErrorHandler.log(e, 'حذف پیام مدیر');
-                showToast('❌ خطا در حذف پیام!', 'error');
-            }
-        }
-
-        function sendChatReply() {
-            if (!isAdmin || !currentChatUserId) {
-                showToast('⚠️ خطا در ارسال!', 'warning');
-                return;
-            }
-
-            var input = document.getElementById('chatReplyInput');
-            var text = sanitizeInput(input.value.trim());
-            if (!text) {
-                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
-                return;
-            }
-
-            var fileInput = document.getElementById('chatFileInput');
-            var fileUrl = null;
-            if (fileInput.files && fileInput.files.length > 0) {
-                fileUrl = '📎 ' + fileInput.files[0].name;
-                fileInput.value = '';
-            }
-
-            showLoading(true);
-
-            sendMessageToSupabase(currentChatUserId, text, fileUrl).then(function(msg) {
-                showLoading(false);
-                if (msg) {
-                    input.value = '';
-                    renderChatMessagesWithUser(currentChatUserId);
-                    renderChatUsersList();
-                    showToast('✅ پیام ارسال شد!', 'success');
-                    addNotification(currentChatUserId, '💬 پاسخ مدیر', text);
-                } else {
-                    showToast('❌ خطا در ارسال پیام!', 'error');
-                }
-            });
-        }
-
-        function closeChatViewer() {
-            document.getElementById('chatViewer').style.display = 'none';
-            currentChatUserId = null;
-        }
-
-        // ============================================================
-        // ====== سایر توابع ======
-        // ============================================================
-        function toggleChart() {
-            var container = document.getElementById('chartContainer');
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
-            if (container.style.display === 'block') drawChart();
-            hideAllForms(['chartContainer']);
-        }
-
-        function drawChart() {
-            var canvas = document.getElementById('chartCanvas');
-            var ctx = canvas.getContext('2d');
-            var sale = properties.filter(function(p) { return p.type === 'sale'; }).length;
-            var rent = properties.filter(function(p) { return p.type === 'rent'; }).length;
-            var total = sale + rent || 1;
-            canvas.width = 300;
-            canvas.height = 200;
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            var cx = 100,
-                cy = 100,
-                r = 70;
-            var angles = [(sale / total) * 2 * Math.PI, (rent / total) * 2 * Math.PI];
-            var colors = ['#E65100', '#C62828'];
-            var start = -Math.PI / 2;
-            for (var i = 0; i < angles.length; i++) {
-                ctx.beginPath();
-                ctx.moveTo(cx, cy);
-                ctx.arc(cx, cy, r, start, start + angles[i]);
-                ctx.closePath();
-                ctx.fillStyle = colors[i];
-                ctx.fill();
-                start += angles[i];
-            }
-            ctx.fillStyle = '#333';
-            ctx.font = '12px Tahoma';
-            ctx.fillText('🟧 فروش: ' + sale, 10, 180);
-            ctx.fillText('🟥 اجاره: ' + rent, 10, 195);
-            ctx.fillStyle = '#1565C0';
-            ctx.font = '14px Tahoma';
-            ctx.fillText('کل: ' + total, 10, 20);
-        }
-
-        function exportPDF() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
-            if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
-            var text = '=== گزارش دپارتمان املاک حسینی ===\n';
-            text += 'تاریخ: ' + new Date().toLocaleDateString('fa-IR') + '\n';
-            text += 'تعداد کل: ' + properties.length + '\n';
-            for (var i = 0; i < properties.length; i++) {
-                var p = properties[i];
-                text += (i + 1) + '. ' + p.title + '\n   کد: ' + (p.customcode || p.code || 'ندارد') + '\n   قیمت: ' + Number(
-                    p.price).toLocaleString() + ' تومان\n   آدرس: ' + p.address + '\n   --------------------\n';
-            }
-            var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'گزارش_دپارتمان_املاک_حسینی_' + new Date().toISOString().slice(0, 10) + '.txt';
-            link.click();
-            showToast('📄 گزارش دانلود شد!', 'success');
-        }
-
-        function exportExcel() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند خروجی بگیرد!', 'warning'); return; }
-            if (!properties.length) { showToast('⚠️ هیچ ملکی وجود ندارد!', 'warning'); return; }
-            var csv = 'کد,عنوان,دسته,نوع,قیمت,آدرس,متراژ,تماس\n';
-            for (var i = 0; i < properties.length; i++) {
-                var p = properties[i];
-                csv += '"' + (p.customcode || p.code || '') + '","' + p.title + '","' + (p.category || '') + '","' + p.type +
-                    '","' + p.price + '","' + p.address + '","' + (p.area || 0) + '","' + (p.phone || '') + '"\n';
-            }
-            var blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'دپارتمان_املاک_حسینی_' + new Date().toISOString().slice(0, 10) + '.csv';
-            link.click();
-            showToast('📊 فایل Excel دانلود شد!', 'success');
-        }
-
-        function backupData() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پشتیبان بگیرد!', 'warning'); return; }
-            var data = {
-                properties: properties,
-                publicMessages: publicMessages,
-                backupDate: new Date().toISOString()
-            };
-            var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            var link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'dopar_taman_amlak_hoseini_backup_' + new Date().toISOString().slice(0, 10) + '.json';
-            link.click();
-            showToast('💾 پشتیبان گرفته شد!', 'success');
-        }
-
-        function showUsersList() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند لیست کاربران را ببیند!', 'warning'); return; }
-            var section = document.getElementById('adminUsersSection');
-            if (section.style.display === 'block') {
-                section.style.display = 'none';
-            } else {
-                section.style.display = 'block';
-                refreshUsersList();
-            }
-        }
-
-        async function refreshUsersList() {
-            if (!isAdmin) return;
-            var users = await getUsers();
-            var container = document.getElementById('usersListContainer');
-            document.getElementById('userCount').textContent = users.length + ' کاربر';
-
-            if (!users.length) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:var(--text-light);padding:20px;">👤 هنوز کاربری ثبت نام نکرده است</div>';
-                return;
-            }
-
-            var html = '';
-            for (var i = 0; i < users.length; i++) {
-                var u = users[i];
-                html += `
-                    <div class="user-list-item">
-                        <div style="flex:1;">
-                            <div class="user-phone">#${u.user_number} - ${u.name || 'کاربر'}</div>
-                            <div class="user-meta">📱 ${u.phone || ''}</div>
-                        </div>
-                        <span class="user-status verified">✅ تایید شده</span>
-                    </div>
-                `;
-            }
-            container.innerHTML = html;
-        }
-
-        function toggleUserPreview() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند پیش‌نمایش ببیند!', 'warning'); return; }
-            var section = document.getElementById('userPreviewSection');
-            if (section.style.display === 'block') {
-                section.style.display = 'none';
-            } else {
-                section.style.display = 'block';
-                previewTab('properties');
-            }
-        }
-
-        function previewTab(tab) {
-            var container = document.getElementById('previewContent');
-            container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">🔧 در حال توسعه...</div>';
-        }
-
-        function showEditProfile() {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
-            hideAllForms(['editProfileForm']);
-            document.getElementById('editProfileForm').style.display = 'block';
-        }
-
-        function hideEditProfile() {
-            document.getElementById('editProfileForm').style.display = 'none';
-        }
-
-        function saveProfileChanges() {
-            var name = sanitizeInput(document.getElementById('editAdminName').value.trim());
-            if (name) {
-                localStorage.setItem('amlak_admin_name', name);
-                showToast('✅ اطلاعات مدیر ذخیره شد!', 'success');
-                hideEditProfile();
-            } else {
-                showToast('⚠️ لطفاً نام خود را وارد کنید', 'warning');
-            }
-        }
-
-        function loadAdminMessage() {
-            try {
-                var adminMsg = localStorage.getItem('amlak_admin_message');
-                if (adminMsg) {
-                    var msgData = JSON.parse(adminMsg);
-                    document.getElementById('adminMessage').textContent = '📢 ' + sanitizeInput(msgData.text);
-                    document.getElementById('adminMsgDate').textContent = msgData.date || '';
-                    document.getElementById('adminMsgBox').style.display = 'block';
-                    document.getElementById('adminMsgActions').style.display = isAdmin ? 'flex' : 'none';
-                    document.getElementById('adminMsgEditArea').style.display = 'none';
-                    document.getElementById('adminMsgDisplay').style.display = 'block';
-                } else {
-                    document.getElementById('adminMsgBox').style.display = 'none';
-                }
-            } catch (e) {}
-        }
-
-        function updateWelcomeMessage() {
-            var name = localStorage.getItem('amlak_admin_name') || 'مدیر';
-            document.getElementById('welcomeUser').textContent = isAdmin ? '👋 خوش آمدید ' + name + '!' : '👋 خوش آمدید!';
-            document.getElementById('userRoleBadge').textContent = isAdmin ? '👑 ' + name : '👤 کاربر عادی';
-            if (!isAdmin && currentUser) {
-                document.getElementById('welcomeUser').textContent += ' (شماره: #' + (currentUser.userNumber || '?') + ')';
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('mediaModal').classList.remove('active');
         }
 
         // ============================================================
@@ -5166,30 +5225,10 @@
 
             document.getElementById('loadingOverlay').classList.add('hidden');
 
-            console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
-            console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
-            console.log('📊 تعداد املاک:', properties.length);
-            console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
-            console.log('🔑 رمز مدیر: 26742674');
-            console.log('📸 گالری عکس و فیلم فعال است');
-            console.log('📌 سنجاق ملک (فقط مدیر) فعال است');
-            console.log('🤖 هوش مصنوعی پیشنهاد ملک فعال است');
-            console.log('✏️ ویرایش ملک و پیام فعال است');
-            console.log('📤 آپلود عکس و فیلم در ویرایش فعال است');
-            console.log('🏭 دسته‌بندی زمین کارگاهی اضافه شد');
-            console.log('🗑️ حذف جداگانه از سبد خرید فعال شد');
-            console.log('💬 چت کاربر با مدیر و ویرایش پیام فعال است');
-            console.log('📢 پیام عمومی فقط مدیر ارسال میکند - همه کاربران می‌بینند');
-            console.log('💾 پیام‌های چت در Supabase ذخیره میشوند');
-            console.log('👁️ کاربر تاریخچه چت را مثل مدیر می‌بیند');
-            console.log('✏️ مدیر می‌تواند پیام‌های خود را در چت ویرایش/حذف کند');
-            console.log('📢 پیام‌های عمومی برای همه کاربران نمایش داده میشود');
-
             // ===== گوش دادن به تغییرات localStorage برای پیام‌های عمومی =====
             window.addEventListener('storage', function(e) {
                 if (e.key === 'amlak_public_messages') {
                     if (document.getElementById('mainApp').style.display === 'block') {
-                        loadPublicMessages();
                         renderPublicMessages();
                         showToast('📢 پیام عمومی جدید از مدیریت!', 'info');
                     }
@@ -5206,12 +5245,18 @@
                             if (JSON.stringify(newMessages) !== JSON.stringify(publicMessages)) {
                                 publicMessages = newMessages;
                                 renderPublicMessages();
-                                showToast('📢 پیام عمومی جدید!', 'info');
                             }
                         } catch (e) {}
                     }
                 }
             }, 3000);
+
+            console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
+            console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
+            console.log('📊 تعداد املاک:', properties.length);
+            console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
+            console.log('📢 پیام‌های عمومی برای همه کاربران نمایش داده میشود');
+            console.log('🔑 رمز مدیر:', ADMIN_PASSWORD);
         }
 
         if (document.readyState === 'loading') {
