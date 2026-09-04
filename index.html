@@ -4407,8 +4407,18 @@
             renderPublicMessages();
         }
 
+        // ===== تابع اصلی نمایش پیام‌های عمومی =====
         function renderPublicMessages() {
             var container = document.getElementById('publicMessagesContainer');
+            if (!container) return;
+
+            // بارگذاری مجدد از localStorage
+            try {
+                publicMessages = JSON.parse(localStorage.getItem('amlak_public_messages') || '[]');
+            } catch (e) {
+                publicMessages = [];
+            }
+
             if (!publicMessages.length) {
                 container.innerHTML = '';
                 return;
@@ -4690,7 +4700,6 @@
                 return;
             }
 
-            // علامت‌گذاری به عنوان خوانده شده
             await supabaseClient
                 .from('chat_messages')
                 .update({ read: true })
@@ -4721,7 +4730,6 @@
                     editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
                 }
 
-                // دکمه‌های ویرایش/حذف برای پیام‌های مدیر
                 var actionsHtml = '';
                 if (isAdminSender && isAdmin) {
                     actionsHtml = `
