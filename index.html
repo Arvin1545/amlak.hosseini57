@@ -2958,7 +2958,7 @@
                 showLoading(false);
                 showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
                 await enterApp();
-                loadUserChatMessages(); // بارگذاری تاریخچه چت برای کاربر
+                loadUserChatMessages();
             } catch (e) {
                 showLoading(false);
                 ErrorHandler.log(e, 'ورود کاربر');
@@ -4350,16 +4350,13 @@
                     document.getElementById('logoutBtn').style.display = 'none';
                     document.getElementById('userPreviewSection').style.display = 'none';
                     loadAdminMessage();
+                    // بارگذاری تاریخچه چت برای کاربر
+                    loadUserChatMessages();
                 }
 
                 updateCartBadge();
                 renderList();
                 renderPublicMessages();
-
-                // ===== برای کاربر: بارگذاری تاریخچه چت =====
-                if (!isAdmin && currentUser) {
-                    loadUserChatMessages();
-                }
 
             } catch (e) { ErrorHandler.log(e, 'ورود به برنامه'); }
         }
@@ -4412,7 +4409,10 @@
 
         function renderPublicMessages() {
             var container = document.getElementById('publicMessagesContainer');
-            if (!publicMessages.length) { container.innerHTML = ''; return; }
+            if (!publicMessages.length) {
+                container.innerHTML = '';
+                return;
+            }
 
             var html = '';
             for (var i = 0; i < publicMessages.length; i++) {
@@ -4468,7 +4468,6 @@
             var container = document.getElementById('userChatMessagesContainer');
             if (!container) return;
 
-            // بارگذاری پیام‌ها از دیتابیس
             loadChatMessages(currentUser.id).then(function(messages) {
                 chatMessages = messages;
 
@@ -4706,6 +4705,7 @@
             for (var j = 0; j < messages.length; j++) {
                 var msg = messages[j];
                 var isUser = msg.sender === 'user';
+                var isAdminSender = msg.sender === 'admin';
                 var senderName = isUser ? (user ? user.name : 'کاربر') : 'مدیر';
                 var senderClass = isUser ? 'user-sender' : 'admin-sender';
                 var msgClass = isUser ? 'user-msg' : 'admin-msg';
@@ -4721,6 +4721,17 @@
                     editHtml = ' <span style="font-size:10px;color:var(--text-light);">(ویرایش شده)</span>';
                 }
 
+                // دکمه‌های ویرایش/حذف برای پیام‌های مدیر
+                var actionsHtml = '';
+                if (isAdminSender && isAdmin) {
+                    actionsHtml = `
+                        <div class="msg-actions">
+                            <button class="edit-msg-btn" onclick="startAdminEditMessage('${msg.id}')">✏️ ویرایش</button>
+                            <button class="delete-msg-btn" onclick="deleteAdminMessageChat('${msg.id}')">🗑️</button>
+                        </div>
+                    `;
+                }
+
                 html += `
                     <div class="chat-message-item ${msgClass}" id="msg-${msg.id}">
                         <div class="msg-header">
@@ -4729,12 +4740,84 @@
                         </div>
                         <div class="msg-text">${sanitizeInput(msg.text)}</div>
                         ${fileHtml}
+                        ${actionsHtml}
+                        <div class="msg-edit-area" id="adminEditArea-${msg.id}" style="display:none;">
+                            <textarea id="adminEditInput-${msg.id}" dir="rtl">${sanitizeInput(msg.text)}</textarea>
+                            <button class="save-edit-btn" onclick="saveAdminEditMessage('${msg.id}')">💾 ذخیره</button>
+                            <button class="cancel-edit-btn" onclick="cancelAdminEditMessage('${msg.id}')">❌ انصراف</button>
+                        </div>
                     </div>
                 `;
             }
 
             container.innerHTML = html;
             container.scrollTop = container.scrollHeight;
+        }
+
+        // ===== توابع ویرایش/حذف پیام مدیر در چت =====
+        function startAdminEditMessage(messageId) {
+            document.getElementById('adminEditArea-' + messageId).style.display = 'block';
+            document.getElementById('adminEditInput-' + messageId).focus();
+        }
+
+        function cancelAdminEditMessage(messageId) {
+            document.getElementById('adminEditArea-' + messageId).style.display = 'none';
+        }
+
+        async function saveAdminEditMessage(messageId) {
+            var input = document.getElementById('adminEditInput-' + messageId);
+            var newText = input.value.trim();
+            if (!newText) {
+                showToast('⚠️ متن پیام را وارد کنید!', 'warning');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .update({
+                        text: sanitizeInput(newText),
+                        edited: true,
+                        edit_date: new Date().toISOString()
+                    })
+                    .eq('id', messageId);
+
+                if (response.error) throw response.error;
+
+                showToast('✅ پیام ویرایش شد!', 'success');
+                showLoading(false);
+                renderChatMessagesWithUser(currentChatUserId);
+            } catch (e) {
+                showLoading(false);
+                ErrorHandler.log(e, 'ویرایش پیام مدیر');
+                showToast('❌ خطا در ویرایش پیام!', 'error');
+            }
+        }
+
+        async function deleteAdminMessageChat(messageId) {
+            if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
+
+            showLoading(true);
+
+            try {
+                var response = await supabaseClient
+                    .from('chat_messages')
+                    .delete()
+                    .eq('id', messageId);
+
+                if (response.error) throw response.error;
+
+                showToast('🗑️ پیام حذف شد', 'success');
+                showLoading(false);
+                renderChatMessagesWithUser(currentChatUserId);
+                renderChatUsersList();
+            } catch (e) {
+                showLoading(false);
+                ErrorHandler.log(e, 'حذف پیام مدیر');
+                showToast('❌ خطا در حذف پیام!', 'error');
+            }
         }
 
         function sendChatReply() {
@@ -4766,7 +4849,6 @@
                     renderChatMessagesWithUser(currentChatUserId);
                     renderChatUsersList();
                     showToast('✅ پیام ارسال شد!', 'success');
-                    // اعلان به کاربر
                     addNotification(currentChatUserId, '💬 پاسخ مدیر', text);
                 } else {
                     showToast('❌ خطا در ارسال پیام!', 'error');
@@ -4985,7 +5067,6 @@
         async function init() {
             document.getElementById('loadingOverlay').classList.remove('hidden');
 
-            // تلاش برای اتصال به Supabase
             await waitForSupabase();
 
             if (typeof supabase !== 'undefined') {
@@ -5060,13 +5141,12 @@
             console.log('🏭 دسته‌بندی زمین کارگاهی اضافه شد');
             console.log('🗑️ حذف جداگانه از سبد خرید فعال شد');
             console.log('💬 چت کاربر با مدیر و ویرایش پیام فعال است');
-            console.log('📢 پیام عمومی فقط مدیر ارسال میکند');
+            console.log('📢 پیام عمومی فقط مدیر ارسال میکند - همه کاربران می‌بینند');
             console.log('💾 پیام‌های چت در Supabase ذخیره میشوند');
             console.log('👁️ کاربر تاریخچه چت را مثل مدیر می‌بیند');
-            console.log('📢 پیام‌های عمومی برای همه کاربران نمایش داده میشود (فقط نمایشی)');
+            console.log('✏️ مدیر می‌تواند پیام‌های خود را در چت ویرایش/حذف کند');
         }
 
-        // اجرا بعد از لود کامل
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
