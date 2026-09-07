@@ -7,6 +7,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
     </script>
     <style>
+        /* ============================================================
+           تمام استایل‌های کامل
+           ============================================================ */
         :root {
             --primary: #1565C0;
             --primary-dark: #0D47A1;
@@ -3398,20 +3401,41 @@
             updateStats();
         }
 
-        function loadPublicMessagesFromStorage() {
+        // ============================================================
+        // ====== بارگذاری پیام‌های عمومی از Supabase ======
+        // ============================================================
+        async function loadPublicMessages() {
+            if (!supabaseClient) {
+                publicMessages = [];
+                return;
+            }
             try {
-                var stored = localStorage.getItem('amlak_public_messages');
-                if (stored && stored !== 'null' && stored !== 'undefined') {
-                    publicMessages = JSON.parse(stored);
-                } else {
+                const response = await supabaseClient
+                    .from('public_messages')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (response.error) {
+                    console.error('❌ خطا در بارگذاری پیام‌ها:', response.error);
                     publicMessages = [];
+                    return;
                 }
+
+                publicMessages = response.data || [];
+                console.log('✅ تعداد پیام‌های عمومی:', publicMessages.length);
+
+                // ذخیره در localStorage به عنوان پشتیبان
+                localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
+
             } catch (e) {
+                console.error('❌ خطا در بارگذاری پیام‌های عمومی:', e);
                 publicMessages = [];
             }
-            return publicMessages;
         }
 
+        // ============================================================
+        // ====== بارگذاری سبد خرید کاربر ======
+        // ============================================================
         async function loadUserCartHandler() {
             if (currentUser && !isAdmin && supabaseClient) {
                 try {
@@ -3436,7 +3460,7 @@
         async function enterApp() {
             try {
                 await loadProperties();
-                loadPublicMessagesFromStorage();
+                await loadPublicMessages();
                 await loadUserCartHandler();
                 updateWelcomeMessage();
 
@@ -3822,23 +3846,12 @@
         }
 
         // ============================================================
-        // ====== پیام‌های عمومی (اصلاح شده) ======
+        // ====== پیام‌های عمومی (با Supabase) ======
         // ============================================================
         function renderPublicMessages() {
             var container = document.getElementById('publicMessagesContainer');
             if (!container) return;
             container.style.display = 'block';
-
-            try {
-                var stored = localStorage.getItem('amlak_public_messages');
-                if (stored && stored !== 'null' && stored !== 'undefined') {
-                    publicMessages = JSON.parse(stored);
-                } else {
-                    publicMessages = [];
-                }
-            } catch (e) {
-                publicMessages = [];
-            }
 
             if (!publicMessages || publicMessages.length === 0) {
                 container.innerHTML =
@@ -3888,9 +3901,14 @@
             document.getElementById('editMsgId').value = '';
         }
 
-        function savePublicMessage() {
+        async function savePublicMessage() {
             if (!isAdmin) {
                 showToast('⚠️ فقط مدیر می‌تواند پیام ارسال کند!', 'warning');
+                return;
+            }
+
+            if (!supabaseClient) {
+                showToast('❌ اتصال به سرور برقرار نیست!', 'error');
                 return;
             }
 
@@ -3901,36 +3919,64 @@
                 return;
             }
 
-            if (editId) {
-                for (var i = 0; i < publicMessages.length; i++) {
-                    if (publicMessages[i].id === editId) {
-                        publicMessages[i].text = text;
-                        break;
-                    }
-                }
-                showToast('✅ پیام ویرایش شد!', 'success');
-            } else {
-                publicMessages.push({
-                    id: generateId(),
-                    text: text,
-                    date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
-                });
-                showToast('✅ پیام عمومی ارسال شد!', 'success');
-            }
+            showLoading(true);
 
-            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-            hidePublicMsgForm();
-            renderPublicMessages();
-            showToast('📢 پیام عمومی برای همه کاربران ارسال شد!', 'success');
+            try {
+                if (editId) {
+                    // ویرایش پیام
+                    const response = await supabaseClient
+                        .from('public_messages')
+                        .update({
+                            text: text,
+                            date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString(
+                            'fa-IR')
+                        })
+                        .eq('id', editId);
+
+                    if (response.error) throw new Error(response.error.message);
+                    showToast('✅ پیام ویرایش شد!', 'success');
+
+                } else {
+                    // ارسال پیام جدید
+                    const newMessage = {
+                        id: generateId(),
+                        text: text,
+                        date: new Date().toLocaleDateString('fa-IR') + ' ' + new Date().toLocaleTimeString('fa-IR')
+                    };
+
+                    const response = await supabaseClient
+                        .from('public_messages')
+                        .insert([newMessage]);
+
+                    if (response.error) throw new Error(response.error.message);
+                    showToast('✅ پیام عمومی ارسال شد!', 'success');
+                }
+
+                // بارگذاری مجدد پیام‌ها
+                await loadPublicMessages();
+                hidePublicMsgForm();
+                renderPublicMessages();
+                showLoading(false);
+
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا: ' + e.message, 'error');
+                console.error('❌ خطا در ذخیره پیام:', e);
+            }
         }
 
-        function refreshPublicMessages() {
+        async function refreshPublicMessages() {
+            await loadPublicMessages();
             renderPublicMessages();
             showToast('🔄 پیام‌ها بروزرسانی شدند', 'info');
         }
 
         function editPublicMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning');
+                return;
+            }
+
             for (var i = 0; i < publicMessages.length; i++) {
                 if (publicMessages[i].id === id) {
                     document.getElementById('editMsgId').value = id;
@@ -3942,18 +3988,42 @@
             }
         }
 
-        function deletePublicMessage(id) {
-            if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning'); return; }
+        async function deletePublicMessage(id) {
+            if (!isAdmin) {
+                showToast('⚠️ فقط مدیر می‌تواند حذف کند!', 'warning');
+                return;
+            }
             if (!confirm('آیا از حذف این پیام مطمئن هستید؟')) return;
 
-            publicMessages = publicMessages.filter(function(p) { return p.id !== id; });
-            localStorage.setItem('amlak_public_messages', JSON.stringify(publicMessages));
-            renderPublicMessages();
-            showToast('🗑️ پیام حذف شد', 'success');
+            if (!supabaseClient) {
+                showToast('❌ اتصال به سرور برقرار نیست!', 'error');
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                const response = await supabaseClient
+                    .from('public_messages')
+                    .delete()
+                    .eq('id', id);
+
+                if (response.error) throw new Error(response.error.message);
+
+                await loadPublicMessages();
+                renderPublicMessages();
+                showLoading(false);
+                showToast('🗑️ پیام حذف شد', 'success');
+
+            } catch (e) {
+                showLoading(false);
+                showToast('❌ خطا: ' + e.message, 'error');
+                console.error('❌ خطا در حذف پیام:', e);
+            }
         }
 
         // ============================================================
-        // ====== ویرایش پیام مدیر ======
+        // ====== ویرایش پیام مدیر (محلی) ======
         // ============================================================
         function editAdminMessage() {
             if (!isAdmin) { showToast('⚠️ فقط مدیر می‌تواند ویرایش کند!', 'warning'); return; }
@@ -5435,14 +5505,24 @@
 
             showLoading(false);
 
+            // گوش دادن به تغییرات localStorage (برای همگام‌سازی)
             window.addEventListener('storage', function(e) {
                 if (e.key === 'amlak_public_messages') {
                     if (document.getElementById('mainApp').style.display === 'block') {
+                        loadPublicMessages();
                         renderPublicMessages();
                         showToast('📢 پیام عمومی جدید از مدیریت!', 'info');
                     }
                 }
             });
+
+            // بررسی دوره‌ای برای بروزرسانی پیام‌ها
+            setInterval(function() {
+                if (document.getElementById('mainApp').style.display === 'block' && supabaseClient) {
+                    loadPublicMessages();
+                    renderPublicMessages();
+                }
+            }, 10000);
 
             console.log('✅ برنامه آماده است!');
         }
