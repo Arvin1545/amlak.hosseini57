@@ -2468,7 +2468,7 @@
     </div>
 
     <!-- ===== ورود ===== -->
-    <div class="login-overlay" id="loginOverlay">
+    <div class="login-overlay hidden" id="loginOverlay">
         <div class="login-box">
             <h2>🏢 دپارتمان <span>املاک حسینی</span></h2>
             <p id="loginSubText">به سامانه دپارتمان املاک حسینی خوش آمدید</p>
@@ -2545,7 +2545,7 @@
             <h3>🤖 پیشنهاد هوشمند ملک</h3>
             <div class="ai-form">
                 <label>💰 بودجه شما (تومان)</label>
-                <input type="number" id="aiBudget" placeholder="مثال: 500000000" />
+                <input type="text" id="aiBudget" placeholder="مثال: 500,000,000" oninput="formatPriceWithComma(this)" />
                 <label>🏷️ نوع ملک</label>
                 <select id="aiType">
                     <option value="all">همه</option>
@@ -2894,6 +2894,7 @@
         let galleryCurrentIndex = 0;
         let isConnecting = false;
         let connectionRetryCount = 0;
+        let isInitialLoad = true;
 
         // ============================================================
         // ====== توابع کمکی ======
@@ -2910,6 +2911,15 @@
         }
 
         function formatPrice(input) {
+            try {
+                let value = input.value.replace(/[^0-9]/g, '');
+                if (value === '') { input.value = ''; return; }
+                let number = parseInt(value);
+                if (!isNaN(number)) { input.value = number.toLocaleString('en-US'); }
+            } catch (e) {}
+        }
+
+        function formatPriceWithComma(input) {
             try {
                 let value = input.value.replace(/[^0-9]/g, '');
                 if (value === '') { input.value = ''; return; }
@@ -3302,7 +3312,7 @@
         }
 
         // ============================================================
-        // ====== بررسی کاربر ذخیره شده ======
+        // ====== بررسی کاربر ذخیره شده (با رفع مشکل رفرش) ======
         // ============================================================
         async function checkSavedUser() {
             try {
@@ -3315,6 +3325,7 @@
                             id: savedUser.id,
                             name: 'مدیر'
                         };
+                        // مستقیماً صفحه اصلی رو نشون بده، ورود رو مخفی کن
                         document.getElementById('loginOverlay').classList.add('hidden');
                         document.getElementById('mainApp').style.display = 'block';
                         await enterApp();
@@ -3333,6 +3344,7 @@
                                 userNumber: user.user_number,
                                 name: user.name
                             };
+                            // مستقیماً صفحه اصلی رو نشون بده، ورود رو مخفی کن
                             document.getElementById('loginOverlay').classList.add('hidden');
                             document.getElementById('mainApp').style.display = 'block';
                             await enterApp();
@@ -5022,10 +5034,11 @@
         }
 
         // ============================================================
-        // ====== هوش مصنوعی ======
+        // ====== هوش مصنوعی (با کاما گذاری) ======
         // ============================================================
         function getAISuggestions() {
-            var budget = parseInt(document.getElementById('aiBudget').value) || 0;
+            var budgetRaw = document.getElementById('aiBudget').value.replace(/,/g, '');
+            var budget = parseInt(budgetRaw) || 0;
             var type = document.getElementById('aiType').value;
             var category = document.getElementById('aiCategory').value;
             var minArea = parseInt(document.getElementById('aiMinArea').value) || 0;
@@ -5482,6 +5495,10 @@
         // ============================================================
         async function init() {
             console.log('🚀 شروع برنامه...');
+
+            // ابتدا صفحه ورود رو مخفی کن تا چشمک نزنه
+            document.getElementById('loginOverlay').classList.add('hidden');
+
             showLoading(true);
             document.getElementById('loadingTitle').textContent = '🚀 در حال راه‌اندازی...';
 
@@ -5494,6 +5511,7 @@
                 const hasUser = await checkSavedUser();
 
                 if (!hasUser) {
+                    // اگر کاربری ذخیره نشده، صفحه ورود رو نمایش بده
                     document.getElementById('loginOverlay').classList.remove('hidden');
                 }
 
@@ -5525,6 +5543,7 @@
             }, 10000);
 
             console.log('✅ برنامه آماده است!');
+            isInitialLoad = false;
         }
 
         // ============================================================
@@ -5537,4 +5556,4 @@
         }
     </script>
 </body>
-    </html>
+                                                                                                                            </html>
