@@ -8,7 +8,7 @@
     </script>
     <style>
         /* ============================================================
-           تمام استایل‌های کامل (همه بخش‌ها)
+           تمام استایل‌های کامل
            ============================================================ */
         :root {
             --primary: #1565C0;
@@ -630,6 +630,19 @@
             transition: var(--transition);
         }
         .btn-logout:hover {
+            transform: scale(1.05);
+        }
+        .btn-retry {
+            background: var(--primary);
+            padding: 6px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            color: white;
+            border: none;
+            transition: var(--transition);
+        }
+        .btn-retry:hover {
             transform: scale(1.05);
         }
 
@@ -1285,6 +1298,29 @@
             color: var(--text-light);
             font-size: 12px;
             margin-top: 4px;
+        }
+        .loading-error {
+            color: var(--danger);
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            text-align: center;
+            max-width: 80%;
+        }
+        .loading-error .error-detail {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+        .loading-error .error-solution {
+            font-size: 12px;
+            background: var(--primary-light);
+            padding: 8px 14px;
+            border-radius: 8px;
+            margin-top: 8px;
+            display: inline-block;
+            color: var(--primary);
+            font-weight: bold;
         }
 
         /* ===== سایر ===== */
@@ -2308,6 +2344,74 @@
             color: #FFB300;
         }
 
+        /* ===== وضعیت اتصال ===== */
+        .status-bar {
+            background: var(--card-bg);
+            padding: 8px 14px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-light);
+            box-shadow: var(--shadow);
+            border-right: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .status-bar .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .status-bar .status-dot.online {
+            background: var(--secondary);
+        }
+        .status-bar .status-dot.offline {
+            background: var(--danger);
+            animation: blink 1s infinite;
+        }
+        .status-bar .status-dot.connecting {
+            background: var(--warning);
+            animation: blink 0.5s infinite;
+        }
+        @keyframes blink {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+        .status-bar .status-text {
+            flex: 1;
+        }
+        .status-bar .retry-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .status-bar .retry-btn:hover {
+            transform: scale(1.05);
+        }
+        .status-bar .offline-badge {
+            background: var(--danger);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+        }
+
         /* ===== ریسپانسیو ===== */
         @media (max-width: 400px) {
             .stats {
@@ -2341,8 +2445,14 @@
     ============================================================ -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <div class="loading-text">⏳ در حال اتصال به سرور...</div>
+        <div class="loading-text" id="loadingTitle">⏳ در حال اتصال به سرور...</div>
         <div class="loading-sub" id="loadingStatus">در حال بارگذاری...</div>
+        <div class="loading-error" id="loadingError">
+            <div id="loadingErrorText">❌ خطا در اتصال به سرور</div>
+            <div class="error-detail" id="loadingErrorDetail">مشکل در ارتباط با Supabase</div>
+            <div class="error-solution" id="loadingErrorSolution">🔧 راه حل: اینترنت خود را بررسی کنید و دوباره تلاش کنید</div>
+            <button class="btn btn-primary" onclick="retryConnection()" style="margin-top:12px;padding:10px 30px;font-size:14px;">🔄 تلاش مجدد</button>
+        </div>
     </div>
 
     <!-- ============================================================
@@ -2393,6 +2503,13 @@
     برنامه اصلی
     ============================================================ -->
     <div id="mainApp" style="display:none;">
+        <!-- ===== وضعیت اتصال ===== -->
+        <div class="status-bar" id="statusBar">
+            <span class="status-dot connecting" id="statusDot"></span>
+            <span class="status-text" id="statusText">در حال اتصال به سرور...</span>
+            <button class="retry-btn" onclick="retryConnection()">🔄 تلاش مجدد</button>
+        </div>
+
         <div class="header">
             <div class="header-top">
                 <h1>🏢 دپارتمان <span>املاک حسینی</span></h1>
@@ -2427,7 +2544,7 @@
             <div>
                 <button class="btn-gold" style="border:none;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:bold;cursor:pointer;color:white;background:linear-gradient(135deg,#FF8F00,#E65100);margin-right:4px;box-shadow:0 2px 10px rgba(255,143,0,0.3);transition:var(--transition);" onclick="toggleCart()">🛒 سبد خرید <span id="cartCount" class="cart-badge">0</span></button>
                 <button class="edit-profile-btn" id="editProfileBtn" style="display:none;" onclick="showEditProfile()">✏️ ویرایش</button>
-                <button class="logout-btn" id="logoutBtn" onclick="logout()" style="display:none;">🚪 خروج</button>
+                <button class="btn-logout" id="logoutBtn" onclick="logout()" style="display:none;">🚪 خروج</button>
             </div>
         </div>
 
@@ -2827,41 +2944,91 @@
         let galleryItems = [];
         let galleryCurrentIndex = 0;
         let galleryPropertyId = null;
+        let connectionRetryCount = 0;
+        const MAX_RETRY = 3;
 
         // ============================================================
-        // ====== مدیریت خطا ======
+        // ====== مدیریت خطای متمرکز ======
         // ============================================================
-        const ErrorHandler = {
-            log: function(error, context, showToast = true) {
-                const errorMsg = error?.message || error || 'خطای ناشناخته';
-                console.error('❌ خطا در:', context);
-                console.error('📝 پیام:', errorMsg);
-                if (showToast) {
-                    this.showToast('❌ ' + context + ': ' + errorMsg, 'error');
+        const ErrorManager = {
+            errors: [],
+            show: function(message, detail = '', solution = '') {
+                const errorDiv = document.getElementById('loadingError');
+                const errorText = document.getElementById('loadingErrorText');
+                const errorDetail = document.getElementById('loadingErrorDetail');
+                const errorSolution = document.getElementById('loadingErrorSolution');
+
+                if (errorDiv) {
+                    errorDiv.style.display = 'block';
+                    if (errorText) errorText.textContent = '❌ ' + message;
+                    if (errorDetail) errorDetail.textContent = detail || 'مشکل در ارتباط با سرور';
+                    if (errorSolution) {
+                        errorSolution.textContent = '🔧 ' + (solution || 'اینترنت خود را بررسی کنید و دوباره تلاش کنید');
+                    }
                 }
-                return errorMsg;
+
+                // ثبت در کنسول
+                console.error('❌ خطا:', message);
+                if (detail) console.error('📝 جزئیات:', detail);
+
+                // ذخیره در history
+                this.errors.push({
+                    time: new Date().toISOString(),
+                    message: message,
+                    detail: detail,
+                    solution: solution
+                });
+
+                // نمایش توست
+                showToast('❌ ' + message, 'error');
             },
-            showToast: function(msg, type = 'info') {
-                const t = document.getElementById('toast');
-                if (!t) return;
-                t.textContent = msg;
-                t.className = 'toast ' + type;
-                t.style.display = 'block';
-                clearTimeout(t._hide);
-                t._hide = setTimeout(function() { t.style.display = 'none';
-                    t.className = 'toast'; }, 5000);
+            clear: function() {
+                const errorDiv = document.getElementById('loadingError');
+                if (errorDiv) errorDiv.style.display = 'none';
             },
-            showLoading: function(show) {
-                const el = document.getElementById('loadingOverlay');
-                if (!el) return;
-                if (show) el.classList.remove('hidden');
-                else el.classList.add('hidden');
+            getLastError: function() {
+                return this.errors.length > 0 ? this.errors[this.errors.length - 1] : null;
             }
         };
 
-        function showToast(msg, type) { ErrorHandler.showToast(msg, type || 'info'); }
+        // ============================================================
+        // ====== وضعیت اتصال ======
+        // ============================================================
+        function updateConnectionStatus(status, message) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+            const bar = document.getElementById('statusBar');
 
-        function showLoading(show) { ErrorHandler.showLoading(show); }
+            if (!dot || !text) return;
+
+            dot.className = 'status-dot ' + status;
+            text.textContent = message || '';
+
+            if (status === 'online') {
+                bar.style.borderRightColor = 'var(--secondary)';
+            } else if (status === 'offline') {
+                bar.style.borderRightColor = 'var(--danger)';
+            } else {
+                bar.style.borderRightColor = 'var(--warning)';
+            }
+        }
+
+        function updateLoadingStatus(message, isError = false) {
+            const statusEl = document.getElementById('loadingStatus');
+            if (statusEl) {
+                statusEl.textContent = message;
+                if (isError) {
+                    statusEl.style.color = 'var(--danger)';
+                } else {
+                    statusEl.style.color = '';
+                }
+            }
+        }
+
+        function updateLoadingTitle(message) {
+            const titleEl = document.getElementById('loadingTitle');
+            if (titleEl) titleEl.textContent = message;
+        }
 
         // ============================================================
         // ====== توابع کمکی ======
@@ -2902,50 +3069,266 @@
             }
         }
 
-        // ============================================================
-        // ====== صبر برای لود Supabase ======
-        // ============================================================
-        function waitForSupabase() {
-            return new Promise(function(resolve) {
-                const statusEl = document.getElementById('loadingStatus');
-                if (statusEl) statusEl.textContent = '🔄 در حال اتصال به سرور...';
+        function showToast(msg, type) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.textContent = msg;
+            t.className = 'toast ' + (type || 'info');
+            t.style.display = 'block';
+            clearTimeout(t._hide);
+            t._hide = setTimeout(function() { t.style.display = 'none';
+                t.className = 'toast'; }, 5000);
+        }
 
-                if (typeof window.supabase !== 'undefined' && window.supabase) {
-                    if (statusEl) statusEl.textContent = '✅ سرور متصل شد!';
-                    console.log('✅ Supabase از قبل موجود است!');
-                    resolve();
-                    return;
+        function showLoading(show) {
+            const el = document.getElementById('loadingOverlay');
+            if (!el) return;
+            if (show) {
+                el.classList.remove('hidden');
+                ErrorManager.clear();
+                updateLoadingStatus('در حال بارگذاری...');
+            } else {
+                el.classList.add('hidden');
+            }
+        }
+
+        // ============================================================
+        // ====== تلاش مجدد برای اتصال ======
+        // ============================================================
+        async function retryConnection() {
+            connectionRetryCount++;
+            showLoading(true);
+            updateLoadingTitle('🔄 تلاش مجدد برای اتصال (' + connectionRetryCount + '/' + MAX_RETRY + ')');
+            updateLoadingStatus('در حال برقراری ارتباط با سرور...');
+            ErrorManager.clear();
+
+            try {
+                await initSupabase();
+                if (supabaseClient) {
+                    updateConnectionStatus('online', '✅ متصل به سرور');
+                    showToast('✅ اتصال به سرور برقرار شد!', 'success');
+                    await enterApp();
+                } else {
+                    throw new Error('اتصال به سرور برقرار نشد');
+                }
+            } catch (e) {
+                const errorMsg = e.message || 'خطا در اتصال به سرور';
+                ErrorManager.show(
+                    'خطا در اتصال به سرور',
+                    errorMsg,
+                    'اینترنت خود را بررسی کنید، سپس دکمه "تلاش مجدد" را بزنید'
+                );
+                updateConnectionStatus('offline', '❌ قطع ارتباط');
+                showLoading(false);
+            }
+        }
+
+        // ============================================================
+        // ====== اتصال به Supabase ======
+        // ============================================================
+        async function initSupabase() {
+            try {
+                updateLoadingStatus('🔄 در حال اتصال به سرور...');
+
+                // بررسی وجود Supabase
+                let supabaseObj = null;
+
+                // از متغیر سراسری
+                if (typeof supabase !== 'undefined' && supabase && typeof supabase.createClient === 'function') {
+                    supabaseObj = supabase;
+                    console.log('✅ supabase از متغیر سراسری پیدا شد');
+                }
+                // از window
+                else if (typeof window.supabase !== 'undefined' && window.supabase && typeof window.supabase
+                    .createClient === 'function') {
+                    supabaseObj = window.supabase;
+                    console.log('✅ supabase از window پیدا شد');
                 }
 
-                let attempts = 0;
-                const maxAttempts = 80;
+                if (!supabaseObj) {
+                    // صبر برای لود شدن
+                    await new Promise((resolve) => {
+                        let attempts = 0;
+                        const maxAttempts = 20;
+                        const checkInterval = setInterval(() => {
+                            attempts++;
+                            if (typeof supabase !== 'undefined' && supabase && typeof supabase
+                                .createClient === 'function') {
+                                supabaseObj = supabase;
+                                clearInterval(checkInterval);
+                                resolve();
+                            } else if (typeof window.supabase !== 'undefined' && window.supabase &&
+                                typeof window.supabase.createClient === 'function') {
+                                supabaseObj = window.supabase;
+                                clearInterval(checkInterval);
+                                resolve();
+                            } else if (attempts >= maxAttempts) {
+                                clearInterval(checkInterval);
+                                resolve();
+                            }
+                        }, 200);
+                    });
+                }
 
-                const checkInterval = setInterval(function() {
-                    attempts++;
-                    const seconds = Math.round(attempts / 5);
-                    if (statusEl) statusEl.textContent = `🔄 اتصال به سرور (${seconds} ثانیه)...`;
+                if (!supabaseObj) {
+                    throw new Error('کتابخانه Supabase بارگذاری نشد. لطفاً اینترنت خود را بررسی کنید.');
+                }
 
-                    const supabaseExists = (
-                        typeof window.supabase !== 'undefined' && window.supabase &&
-                        typeof window.supabase.createClient === 'function'
-                    ) || (
-                        typeof supabase !== 'undefined' && supabase &&
-                        typeof supabase.createClient === 'function'
-                    );
+                // ایجاد کلاینت
+                supabaseClient = supabaseObj.createClient(SUPABASE_URL, SUPABASE_KEY);
+                console.log('✅ کلاینت Supabase ساخته شد!');
 
-                    if (supabaseExists) {
-                        clearInterval(checkInterval);
-                        if (statusEl) statusEl.textContent = '✅ سرور متصل شد!';
-                        console.log('✅ Supabase پیدا شد!');
-                        resolve();
-                    } else if (attempts >= maxAttempts) {
-                        clearInterval(checkInterval);
-                        if (statusEl) statusEl.textContent = '⚠️ اتصال به سرور ناموفق!';
-                        console.warn('⚠️ Supabase بعد از 16 ثانیه پیدا نشد!');
-                        resolve();
+                // تست اتصال
+                updateLoadingStatus('🔍 تست اتصال به سرور...');
+                const testResponse = await supabaseClient
+                    .from('estate_properties')
+                    .select('count', { count: 'exact', head: true })
+                    .timeout(5000);
+
+                if (testResponse.error) {
+                    if (testResponse.error.code === 'PGRST301') {
+                        throw new Error('جدول estate_properties وجود ندارد. لطفاً جدول را در Supabase ایجاد کنید.');
+                    } else {
+                        throw new Error('خطا در تست اتصال: ' + testResponse.error.message);
                     }
-                }, 200);
+                }
+
+                console.log('✅ تست اتصال موفق بود!');
+                updateLoadingStatus('✅ اتصال به سرور برقرار شد!');
+                updateConnectionStatus('online', '✅ متصل به سرور');
+
+                return true;
+
+            } catch (e) {
+                console.error('❌ خطا در initSupabase:', e);
+                throw e;
+            }
+        }
+
+        // ============================================================
+        // ====== شروع برنامه ======
+        // ============================================================
+        async function init() {
+            const loadingEl = document.getElementById('loadingOverlay');
+            if (loadingEl) loadingEl.classList.remove('hidden');
+
+            updateLoadingTitle('🚀 شروع برنامه...');
+            updateLoadingStatus('🔄 در حال آماده‌سازی...');
+
+            console.log('🚀 شروع برنامه...');
+            console.log('🔑 رمز مدیر:', ADMIN_PASSWORD);
+
+            try {
+                // اتصال به Supabase
+                await initSupabase();
+
+                if (!supabaseClient) {
+                    throw new Error('اتصال به سرور برقرار نشد');
+                }
+
+                // دریافت تعداد مدیران
+                await getAdminCount();
+                updateAdminLoginButton();
+
+                // بررسی کاربر ذخیره شده
+                await checkSavedUser();
+
+                // حالت تاریک
+                try {
+                    if (localStorage.getItem('darkMode') === 'true') {
+                        document.body.classList.add('dark-mode');
+                        const btn = document.querySelector('.dark-toggle');
+                        if (btn) btn.textContent = '☀️';
+                    }
+                } catch (e) {}
+
+                showLoading(false);
+                console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
+
+            } catch (e) {
+                console.error('❌ خطا در init:', e);
+                ErrorManager.show(
+                    'خطا در راه‌اندازی برنامه',
+                    e.message || 'مشکل ناشناخته',
+                    'اینترنت خود را بررسی کنید و روی "تلاش مجدد" کلیک کنید'
+                );
+                updateConnectionStatus('offline', '❌ قطع ارتباط');
+                showLoading(false);
+                document.getElementById('loginOverlay').classList.remove('hidden');
+            }
+
+            // گوش دادن به تغییرات localStorage
+            window.addEventListener('storage', function(e) {
+                if (e.key === 'amlak_public_messages') {
+                    if (document.getElementById('mainApp').style.display === 'block') {
+                        renderPublicMessages();
+                        showToast('📢 پیام عمومی جدید از مدیریت!', 'info');
+                    }
+                }
             });
+
+            // بررسی دوره‌ای
+            setInterval(function() {
+                if (document.getElementById('mainApp').style.display === 'block') {
+                    const stored = localStorage.getItem('amlak_public_messages');
+                    if (stored) {
+                        try {
+                            const newMessages = JSON.parse(stored);
+                            if (JSON.stringify(newMessages) !== JSON.stringify(publicMessages)) {
+                                publicMessages = newMessages;
+                                renderPublicMessages();
+                            }
+                        } catch (e) {}
+                    }
+                }
+            }, 5000);
+        }
+
+        // ============================================================
+        // ====== بررسی کاربر ذخیره شده ======
+        // ============================================================
+        async function checkSavedUser() {
+            try {
+                const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
+                if (savedUser && supabaseClient) {
+                    if (savedUser.role === 'admin') {
+                        isAdmin = true;
+                        currentUser = {
+                            role: 'admin',
+                            id: savedUser.id,
+                            name: 'مدیر'
+                        };
+                        document.getElementById('loginOverlay').classList.add('hidden');
+                        document.getElementById('mainApp').style.display = 'block';
+                        await enterApp();
+                    } else {
+                        const users = await getUsers();
+                        let user = null;
+                        for (let i = 0; i < users.length; i++) {
+                            if (users[i].id === savedUser.id) { user = users[i]; break; }
+                        }
+                        if (user) {
+                            isAdmin = false;
+                            currentUser = {
+                                role: 'user',
+                                id: user.id,
+                                userNumber: user.user_number,
+                                name: user.name
+                            };
+                            document.getElementById('loginOverlay').classList.add('hidden');
+                            document.getElementById('mainApp').style.display = 'block';
+                            await enterApp();
+                        } else {
+                            document.getElementById('loginOverlay').classList.remove('hidden');
+                        }
+                    }
+                } else {
+                    document.getElementById('loginOverlay').classList.remove('hidden');
+                }
+            } catch (e) {
+                console.error('❌ خطا در بررسی کاربر:', e);
+                document.getElementById('loginOverlay').classList.remove('hidden');
+            }
         }
 
         // ============================================================
@@ -3056,26 +3439,18 @@
         // ============================================================
         // ====== توابع ورود ======
         // ============================================================
-        async function checkAdminLimitAndUpdateUI() {
-            await getAdminCount();
-            updateAdminLoginButton();
-            return adminCount;
-        }
-
         async function loginAsUser() {
             try {
                 showLoading(true);
+                updateLoadingStatus('🔄 در حال ورود به عنوان کاربر...');
+
                 if (!supabaseClient) {
-                    showToast('❌ اتصال به سرور برقرار نیست!', 'error');
-                    showLoading(false);
-                    return;
+                    throw new Error('اتصال به سرور برقرار نیست!');
                 }
 
                 var user = await registerUser('کاربر');
                 if (!user) {
-                    showToast('❌ خطا در ثبت کاربر!', 'error');
-                    showLoading(false);
-                    return;
+                    throw new Error('خطا در ثبت کاربر!');
                 }
 
                 isAdmin = false;
@@ -3094,9 +3469,14 @@
                 showToast('👋 خوش آمدید! شما کاربر #' + user.user_number + ' هستید', 'success');
                 await enterApp();
                 loadUserChatMessages();
+
             } catch (e) {
                 showLoading(false);
-                ErrorHandler.log(e, 'ورود کاربر');
+                ErrorManager.show(
+                    'خطا در ورود کاربر',
+                    e.message || 'مشکل در ثبت کاربر',
+                    'دوباره تلاش کنید یا اینترنت خود را بررسی کنید'
+                );
                 showToast('❌ خطا در ورود!', 'error');
             }
         }
@@ -3133,6 +3513,7 @@
 
                 if (password === ADMIN_PASSWORD) {
                     showLoading(true);
+                    updateLoadingStatus('🔄 در حال ورود به عنوان مدیر...');
 
                     isAdmin = true;
                     var adminId = 'admin_' + Date.now().toString(36);
@@ -3160,9 +3541,19 @@
                 }
             } catch (e) {
                 showLoading(false);
-                ErrorHandler.log(e, 'ورود مدیر');
+                ErrorManager.show(
+                    'خطا در ورود مدیر',
+                    e.message || 'مشکل در احراز هویت',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در ورود!', 'error');
             }
+        }
+
+        async function checkAdminLimitAndUpdateUI() {
+            await getAdminCount();
+            updateAdminLoginButton();
+            return adminCount;
         }
 
         document.addEventListener('keydown', function(e) {
@@ -3191,32 +3582,55 @@
                 hideAdminLogin();
                 await checkAdminLimitAndUpdateUI();
                 showToast('🚪 خروج موفق', 'success');
-            } catch (e) { ErrorHandler.log(e, 'خروج'); }
+            } catch (e) {
+                ErrorManager.show(
+                    'خطا در خروج',
+                    e.message || 'مشکل ناشناخته',
+                    'صفحه را رفرش کنید'
+                );
+            }
         }
 
         // ============================================================
         // ====== بارگذاری داده‌ها ======
         // ============================================================
         async function loadProperties() {
-            if (!supabaseClient) { properties = []; return; }
+            if (!supabaseClient) {
+                properties = [];
+                return;
+            }
             try {
                 showLoading(true);
+                updateLoadingStatus('🔄 در حال بارگذاری املاک...');
+
                 var response = await supabaseClient
                     .from('estate_properties')
                     .select('*')
-                    .order('id', { ascending: false });
+                    .order('created_at', { ascending: false });
 
-                if (response.error) throw new Error(response.error.message);
-                if (response.data && response.data.length > 0) {
-                    properties = response.data;
-                } else {
-                    properties = [];
+                if (response.error) {
+                    if (response.error.code === 'PGRST301') {
+                        throw new Error('جدول estate_properties وجود ندارد. لطفاً جدول را در Supabase ایجاد کنید.');
+                    } else {
+                        throw new Error(response.error.message);
+                    }
                 }
+
+                properties = response.data || [];
+                console.log('✅ تعداد املاک:', properties.length);
+                updateLoadingStatus('✅ ' + properties.length + ' ملک بارگذاری شد');
+
             } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری املاک');
+                ErrorManager.show(
+                    'خطا در بارگذاری املاک',
+                    e.message || 'مشکل در دریافت داده',
+                    'اطمینان حاصل کنید که جدول estate_properties در Supabase وجود دارد'
+                );
                 properties = [];
-            } finally { showLoading(false);
-                updateStats(); }
+            } finally {
+                showLoading(false);
+                updateStats();
+            }
         }
 
         function loadPublicMessagesFromStorage() {
@@ -3447,10 +3861,7 @@
                     .eq('id', id);
 
                 if (response.error) {
-                    console.error('❌ خطا در سنجاق:', response.error);
-                    showToast('❌ خطا در سنجاق!', 'error');
-                    showLoading(false);
-                    return;
+                    throw new Error(response.error.message);
                 }
 
                 properties[index].pinned = newPinnedState;
@@ -3461,7 +3872,11 @@
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
-                ErrorHandler.log(e, 'سنجاق ملک');
+                ErrorManager.show(
+                    'خطا در سنجاق ملک',
+                    e.message || 'مشکل در بروزرسانی',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در سنجاق!', 'error');
             }
         }
@@ -3604,10 +4019,7 @@
                 }
 
                 if (response.error) {
-                    console.error('❌ خطای Supabase:', response.error);
-                    showToast('❌ خطا: ' + response.error.message, 'error');
-                    showLoading(false);
-                    return;
+                    throw new Error(response.error.message);
                 }
 
                 if (isEdit) {
@@ -3630,7 +4042,11 @@
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
-                console.error('❌ خطای کلی:', e);
+                ErrorManager.show(
+                    'خطا در ذخیره ملک',
+                    e.message || 'مشکل در ثبت',
+                    'اطمینان حاصل کنید که جدول estate_properties در Supabase وجود دارد'
+                );
                 showToast('❌ خطا: ' + e.message, 'error');
             }
         }
@@ -3692,7 +4108,7 @@
                     .from('estate_properties')
                     .delete()
                     .eq('id', id);
-                if (response.error) throw response.error;
+                if (response.error) throw new Error(response.error.message);
 
                 var deletedItem = null;
                 var newProps = [];
@@ -3727,7 +4143,11 @@
                 showLoading(false);
             } catch (e) {
                 showLoading(false);
-                ErrorHandler.log(e, 'حذف ملک');
+                ErrorManager.show(
+                    'خطا در حذف ملک',
+                    e.message || 'مشکل در حذف',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در حذف ملک!', 'error');
             }
         }
@@ -3853,7 +4273,11 @@
                 renderCart();
                 showToast('✅ به سبد خرید اضافه شد!', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'افزودن به سبد خرید');
+                ErrorManager.show(
+                    'خطا در افزودن به سبد خرید',
+                    e.message || 'مشکل در ثبت',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در افزودن به سبد خرید!', 'error');
             }
         }
@@ -3878,7 +4302,11 @@
                 renderCart();
                 showToast('🗑️ از سبد خرید حذف شد', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'حذف از سبد خرید');
+                ErrorManager.show(
+                    'خطا در حذف از سبد خرید',
+                    e.message || 'مشکل در حذف',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در حذف از سبد خرید!', 'error');
             }
         }
@@ -3900,7 +4328,11 @@
                 renderCart();
                 showToast('🗑️ سبد خرید خالی شد', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'خالی کردن سبد خرید');
+                ErrorManager.show(
+                    'خطا در خالی کردن سبد خرید',
+                    e.message || 'مشکل در حذف',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در خالی کردن سبد خرید!', 'error');
             }
         }
@@ -4083,7 +4515,13 @@
 
                 container.innerHTML = html;
                 updateStats();
-            } catch (e) { ErrorHandler.log(e, 'رندر لیست'); }
+            } catch (e) {
+                ErrorManager.show(
+                    'خطا در نمایش لیست',
+                    e.message || 'مشکل در رندر',
+                    'صفحه را رفرش کنید'
+                );
+            }
         }
 
         // ============================================================
@@ -4463,7 +4901,13 @@
                 var messages = await loadChatMessages(currentUser.id);
                 chatMessages = messages;
                 renderUserChatMessages();
-            } catch (e) { ErrorHandler.log(e, 'بارگذاری چت'); }
+            } catch (e) {
+                ErrorManager.show(
+                    'خطا در بارگذاری چت',
+                    e.message || 'مشکل در دریافت پیام‌ها',
+                    'دوباره تلاش کنید'
+                );
+            }
         }
 
         function renderUserChatMessages() {
@@ -4471,7 +4915,8 @@
             if (!container) return;
 
             if (!chatMessages || chatMessages.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
+                container.innerHTML =
+                '<div style="text-align:center;color:var(--text-light);padding:20px;">💬 هنوز پیامی ارسال نشده است</div>';
                 return;
             }
 
@@ -4518,10 +4963,14 @@
                     input.value = '';
                     showToast('✅ پیام ارسال شد!', 'success');
                 } else {
-                    showToast('❌ خطا در ارسال پیام!', 'error');
+                    throw new Error('پیام ارسال نشد');
                 }
             } catch (e) {
-                ErrorHandler.log(e, 'ارسال پیام کاربر');
+                ErrorManager.show(
+                    'خطا در ارسال پیام',
+                    e.message || 'مشکل در ارسال',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در ارسال!', 'error');
             }
         }
@@ -4551,7 +5000,11 @@
                 renderUserChatMessages();
                 showToast('✅ پیام ویرایش شد!', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'ویرایش پیام');
+                ErrorManager.show(
+                    'خطا در ویرایش پیام',
+                    e.message || 'مشکل در ویرایش',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در ویرایش!', 'error');
             }
         }
@@ -4571,7 +5024,11 @@
                 renderUserChatMessages();
                 showToast('🗑️ پیام حذف شد', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'حذف پیام');
+                ErrorManager.show(
+                    'خطا در حذف پیام',
+                    e.message || 'مشکل در حذف',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در حذف!', 'error');
             }
         }
@@ -4616,7 +5073,11 @@
                 container.innerHTML = html || '<div style="text-align:center;padding:20px;">👤 هیچ کاربری یافت نشد</div>';
                 document.getElementById('userCount').textContent = users.length + ' کاربر';
             } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری کاربران');
+                ErrorManager.show(
+                    'خطا در بارگذاری کاربران',
+                    e.message || 'مشکل در دریافت لیست',
+                    'دوباره تلاش کنید'
+                );
             }
         }
 
@@ -4687,11 +5148,15 @@
                     document.getElementById('chatFileInput').value = '';
                     showToast('✅ پاسخ ارسال شد!', 'success');
                 } else {
-                    showToast('❌ خطا در ارسال پاسخ!', 'error');
+                    throw new Error('پاسخ ارسال نشد');
                 }
             } catch (e) {
-                ErrorHandler.log(e, 'ارسال پاسخ مدیر');
-                showToast('❌ خطا در ارسال!', 'error');
+                ErrorManager.show(
+                    'خطا در ارسال پاسخ',
+                    e.message || 'مشکل در ارسال',
+                    'دوباره تلاش کنید'
+                );
+                showToast('❌ خطا در ارسال پاسخ!', 'error');
             }
         }
 
@@ -4718,7 +5183,11 @@
                 await selectChatUser(currentChatUserId);
                 showToast('✅ پیام ویرایش شد!', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'ویرایش پیام چت');
+                ErrorManager.show(
+                    'خطا در ویرایش پیام',
+                    e.message || 'مشکل در ویرایش',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در ویرایش!', 'error');
             }
         }
@@ -4736,7 +5205,11 @@
                 await selectChatUser(currentChatUserId);
                 showToast('🗑️ پیام حذف شد', 'success');
             } catch (e) {
-                ErrorHandler.log(e, 'حذف پیام چت');
+                ErrorManager.show(
+                    'خطا در حذف پیام',
+                    e.message || 'مشکل در حذف',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در حذف!', 'error');
             }
         }
@@ -4913,7 +5386,11 @@
                 container.innerHTML = html || '<div style="text-align:center;padding:20px;">👤 هیچ کاربری یافت نشد</div>';
                 document.getElementById('userCount').textContent = users.length + ' کاربر';
             } catch (e) {
-                ErrorHandler.log(e, 'بارگذاری کاربران');
+                ErrorManager.show(
+                    'خطا در بارگذاری کاربران',
+                    e.message || 'مشکل در دریافت لیست',
+                    'دوباره تلاش کنید'
+                );
             }
         }
 
@@ -4937,7 +5414,11 @@
                 showToast('🗑️ کاربر حذف شد', 'success');
                 await refreshUsersList();
             } catch (e) {
-                ErrorHandler.log(e, 'حذف کاربر');
+                ErrorManager.show(
+                    'خطا در حذف کاربر',
+                    e.message || 'مشکل در حذف',
+                    'دوباره تلاش کنید'
+                );
                 showToast('❌ خطا در حذف کاربر!', 'error');
             }
         }
@@ -5136,7 +5617,8 @@
             }
 
             if (!publicMessages || publicMessages.length === 0) {
-                container.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:10px;font-size:13px;">📢 هنوز پیام عمومی ارسال نشده است</div>';
+                container.innerHTML =
+                    '<div style="text-align:center;color:var(--text-light);padding:10px;font-size:13px;">📢 هنوز پیام عمومی ارسال نشده است</div>';
                 return;
             }
 
@@ -5254,152 +5736,18 @@
                 renderList();
 
             } catch (e) {
+                ErrorManager.show(
+                    'خطا در ورود به برنامه',
+                    e.message || 'مشکل در بارگذاری',
+                    'صفحه را رفرش کنید'
+                );
                 console.error('❌ خطا در enterApp:', e);
-                ErrorHandler.log(e, 'ورود به برنامه');
             }
         }
 
         // ============================================================
-        // ====== شروع برنامه (اصلاح شده نهایی) ======
+        // ====== شروع برنامه ======
         // ============================================================
-        async function init() {
-            const loadingEl = document.getElementById('loadingOverlay');
-            if (loadingEl) loadingEl.classList.remove('hidden');
-
-            const statusEl = document.getElementById('loadingStatus');
-            if (statusEl) statusEl.textContent = '🔄 در حال بارگذاری...';
-
-            console.log('🚀 شروع برنامه...');
-            console.log('🔑 رمز مدیر:', ADMIN_PASSWORD);
-
-            // ===== صبر برای لود Supabase =====
-            await waitForSupabase();
-
-            // ===== ایجاد کلاینت =====
-            try {
-                let supabaseObj = null;
-                if (typeof window.supabase !== 'undefined' && window.supabase) {
-                    supabaseObj = window.supabase;
-                } else if (typeof supabase !== 'undefined' && supabase) {
-                    supabaseObj = supabase;
-                }
-
-                if (supabaseObj && typeof supabaseObj.createClient === 'function') {
-                    supabaseClient = supabaseObj.createClient(SUPABASE_URL, SUPABASE_KEY);
-                    console.log('✅ کلاینت ساخته شد!');
-                    if (statusEl) statusEl.textContent = '✅ اتصال برقرار شد!';
-                } else {
-                    console.warn('⚠️ Supabase پیدا نشد!');
-                    if (statusEl) statusEl.textContent = '⚠️ اتصال به سرور برقرار نیست!';
-                    showToast('⚠️ اتصال به سرور برقرار نیست!', 'error');
-                    if (loadingEl) loadingEl.classList.add('hidden');
-                    document.getElementById('loginOverlay').classList.remove('hidden');
-                    return;
-                }
-            } catch (e) {
-                console.error('❌ خطا در اتصال Supabase:', e);
-                if (statusEl) statusEl.textContent = '❌ خطا در اتصال!';
-                showToast('❌ خطا در اتصال به سرور!', 'error');
-                if (loadingEl) loadingEl.classList.add('hidden');
-                document.getElementById('loginOverlay').classList.remove('hidden');
-                return;
-            }
-
-            // ===== ادامه کد =====
-            try {
-                await getAdminCount();
-                updateAdminLoginButton();
-            } catch (e) {
-                console.error('❌ خطا در دریافت تعداد مدیران:', e);
-            }
-
-            // ===== بررسی کاربر ذخیره شده =====
-            try {
-                const savedUser = JSON.parse(localStorage.getItem('amlak_user'));
-                if (savedUser && supabaseClient) {
-                    if (savedUser.role === 'admin') {
-                        isAdmin = true;
-                        currentUser = {
-                            role: 'admin',
-                            id: savedUser.id,
-                            name: 'مدیر'
-                        };
-                        document.getElementById('loginOverlay').classList.add('hidden');
-                        document.getElementById('mainApp').style.display = 'block';
-                        await enterApp();
-                    } else {
-                        const users = await getUsers();
-                        let user = null;
-                        for (let i = 0; i < users.length; i++) {
-                            if (users[i].id === savedUser.id) { user = users[i]; break; }
-                        }
-                        if (user) {
-                            isAdmin = false;
-                            currentUser = {
-                                role: 'user',
-                                id: user.id,
-                                userNumber: user.user_number,
-                                name: user.name
-                            };
-                            document.getElementById('loginOverlay').classList.add('hidden');
-                            document.getElementById('mainApp').style.display = 'block';
-                            await enterApp();
-                        } else {
-                            document.getElementById('loginOverlay').classList.remove('hidden');
-                        }
-                    }
-                } else {
-                    document.getElementById('loginOverlay').classList.remove('hidden');
-                }
-            } catch (e) {
-                console.error('❌ خطا در بررسی کاربر:', e);
-                document.getElementById('loginOverlay').classList.remove('hidden');
-            }
-
-            // ===== حالت تاریک =====
-            try {
-                if (localStorage.getItem('darkMode') === 'true') {
-                    document.body.classList.add('dark-mode');
-                    const btn = document.querySelector('.dark-toggle');
-                    if (btn) btn.textContent = '☀️';
-                }
-            } catch (e) {}
-
-            if (loadingEl) loadingEl.classList.add('hidden');
-
-            console.log('✅ دپارتمان املاک حسینی با موفقیت بارگذاری شد!');
-            console.log('👤 وضعیت:', isAdmin ? 'مدیر' : 'کاربر عادی');
-            console.log('📊 تعداد املاک:', properties.length);
-            console.log('👥 تعداد مدیران:', adminCount + '/' + MAX_ADMINS);
-
-            // ===== گوش دادن به تغییرات localStorage =====
-            window.addEventListener('storage', function(e) {
-                if (e.key === 'amlak_public_messages') {
-                    if (document.getElementById('mainApp').style.display === 'block') {
-                        renderPublicMessages();
-                        showToast('📢 پیام عمومی جدید از مدیریت!', 'info');
-                    }
-                }
-            });
-
-            // ===== بررسی دوره‌ای =====
-            setInterval(function() {
-                if (document.getElementById('mainApp').style.display === 'block') {
-                    const stored = localStorage.getItem('amlak_public_messages');
-                    if (stored) {
-                        try {
-                            const newMessages = JSON.parse(stored);
-                            if (JSON.stringify(newMessages) !== JSON.stringify(publicMessages)) {
-                                publicMessages = newMessages;
-                                renderPublicMessages();
-                            }
-                        } catch (e) {}
-                    }
-                }
-            }, 3000);
-        }
-
-        // ===== اجرا =====
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
         } else {
