@@ -1249,6 +1249,7 @@
             color: var(--warning);
             font-weight: bold;
             font-size: 14px;
+            display: none;
         }
 
         /* ===== لودینگ ===== */
@@ -1379,6 +1380,7 @@
             font-size: 11px;
             cursor: pointer;
             transition: var(--transition);
+            display: none;
         }
         .status-bar .retry-btn:hover {
             transform: scale(1.05);
@@ -2499,7 +2501,7 @@
         <div class="status-bar" id="statusBar">
             <span class="status-dot connecting" id="statusDot"></span>
             <span class="status-text" id="statusText">در حال اتصال به سرور...</span>
-            <button class="retry-btn" onclick="retryConnection()">🔄 تلاش مجدد</button>
+            <button class="retry-btn" onclick="retryConnection()" id="retryBtn">🔄 تلاش مجدد</button>
         </div>
 
         <div class="header">
@@ -2655,13 +2657,13 @@
                 <div class="price-info" id="priceFilterInfo">💰 محدوده قیمت مورد نظر خود را وارد کنید</div>
                 <div id="salePriceFilter">
                     <label>حداکثر قیمت (تومان)</label>
-                    <input type="number" id="userMaxPrice" placeholder="مثال: 500000000" />
+                    <input type="text" id="userMaxPrice" placeholder="مثال: 500,000,000" oninput="formatPriceWithComma(this)" />
                 </div>
                 <div id="rentPriceFilter" style="display:none;">
                     <label>حداکثر رهن (تومان)</label>
-                    <input type="number" id="userMaxRahn" placeholder="مثال: 30000000" />
+                    <input type="text" id="userMaxRahn" placeholder="مثال: 30,000,000" oninput="formatPriceWithComma(this)" />
                     <label>حداکثر کرایه (تومان)</label>
-                    <input type="number" id="userMaxRent" placeholder="مثال: 1500000" />
+                    <input type="text" id="userMaxRent" placeholder="مثال: 1,500,000" oninput="formatPriceWithComma(this)" />
                 </div>
                 <button class="btn" onclick="applyUserPriceFilter()">✅ اعمال فیلتر قیمت</button>
                 <button class="btn btn-clear" onclick="clearUserPriceFilter()">🗑️ حذف فیلتر قیمت</button>
@@ -2871,7 +2873,7 @@
         const ADMIN_PASSWORD = '26742674';
         const MAX_ADMINS = 4;
         const SUPABASE_URL = 'https://zymwhrkmabujxoyiwqnk.supabase.co';
-        const SUPABASE_KEY = 'sb_publishable_YNr6t65uutf98DupHUytTQ_Eynzayit';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp5bXdocmttYWJ1anhveWl3cW5rIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcxNDAzNTEsImV4cCI6MjEwMjcxNjM1MX0.DMuF9CwlH2awz1dNTEKQgzFeNXgX3IRTdC3fT8MOVpM';
 
         let supabaseClient = null;
         let currentUser = null;
@@ -2924,7 +2926,9 @@
                 let value = input.value.replace(/[^0-9]/g, '');
                 if (value === '') { input.value = ''; return; }
                 let number = parseInt(value);
-                if (!isNaN(number)) { input.value = number.toLocaleString('en-US'); }
+                if (!isNaN(number)) { 
+                    input.value = number.toLocaleString('en-US'); 
+                }
             } catch (e) {}
         }
 
@@ -2969,17 +2973,25 @@
         function setStatus(message, type, showRetry = false) {
             const dot = document.getElementById('statusDot');
             const text = document.getElementById('statusText');
+            const retryBtn = document.getElementById('retryBtn');
+            
             if (dot) dot.className = 'status-dot ' + type;
             if (text) text.textContent = message;
+            
             const bar = document.getElementById('statusBar');
             if (bar) {
                 if (type === 'online') bar.style.borderRightColor = 'var(--secondary)';
                 else if (type === 'offline') bar.style.borderRightColor = 'var(--danger)';
                 else bar.style.borderRightColor = 'var(--warning)';
             }
-            const retryBtn = document.getElementById('retryBtn');
+            
+            // فقط در صورت قطع بودن یا خطا، دکمه تلاش مجدد نمایش داده بشه
             if (retryBtn) {
-                retryBtn.style.display = showRetry ? 'inline-block' : 'none';
+                if (type === 'offline' || type === 'error') {
+                    retryBtn.style.display = 'inline-block';
+                } else {
+                    retryBtn.style.display = 'none';
+                }
             }
         }
 
@@ -2994,7 +3006,7 @@
                 document.getElementById('loadingTitle').textContent = '⏳ در حال اتصال...';
                 document.getElementById('loadingStatus').textContent = 'در حال بارگذاری...';
                 document.getElementById('loadingError').style.display = 'none';
-                setStatus('در حال اتصال به سرور...', 'connecting');
+                setStatus('در حال اتصال به سرور...', 'connecting', false);
 
                 let supabaseObj = null;
                 let attempts = 0;
@@ -3047,7 +3059,7 @@
 
                     document.getElementById('loadingTitle').textContent = '✅ اتصال برقرار شد!';
                     document.getElementById('loadingStatus').textContent = '✅ متصل به سرور';
-                    setStatus('✅ متصل به سرور', 'online');
+                    setStatus('✅ متصل به سرور', 'online', false);
                     console.log('✅ تست اتصال موفق!');
                     showLoading(false);
                     return true;
@@ -3312,7 +3324,7 @@
         }
 
         // ============================================================
-        // ====== بررسی کاربر ذخیره شده (با رفع مشکل رفرش) ======
+        // ====== بررسی کاربر ذخیره شده ======
         // ============================================================
         async function checkSavedUser() {
             try {
@@ -3325,7 +3337,6 @@
                             id: savedUser.id,
                             name: 'مدیر'
                         };
-                        // مستقیماً صفحه اصلی رو نشون بده، ورود رو مخفی کن
                         document.getElementById('loginOverlay').classList.add('hidden');
                         document.getElementById('mainApp').style.display = 'block';
                         await enterApp();
@@ -3344,7 +3355,6 @@
                                 userNumber: user.user_number,
                                 name: user.name
                             };
-                            // مستقیماً صفحه اصلی رو نشون بده، ورود رو مخفی کن
                             document.getElementById('loginOverlay').classList.add('hidden');
                             document.getElementById('mainApp').style.display = 'block';
                             await enterApp();
@@ -3513,7 +3523,7 @@
                 renderPublicMessages();
                 updateCartBadge();
                 renderList();
-                setStatus('✅ متصل به سرور', 'online');
+                setStatus('✅ متصل به سرور', 'online', false);
 
             } catch (e) {
                 console.error('❌ خطا در enterApp:', e);
@@ -4891,14 +4901,14 @@
 
         function applyUserPriceFilter() {
             if (userTypeFilter === 'sale' || userTypeFilter === 'all') {
-                var maxPrice = document.getElementById('userMaxPrice').value.trim();
+                var maxPrice = document.getElementById('userMaxPrice').value.replace(/,/g, '').trim();
                 if (!maxPrice) { showToast('⚠️ حداکثر قیمت را وارد کنید!', 'warning'); return; }
                 userMaxPrice = Number(maxPrice);
                 userMaxRahn = 0;
                 userMaxRent = 0;
             } else if (userTypeFilter === 'rent') {
-                var maxRahn = document.getElementById('userMaxRahn').value.trim();
-                var maxRent = document.getElementById('userMaxRent').value.trim();
+                var maxRahn = document.getElementById('userMaxRahn').value.replace(/,/g, '').trim();
+                var maxRent = document.getElementById('userMaxRent').value.replace(/,/g, '').trim();
                 if (!maxRahn && !maxRent) { showToast('⚠️ حداقل یکی را وارد کنید!', 'warning'); return; }
                 userMaxRahn = Number(maxRahn) || Infinity;
                 userMaxRent = Number(maxRent) || Infinity;
@@ -5511,11 +5521,11 @@
                 const hasUser = await checkSavedUser();
 
                 if (!hasUser) {
-                    // اگر کاربری ذخیره نشده، صفحه ورود رو نمایش بده
                     document.getElementById('loginOverlay').classList.remove('hidden');
+                    setStatus('✅ متصل به سرور', 'online', false);
+                } else {
+                    setStatus('✅ متصل به سرور', 'online', false);
                 }
-
-                setStatus('✅ متصل به سرور', 'online');
             } else {
                 document.getElementById('loginOverlay').classList.remove('hidden');
                 setStatus('❌ قطع ارتباط', 'offline', true);
@@ -5523,7 +5533,6 @@
 
             showLoading(false);
 
-            // گوش دادن به تغییرات localStorage (برای همگام‌سازی)
             window.addEventListener('storage', function(e) {
                 if (e.key === 'amlak_public_messages') {
                     if (document.getElementById('mainApp').style.display === 'block') {
@@ -5534,7 +5543,6 @@
                 }
             });
 
-            // بررسی دوره‌ای برای بروزرسانی پیام‌ها
             setInterval(function() {
                 if (document.getElementById('mainApp').style.display === 'block' && supabaseClient) {
                     loadPublicMessages();
@@ -5556,4 +5564,4 @@
         }
     </script>
 </body>
-                                                                                                                            </html>
+    </html>
